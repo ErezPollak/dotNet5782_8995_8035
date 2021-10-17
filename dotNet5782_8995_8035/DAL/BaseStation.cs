@@ -6,12 +6,14 @@ namespace IDAL
     {
         public struct BaseStation
         {
-            public int id { get; set; }
-            public int name { get; set; }
-            public double longitude { get; set; }
-            public double lattitude { get; set; }
-            public int chargeSlots { get; set; }
+           
+            private int id { get; set; }
+            private int name { get; set; }
+            private double longitude { get; set; }
+            private double lattitude { get; set; }
+            private int chargeSlots { get; set; }
 
+           
             public string toString()
             {
                 return $"Base Station: ID: {this.id}, Name: {this.name}, " +

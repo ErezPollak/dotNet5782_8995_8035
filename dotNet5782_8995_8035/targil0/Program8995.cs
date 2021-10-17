@@ -11,16 +11,19 @@ namespace ConsoleApp1
             {
                 for (int j = 1; j < 10; j++)
                 {
-                    Console.Write("{0 , -3}66666", i * j);
+                    Console.Write("{0 , -3}", i * j);
                 }
                 Console.WriteLine("");
             }
 
-            Console.WriteLine("aaaaa");
+            Console.WriteLine();
 
-            string s = "";
-            s = Welcome8995();
-            Welcome8035();
+            Random r = new Random();
+            for (int i = 0; i < 100; i++)
+            {
+                Console.Write($"{(int)(r.Next() % 8) + 8,-10} ");
+            }
+
         }
 
         static partial void Welcome8035();
