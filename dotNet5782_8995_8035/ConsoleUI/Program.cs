@@ -7,12 +7,10 @@ namespace ConsoleUI
         static void Main(string[] args)
         {
             Random r = new Random();
-           
-            IDAL.DO.BaseStation b = new IDAL.DO.BaseStation(1, 1, r.Next() % 1000 - 500, r.Next() % 1000 - 500, r.Next() % 5);
 
-            Console.WriteLine(r.Next() % 1000 - 500);
+            DateTime d = new DateTime(yyy,mmm,ddd,4,5,6,7);
 
-            Console.WriteLine(b.toString());
+            Console.WriteLine(d);
 
 
         }

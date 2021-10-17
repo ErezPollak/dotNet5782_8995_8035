@@ -11,8 +11,8 @@ namespace IDAL
         public struct Parcel
         {
             public int id { get; set; }
-            public int senderld { get; set; }
-            public int targetld { get; set; }
+            public int senderId { get; set; }
+            public int targetId { get; set; }
             public WeightCategories Weight { get; set; }
             public Priorities priority { get; set; }
             public DateTime requested { get; set; }
@@ -24,7 +24,7 @@ namespace IDAL
 
             public string toString()
             {
-                return $"Parcel: id: {id} , senderld: {senderld} , targetld : {targetld} " +
+                return $"Parcel: id: {id} , senderld: {senderId} , targetld : {targetId} " +
                     $", weight: {Weight}, priority: {priority}, requested: {requested}, " +
                     $"droneld: {droneld}, scheduled: {scheduled}, pickedUp: {pickedUp}, " +
                     $"delivered: {delivered}\n";

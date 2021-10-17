@@ -7,11 +7,11 @@ namespace IDAL
         public struct BaseStation
         {
            
-            private int id { get; set; }
-            private int name { get; set; }
-            private double longitude { get; set; }
-            private double lattitude { get; set; }
-            private int chargeSlots { get; set; }
+            public int id { get; set; }
+            public int name { get; set; }
+            public double longitude { get; set; }
+            public double lattitude { get; set; }
+            public int chargeSlots { get; set; }
 
            
             public string toString()
