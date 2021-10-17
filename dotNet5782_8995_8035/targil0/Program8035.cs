@@ -11,7 +11,7 @@ namespace ConsoleApp1
 
         static partial void Welcome8035()
         {
-            Console.WriteLine("aaaaa");
+            Console.WriteLine("hello world");
         }
 
     }

@@ -17,9 +17,6 @@ namespace ConsoleApp1
         {
             string s;
 
-            //my sencear apolagies
-            //למה כתבת את זה פה זה ממש לא ברור לי
-
             Console.WriteLine("Enter your name: ");
             s = Console.ReadLine();
             Console.WriteLine(s + " welcome to my first console application");

@@ -4,7 +4,7 @@ namespace IDAL
 {
     namespace DO
     {
-        public struct Class1
+        public struct BaseStation
         {
         }
     }
