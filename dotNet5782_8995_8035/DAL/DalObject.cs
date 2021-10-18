@@ -19,32 +19,59 @@ namespace DalObject
         {
             for (int i = 0; i < 10; i++)
             {
-                Console.WriteLine(DataSource.parcheses[i].toString());
+                Console.WriteLine(DataSource.customers[i].toString());
             }
         }
 
 
         //add options
 
-        public void addBaseStation(int id , int name , double longtude , double lattitude , int chargeslots)
+        public void addBaseStation(int name, double longtude, double lattitude, int chargeslots)
         {
-            DataSource.baseStations[DataSource.Config.freeBaseStation] = new IDAL.DO.BaseStation() {id = id , name = name , longitude = longtude , lattitude = lattitude , chargeSlots = chargeslots};
+            DataSource.baseStations[DataSource.Config.freeBaseStation] = new IDAL.DO.BaseStation() { id = DataSource.Config.freeBaseStation, name = name, longitude = longtude, lattitude = lattitude, chargeSlots = chargeslots };
             ++DataSource.Config.freeBaseStation;
         }
-        
-        public  void addDrone(int id , string model , IDAL.DO.WeightCategories weight , IDAL.DO.DroneStatuses status , double battery)
+
+        public void addDrone(string model, IDAL.DO.WeightCategories weight, IDAL.DO.DroneStatuses status, double battery)
         {
-            DataSource.drones[DataSource.Config.freeDrone] = new IDAL.DO.Drone() {id = id , model = model , MaxWeight = weight , Status = status , battery = battery};
+            DataSource.drones[DataSource.Config.freeDrone] = new IDAL.DO.Drone() { id = DataSource.Config.freeDrone, model = model, MaxWeight = weight, Status = status, battery = battery };
             ++DataSource.Config.freeDrone;
         }
-        public void addCustumer(int id , string name , string phone , double longtitude , double lattitude)
+        public void addCustumer(string name, string phone, double longtitude, double lattitude)
         {
-            DataSource.customers[DataSource.Config.freeCustumer] = new IDAL.DO.Customer() {id = id,name = name , phone = phone , longitude = longtitude , lattitude = lattitude };
+            DataSource.customers[DataSource.Config.freeCustumer] = new IDAL.DO.Customer() { id = DataSource.Config.freeCustumer, name = name, phone = phone, longitude = longtitude, lattitude = lattitude };
             ++DataSource.Config.freeCustumer;
         }
 
-        public void addParcel(int id , int senderId , int targetId , IDAL.DO.WeightCategories weight , IDAL.DO.Priorities praiority , DateTime reqested , DateTime )
+        public void addParcel(int senderId, int targetId, IDAL.DO.WeightCategories weight, IDAL.DO.Priorities praiority, int droneId, DateTime reqested, DateTime scheduled, DateTime delivered, DateTime pickedUp)
+        {
+            DataSource.parcheses[DataSource.Config.freePerches] = new IDAL.DO.Parcel() { id = DataSource.Config.freePerches, senderId = senderId, targetId = targetId, Weight = weight, priority = praiority, droneld = droneId, requested = reqested, scheduled = scheduled, delivered = delivered, pickedUp = pickedUp };
+            ++DataSource.Config.freePerches;
+        }
 
+        //update options
+
+        public void mergeParcelToDrone(int parcelId, int droneId)
+        {
+            DataSource.parcheses[parcelId].droneld = droneId;
+        }
+
+        public void pickingUpParcel(int parcelId)
+        {
+            DataSource.parcheses[parcelId].pickedUp = DateTime.Now;
+        }
+
+        public void deliveringParcel(int parcelId)
+        {
+            DataSource.parcheses[parcelId].delivered = DateTime.Now;
+        }
+
+        public void ChargeDrone(int baseStationId, int droneId)
+        {
+            DataSource.drones[droneId].Status = IDAL.DO.DroneStatuses.FIXING;
+            DataSource.baseStations[baseStationId].chargeSlots--;
+            IDAL.DO.DroneCharge droneCharge = new IDAL.DO.DroneCharge() { droneld = droneId, stationled = baseStationId };
+        }
 
 
 

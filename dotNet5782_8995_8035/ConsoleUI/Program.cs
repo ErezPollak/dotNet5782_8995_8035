@@ -4,13 +4,18 @@ namespace ConsoleUI
 {
     class Program
     {
-        static void Main(string[] args)
+
+        public double shortnum(double d)
         {
 
+        }
 
-            //DateTime d = new DateTime(1, 2, 3, 4, 5, 6);
+        static void Main(string[] args)
+        {
+            
+            Console.WriteLine($"dsgafshdjhgfdsa    { 3.22222222222222 }");
 
-            //Console.WriteLine(d.ToString());
+
 
             DalObject.DalObject d = new DalObject.DalObject();
 

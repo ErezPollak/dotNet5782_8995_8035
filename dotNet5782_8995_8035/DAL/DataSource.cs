@@ -36,15 +36,33 @@ namespace DalObject
 
             for (int i = 0; i < 2; i++)
             {
-                baseStations[i] = new IDAL.DO.BaseStation() { id = 1, name = 1, lattitude = r.Next() % 1000 - 500, longitude = r.Next() % 1000 - 500, chargeSlots = r.Next() % 5 };
+                baseStations[i] = new IDAL.DO.BaseStation() { 
+                    id = 1, 
+                    name = 1, 
+                    lattitude = r.NextDouble() * 180 - 90, 
+                    longitude = r.NextDouble() * 180 - 90, 
+                    chargeSlots = r.Next() % 5 
+                };
             }
             for (int i = 0; i < 5; i++)
             {
-                drones[i] = new IDAL.DO.Drone() { id = i, model = "11111", MaxWeight = (WeightCategories)(r.Next() % 3), Status = (DroneStatuses)(r.Next() % 3), battery = r.Next() % 50 + 50 };
+                drones[i] = new IDAL.DO.Drone() { 
+                    id = i, 
+                    model = "11111", 
+                    MaxWeight = (WeightCategories)(r.Next() % 3),
+                    Status = (DroneStatuses)(r.Next() % 3), 
+                    battery = r.Next() % 50 + 50
+                };
             }
             for (int i = 0; i < 10; i++)
             {
-                customers[i] = new IDAL.DO.Customer() { id = i, name = "22222", phone = "23432", lattitude = r.Next() % 1000 - 500, longitude = r.Next() % 1000 - 500 };
+                customers[i] = new IDAL.DO.Customer() { 
+                    id = i,
+                    name = "22222", 
+                    phone = "23432",
+                    lattitude = r.NextDouble() * 180 - 90, 
+                    longitude = r.NextDouble() * 180 - 90
+                };
             }
 
             for (int i = 0; i < 10; i++)
@@ -57,23 +75,15 @@ namespace DalObject
                     droneld = pickingDronefordelivery(),
                     Weight = (WeightCategories)(r.Next() % 3),
                     priority = (Priorities)(r.Next() % 3),
-                    requested = pickingBiggerDate(new DateTime())
+                    requested = pickingBiggerDate(new DateTime()),
+                    pickedUp = new DateTime(),
+                    delivered = new DateTime()
                 };
             }
             for (int i = 0; i < 10; i++)
             {
                 parcheses[i].scheduled = pickingBiggerDate(parcheses[i].requested);
             }
-            for (int i = 0; i < 10; i++)
-            {
-                parcheses[i].delivered = pickingBiggerDate(parcheses[i].scheduled);
-            }
-            for (int i = 0; i < 10; i++)
-            {
-                parcheses[i].pickedUp = pickingBiggerDate(parcheses[i].delivered);
-            }
-
-
         }
 
         public static DateTime pickingBiggerDate(DateTime d)
@@ -104,25 +114,5 @@ namespace DalObject
 
             return drone;
         }
-
-
-        //string rndStr(int len)
-        //{
-        //    Random r = new Random();
-
-        //    string s;
-
-        //    for (int i = 0; i < len; i++)
-        //    {
-        //        if (r.NextDouble() > 0.5)
-        //        {
-        //        }
-        //        else
-        //        {
-
-        //        }
-        //    }
-        //}
-
     }
 }
