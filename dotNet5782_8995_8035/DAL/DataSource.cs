@@ -25,7 +25,7 @@ namespace DalObject
             public static int serialNumberForPackeges = 0;
         }
 
-        internal static void Initialize()
+        public static void Initialize()
         {
             Random r = new Random();
 
@@ -57,15 +57,25 @@ namespace DalObject
                     droneld = pickingDronefordelivery(),
                     Weight = (WeightCategories)(r.Next() % 3),
                     priority = (Priorities)(r.Next() % 3),
-                    requested = pickingBiggerDate(new DateTime()),
-                    scheduled = pickingBiggerDate(parcheses[i].requested),
-                    delivered = pickingBiggerDate(parcheses[i].scheduled),
-                    pickedUp = pickingBiggerDate(parcheses[i].delivered)
+                    requested = pickingBiggerDate(new DateTime())
                 };
             }
+            for (int i = 0; i < 10; i++)
+            {
+                parcheses[i].scheduled = pickingBiggerDate(parcheses[i].requested);
+            }
+            for (int i = 0; i < 10; i++)
+            {
+                parcheses[i].delivered = pickingBiggerDate(parcheses[i].scheduled);
+            }
+            for (int i = 0; i < 10; i++)
+            {
+                parcheses[i].pickedUp = pickingBiggerDate(parcheses[i].delivered);
+            }
+
 
         }
-        
+
         public static DateTime pickingBiggerDate(DateTime d)
         {
             Random r = new Random();
@@ -74,7 +84,7 @@ namespace DalObject
 
             do
             {
-                newD = new DateTime(r.Next() % 3 + 2021, r.Next() % 12 + 1, r.Next() % 30 + 1, r.Next() % 12, r.Next() % 60, r.Next() % 60);
+                newD = new DateTime(r.Next() % 4 + 2020, r.Next() % 5 + 1, r.Next() % 5 + 1, r.Next() % 24, r.Next() % 60, r.Next() % 60);
             } while (newD < d);
             
 

@@ -25,9 +25,9 @@ namespace IDAL
             public string toString()
             {
                 return $"Parcel: id: {id} , senderld: {senderId} , targetld : {targetId} " +
-                    $", weight: {Weight}, priority: {priority}, requested: {requested}, " +
-                    $"droneld: {droneld}, scheduled: {scheduled}, pickedUp: {pickedUp}, " +
-                    $"delivered: {delivered}\n";
+                    $", weight: {Weight}, priority: {priority},  droneld: {droneld}, " +
+                    $"requested: {requested}, scheduled: {scheduled},delivered: {delivered},  " +
+                    $"pickedUp: {pickedUp}\n";
             }
 
         }
