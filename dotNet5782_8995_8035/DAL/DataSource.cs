@@ -25,14 +25,18 @@ namespace DalObject
             public static int serialNumberForPackeges = 0;
         }
 
-        public void Initialize()
+        internal static void Initialize()
         {
             Random r = new Random();
+
+            Config.freeBaseStation = 2;
+            Config.freeCustumer = 10;
+            Config.freeDrone = 5;
+            Config.freePerches = 10;
 
             for (int i = 0; i < 2; i++)
             {
                 baseStations[i] = new IDAL.DO.BaseStation() { id = 1, name = 1, lattitude = r.Next() % 1000 - 500, longitude = r.Next() % 1000 - 500, chargeSlots = r.Next() % 5 };
-                Config.freeBaseStation = 2;
             }
             for (int i = 0; i < 5; i++)
             {
@@ -90,6 +94,7 @@ namespace DalObject
 
             return drone;
         }
+
 
         //string rndStr(int len)
         //{
