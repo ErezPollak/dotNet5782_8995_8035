@@ -36,11 +36,11 @@ namespace DalObject
 
             for (int i = 0; i < 2; i++)
             {
-                baseStations[i] = new IDAL.DO.BaseStation() { 
-                    id = 1, 
-                    name = 1, 
-                    lattitude = r.NextDouble() * 180 - 90, 
-                    longitude = r.NextDouble() * 180 - 90, 
+                baseStations[i] = new IDAL.DO.BaseStation() {
+                    id = 1,
+                    name = 1,
+                    lattitude = r.NextDouble() * 180 - 90,
+                    longitude = r.NextDouble() * 180 - 90,
                     chargeSlots = r.Next() % 5 
                 };
             }
@@ -48,7 +48,7 @@ namespace DalObject
             {
                 drones[i] = new IDAL.DO.Drone() { 
                     id = i, 
-                    model = "11111", 
+                    model = (char)(r.Next()%26 + 65) +""+ (char)(r.Next() % 26 + 65) + (r.Next()%100000).ToString(), 
                     MaxWeight = (WeightCategories)(r.Next() % 3),
                     Status = (DroneStatuses)(r.Next() % 3), 
                     battery = r.Next() % 50 + 50
@@ -58,8 +58,8 @@ namespace DalObject
             {
                 customers[i] = new IDAL.DO.Customer() { 
                     id = i,
-                    name = "22222", 
-                    phone = "23432",
+                    name = (char)(r.Next() % 26 + 65) + " , " + (char)(r.Next() % 26 + 65), 
+                    phone = "05" + (r.Next() % 10).ToString() + "-" + (r.Next() % 1000000).ToString(),
                     lattitude = r.NextDouble() * 180 - 90, 
                     longitude = r.NextDouble() * 180 - 90
                 };
@@ -96,7 +96,6 @@ namespace DalObject
             {
                 newD = new DateTime(r.Next() % 4 + 2020, r.Next() % 5 + 1, r.Next() % 5 + 1, r.Next() % 24, r.Next() % 60, r.Next() % 60);
             } while (newD < d);
-            
 
             return newD;
 

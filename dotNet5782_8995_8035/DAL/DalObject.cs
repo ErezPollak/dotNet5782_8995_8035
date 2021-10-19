@@ -14,12 +14,11 @@ namespace DalObject
             DataSource.Initialize();
         }
 
-
         public void nnnnn()
         {
             for (int i = 0; i < 10; i++)
             {
-                Console.WriteLine(DataSource.customers[i].toString());
+                Console.WriteLine(DataSource.drones[i].toString());
             }
         }
 
@@ -66,7 +65,7 @@ namespace DalObject
             DataSource.parcheses[parcelId].delivered = DateTime.Now;
         }
 
-        public void ChargeDrone(int baseStationId, int droneId)
+        public void chargeDrone(int baseStationId, int droneId)
         {
             DataSource.drones[droneId].Status = IDAL.DO.DroneStatuses.FIXING;
             DataSource.baseStations[baseStationId].chargeSlots--;
