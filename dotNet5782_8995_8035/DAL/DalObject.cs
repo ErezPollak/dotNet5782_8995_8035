@@ -44,7 +44,7 @@ namespace DalObject
 
         public void addParcel(int senderId, int targetId, IDAL.DO.WeightCategories weight, IDAL.DO.Priorities praiority, int droneId, DateTime reqested, DateTime scheduled, DateTime delivered, DateTime pickedUp)
         {
-            DataSource.parcheses[DataSource.Config.freePerches] = new IDAL.DO.Parcel() { id = DataSource.Config.freePerches, senderId = senderId, targetId = targetId, Weight = weight, priority = praiority, droneld = droneId, requested = reqested, scheduled = scheduled, delivered = delivered, pickedUp = pickedUp };
+            DataSource.parcheses[DataSource.Config.freePerches] = new IDAL.DO.Parcel() { id = DataSource.Config.freePerches, senderId = senderId, targetId = targetId, Weight = weight, priority = praiority, droneId = droneId, requested = reqested, scheduled = scheduled, delivered = delivered, pickedUp = pickedUp };
             ++DataSource.Config.freePerches;
         }
 
@@ -52,7 +52,7 @@ namespace DalObject
 
         public void mergeParcelToDrone(int parcelId, int droneId)
         {
-            DataSource.parcheses[parcelId].droneld = droneId;
+            DataSource.parcheses[parcelId].droneId = droneId;
         }
 
         public void pickingUpParcel(int parcelId)
@@ -69,7 +69,7 @@ namespace DalObject
         {
             DataSource.drones[droneId].Status = IDAL.DO.DroneStatuses.FIXING;
             DataSource.baseStations[baseStationId].chargeSlots--;
-            IDAL.DO.DroneCharge droneCharge = new IDAL.DO.DroneCharge() { droneld = droneId, stationled = baseStationId };
+            IDAL.DO.DroneCharge droneCharge = new IDAL.DO.DroneCharge() { droneId = droneId, stationId = baseStationId };
         }
 
 

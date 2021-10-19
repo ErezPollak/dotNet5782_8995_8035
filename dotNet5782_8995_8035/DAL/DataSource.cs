@@ -29,21 +29,18 @@ namespace DalObject
         {
             Random r = new Random();
 
-            Config.freeBaseStation = 2;
-            Config.freeCustumer = 10;
-            Config.freeDrone = 5;
-            Config.freePerches = 10;
-
             for (int i = 0; i < 2; i++)
             {
                 baseStations[i] = new IDAL.DO.BaseStation() {
-                    id = 1,
-                    name = 1,
+                    id = i,
+                    name = i,
                     lattitude = r.NextDouble() * 180 - 90,
                     longitude = r.NextDouble() * 180 - 90,
                     chargeSlots = r.Next() % 5 
                 };
             }
+            Config.freeBaseStation = 2;
+
             for (int i = 0; i < 5; i++)
             {
                 drones[i] = new IDAL.DO.Drone() { 
@@ -54,6 +51,8 @@ namespace DalObject
                     battery = r.Next() % 50 + 50
                 };
             }
+            Config.freeDrone = 5;
+ 
             for (int i = 0; i < 10; i++)
             {
                 customers[i] = new IDAL.DO.Customer() { 
@@ -64,6 +63,7 @@ namespace DalObject
                     longitude = r.NextDouble() * 180 - 90
                 };
             }
+            Config.freeCustumer = 10;
 
             for (int i = 0; i < 10; i++)
             {
@@ -72,18 +72,23 @@ namespace DalObject
                     id = i,
                     senderId = customers[r.Next() % (Config.freeCustumer)].id,
                     targetId = customers[r.Next() % (Config.freeCustumer)].id,
-                    droneld = pickingDronefordelivery(),
                     Weight = (WeightCategories)(r.Next() % 3),
                     priority = (Priorities)(r.Next() % 3),
-                    requested = pickingBiggerDate(new DateTime()),
-                    pickedUp = new DateTime(),
-                    delivered = new DateTime()
+                    requested = pickingBiggerDate(DateTime.Now),
+                    pickedUp = DateTime.Now,
+                    delivered = DateTime.Now
                 };
             }
+
             for (int i = 0; i < 10; i++)
             {
                 parcheses[i].scheduled = pickingBiggerDate(parcheses[i].requested);
             }
+            Config.freePerches = 10;
+
+            //Add a loop for pickig a drone accoring to the weight.
+
+
         }
 
         public static DateTime pickingBiggerDate(DateTime d)

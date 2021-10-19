@@ -16,7 +16,7 @@ namespace IDAL
             public WeightCategories Weight { get; set; }
             public Priorities priority { get; set; }
             public DateTime requested { get; set; }
-            public int droneld { get; set; }
+            public int droneId { get; set; }
             public DateTime scheduled { get; set; }
             public DateTime pickedUp { get; set; }
             public DateTime delivered { get; set; }
@@ -25,7 +25,7 @@ namespace IDAL
             public string toString()
             {
                 return $"Parcel: id: {id} , senderld: {senderId} , targetld : {targetId} " +
-                    $", weight: {Weight}, priority: {priority},  droneld: {droneld}, " +
+                    $", weight: {Weight}, priority: {priority},  droneld: {droneId}, " +
                     $"requested: {requested}, scheduled: {scheduled},delivered: {delivered},  " +
                     $"pickedUp: {pickedUp}\n";
             }

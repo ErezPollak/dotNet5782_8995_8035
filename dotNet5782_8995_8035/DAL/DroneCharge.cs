@@ -10,12 +10,12 @@ namespace IDAL
     {
         public struct DroneCharge
         {
-            public int droneld { get; set; }
-            public int stationled { get; set; }
+            public int droneId { get; set; }
+            public int stationId { get; set; }
 
             public string toString()
             {
-                return $"DroneCharge: droneld: {droneld} , stationled {stationled}\n";
+                return $"DroneCharge: droneld: {droneId} , stationled {stationId}\n";
             }
 
         }
