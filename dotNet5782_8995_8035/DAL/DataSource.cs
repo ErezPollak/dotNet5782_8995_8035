@@ -8,12 +8,15 @@ using System.Threading.Tasks;
 
 namespace DalObject
 {
+
     internal class DataSource
     {
         public static IDAL.DO.Drone[] drones = new IDAL.DO.Drone[10];
         public static IDAL.DO.BaseStation[] baseStations = new IDAL.DO.BaseStation[5];
         public static IDAL.DO.Customer[] customers = new IDAL.DO.Customer[100];
         public static IDAL.DO.Parcel[] parcheses = new IDAL.DO.Parcel[1000];
+
+        public static Random r = new Random();
 
         internal class Config
         {
@@ -27,8 +30,6 @@ namespace DalObject
 
         public static void Initialize()
         {
-            Random r = new Random();
-
             for (int i = 0; i < 2; i++)
             {
                 baseStations[i] = new IDAL.DO.BaseStation() {
@@ -74,6 +75,7 @@ namespace DalObject
                     targetId = customers[r.Next() % (Config.freeCustumer)].id,
                     Weight = (WeightCategories)(r.Next() % 3),
                     priority = (Priorities)(r.Next() % 3),
+                    droneId = -1,
                     requested = pickingBiggerDate(DateTime.Now),
                     pickedUp = DateTime.Now,
                     delivered = DateTime.Now
@@ -85,16 +87,10 @@ namespace DalObject
                 parcheses[i].scheduled = pickingBiggerDate(parcheses[i].requested);
             }
             Config.freePerches = 10;
-
-            //Add a loop for pickig a drone accoring to the weight.
-
-
         }
 
         public static DateTime pickingBiggerDate(DateTime d)
         {
-            Random r = new Random();
-
             DateTime newD;
 
             do
@@ -104,19 +100,6 @@ namespace DalObject
 
             return newD;
 
-        }
-
-        public static int pickingDronefordelivery()
-        {
-            Random r = new Random();
-
-            int drone;
-
-            do {
-                drone = drones[r.Next() % (Config.freeDrone)].id;
-            } while (drones[drone].Status == DroneStatuses.FIXING) ;
-
-            return drone;
         }
     }
 }

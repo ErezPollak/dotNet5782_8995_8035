@@ -14,15 +14,6 @@ namespace DalObject
             DataSource.Initialize();
         }
 
-        public void nnnnn()
-        {
-            for (int i = 0; i < 10; i++)
-            {
-                Console.WriteLine(DataSource.drones[i].toString());
-            }
-        }
-
-
         //add options
 
         public void addBaseStation(int name, double longtude, double lattitude, int chargeslots)
@@ -72,7 +63,90 @@ namespace DalObject
             IDAL.DO.DroneCharge droneCharge = new IDAL.DO.DroneCharge() { droneId = droneId, stationId = baseStationId };
         }
 
+        public void unChargeDrone(IDAL.DO.DroneCharge droneCharge)
+        {
+            DataSource.drones[droneCharge.droneId].battery = 100;
+            DataSource.drones[droneCharge.droneId].Status = IDAL.DO.DroneStatuses.FREE;
+            --DataSource.baseStations[droneCharge.stationId].chargeSlots;
+        }
 
+        //show options
+
+        public void showBaseStation(int baseStationId)
+        {
+            DataSource.baseStations[baseStationId].toString();
+        }
+
+        public void showDrone(int droneId)
+        {
+            DataSource.drones[droneId].toString();
+        }
+
+        public void showCustomer(int customerId)
+        {
+            DataSource.customers[customerId].toString();
+        }
+
+        public void showParchel(int parchesId)
+        {
+            DataSource.parcheses[parchesId].toString();
+        }
+
+        //showLists
+
+        public void showBaseStationsList()
+        {
+            for (int i = 0; i < DataSource.Config.freeBaseStation; i++)
+            {
+                Console.WriteLine(DataSource.baseStations[i].toString());
+            }
+        }
+
+        public void showDrones()
+        {
+            for (int i = 0; i < DataSource.Config.freeDrone; i++)
+            {
+                Console.WriteLine(DataSource.drones[i].toString());
+            }
+        }
+
+        public void showCustomers()
+        {
+            for (int i = 0; i < DataSource.Config.freeCustumer; i++)
+            {
+                Console.WriteLine(DataSource.customers[i].toString());
+            }
+        }
+
+        public void showParcheses()
+        {
+            for (int i = 0; i < DataSource.Config.freePerches; i++)
+            {
+                Console.WriteLine(DataSource.parcheses[i].toString());
+            }
+        }
+
+        public void showParchesesThatDontHaveADrone()
+        {
+            for (int i = 0; i < DataSource.Config.freePerches; i++)
+            {
+                if (DataSource.parcheses[i].droneId == -1)
+                {
+                    Console.WriteLine(DataSource.parcheses[i].toString());
+                }
+            }
+        }
+
+        public void showBaseStationsWithFreeChargingSlots()
+        {
+            for (int i = 0; i < DataSource.Config.freeBaseStation; i++)
+            {
+                if (DataSource.baseStations[i].chargeSlots > 0)
+                {
+                    Console.WriteLine(DataSource.baseStations[i].toString());
+                }
+            }
+        }
 
     }
 }
