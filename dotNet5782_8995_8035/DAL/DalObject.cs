@@ -9,9 +9,21 @@ namespace DalObject
 {
     public class DalObject
     {
+
+        public IDAL.DO.DroneCharge[] charges;
+
+
         public DalObject()
         {
             DataSource.Initialize();
+
+            charges = new IDAL.DO.DroneCharge[10];
+
+            for (int i = 0; i < 10; i++)
+            {
+                charges[i].droneId = -1;
+            }
+
         }
 
         //add options
@@ -41,7 +53,7 @@ namespace DalObject
 
         //update options
 
-        public void mergeParcelToDrone(int parcelId, int droneId)
+        public void updateDroneForAParcel(int parcelId, int droneId)
         {
             DataSource.parcheses[parcelId].droneId = droneId;
         }
@@ -49,47 +61,67 @@ namespace DalObject
         public void pickingUpParcel(int parcelId)
         {
             DataSource.parcheses[parcelId].pickedUp = DateTime.Now;
+            DataSource.drones[DataSource.parcheses[parcelId].droneId].Status = IDAL.DO.DroneStatuses.DELIVERY;
         }
 
         public void deliveringParcel(int parcelId)
         {
             DataSource.parcheses[parcelId].delivered = DateTime.Now;
+            DataSource.drones[DataSource.parcheses[parcelId].droneId].Status = IDAL.DO.DroneStatuses.FREE;
+
         }
 
         public void chargeDrone(int baseStationId, int droneId)
         {
             DataSource.drones[droneId].Status = IDAL.DO.DroneStatuses.FIXING;
-            DataSource.baseStations[baseStationId].chargeSlots--;
+            --DataSource.baseStations[baseStationId].chargeSlots;
             IDAL.DO.DroneCharge droneCharge = new IDAL.DO.DroneCharge() { droneId = droneId, stationId = baseStationId };
+
+            for (int i = 0; i < 10; i++)
+            {
+                if(charges[i].droneId == -1)
+                {
+                    charges[i] = droneCharge;
+                }
+            }
         }
 
-        public void unChargeDrone(IDAL.DO.DroneCharge droneCharge)
+        public void unChargeDrone(int droneId)
         {
-            DataSource.drones[droneCharge.droneId].battery = 100;
-            DataSource.drones[droneCharge.droneId].Status = IDAL.DO.DroneStatuses.FREE;
-            --DataSource.baseStations[droneCharge.stationId].chargeSlots;
+            DataSource.drones[droneId].battery = 100;
+            DataSource.drones[droneId].Status = IDAL.DO.DroneStatuses.FREE;
+
+            for (int i = 0; i < 10; i++)
+            {
+                if(charges[i].droneId == droneId)
+                {
+                    charges[i].droneId = -1;
+                    ++DataSource.baseStations[charges[i].stationId].chargeSlots;
+                }
+            }
+
         }
 
         //show options
 
         public void showBaseStation(int baseStationId)
         {
-            DataSource.baseStations[baseStationId].toString();
+            Console.WriteLine(DataSource.baseStations[baseStationId].toString());
         }
 
         public void showDrone(int droneId)
         {
-            DataSource.drones[droneId].toString();
+            Console.WriteLine(DataSource.drones[droneId].toString());
         }
 
         public void showCustomer(int customerId)
         {
-            DataSource.customers[customerId].toString();
+            Console.WriteLine(DataSource.customers[customerId].toString());
         }
 
-        public void showParchel(int parchesId)
+        public void showParcel(int parchesId)
         {
-            DataSource.parcheses[parchesId].toString();
+            Console.WriteLine(DataSource.parcheses[parchesId].toString());
         }
 
         //showLists
@@ -102,7 +134,7 @@ namespace DalObject
             }
         }
 
-        public void showDrones()
+        public void showDronesList()
         {
             for (int i = 0; i < DataSource.Config.freeDrone; i++)
             {
@@ -110,7 +142,7 @@ namespace DalObject
             }
         }
 
-        public void showCustomers()
+        public void showCustomersList()
         {
             for (int i = 0; i < DataSource.Config.freeCustumer; i++)
             {
@@ -118,7 +150,7 @@ namespace DalObject
             }
         }
 
-        public void showParcheses()
+        public void showParchesesList()
         {
             for (int i = 0; i < DataSource.Config.freePerches; i++)
             {
@@ -137,13 +169,24 @@ namespace DalObject
             }
         }
 
-        public void showBaseStationsWithFreeChargingSlots()
+        public void showAvalibleBaseStations()
         {
             for (int i = 0; i < DataSource.Config.freeBaseStation; i++)
             {
                 if (DataSource.baseStations[i].chargeSlots > 0)
                 {
                     Console.WriteLine(DataSource.baseStations[i].toString());
+                }
+            }
+        }
+
+        public void showAvalibleBaseStationsID()
+        {
+            for (int i = 0; i < DataSource.Config.freeBaseStation; i++)
+            {
+                if (DataSource.baseStations[i].chargeSlots > 0)
+                {
+                    Console.Write(DataSource.baseStations[i].id + "  ");
                 }
             }
         }

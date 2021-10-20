@@ -21,14 +21,9 @@ namespace ConsoleUI
         }
 
         public static void Main(string[] args)
-        {
-
+        { 
 
             DalObject.DalObject dalObject = new DalObject.DalObject();
-
-
-
-            dalObject.showDrones();
 
             int choice = inputChoice();
 
@@ -158,16 +153,182 @@ namespace ConsoleUI
                         break;
                     case 2:
                         {
+                            Console.WriteLine("\n" +
+                                              "enter your choice: \n" +
+                                              "for updating the drone id for a parcel: 1. \n" +
+                                              "for picking up a parcel by a drone: 2. \n" +
+                                              "for delivering a parcel: 3.\n" +
+                                              "for snding a drone to a base station: 4.\n"+
+                                              "for releasing a drone from a base station: 5.\n");
 
+                            int updatingChoice;
+                            int.TryParse(Console.ReadLine(), out updatingChoice);
+
+                            switch (updatingChoice)
+                            {
+                                case 1:
+                                {
+                                        Console.WriteLine("enter the number of the parcel: ");
+                                        int parcelID;
+                                        int.TryParse(Console.ReadLine(), out parcelID);
+
+                                        Console.WriteLine("enter the number of the drone: ");
+                                        int droneID;
+                                        int.TryParse(Console.ReadLine(), out droneID);
+
+
+                                        dalObject.updateDroneForAParcel(parcelID, droneID);
+
+                                }break;
+                                case 2:
+                                {
+                                        Console.WriteLine("enter the number of the parcel: ");
+                                        int parcelID;
+                                        int.TryParse(Console.ReadLine(), out parcelID);
+
+                                        dalObject.pickingUpParcel(parcelID);
+                                    }
+                                    break;
+                                case 3:
+                                {
+                                        Console.WriteLine("enter the number of the parcel: ");
+                                        int parcelID;
+                                        int.TryParse(Console.ReadLine(), out parcelID);
+
+                                        dalObject.deliveringParcel(parcelID);
+
+                                }
+                                break;
+                                case 4:
+                                {
+                                        Console.WriteLine("enter the number of the drone: ");
+                                        int droneID;
+                                        int.TryParse(Console.ReadLine(), out droneID);
+
+
+                                        Console.WriteLine("pick up the number of the baseStation out of the avalible ones: ");
+                                        Console.Write("the avalible bases are: ");
+                                        dalObject.showAvalibleBaseStationsID();
+                                        int baseID;
+                                        int.TryParse(Console.ReadLine(), out baseID);
+
+                                        dalObject.chargeDrone(baseID, droneID);
+                                    }
+                                break;
+                                case 5:
+                                {
+                                        Console.WriteLine("enter the number of the drone: ");
+                                        int droneID;
+                                        int.TryParse(Console.ReadLine(), out droneID);
+
+                                        dalObject.unChargeDrone(droneID);
+                                    }
+                                break;
+
+                            }
+                            
                         }
                         break;
                     case 3:
                         {
+                            Console.WriteLine("enter your choice: \n" +
+                                              "to show a base station: 1. \n" +
+                                              "to show a drone: 2. \n" +
+                                              "to show a custumer: 3.\n" +
+                                              "to show a parcel: 4.\n");
 
-                        }
+                            int showChoice;
+                            int.TryParse(Console.ReadLine(), out showChoice);
+
+                            switch (showChoice)
+                            {
+                                case 1:
+                                    {
+                                        Console.WriteLine("enter the number of the base station: ");
+                                        int baseID;
+                                        int.TryParse(Console.ReadLine(), out baseID);
+
+                                        dalObject.showBaseStation(baseID);
+                                    }
+                                    break;
+                                case 2:
+                                    {
+                                        Console.WriteLine("enter the number of the drone: ");
+                                        int droneID;
+                                        int.TryParse(Console.ReadLine(), out droneID);
+
+                                        dalObject.showDrone(droneID);
+                                    }
+                                    break;
+                                case 3:
+                                    {
+                                        Console.WriteLine("enter the number of the customer: ");
+                                        int customerID;
+                                        int.TryParse(Console.ReadLine(), out customerID);
+
+
+                                        dalObject.showCustomer(customerID);
+                                    }
+                                    break;
+                                case 4:
+                                    {
+                                        Console.WriteLine("enter the number of the parcel: ");
+                                        int parcelID;
+                                        int.TryParse(Console.ReadLine(), out parcelID);
+
+                                        dalObject.showParcel(parcelID);
+                                    }
+                                    break;
+                            }
+
+                            }
                         break;
                     case 4:
                         {
+                            Console.WriteLine("enter your choice: \n" +
+                                              "to show the list of the base stations: 1. \n" +
+                                              "to show the list of the drones: 2. \n" +
+                                              "to show the list of the custumers: 3.\n" +
+                                              "to show the list of the parcels: 4.\n" +
+                                              "to show the list of the parcels that dont have a drone: 5.\n" +
+                                              "to show the list of the base stations with available chrging slots: 6");
+
+                            int showChoice;
+                            int.TryParse(Console.ReadLine(), out showChoice);
+
+                            switch (showChoice)
+                            {
+                                case 1:
+                                    { 
+                                        dalObject.showBaseStationsList();
+                                    }
+                                    break;
+                                case 2:
+                                    {
+                                        dalObject.showDronesList();
+                                    }
+                                    break;
+                                case 3:
+                                    {
+                                        dalObject.showCustomersList();
+                                    }
+                                    break;
+                                case 4:
+                                    {
+                                        dalObject.showParchesesList();
+                                    }
+                                    break;
+                                case 5:
+                                    {
+                                        dalObject.showParchesesThatDontHaveADrone();
+                                    }
+                                    break;
+                                case 6:
+                                    {
+                                        dalObject.showAvalibleBaseStations();
+                                    }
+                                    break;
+                            }
 
                         }
                         break;
