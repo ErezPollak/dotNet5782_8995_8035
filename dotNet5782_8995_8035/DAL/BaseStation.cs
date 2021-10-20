@@ -8,7 +8,7 @@ namespace IDAL
         {
            
             public int id { get; set; }
-            public int name { get; set; }
+            public string name { get; set; }
             public double longitude { get; set; }
             public double lattitude { get; set; }
             public int chargeSlots { get; set; }

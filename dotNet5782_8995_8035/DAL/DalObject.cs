@@ -16,7 +16,7 @@ namespace DalObject
 
         //add options
 
-        public void addBaseStation(int name, double longtude, double lattitude, int chargeslots)
+        public void addBaseStation(string name, double longtude, double lattitude, int chargeslots)
         {
             DataSource.baseStations[DataSource.Config.freeBaseStation] = new IDAL.DO.BaseStation() { id = DataSource.Config.freeBaseStation, name = name, longitude = longtude, lattitude = lattitude, chargeSlots = chargeslots };
             ++DataSource.Config.freeBaseStation;
@@ -33,9 +33,9 @@ namespace DalObject
             ++DataSource.Config.freeCustumer;
         }
 
-        public void addParcel(int senderId, int targetId, IDAL.DO.WeightCategories weight, IDAL.DO.Priorities praiority, int droneId, DateTime reqested, DateTime scheduled, DateTime delivered, DateTime pickedUp)
+        public void addParcel(int senderId, int targetId, IDAL.DO.WeightCategories weight, IDAL.DO.Priorities praiority, int droneId, DateTime reqested, DateTime scheduled)
         {
-            DataSource.parcheses[DataSource.Config.freePerches] = new IDAL.DO.Parcel() { id = DataSource.Config.freePerches, senderId = senderId, targetId = targetId, Weight = weight, priority = praiority, droneId = droneId, requested = reqested, scheduled = scheduled, delivered = delivered, pickedUp = pickedUp };
+            DataSource.parcheses[DataSource.Config.freePerches] = new IDAL.DO.Parcel() { id = DataSource.Config.freePerches, senderId = senderId, targetId = targetId, Weight = weight, priority = praiority, droneId = droneId, requested = reqested, scheduled = scheduled, delivered = new DateTime(), pickedUp = new DateTime() };
             ++DataSource.Config.freePerches;
         }
 
@@ -144,6 +144,17 @@ namespace DalObject
                 if (DataSource.baseStations[i].chargeSlots > 0)
                 {
                     Console.WriteLine(DataSource.baseStations[i].toString());
+                }
+            }
+        }
+
+        public void showListOfDronesForPercel(IDAL.DO.WeightCategories weight)
+        {
+            for (int i = 0; i < DataSource.Config.freeDrone; i++)
+            {
+                if(DataSource.drones[i].MaxWeight >= weight && DataSource.drones[i].Status == IDAL.DO.DroneStatuses.FREE)
+                {
+                    Console.Write(i + " ");
                 }
             }
         }

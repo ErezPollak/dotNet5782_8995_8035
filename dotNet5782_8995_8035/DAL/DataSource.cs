@@ -34,7 +34,7 @@ namespace DalObject
             {
                 baseStations[i] = new IDAL.DO.BaseStation() {
                     id = i,
-                    name = i,
+                    name = i.ToString(),
                     lattitude = r.NextDouble() * 180 - 90,
                     longitude = r.NextDouble() * 180 - 90,
                     chargeSlots = r.Next() % 5 
