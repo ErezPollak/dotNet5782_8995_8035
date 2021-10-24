@@ -1,4 +1,15 @@
-﻿using System;
+﻿//course: Mini Project in Windows Systems
+//lecturere: Eliezer Grintsborger
+//from the students: Erez Polak 322768995
+//                   Mordehay Cohen 206958035
+
+
+
+//the program contains a struct that represents a customer.
+//the program contains the properties and a tostring function.
+
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,6 +29,9 @@ namespace IDAL
 
             public string toString()
             {
+
+                ///the function returns the current place of the item's properties.///
+
                 return $"Customer: " +
                     $"id: {id} , " +
                     $"name: {name} , " +

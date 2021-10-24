@@ -1,4 +1,16 @@
-﻿using System;
+﻿//course: Mini Project in Windows Systems
+//lecturere: Eliezer Grintsborger
+//from the students: Erez Polak 322768995
+//                   Mordehay Cohen 206958035
+
+
+
+//the program contains a struct class that represents a parcel.
+//the program contains the properties and a tostring function.
+
+
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,6 +36,9 @@ namespace IDAL
 
             public string toString()
             {
+
+                ///the function returns the current place of the item's properties.///
+
                 return $"Parcel: id: {id} , senderld: {senderId} , targetld : {targetId} " +
                     $", weight: {Weight}, priority: {priority},  droneld: {droneId}, " +
                     $"requested: {requested}, scheduled: {scheduled},delivered: {delivered},  " +

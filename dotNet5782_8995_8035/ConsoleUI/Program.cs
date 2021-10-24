@@ -1,4 +1,12 @@
-﻿using System;
+﻿//course: Mini Project in Windows Systems
+//lecturere: Eliezer Grintsborger
+//from the students: Erez Polak 322768995
+//                   Mordehay Cohen 206958035
+
+//the function that show to the user the options to do and activate the relevent function.
+
+
+using System;
 using DalObject;
 
 namespace ConsoleUI
