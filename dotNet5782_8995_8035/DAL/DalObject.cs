@@ -40,60 +40,107 @@ namespace DalObject
         }
 
         //////***add options***/////
-        
-        // the function creates new base station acording to given specs, and adding it to the array. while updating the config class.
-        public void addBaseStation(string name, double longtude, double lattitude, int chargeslots)
+
+        /// <summary>
+        /// the function creates new base station acording to given specs, and adding it to the array. 
+        /// while updating the config class.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="longtude"></param>
+        /// <param name="lattitude"></param>
+        /// <param name="chargeslots"></param>
+        public void AddBaseStation(string name, double longtude, double lattitude, int chargeslots)
         {
             DataSource.baseStations[DataSource.Config.freeBaseStation] = new IDAL.DO.BaseStation() { id = DataSource.Config.freeBaseStation, name = name, longitude = longtude, lattitude = lattitude, chargeSlots = chargeslots };
             ++DataSource.Config.freeBaseStation;
         }
 
-        // the function creates new drone acording to given specs, and adding it to the array. while updating the config class.
-        public void addDrone(string model, IDAL.DO.WeightCategories weight, IDAL.DO.DroneStatuses status, double battery)
+        /// <summary>
+        /// the function creates new drone acording to given specs, and adding it to the array. 
+        /// while updating the config class.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="weight"></param>
+        /// <param name="status"></param>
+        /// <param name="battery"></param>
+        public void AddDrone(string model, IDAL.DO.WeightCategories weight, IDAL.DO.DroneStatuses status, double battery)
         {
             DataSource.drones[DataSource.Config.freeDrone] = new IDAL.DO.Drone() { id = DataSource.Config.freeDrone, model = model, MaxWeight = weight, Status = status, battery = battery };
             ++DataSource.Config.freeDrone;
         }
 
-        // the function creates new customer acording to given specs, and adding it to the array. while updating the config class.
-        public void addCustumer(string name, string phone, double longtitude, double lattitude)
+        /// <summary>
+        /// the function creates new customer acording to given specs, and adding it to the array.
+        /// while updating the config class.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="phone"></param>
+        /// <param name="longtitude"></param>
+        /// <param name="lattitude"></param>
+        public void AddCustumer(string name, string phone, double longtitude, double lattitude)
         {
             DataSource.customers[DataSource.Config.freeCustumer] = new IDAL.DO.Customer() { id = DataSource.Config.freeCustumer, name = name, phone = phone, longitude = longtitude, lattitude = lattitude };
             ++DataSource.Config.freeCustumer;
         }
 
-        // the function creates new parcel acording to given specs, and adding it to the array. while updating the config class.
-        public void addParcel(int senderId, int targetId, IDAL.DO.WeightCategories weight, IDAL.DO.Priorities praiority, int droneId, DateTime reqested, DateTime scheduled)
+       /// <summary>
+       /// the function creates new parcel acording to given specs, and adding it to the array.
+       /// while updating the config class.
+       /// </summary>
+       /// <param name="senderId"></param>
+       /// <param name="targetId"></param>
+       /// <param name="weight"></param>
+       /// <param name="praiority"></param>
+       /// <param name="droneId"></param>
+       /// <param name="reqested"></param>
+       /// <param name="scheduled"></param>
+        public void AddParcel(int senderId, int targetId, IDAL.DO.WeightCategories weight, IDAL.DO.Priorities praiority, int droneId, DateTime reqested, DateTime scheduled)
         {
             DataSource.parcheses[DataSource.Config.freePerches] = new IDAL.DO.Parcel() { id = DataSource.Config.freePerches, senderId = senderId, targetId = targetId, Weight = weight, priority = praiority, droneId = droneId, requested = reqested, scheduled = scheduled, delivered = new DateTime(), pickedUp = new DateTime() };
             ++DataSource.Config.freePerches;
         }
 
         ////***update options***/////
-        
-        //the function is givig the parcel the number of the drone.
-        public void updateDroneForAParcel(int parcelId, int droneId)
+
+
+        /// <summary>
+        ///the function is givig the parcel the number of the drone.
+        /// </summary>
+        /// <param name="parcelId"></param>
+        /// <param name="droneId"></param>
+        public void UpdateDroneForAParcel(int parcelId, int droneId)
         {
             DataSource.parcheses[parcelId].droneId = droneId;
         }
 
-        //updating the time of pickup in the parcel, and changing the status of the drone to delivery.
-        public void pickingUpParcel(int parcelId)
+        /// <summary>
+        ///updating the time of pickup in the parcel, and changing the status of the drone to delivery.
+        /// </summary>
+        /// <param name="parcelId"></param>
+        public void PickingUpParcel(int parcelId)
         {
             DataSource.parcheses[parcelId].pickedUp = DateTime.Now;
             DataSource.drones[DataSource.parcheses[parcelId].droneId].Status = IDAL.DO.DroneStatuses.DELIVERY;
         }
 
-        //updating the time of delivering in the parcel, and changing the status of the drone to free.
-        public void deliveringParcel(int parcelId)
+       /// <summary>
+       ///updating the time of delivering in the parcel, and changing the status of the drone to free.
+       /// </summary>
+       /// <param name="parcelId"></param>
+        public void DeliveringParcel(int parcelId)
         {
             DataSource.parcheses[parcelId].delivered = DateTime.Now;
             DataSource.drones[DataSource.parcheses[parcelId].droneId].Status = IDAL.DO.DroneStatuses.FREE;
         }
 
 
-        // creating a droneCharge and chrging the drone.
-        public void chargeDrone(int baseStationId, int droneId)
+
+        /// <summary>
+        /// creating a droneCharge and chrging the drone.
+        /// </summary>
+        /// <param name="baseStationId"></param>
+        /// <param name="droneId"></param>
+        public void ChargeDrone(int baseStationId, int droneId)
         {
             DataSource.drones[droneId].Status = IDAL.DO.DroneStatuses.FIXING;
             --DataSource.baseStations[baseStationId].chargeSlots;
@@ -108,9 +155,11 @@ namespace DalObject
             }
         }
 
-
-        //deleting the droneCharge from the array.
-        public void unChargeDrone(int droneId)
+        /// <summary>
+        ///deleting the droneCharge from the array. 
+        /// </summary>
+        /// <param name="droneId"></param>
+        public void UnChargeDrone(int droneId)
         {
             DataSource.drones[droneId].battery = 100;
             DataSource.drones[droneId].Status = IDAL.DO.DroneStatuses.FREE;
@@ -127,115 +176,134 @@ namespace DalObject
         }
 
         ////***show options***/////
-
-        // writing the props of the base station according to given id.
-        public void showBaseStation(int baseStationId)
+       
+        /// <summary>
+        /// the function recives an ID number of  a base station and returns the relevent station.
+        /// </summary>
+        /// <param name="baseStationId"></param>
+        /// <returns></returns>
+        public IDAL.DO.BaseStation GetBaseStation(int baseStationId)
         {
-            Console.WriteLine(DataSource.baseStations[baseStationId].toString());
+            return DataSource.baseStations[baseStationId];
         }
 
-        // writing the props of the drone according to given id.
-        public void showDrone(int droneId)
+        /// <summary>
+        /// the function recives an ID number of a drone and returns the relevent drone.
+        /// </summary>
+        /// <param name="droneId"></param>
+        /// <returns></returns>
+        public IDAL.DO.Drone GetDrone(int droneId)
         {
-            Console.WriteLine(DataSource.drones[droneId].toString());
+            return DataSource.drones[droneId];
         }
 
-        // writing the props of the customer according to given id.
-        public void showCustomer(int customerId)
+        /// <summary>
+        /// the function recives an ID number of a customer and returns the relevent customer.
+        /// </summary>
+        /// <param name="customerId"></param>
+        /// <returns></returns>
+        public IDAL.DO.Customer GetCustomer(int customerId)
         {
-            Console.WriteLine(DataSource.customers[customerId].toString());
+            return DataSource.customers[customerId];
         }
 
-        // writing the props of the parcel according to given id.
-        public void showParcel(int parchesId)
+
+        /// <summary>
+        /// the function recives an ID number of a parcel and returns the relevent parcel.
+        /// </summary>
+        /// <param name="parchesId"></param>
+        /// <returns></returns>
+        public IDAL.DO.Parcel GetParcel(int parchesId)
         {
-            Console.WriteLine(DataSource.parcheses[parchesId].toString());
+            return DataSource.parcheses[parchesId];
         }
 
-        ////***showLists***////
+        ////***get Lists***////
 
-        // printing all the props of all the base tsations.
-        public void showBaseStationsList()
+        /// <summary>
+        /// returns the array of the base stations.
+        /// </summary>
+        public IDAL.DO.BaseStation[] GetBaseStations()
         {
-            for (int i = 0; i < DataSource.Config.freeBaseStation; i++)
-            {
-                Console.WriteLine(DataSource.baseStations[i].toString());
-            }
+            return DataSource.baseStations;
         }
 
-        // printing all the props of all the drone.
-        public void showDronesList()
+        /// <summary>
+        /// returns the array of the base drones.
+        /// </summary>
+        /// <returns></returns>
+        public IDAL.DO.Drone[] GetDrones()
         {
-            for (int i = 0; i < DataSource.Config.freeDrone; i++)
-            {
-                Console.WriteLine(DataSource.drones[i].toString());
-            }
+            return DataSource.drones;
         }
 
-        // printing all the props of all the customers.
-        public void showCustomersList()
+        /// <summary>
+        /// returns the array of the base customers.
+        /// </summary>
+        public IDAL.DO.Customer[] GetCustomers()
         {
-            for (int i = 0; i < DataSource.Config.freeCustumer; i++)
-            {
-                Console.WriteLine(DataSource.customers[i].toString());
-            }
+            return DataSource.customers;
         }
 
-        // printing all the props of all the parcels.
-        public void showParchesesList()
+        /// <summary>
+        /// returns the array of the parcheses
+        /// </summary>
+        public IDAL.DO.Parcel[] GetParcheses()
         {
-            for (int i = 0; i < DataSource.Config.freePerches; i++)
-            {
-                Console.WriteLine(DataSource.parcheses[i].toString());
-            }
+            return DataSource.parcheses;
         }
 
-        // show all the parcheses that have invalid number of a drone.
-        public void showParchesesThatDontHaveADrone()
+        /// <summary>
+        /// returns all the parcels that dont have a drone assigned to them.
+        /// </summary>
+        public List<IDAL.DO.Parcel> GetParcelToDrone()
         {
+            List<IDAL.DO.Parcel> parcelsToDrones = new List<IDAL.DO.Parcel>();
+
             for (int i = 0; i < DataSource.Config.freePerches; i++)
             {
                 if (DataSource.parcheses[i].droneId == -1)
                 {
-                    Console.WriteLine(DataSource.parcheses[i].toString());
+                    parcelsToDrones.Add(DataSource.parcheses[i]);
                 }
             }
+
+            return parcelsToDrones;
         }
 
-        //shoing all the base statioins that have more then zero avalible charging slots.
-        public void showAvalibleBaseStations()
+        /// <summary>
+        /// returns all the base stations that have free charging slots
+        /// </summary>
+        public List<IDAL.DO.BaseStation> GetFreeStations()
         {
+            List<IDAL.DO.BaseStation> freeBaseStations = new List<IDAL.DO.BaseStation>();
             for (int i = 0; i < DataSource.Config.freeBaseStation; i++)
             {
                 if (DataSource.baseStations[i].chargeSlots > 0)
                 {
-                    Console.WriteLine(DataSource.baseStations[i].toString());
+                    freeBaseStations.Add(DataSource.baseStations[i]);
                 }
             }
+            return freeBaseStations;
         }
 
-        //shoing all the ids of base statioins that have more then zero avalible charging slots.
-        public void showAvalibleBaseStationsID()
-        {
-            for (int i = 0; i < DataSource.Config.freeBaseStation; i++)
-            {
-                if (DataSource.baseStations[i].chargeSlots > 0)
-                {
-                    Console.Write(DataSource.baseStations[i].id + "  ");
-                }
-            }
-        }
 
-        //shoing all the free drones.
-        public void showListOfDronesForPercel(IDAL.DO.WeightCategories weight)
+        /// <summary>
+        /// the function gets a  weight category of a parcel.
+        /// the function returns a list with all the drones that are capable of taking it.
+        /// </summary>
+        /// <param name="weight"></param>
+        public List<IDAL.DO.Drone> GetDroneForParcel(IDAL.DO.WeightCategories weight)
         {
+            List<IDAL.DO.Drone> capableDrones = new List<IDAL.DO.Drone>();
             for (int i = 0; i < DataSource.Config.freeDrone; i++)
             {
                 if(DataSource.drones[i].MaxWeight >= weight && DataSource.drones[i].Status == IDAL.DO.DroneStatuses.FREE)
                 {
-                    Console.Write(i + " ");
+                    capableDrones.Add(DataSource.drones[i]);
                 }
             }
+            return capableDrones;
         }
 
     }

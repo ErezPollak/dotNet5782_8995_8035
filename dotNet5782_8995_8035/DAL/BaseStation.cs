@@ -22,8 +22,11 @@ namespace IDAL
             public double lattitude { get; set; }
             public int chargeSlots { get; set; }
 
-
-            public string toString()
+            /// <summary>
+            /// the function prints all the props of the struct.
+            /// </summary>
+            /// <returns></returns>
+            public string ToString()
             {
 
                 ///the function returns the current place of the item's properties.///

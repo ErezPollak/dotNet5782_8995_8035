@@ -44,7 +44,10 @@ namespace DalObject
             public static int serialNumberForPackeges = 0;
         }
         
-        //the fundction that initilaze the data bases with randomal values.
+       
+        /// <summary>
+        ///the fundction that initilaze the data bases with randomal values.
+        /// </summary>
         public static void Initialize()
         {
             //randomal values for base stations.
@@ -114,7 +117,7 @@ namespace DalObject
         }
 
         //the function recives a date, and randing another while making sure that the randomal date is after the given one.
-        public static DateTime pickingBiggerDate(DateTime d)
+        private static DateTime pickingBiggerDate(DateTime d)
         {
             DateTime newD;
 

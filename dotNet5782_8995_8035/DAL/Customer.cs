@@ -27,10 +27,12 @@ namespace IDAL
             public double longitude { get; set; }
             public double lattitude { get; set; }
 
-            public string toString()
+            /// <summary>
+            /// the function prints all the props of the struct.
+            /// </summary>
+            /// <returns></returns>
+            public string ToString()
             {
-
-                ///the function returns the current place of the item's properties.///
 
                 return $"Customer: " +
                     $"id: {id} , " +

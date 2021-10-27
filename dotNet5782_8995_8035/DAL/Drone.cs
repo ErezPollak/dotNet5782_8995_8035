@@ -26,7 +26,11 @@ namespace IDAL
             public DroneStatuses Status{ get; set; }
             public double battery { get; set; }
 
-            public string toString()
+            /// <summary>
+            /// the function prints all the props of the struct.
+            /// </summary>
+            /// <returns></returns>
+            public string ToString()
             {
                 ///the function returns the current place of the item's properties.///
 

@@ -24,7 +24,11 @@ namespace IDAL
             public int droneId { get; set; }
             public int stationId { get; set; }
 
-            public string toString()
+            /// <summary>
+            /// the function prints all the props of the struct.
+            /// </summary>
+            /// <returns></returns>
+            public string ToString()
             {
 
                 ///the function returns the current place of the item's properties.///
