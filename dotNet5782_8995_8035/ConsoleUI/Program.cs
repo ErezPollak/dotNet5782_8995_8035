@@ -438,6 +438,5 @@ namespace ConsoleUI
             return choice;
         }
 
-
     }//end of class
 }
