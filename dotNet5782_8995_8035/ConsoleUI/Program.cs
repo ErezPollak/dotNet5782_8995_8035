@@ -14,21 +14,7 @@ namespace ConsoleUI
 {
     class Program
     {
-        public static int inputChoice()
-        {
-            Console.WriteLine("enter your choice: \n" +
-                "for adding options: 1. \n" +
-                "for updating options: 2. \n" +
-                "for showing certine object options: 3.\n" +
-                "for showing a list of objects: 4.\n" +
-                "for exit: 5.\n");
-
-            int choice;
-            int.TryParse(Console.ReadLine(), out choice);
-
-            return choice;
-        }
-
+        
         public static void Main(string[] args)
         { 
 
@@ -38,8 +24,10 @@ namespace ConsoleUI
 
             while (choice != 5)
             {
+                //the main switch to choose the category of the needed action.
                 switch (choice)
                 {
+                    //case 1: adding options
                     case 1:
                         {
                             Console.WriteLine("enter your choice: \n" +
@@ -54,6 +42,8 @@ namespace ConsoleUI
                             switch(addingChoice){
                                 case 1: 
                                     {
+                                        //case 1: adding a base station
+
                                         Console.Write("enter the name of the station: ");
                                         string name = Console.ReadLine();
                                         
@@ -77,6 +67,9 @@ namespace ConsoleUI
                                     break;
                                 case 2:
                                     {
+
+                                        //case 2: adding a drone
+
                                         Console.Write("enter the model of the drone: ");
                                         string name = Console.ReadLine();
                                         
@@ -101,6 +94,9 @@ namespace ConsoleUI
                                     break;
                                 case 3:
                                     {
+
+                                        //case 3: adding a customer
+
                                         Console.Write("enter the name of the customer: ");
                                         string name = Console.ReadLine();
                                         
@@ -121,6 +117,9 @@ namespace ConsoleUI
                                     break;
                                 case 4:
                                     {
+
+                                        //case 4: adding a parcel
+
                                         Console.WriteLine("enter the sender ID: ");
                                         int senderId;
                                         int.TryParse(Console.ReadLine(), out senderId);
@@ -149,7 +148,7 @@ namespace ConsoleUI
                                         int droneId;
                                         int.TryParse(Console.ReadLine(), out droneId);
 
-
+                                        //setting the reqested time to be now.
                                         DateTime requested = DateTime.Now;
                                         
                                         Console.WriteLine("How many days from now you want to schaduel your pecel?");
@@ -166,6 +165,10 @@ namespace ConsoleUI
 
                         }
                         break;
+                        //end of case 1 in the main switch
+
+
+                        //case 2: updating options
                     case 2:
                         {
                             Console.WriteLine("\n" +
@@ -183,6 +186,7 @@ namespace ConsoleUI
                             {
                                 case 1:
                                 {
+                                        // case 1: assigning drone for a parcel
                                         Console.WriteLine("enter the number of the parcel: ");
                                         int parcelID;
                                         int.TryParse(Console.ReadLine(), out parcelID);
@@ -197,6 +201,7 @@ namespace ConsoleUI
                                 }break;
                                 case 2:
                                 {
+                                        // case 2: updating the picking up time of the parcel to be now
                                         Console.WriteLine("enter the number of the parcel: ");
                                         int parcelID;
                                         int.TryParse(Console.ReadLine(), out parcelID);
@@ -205,7 +210,8 @@ namespace ConsoleUI
                                     }
                                     break;
                                 case 3:
-                                {
+                                { 
+                                        // case 3: updating the delivering time of the parcel to be now
                                         Console.WriteLine("enter the number of the parcel: ");
                                         int parcelID;
                                         int.TryParse(Console.ReadLine(), out parcelID);
@@ -216,6 +222,7 @@ namespace ConsoleUI
                                 break;
                                 case 4:
                                 {
+                                        //case 4: updating the charge of a drone
                                         Console.WriteLine("enter the number of the drone: ");
                                         int droneID;
                                         int.TryParse(Console.ReadLine(), out droneID);
@@ -237,6 +244,7 @@ namespace ConsoleUI
                                 break;
                                 case 5:
                                 {
+                                        //relicing a drone from charging
                                         Console.WriteLine("enter the number of the drone: ");
                                         int droneID;
                                         int.TryParse(Console.ReadLine(), out droneID);
@@ -249,6 +257,10 @@ namespace ConsoleUI
                             
                         }
                         break;
+                        //end of case 2 in the main switch
+
+
+                        //case 3: shoing a cetain object.
                     case 3:
                         {
                             Console.WriteLine("enter your choice: \n" +
@@ -264,6 +276,7 @@ namespace ConsoleUI
                             {
                                 case 1:
                                     {
+                                        //to show a base station
                                         Console.WriteLine("enter the number of the base station: ");
                                         int baseID;
                                         int.TryParse(Console.ReadLine(), out baseID);
@@ -275,6 +288,7 @@ namespace ConsoleUI
                                     break;
                                 case 2:
                                     {
+                                        // to show a drone
                                         Console.WriteLine("enter the number of the drone: ");
                                         int droneID;
                                         int.TryParse(Console.ReadLine(), out droneID);
@@ -285,6 +299,7 @@ namespace ConsoleUI
                                     break;
                                 case 3:
                                     {
+                                        //to show a customer
                                         Console.WriteLine("enter the number of the customer: ");
                                         int customerID;
                                         int.TryParse(Console.ReadLine(), out customerID);
@@ -296,6 +311,7 @@ namespace ConsoleUI
                                     break;
                                 case 4:
                                     {
+                                        //to show a parcel
                                         Console.WriteLine("enter the number of the parcel: ");
                                         int parcelID;
                                         int.TryParse(Console.ReadLine(), out parcelID);
@@ -308,6 +324,10 @@ namespace ConsoleUI
 
                             }
                         break;
+                        //end of case 3 in the main switch
+
+
+                        //case 4: showing lists:
                     case 4:
                         {
                             Console.WriteLine("enter your choice: \n" +
@@ -325,6 +345,7 @@ namespace ConsoleUI
                             {
                                 case 1:
                                     {
+                                        //showing the list of base stations
                                         IDAL.DO.BaseStation[] baseStations = dalObject.GetBaseStations();
                                         foreach(IDAL.DO.BaseStation baseStation in baseStations)
                                         {
@@ -334,6 +355,7 @@ namespace ConsoleUI
                                     break;
                                 case 2:
                                     {
+                                        //showing the list of the drones
                                         IDAL.DO.Drone[] drones = dalObject.GetDrones();
                                         foreach (IDAL.DO.Drone drone in drones)
                                         {
@@ -343,6 +365,7 @@ namespace ConsoleUI
                                     break;
                                 case 3:
                                     {
+                                        // showing the list of the customers
                                         IDAL.DO.Customer[] customers = dalObject.GetCustomers();
                                         foreach (IDAL.DO.Customer customer in customers)
                                         {
@@ -352,6 +375,7 @@ namespace ConsoleUI
                                     break;
                                 case 4:
                                     {
+                                        //showing the list of the parcels
                                         IDAL.DO.Parcel[] parcels = dalObject.GetParcheses();
                                         foreach (IDAL.DO.Parcel parcel in parcels)
                                         {
@@ -361,6 +385,7 @@ namespace ConsoleUI
                                     break;
                                 case 5:
                                     {
+                                        //shoing the list of the parcels that dont have a drine.
                                         List<IDAL.DO.Parcel> noDroneParcels = dalObject.GetParcelToDrone();
                                         foreach(IDAL.DO.Parcel parcel in noDroneParcels)
                                         {
@@ -370,6 +395,7 @@ namespace ConsoleUI
                                     break;
                                 case 6:
                                     {
+                                        //shoing the base stations that have free charging slots
                                         List<IDAL.DO.BaseStation> freebaseStations = dalObject.GetFreeStations();
                                         foreach (IDAL.DO.BaseStation baseStation in freebaseStations)
                                         {
@@ -381,13 +407,38 @@ namespace ConsoleUI
 
                         }
                         break;
-                }
+                        //end of case 4.
+
+
+                }//end of switch
 
                 choice = inputChoice();
 
-            }
+            }//end of while 
 
            
+        }//end of Main
+
+        /// <summary>
+        /// the function prints the menu for the main switch.
+        /// </summary>
+        /// <returns></returns>
+        private static int inputChoice()
+        {
+            Console.WriteLine("enter your choice: \n" +
+                "for adding options: 1. \n" +
+                "for updating options: 2. \n" +
+                "for showing certine object options: 3.\n" +
+                "for showing a list of objects: 4.\n" +
+                "for exit: 5.\n");
+
+            int choice;
+            int.TryParse(Console.ReadLine(), out choice);
+
+            return choice;
         }
-    }
+
+
+
+    }//end of class
 }
