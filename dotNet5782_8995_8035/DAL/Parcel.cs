@@ -33,8 +33,11 @@ namespace IDAL
             public DateTime pickedUp { get; set; }
             public DateTime delivered { get; set; }
 
-
-            public string toString()
+            /// <summary>
+            /// the function prints all the props of the struct.
+            /// </summary>
+            /// <returns></returns>
+            public string ToString()
             {
 
                 ///the function returns the current place of the item's properties.///
