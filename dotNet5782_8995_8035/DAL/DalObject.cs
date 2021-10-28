@@ -22,20 +22,14 @@ namespace DalObject
     {
 
         //an data structure to contain all the charging of the drones.
-        public IDAL.DO.DroneCharge[] charges;
+        public List<IDAL.DO.DroneCharge> charges;
 
         //ctor
         public DalObject()
         {
             DataSource.Initialize();
 
-            charges = new IDAL.DO.DroneCharge[10];
-
-            //initilaze the drone chrges to contain non realistic drone ids to represent that they are empty.
-            for (int i = 0; i < 10; i++)
-            {
-                charges[i].droneId = -1;
-            }
+            charges = new List<IDAL.DO.DroneCharge>();
 
         }
 
@@ -51,8 +45,13 @@ namespace DalObject
         /// <param name="chargeslots"></param>
         public void AddBaseStation(string name, double longtude, double lattitude, int chargeslots)
         {
-            DataSource.baseStations[DataSource.Config.freeBaseStation] = new IDAL.DO.BaseStation() { id = DataSource.Config.freeBaseStation, name = name, longitude = longtude, lattitude = lattitude, chargeSlots = chargeslots };
-            ++DataSource.Config.freeBaseStation;
+            //the code for arrays:
+            //DataSource.baseStations[DataSource.Config.freeBaseStation] = new IDAL.DO.BaseStation() { id = DataSource.Config.freeBaseStation, name = name, longitude = longtude, lattitude = lattitude, chargeSlots = chargeslots };
+            //++DataSource.Config.freeBaseStation;
+
+            //the relevent code:
+            DataSource.baseStations.Add(new IDAL.DO.BaseStation() { id = DataSource.baseStations.Count ,name = name , longitude = longtude , lattitude = lattitude , chargeSlots = chargeslots });
+
         }
 
         /// <summary>
@@ -65,8 +64,13 @@ namespace DalObject
         /// <param name="battery"></param>
         public void AddDrone(string model, IDAL.DO.WeightCategories weight, IDAL.DO.DroneStatuses status, double battery)
         {
-            DataSource.drones[DataSource.Config.freeDrone] = new IDAL.DO.Drone() { id = DataSource.Config.freeDrone, model = model, MaxWeight = weight, Status = status, battery = battery };
-            ++DataSource.Config.freeDrone;
+            //the code for arrays:
+            //DataSource.drones[DataSource.Config.freeDrone] = new IDAL.DO.Drone() { id = DataSource.Config.freeDrone, model = model, MaxWeight = weight, Status = status, battery = battery };
+            //++DataSource.Config.freeDrone;
+
+            //the relevent code:
+            DataSource.drones.Add(new IDAL.DO.Drone() { id = DataSource.drones.Count, model = model, MaxWeight = weight, battery = battery, Status = status });
+
         }
 
         /// <summary>
@@ -79,25 +83,33 @@ namespace DalObject
         /// <param name="lattitude"></param>
         public void AddCustumer(string name, string phone, double longtitude, double lattitude)
         {
-            DataSource.customers[DataSource.Config.freeCustumer] = new IDAL.DO.Customer() { id = DataSource.Config.freeCustumer, name = name, phone = phone, longitude = longtitude, lattitude = lattitude };
-            ++DataSource.Config.freeCustumer;
+            //the code for arrays:
+            //DataSource.customers[DataSource.Config.freeCustumer] = new IDAL.DO.Customer() { id = DataSource.Config.freeCustumer, name = name, phone = phone, longitude = longtitude, lattitude = lattitude };
+            //++DataSource.Config.freeCustumer;
+
+            //the relevent code:
+            DataSource.customers.Add(new IDAL.DO.Customer() { id = DataSource.customers.Count, name = name, phone = phone, lattitude = lattitude, longitude = longtitude });
         }
 
-       /// <summary>
-       /// the function creates new parcel acording to given specs, and adding it to the array.
-       /// while updating the config class.
-       /// </summary>
-       /// <param name="senderId"></param>
-       /// <param name="targetId"></param>
-       /// <param name="weight"></param>
-       /// <param name="praiority"></param>
-       /// <param name="droneId"></param>
-       /// <param name="reqested"></param>
-       /// <param name="scheduled"></param>
+        /// <summary>
+        /// the function creates new parcel acording to given specs, and adding it to the array.
+        /// while updating the config class.
+        /// </summary>
+        /// <param name="senderId"></param>
+        /// <param name="targetId"></param>
+        /// <param name="weight"></param>
+        /// <param name="praiority"></param>
+        /// <param name="droneId"></param>
+        /// <param name="reqested"></param>
+        /// <param name="scheduled"></param>
         public void AddParcel(int senderId, int targetId, IDAL.DO.WeightCategories weight, IDAL.DO.Priorities praiority, int droneId, DateTime reqested, DateTime scheduled)
         {
-            DataSource.parcheses[DataSource.Config.freePerches] = new IDAL.DO.Parcel() { id = DataSource.Config.freePerches, senderId = senderId, targetId = targetId, Weight = weight, priority = praiority, droneId = droneId, requested = reqested, scheduled = scheduled, delivered = new DateTime(), pickedUp = new DateTime() };
-            ++DataSource.Config.freePerches;
+            //the code for arrays:
+            //DataSource.parcheses[DataSource.Config.freePerches] = new IDAL.DO.Parcel() { id = DataSource.Config.freePerches, senderId = senderId, targetId = targetId, Weight = weight, priority = praiority, droneId = droneId, requested = reqested, scheduled = scheduled, delivered = new DateTime(), pickedUp = new DateTime() };
+            //++DataSource.Config.freePerches;
+
+            //the relevent code
+            DataSource.parcels.Add(new IDAL.DO.Parcel() { id = DataSource.parcels.Count, senderId = senderId, targetId = targetId, Weight = weight, priority = praiority, droneId = droneId, requested = reqested, scheduled = scheduled });
         }
 
         ////***update options***/////
@@ -110,7 +122,20 @@ namespace DalObject
         /// <param name="droneId"></param>
         public void UpdateDroneForAParcel(int parcelId, int droneId)
         {
-            DataSource.parcheses[parcelId].droneId = droneId;
+            //the irrelevent codr for arrays
+            //DataSource.parcels[parcelId].droneId = droneId;
+            
+            for (int i = 0; i < DataSource.parcels.Count; i++)
+            {
+                if(DataSource.parcels[i].id == parcelId)
+                {
+                    IDAL.DO.Parcel parcel = DataSource.parcels[i];
+                    parcel.droneId = droneId;
+                    DataSource.parcels[i] = parcel;
+                    break;
+                }
+            }
+            
         }
 
         /// <summary>
@@ -119,8 +144,16 @@ namespace DalObject
         /// <param name="parcelId"></param>
         public void PickingUpParcel(int parcelId)
         {
-            DataSource.parcheses[parcelId].pickedUp = DateTime.Now;
-            DataSource.drones[DataSource.parcheses[parcelId].droneId].Status = IDAL.DO.DroneStatuses.DELIVERY;
+            for (int i = 0; i < DataSource.parcels.Count; i++)
+            {
+                if (DataSource.parcels[i].id == parcelId)
+                {
+                    IDAL.DO.Parcel parcel = DataSource.parcels[i];
+                    parcel.pickedUp = DateTime.Now;
+                    DataSource.parcels[i] = parcel;
+                    break;
+                }
+            }
         }
 
        /// <summary>
@@ -129,8 +162,16 @@ namespace DalObject
        /// <param name="parcelId"></param>
         public void DeliveringParcel(int parcelId)
         {
-            DataSource.parcheses[parcelId].delivered = DateTime.Now;
-            DataSource.drones[DataSource.parcheses[parcelId].droneId].Status = IDAL.DO.DroneStatuses.FREE;
+            for (int i = 0; i < DataSource.parcels.Count; i++)
+            {
+                if (DataSource.parcels[i].id == parcelId)
+                {
+                    IDAL.DO.Parcel parcel = DataSource.parcels[i];
+                    parcel.delivered = DateTime.Now;
+                    DataSource.parcels[i] = parcel;
+                    break;
+                }
+            }
         }
 
 
@@ -142,17 +183,35 @@ namespace DalObject
         /// <param name="droneId"></param>
         public void ChargeDrone(int baseStationId, int droneId)
         {
-            DataSource.drones[droneId].Status = IDAL.DO.DroneStatuses.FIXING;
-            --DataSource.baseStations[baseStationId].chargeSlots;
-            IDAL.DO.DroneCharge droneCharge = new IDAL.DO.DroneCharge() { droneId = droneId, stationId = baseStationId };
-
-            for (int i = 0; i < 10; i++)
+            //update the status of the drone to be FIXING.
+            //DataSource.drones[droneId].Status = IDAL.DO.DroneStatuses.FIXING;
+            for (int i = 0; i < DataSource.drones.Count; i++)
             {
-                if(charges[i].droneId == -1)
+                if (DataSource.drones[i].id == droneId)
                 {
-                    charges[i] = droneCharge;
+                    IDAL.DO.Drone drone = DataSource.drones[i];
+                    drone.Status = IDAL.DO.DroneStatuses.FIXING;
+                    DataSource.drones[i] = drone;
+                    break;
                 }
             }
+
+            //update the number of the free charge slots at the base station to be one less.
+            //--DataSource.baseStations[baseStationId].chargeSlots;
+            for (int i = 0; i < DataSource.baseStations.Count; i++)
+            {
+                if (DataSource.baseStations[i].id == baseStationId)
+                {
+                    IDAL.DO.BaseStation baseStation = DataSource.baseStations[i];
+                    --baseStation.chargeSlots;
+                    DataSource.baseStations[i] = baseStation;
+                    break;
+                }
+            }
+
+            //creating the charge drone ans adding it to the list of charges.
+            IDAL.DO.DroneCharge droneCharge = new IDAL.DO.DroneCharge() { droneId = droneId, stationId = baseStationId };
+            charges.Add(droneCharge);
         }
 
         /// <summary>
@@ -161,15 +220,43 @@ namespace DalObject
         /// <param name="droneId"></param>
         public void UnChargeDrone(int droneId)
         {
-            DataSource.drones[droneId].battery = 100;
-            DataSource.drones[droneId].Status = IDAL.DO.DroneStatuses.FREE;
+            //to save the number of the base station to update the number of the free charging slots.
+            int baseStationId = -1;
 
-            for (int i = 0; i < 10; i++)
+            //DataSource.drones[droneId].Status = IDAL.DO.DroneStatuses.FREE;
+            for (int i = 0; i < DataSource.drones.Count; i++)
+            {
+                if (DataSource.drones[i].id == droneId)
+                {
+                    IDAL.DO.Drone drone = DataSource.drones[i];
+                    drone.Status = IDAL.DO.DroneStatuses.FREE;
+                    drone.battery = 100;
+                    DataSource.drones[i] = drone;
+                    break;
+                }
+            }
+
+            //removing the relevent charging from the list.
+            for (int i = 0; i < charges.Count; i++)
             {
                 if(charges[i].droneId == droneId)
                 {
-                    charges[i].droneId = -1;
-                    ++DataSource.baseStations[charges[i].stationId].chargeSlots;
+                    if(baseStationId != -1)baseStationId = charges[i].stationId;
+                    charges.Remove(charges[i]);
+                }
+            }
+
+
+            //updates the number of free charging slots int he base station.
+            //--DataSource.baseStations[baseStationId].chargeSlots;
+            for (int i = 0; i < DataSource.baseStations.Count; i++)
+            {
+                if (DataSource.baseStations[i].id == baseStationId)
+                {
+                    IDAL.DO.BaseStation baseStation = DataSource.baseStations[i];
+                    ++baseStation.chargeSlots;
+                    DataSource.baseStations[i] = baseStation;
+                    break;
                 }
             }
 
@@ -215,7 +302,7 @@ namespace DalObject
         /// <returns></returns>
         public IDAL.DO.Parcel GetParcel(int parchesId)
         {
-            return DataSource.parcheses[parchesId];
+            return DataSource.parcels[parchesId];
         }
 
         ////***get Lists***////
@@ -223,7 +310,7 @@ namespace DalObject
         /// <summary>
         /// returns the array of the base stations.
         /// </summary>
-        public IDAL.DO.BaseStation[] GetBaseStations()
+        public List<IDAL.DO.BaseStation> GetBaseStations()
         {
             return DataSource.baseStations;
         }
@@ -232,7 +319,7 @@ namespace DalObject
         /// returns the array of the base drones.
         /// </summary>
         /// <returns></returns>
-        public IDAL.DO.Drone[] GetDrones()
+        public List<IDAL.DO.Drone> GetDrones()
         {
             return DataSource.drones;
         }
@@ -240,7 +327,7 @@ namespace DalObject
         /// <summary>
         /// returns the array of the base customers.
         /// </summary>
-        public IDAL.DO.Customer[] GetCustomers()
+        public List<IDAL.DO.Customer> GetCustomers()
         {
             return DataSource.customers;
         }
@@ -248,9 +335,9 @@ namespace DalObject
         /// <summary>
         /// returns the array of the parcheses
         /// </summary>
-        public IDAL.DO.Parcel[] GetParcheses()
+        public List<IDAL.DO.Parcel> GetParcheses()
         {
-            return DataSource.parcheses;
+            return DataSource.parcels;
         }
 
         /// <summary>
@@ -260,11 +347,11 @@ namespace DalObject
         {
             List<IDAL.DO.Parcel> parcelsToDrones = new List<IDAL.DO.Parcel>();
 
-            for (int i = 0; i < DataSource.Config.freePerches; i++)
+            for (int i = 0; i < DataSource.parcels.Count; i++)
             {
-                if (DataSource.parcheses[i].droneId == -1)
+                if (DataSource.parcels[i].droneId == -1)
                 {
-                    parcelsToDrones.Add(DataSource.parcheses[i]);
+                    parcelsToDrones.Add(DataSource.parcels[i]);
                 }
             }
 
@@ -277,7 +364,7 @@ namespace DalObject
         public List<IDAL.DO.BaseStation> GetFreeStations()
         {
             List<IDAL.DO.BaseStation> freeBaseStations = new List<IDAL.DO.BaseStation>();
-            for (int i = 0; i < DataSource.Config.freeBaseStation; i++)
+            for (int i = 0; i < DataSource.baseStations.Count; i++)
             {
                 if (DataSource.baseStations[i].chargeSlots > 0)
                 {
@@ -296,7 +383,7 @@ namespace DalObject
         public List<IDAL.DO.Drone> GetDroneForParcel(IDAL.DO.WeightCategories weight)
         {
             List<IDAL.DO.Drone> capableDrones = new List<IDAL.DO.Drone>();
-            for (int i = 0; i < DataSource.Config.freeDrone; i++)
+            for (int i = 0; i < DataSource.drones.Count; i++)
             {
                 if(DataSource.drones[i].MaxWeight >= weight && DataSource.drones[i].Status == IDAL.DO.DroneStatuses.FREE)
                 {

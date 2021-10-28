@@ -346,7 +346,7 @@ namespace ConsoleUI
                                 case 1:
                                     {
                                         //showing the list of base stations
-                                        IDAL.DO.BaseStation[] baseStations = dalObject.GetBaseStations();
+                                        List <IDAL.DO.BaseStation> baseStations = dalObject.GetBaseStations();
                                         foreach(IDAL.DO.BaseStation baseStation in baseStations)
                                         {
                                             Console.WriteLine(baseStation.ToString());
@@ -356,7 +356,7 @@ namespace ConsoleUI
                                 case 2:
                                     {
                                         //showing the list of the drones
-                                        IDAL.DO.Drone[] drones = dalObject.GetDrones();
+                                        List < IDAL.DO.Drone> drones = dalObject.GetDrones();
                                         foreach (IDAL.DO.Drone drone in drones)
                                         {
                                             Console.WriteLine(drone.ToString());
@@ -366,7 +366,7 @@ namespace ConsoleUI
                                 case 3:
                                     {
                                         // showing the list of the customers
-                                        IDAL.DO.Customer[] customers = dalObject.GetCustomers();
+                                        List < IDAL.DO.Customer> customers = dalObject.GetCustomers();
                                         foreach (IDAL.DO.Customer customer in customers)
                                         {
                                             Console.WriteLine(customer.ToString());
@@ -376,7 +376,7 @@ namespace ConsoleUI
                                 case 4:
                                     {
                                         //showing the list of the parcels
-                                        IDAL.DO.Parcel[] parcels = dalObject.GetParcheses();
+                                        List < IDAL.DO.Parcel> parcels = dalObject.GetParcheses();
                                         foreach (IDAL.DO.Parcel parcel in parcels)
                                         {
                                             Console.WriteLine(parcel.ToString());

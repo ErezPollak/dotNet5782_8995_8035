@@ -33,6 +33,19 @@ namespace IDAL
             public DateTime pickedUp { get; set; }
             public DateTime delivered { get; set; }
 
+
+            /// <summary>
+            /// sets the property schduled.
+            /// required for the defenition of parcel in the data sorce.
+            /// </summary>
+            /// <param name="date"></param>
+            public void SetSchduled(DateTime date)
+            {
+                this.scheduled = date;
+            }
+
+
+
             /// <summary>
             /// the function prints all the props of the struct.
             /// </summary>

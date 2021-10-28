@@ -24,81 +24,92 @@ namespace DalObject
 
     internal class DataSource
     {
-        public static IDAL.DO.Drone[] drones = new IDAL.DO.Drone[10];                      //contains up to 10 drones.
-        public static IDAL.DO.BaseStation[] baseStations = new IDAL.DO.BaseStation[5];     // contains up to 5 base stations
-        public static IDAL.DO.Customer[] customers = new IDAL.DO.Customer[100];            // contains up to 100 customers.
-        public static IDAL.DO.Parcel[] parcheses = new IDAL.DO.Parcel[1000];               // contains up to 1000 parcels.
+        public static List<IDAL.DO.Drone> drones = new List<IDAL.DO.Drone>();                      //contains up to 10 drones.
+        public static List<IDAL.DO.BaseStation> baseStations = new List<IDAL.DO.BaseStation>();     // contains up to 5 base stations
+        public static List<IDAL.DO.Customer> customers = new List<IDAL.DO.Customer>();            // contains up to 100 customers.
+        public static List<IDAL.DO.Parcel> parcels = new List<IDAL.DO.Parcel>();               // contains up to 1000 parcels.
 
         public static Random r = new Random();     // a static value for 
 
-
-        //the class that hols the updated status of the free space in the arraies.
+        //this class is not relevent sinse we are using lists.
+        //the class that holds the updated status of the free space in the arrays.
         //the properties of the class are being changed in the functions that add add or deletes properties from the arreis.
-        internal class Config
-        {
-            public static int freeDrone = 0;      //the first free place for drone.
-            public static int freeBaseStation = 0;//the first free place for base station.
-            public static int freeCustumer = 0;   //the first free place for a customer.
-            public static int freePerches = 0;    //the first free place for percel.
+        //internal class Config
+        //{
+        //    public static int freeDrone = 0;      //the first free place for drone.
+        //    public static int freeBaseStation = 0;//the first free place for base station.
+        //    public static int freeCustumer = 0;   //the first free place for a customer.
+        //    public static int freePerches = 0;    //the first free place for percel.
 
-            public static int serialNumberForPackeges = 0;
-        }
-        
-       
+        //    public static int serialNumberForPackeges = 0;
+        //}
+
+
         /// <summary>
         ///the fundction that initilaze the data bases with randomal values.
+        ///the initialize will add to the lists the The following objects:
+        ///2 base stations.
+        ///5 drones.
+        ///10 customers.
+        ///10 parcels.
+        ///the objects will be initlised with randomal values.
         /// </summary>
         public static void Initialize()
         {
             //randomal values for base stations.
             for (int i = 0; i < 2; i++)
             {
-                baseStations[i] = new IDAL.DO.BaseStation() {
+                IDAL.DO.BaseStation baseStation = new IDAL.DO.BaseStation()
+                {
                     id = i,
                     name = i.ToString(),
                     lattitude = r.NextDouble() * 180 - 90,   // randomal values from -90 to 90 in order to represent a real coordinated location.
                     longitude = r.NextDouble() * 180 - 90,   // randomal values from -90 to 90 in order to represent a real coordinated location.
-                    chargeSlots = r.Next() % 5 
+                    chargeSlots = r.Next() % 5
                 };
+                //adding the base station to the list.
+                baseStations.Add(baseStation);
             }
-            Config.freeBaseStation = 2;  //update for congif class.
-
 
             //randomal values for drones.
             for (int i = 0; i < 5; i++)
             {
-                drones[i] = new IDAL.DO.Drone() { 
-                    id = i, 
-                    model = (char)(r.Next()%26 + 65) +""+ (char)(r.Next() % 26 + 65) + (r.Next()%100000).ToString(), 
+                IDAL.DO.Drone drone = new IDAL.DO.Drone()
+                {
+                    id = i,
+                    model = (char)(r.Next() % 26 + 65) + "" + (char)(r.Next() % 26 + 65) + (r.Next() % 100000).ToString(),
                     MaxWeight = (WeightCategories)(r.Next() % 3),
-                    Status = (DroneStatuses)(r.Next() % 3), 
+                    Status = (DroneStatuses)(r.Next() % 3),
                     battery = r.Next() % 50 + 50
                 };
+                drones.Add(drone);
             }
-            Config.freeDrone = 5; //update for congif class.
 
 
             //randomal values for customers.
             for (int i = 0; i < 10; i++)
             {
-                customers[i] = new IDAL.DO.Customer() { 
+                IDAL.DO.Customer customer = new IDAL.DO.Customer()
+                {
                     id = i,
-                    name = (char)(r.Next() % 26 + 65) + " , " + (char)(r.Next() % 26 + 65), 
+                    name = (char)(r.Next() % 26 + 65) + " , " + (char)(r.Next() % 26 + 65),
                     phone = "05" + (r.Next() % 10).ToString() + "-" + (r.Next() % 1000000).ToString(),
                     lattitude = r.NextDouble() * 180 - 90,   // randomal values from -90 to 90 in order to represent a real coordinated location.
                     longitude = r.NextDouble() * 180 - 90   // randomal values from -90 to 90 in order to represent a real coordinated location.
                 };
+
+                customers.Add(customer);
+
             }
-            Config.freeCustumer = 10;//update for congif class.
 
             //randomal values for parcels.
             for (int i = 0; i < 10; i++)
             {
-                parcheses[i] = new IDAL.DO.Parcel()
+                IDAL.DO.Parcel parcel = new IDAL.DO.Parcel()
                 {
                     id = i,
-                    senderId = customers[r.Next() % (Config.freeCustumer)].id, // random values from the avalible customers.
-                    targetId = customers[r.Next() % (Config.freeCustumer)].id, // random values from the avalible customers.
+                    senderId = customers[r.Next() % (customers.Count)].id, // random values from the avalible customers.
+                    targetId = customers[r.Next() % (customers.Count)].id, // random values from the avalible customers.
                     Weight = (WeightCategories)(r.Next() % 3),
                     priority = (Priorities)(r.Next() % 3),
                     droneId = -1,
@@ -106,14 +117,16 @@ namespace DalObject
                     pickedUp = DateTime.Now,                        //initilesed for now, will change in  DalObject class, when order is updated to be picked up.
                     delivered = DateTime.Now
                 };
+
+                parcels.Add(parcel);
+
             }
 
             //initilazing the "scaduald" date to be after the "reqested" date. by the function below.
-            for (int i = 0; i < 10; i++)
+            foreach (IDAL.DO.Parcel parcel in parcels)
             {
-                parcheses[i].scheduled = pickingBiggerDate(parcheses[i].requested);
+                parcel.SetSchduled(DateTime.Now);
             }
-            Config.freePerches = 10;
         }
 
         //the function recives a date, and randing another while making sure that the randomal date is after the given one.
