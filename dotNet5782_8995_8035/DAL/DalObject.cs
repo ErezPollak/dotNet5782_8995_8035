@@ -21,15 +21,11 @@ namespace DalObject
     public class DalObject
     {
 
-        //an data structure to contain all the charging of the drones.
-        public List<IDAL.DO.DroneCharge> charges;
-
         //ctor
         public DalObject()
         {
             DataSource.Initialize();
 
-            charges = new List<IDAL.DO.DroneCharge>();
 
         }
 
@@ -43,14 +39,16 @@ namespace DalObject
         /// <param name="longtude"></param>
         /// <param name="lattitude"></param>
         /// <param name="chargeslots"></param>
-        public void AddBaseStation(string name, double longtude, double lattitude, int chargeslots)
+        public void AddBaseStation(int idNumber, string name, double longtude, double lattitude, int chargeslots)
         {
-            //the code for arrays:
-            //DataSource.baseStations[DataSource.Config.freeBaseStation] = new IDAL.DO.BaseStation() { id = DataSource.Config.freeBaseStation, name = name, longitude = longtude, lattitude = lattitude, chargeSlots = chargeslots };
-            //++DataSource.Config.freeBaseStation;
+            //checking that the number is not already in the list, in witch case exeption will be thrown.
+            foreach(IDAL.DO.BaseStation baseStation in DataSource.baseStations)
+            {
+                if (idNumber == baseStation.id) throw new IDAL.DO.SerialNumberExistsExceptions(idNumber);
+            }
 
-            //the relevent code:
-            DataSource.baseStations.Add(new IDAL.DO.BaseStation() { id = DataSource.baseStations.Count ,name = name , longitude = longtude , lattitude = lattitude , chargeSlots = chargeslots });
+            //adding the base station to the list after no matching serial numbers was fuond.
+            DataSource.baseStations.Add(new IDAL.DO.BaseStation() { id = idNumber ,name = name , longitude = longtude , lattitude = lattitude , chargeSlots = chargeslots });
 
         }
 
@@ -62,14 +60,17 @@ namespace DalObject
         /// <param name="weight"></param>
         /// <param name="status"></param>
         /// <param name="battery"></param>
-        public void AddDrone(string model, IDAL.DO.WeightCategories weight, IDAL.DO.DroneStatuses status, double battery)
+        public void AddDrone(int idNumber , string model, IDAL.DO.WeightCategories weight, IDAL.DO.DroneStatuses status, double battery)
         {
-            //the code for arrays:
-            //DataSource.drones[DataSource.Config.freeDrone] = new IDAL.DO.Drone() { id = DataSource.Config.freeDrone, model = model, MaxWeight = weight, Status = status, battery = battery };
-            //++DataSource.Config.freeDrone;
+          
+            //checking that the number is not already in the list, in witch case exeption will be thrown.
+            foreach (IDAL.DO.Drone drone in DataSource.drones)
+            {
+                if (idNumber == drone.id) throw new IDAL.DO.SerialNumberExistsExceptions(idNumber);
+            }
 
-            //the relevent code:
-            DataSource.drones.Add(new IDAL.DO.Drone() { id = DataSource.drones.Count, model = model, MaxWeight = weight, battery = battery, Status = status });
+            //adding the base station to the list after no matching serial numbers was fuond.
+            DataSource.drones.Add(new IDAL.DO.Drone() { id = idNumber, model = model, MaxWeight = weight, battery = battery, Status = status });
 
         }
 
@@ -81,14 +82,16 @@ namespace DalObject
         /// <param name="phone"></param>
         /// <param name="longtitude"></param>
         /// <param name="lattitude"></param>
-        public void AddCustumer(string name, string phone, double longtitude, double lattitude)
+        public void AddCustumer(int idNumber ,string name, string phone, double longtitude, double lattitude)
         {
-            //the code for arrays:
-            //DataSource.customers[DataSource.Config.freeCustumer] = new IDAL.DO.Customer() { id = DataSource.Config.freeCustumer, name = name, phone = phone, longitude = longtitude, lattitude = lattitude };
-            //++DataSource.Config.freeCustumer;
+            //checking that the number is not already in the list, in witch case exeption will be thrown.
+            foreach (IDAL.DO.Customer customer in DataSource.customers)
+            {
+                if (idNumber == customer.id) throw new IDAL.DO.SerialNumberExistsExceptions(idNumber);
+            }
 
-            //the relevent code:
-            DataSource.customers.Add(new IDAL.DO.Customer() { id = DataSource.customers.Count, name = name, phone = phone, lattitude = lattitude, longitude = longtitude });
+            //adding the base station to the list after no matching serial numbers was fuond.
+            DataSource.customers.Add(new IDAL.DO.Customer() { id = idNumber, name = name, phone = phone, lattitude = lattitude, longitude = longtitude });
         }
 
         /// <summary>
@@ -102,14 +105,16 @@ namespace DalObject
         /// <param name="droneId"></param>
         /// <param name="reqested"></param>
         /// <param name="scheduled"></param>
-        public void AddParcel(int senderId, int targetId, IDAL.DO.WeightCategories weight, IDAL.DO.Priorities praiority, int droneId, DateTime reqested, DateTime scheduled)
+        public void AddParcel(int idNumber , int senderId, int targetId, IDAL.DO.WeightCategories weight, IDAL.DO.Priorities praiority, int droneId, DateTime reqested, DateTime scheduled)
         {
-            //the code for arrays:
-            //DataSource.parcheses[DataSource.Config.freePerches] = new IDAL.DO.Parcel() { id = DataSource.Config.freePerches, senderId = senderId, targetId = targetId, Weight = weight, priority = praiority, droneId = droneId, requested = reqested, scheduled = scheduled, delivered = new DateTime(), pickedUp = new DateTime() };
-            //++DataSource.Config.freePerches;
+            //checking that the number is not already in the list, in witch case exeption will be thrown.
+            foreach (IDAL.DO.Parcel parcel in DataSource.parcels)
+            {
+                if (idNumber == parcel.id) throw new IDAL.DO.SerialNumberExistsExceptions(idNumber);
+            }
 
-            //the relevent code
-            DataSource.parcels.Add(new IDAL.DO.Parcel() { id = DataSource.parcels.Count, senderId = senderId, targetId = targetId, Weight = weight, priority = praiority, droneId = droneId, requested = reqested, scheduled = scheduled });
+            //adding the base station to the list after no matching serial numbers was fuond.
+            DataSource.parcels.Add(new IDAL.DO.Parcel() { id = idNumber, senderId = senderId, targetId = targetId, Weight = weight, priority = praiority, droneId = droneId, requested = reqested, scheduled = scheduled });
         }
 
         ////***update options***/////
@@ -122,20 +127,36 @@ namespace DalObject
         /// <param name="droneId"></param>
         public void UpdateDroneForAParcel(int parcelId, int droneId)
         {
-            //the irrelevent codr for arrays
-            //DataSource.parcels[parcelId].droneId = droneId;
-            
-            for (int i = 0; i < DataSource.parcels.Count; i++)
+            //keeps the index in witch the idNumber was found in order to update it without iterting over the list again.
+            int parcelIndex = 0;
+
+            //checking if the numbers of parcel and drone that was provided exist in the database or not. if not an excption will be thrown.
+            bool isNameExists = false;
+            foreach(IDAL.DO.Parcel parcel in DataSource.parcels)
             {
-                if(DataSource.parcels[i].id == parcelId)
+                if (parcel.id == parcelId)
                 {
-                    IDAL.DO.Parcel parcel = DataSource.parcels[i];
-                    parcel.droneId = droneId;
-                    DataSource.parcels[i] = parcel;
+                    isNameExists = true;
                     break;
                 }
+                ++parcelIndex;
             }
-            
+            if (!isNameExists) throw new IDAL.DO.SerialNumberWasNotFoundExceptions(parcelId, "parcel");
+
+            isNameExists = false;
+            foreach (IDAL.DO.Drone drone in DataSource.drones)
+            {
+                if (drone.id == droneId) isNameExists = true;
+            }
+            if (!isNameExists) throw new IDAL.DO.SerialNumberWasNotFoundExceptions(droneId, "drone");
+
+
+            //updating the number of the drone in the DroneId field of the parcel to have the updated droneId number.
+            //according to the number that was found while looking for an exception.  
+            IDAL.DO.Parcel newParcel = DataSource.parcels[parcelIndex];
+            newParcel.droneId = droneId;
+            DataSource.parcels[parcelIndex] = newParcel;
+                
         }
 
         /// <summary>
@@ -144,16 +165,27 @@ namespace DalObject
         /// <param name="parcelId"></param>
         public void PickingUpParcel(int parcelId)
         {
-            for (int i = 0; i < DataSource.parcels.Count; i++)
+            //keeps the index in witch the idNumber was found in order to update it without iterting over the list again.
+            int parcelIndex = 0;
+
+            //checking if the number of parcel that was provided exist in the database or not. if not an excption will be thrown.
+            bool isNameExists = false;
+            foreach (IDAL.DO.Parcel parcel in DataSource.parcels)
             {
-                if (DataSource.parcels[i].id == parcelId)
-                {
-                    IDAL.DO.Parcel parcel = DataSource.parcels[i];
-                    parcel.pickedUp = DateTime.Now;
-                    DataSource.parcels[i] = parcel;
+                if (parcel.id == parcelId) { 
+                    isNameExists = true;
                     break;
                 }
+                ++parcelIndex;
+
             }
+            if (!isNameExists) throw new IDAL.DO.SerialNumberWasNotFoundExceptions(parcelId, "parcel");
+
+            //updating the time of pickedUp field to be now.
+            //according to the number that was found while looking for an exception.  
+            IDAL.DO.Parcel newParcel = DataSource.parcels[parcelIndex];
+            newParcel.pickedUp = DateTime.Now;
+            DataSource.parcels[parcelIndex] = newParcel;
         }
 
        /// <summary>
@@ -162,19 +194,28 @@ namespace DalObject
        /// <param name="parcelId"></param>
         public void DeliveringParcel(int parcelId)
         {
-            for (int i = 0; i < DataSource.parcels.Count; i++)
+            //keeps the index in witch the idNumber was found in order to update it without iterting over the list again.
+            int parcelIndex = 0;
+
+            //checking if the number of parcel that was provided exist in the database or not. if not an excption will be thrown.
+            bool isNameExists = false;
+            foreach (IDAL.DO.Parcel parcel in DataSource.parcels)
             {
-                if (DataSource.parcels[i].id == parcelId)
+                if (parcel.id == parcelId)
                 {
-                    IDAL.DO.Parcel parcel = DataSource.parcels[i];
-                    parcel.delivered = DateTime.Now;
-                    DataSource.parcels[i] = parcel;
+                    isNameExists = true;
                     break;
                 }
+                ++parcelIndex;
             }
+            if (!isNameExists) throw new IDAL.DO.SerialNumberWasNotFoundExceptions(parcelId, "parcel");
+
+            //updating the time of delivered field to be now.
+            //according to the number that was found while looking for an exception.  
+            IDAL.DO.Parcel newParcel = DataSource.parcels[parcelIndex];
+            newParcel.delivered = DateTime.Now;
+            DataSource.parcels[parcelIndex] = newParcel;
         }
-
-
 
         /// <summary>
         /// creating a droneCharge and chrging the drone.
@@ -183,82 +224,104 @@ namespace DalObject
         /// <param name="droneId"></param>
         public void ChargeDrone(int baseStationId, int droneId)
         {
+
+            //keeps the index in witch the idNumber was found in order to update it without iterting over the list again.
+            int baseStationIndex = 0, droneIndex = 0;
+
+            //checking if the numbers of parcel and drone that was provided exist in the database or not. if not an excption will be thrown.
+            bool isNameExists = false;
+            foreach (IDAL.DO.BaseStation baseStation in DataSource.baseStations)
+            {
+                if (baseStation.id == baseStationId)
+                {
+                    isNameExists = true;
+                    break;
+                }
+                ++baseStationIndex;
+            }
+            if (!isNameExists) throw new IDAL.DO.SerialNumberWasNotFoundExceptions(baseStationId, "base station");
+
+            isNameExists = false;
+            foreach (IDAL.DO.Drone drone in DataSource.drones)
+            {
+                if (drone.id == droneId)
+                {
+                    isNameExists = true;
+                    break;
+                }
+                ++droneIndex;
+            }
+            if (!isNameExists) throw new IDAL.DO.SerialNumberWasNotFoundExceptions(droneId, "drone");
+
             //update the status of the drone to be FIXING.
-            //DataSource.drones[droneId].Status = IDAL.DO.DroneStatuses.FIXING;
-            for (int i = 0; i < DataSource.drones.Count; i++)
-            {
-                if (DataSource.drones[i].id == droneId)
-                {
-                    IDAL.DO.Drone drone = DataSource.drones[i];
-                    drone.Status = IDAL.DO.DroneStatuses.FIXING;
-                    DataSource.drones[i] = drone;
-                    break;
-                }
-            }
-
+            IDAL.DO.Drone newDrone = DataSource.drones[droneIndex];
+            newDrone.Status = IDAL.DO.DroneStatuses.FIXING;
+            DataSource.drones[droneIndex] = newDrone;
+            
             //update the number of the free charge slots at the base station to be one less.
-            //--DataSource.baseStations[baseStationId].chargeSlots;
-            for (int i = 0; i < DataSource.baseStations.Count; i++)
-            {
-                if (DataSource.baseStations[i].id == baseStationId)
-                {
-                    IDAL.DO.BaseStation baseStation = DataSource.baseStations[i];
-                    --baseStation.chargeSlots;
-                    DataSource.baseStations[i] = baseStation;
-                    break;
-                }
-            }
-
+            IDAL.DO.BaseStation newBaseStation = DataSource.baseStations[baseStationIndex];
+             --newBaseStation.chargeSlots;
+             DataSource.baseStations[baseStationIndex] = newBaseStation;
+           
             //creating the charge drone ans adding it to the list of charges.
             IDAL.DO.DroneCharge droneCharge = new IDAL.DO.DroneCharge() { droneId = droneId, stationId = baseStationId };
-            charges.Add(droneCharge);
+            DataSource.charges.Add(droneCharge);
         }
 
         /// <summary>
-        ///deleting the droneCharge from the array. 
+        ///deleting the droneCharge from the list. 
         /// </summary>
         /// <param name="droneId"></param>
         public void UnChargeDrone(int droneId)
         {
-            //to save the number of the base station to update the number of the free charging slots.
-            int baseStationId = -1;
-
-            //DataSource.drones[droneId].Status = IDAL.DO.DroneStatuses.FREE;
-            for (int i = 0; i < DataSource.drones.Count; i++)
+            bool isNameExists = false;
+            int droneIndex = 0;
+            foreach (IDAL.DO.Drone drone in DataSource.drones)
             {
-                if (DataSource.drones[i].id == droneId)
+                if (drone.id == droneId)
                 {
-                    IDAL.DO.Drone drone = DataSource.drones[i];
-                    drone.Status = IDAL.DO.DroneStatuses.FREE;
-                    drone.battery = 100;
-                    DataSource.drones[i] = drone;
+                    isNameExists = true;
                     break;
                 }
+                ++droneIndex;
             }
+            if (!isNameExists) throw new IDAL.DO.SerialNumberWasNotFoundExceptions(droneId, "drone");
 
-            //removing the relevent charging from the list.
-            for (int i = 0; i < charges.Count; i++)
+            //check if the name of the drone exist in the charges list. of not an excption will be thrown.
+            int chargeIndex = 0;
+            isNameExists = false;
+            foreach(IDAL.DO.DroneCharge droneCharge in DataSource.charges)
             {
-                if(charges[i].droneId == droneId)
+                if(droneCharge.droneId == droneId)
                 {
-                    if(baseStationId != -1)baseStationId = charges[i].stationId;
-                    charges.Remove(charges[i]);
+                    isNameExists = true;
+                    break;
                 }
+                ++chargeIndex;
             }
+            if (!isNameExists) throw new IDAL.DO.SerialNumberWasNotFoundExceptions(droneId, "chargeDrone");
 
+            //update the status of the drone to be FIXING.
+            IDAL.DO.Drone newDrone = DataSource.drones[droneIndex];
+            newDrone.Status = IDAL.DO.DroneStatuses.FREE;
+            newDrone.battery = 100;
+            DataSource.drones[droneIndex] = newDrone;
 
             //updates the number of free charging slots int he base station.
-            //--DataSource.baseStations[baseStationId].chargeSlots;
+            //finds the index of the station and update when finds, no need for excption search, because the station exists for sure.
             for (int i = 0; i < DataSource.baseStations.Count; i++)
             {
-                if (DataSource.baseStations[i].id == baseStationId)
+                if(DataSource.baseStations[i].id == DataSource.charges[chargeIndex].stationId)
                 {
-                    IDAL.DO.BaseStation baseStation = DataSource.baseStations[i];
+                    IDAL.DO.BaseStation baseStation = DataSource.baseStations[DataSource.charges[chargeIndex].stationId];
                     ++baseStation.chargeSlots;
-                    DataSource.baseStations[i] = baseStation;
+                    DataSource.baseStations[DataSource.charges[chargeIndex].stationId] = baseStation;
                     break;
                 }
             }
+
+            //removing the cahrge from the list.
+            DataSource.charges.Remove(DataSource.charges[chargeIndex]);
 
         }
 
@@ -271,7 +334,22 @@ namespace DalObject
         /// <returns></returns>
         public IDAL.DO.BaseStation GetBaseStation(int baseStationId)
         {
-            return DataSource.baseStations[baseStationId];
+            int baseStationIndex = 0;
+
+            //checking if the numbers of base station that was provided exist in the database or not. if not an excption will be thrown.
+            bool isNameExists = false;
+            foreach (IDAL.DO.BaseStation baseStation in DataSource.baseStations)
+            {
+                if (baseStation.id == baseStationId)
+                {
+                    isNameExists = true;
+                    break;
+                }
+                ++baseStationIndex;
+            }
+            if (!isNameExists) throw new IDAL.DO.SerialNumberWasNotFoundExceptions(baseStationId, "base station");
+
+            return DataSource.baseStations[baseStationIndex];
         }
 
         /// <summary>
@@ -281,7 +359,22 @@ namespace DalObject
         /// <returns></returns>
         public IDAL.DO.Drone GetDrone(int droneId)
         {
-            return DataSource.drones[droneId];
+            int droneIndex = 0;
+
+            //checking if the numbers of drone that was provided exist in the database or not. if not an excption will be thrown.
+            bool isNameExists = false;
+            foreach (IDAL.DO.Drone drone in DataSource.drones)
+            {
+                if (drone.id == droneId)
+                {
+                    isNameExists = true;
+                    break;
+                }
+                ++droneIndex;
+            }
+            if (!isNameExists) throw new IDAL.DO.SerialNumberWasNotFoundExceptions(droneId, "drone");
+
+            return DataSource.drones[droneIndex];
         }
 
         /// <summary>
@@ -291,7 +384,22 @@ namespace DalObject
         /// <returns></returns>
         public IDAL.DO.Customer GetCustomer(int customerId)
         {
-            return DataSource.customers[customerId];
+            int customerIndex = 0;
+
+            //checking if the numbers of drone that was provided exist in the database or not. if not an excption will be thrown.
+            bool isNameExists = false;
+            foreach (IDAL.DO.Customer customer in DataSource.customers)
+            {
+                if (customer.id == customerId)
+                {
+                    isNameExists = true;
+                    break;
+                }
+                ++customerIndex;
+            }
+            if (!isNameExists) throw new IDAL.DO.SerialNumberWasNotFoundExceptions(customerId, "customer");
+
+            return DataSource.customers[customerIndex];
         }
 
 
@@ -300,9 +408,24 @@ namespace DalObject
         /// </summary>
         /// <param name="parchesId"></param>
         /// <returns></returns>
-        public IDAL.DO.Parcel GetParcel(int parchesId)
+        public IDAL.DO.Parcel GetParcel(int parcelId)
         {
-            return DataSource.parcels[parchesId];
+            int parcelIndex = 0;
+
+            //checking if the numbers of drone that was provided exist in the database or not. if not an excption will be thrown.
+            bool isNameExists = false;
+            foreach (IDAL.DO.Parcel parcel in DataSource.parcels)
+            {
+                if (parcel.id == parcelId)
+                {
+                    isNameExists = true;
+                    break;
+                }
+                ++parcelIndex;
+            }
+            if (!isNameExists) throw new IDAL.DO.SerialNumberWasNotFoundExceptions(parcelId, "parcel");
+
+            return DataSource.parcels[parcelId];
         }
 
         ////***get Lists***////
@@ -310,7 +433,7 @@ namespace DalObject
         /// <summary>
         /// returns the array of the base stations.
         /// </summary>
-        public List<IDAL.DO.BaseStation> GetBaseStations()
+        public IEnumerable<IDAL.DO.BaseStation> GetBaseStations()
         {
             return DataSource.baseStations;
         }
@@ -319,7 +442,7 @@ namespace DalObject
         /// returns the array of the base drones.
         /// </summary>
         /// <returns></returns>
-        public List<IDAL.DO.Drone> GetDrones()
+        public IEnumerable<IDAL.DO.Drone> GetDrones()
         {
             return DataSource.drones;
         }
@@ -327,7 +450,7 @@ namespace DalObject
         /// <summary>
         /// returns the array of the base customers.
         /// </summary>
-        public List<IDAL.DO.Customer> GetCustomers()
+        public IEnumerable<IDAL.DO.Customer> GetCustomers()
         {
             return DataSource.customers;
         }
@@ -335,7 +458,7 @@ namespace DalObject
         /// <summary>
         /// returns the array of the parcheses
         /// </summary>
-        public List<IDAL.DO.Parcel> GetParcheses()
+        public IEnumerable<IDAL.DO.Parcel> GetParcheses()
         {
             return DataSource.parcels;
         }
@@ -343,7 +466,7 @@ namespace DalObject
         /// <summary>
         /// returns all the parcels that dont have a drone assigned to them.
         /// </summary>
-        public List<IDAL.DO.Parcel> GetParcelToDrone()
+        public IEnumerable<IDAL.DO.Parcel> GetParcelToDrone()
         {
             List<IDAL.DO.Parcel> parcelsToDrones = new List<IDAL.DO.Parcel>();
 
@@ -361,7 +484,7 @@ namespace DalObject
         /// <summary>
         /// returns all the base stations that have free charging slots
         /// </summary>
-        public List<IDAL.DO.BaseStation> GetFreeStations()
+        public IEnumerable<IDAL.DO.BaseStation> GetFreeStations()
         {
             List<IDAL.DO.BaseStation> freeBaseStations = new List<IDAL.DO.BaseStation>();
             for (int i = 0; i < DataSource.baseStations.Count; i++)
@@ -380,7 +503,7 @@ namespace DalObject
         /// the function returns a list with all the drones that are capable of taking it.
         /// </summary>
         /// <param name="weight"></param>
-        public List<IDAL.DO.Drone> GetDroneForParcel(IDAL.DO.WeightCategories weight)
+        public IEnumerable<IDAL.DO.Drone> GetDroneForParcel(IDAL.DO.WeightCategories weight)
         {
             List<IDAL.DO.Drone> capableDrones = new List<IDAL.DO.Drone>();
             for (int i = 0; i < DataSource.drones.Count; i++)

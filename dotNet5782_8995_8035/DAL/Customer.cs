@@ -31,7 +31,7 @@ namespace IDAL
             /// the function prints all the props of the struct.
             /// </summary>
             /// <returns></returns>
-            public string ToString()
+            public override string ToString()
             {
 
                 return $"Customer: " +

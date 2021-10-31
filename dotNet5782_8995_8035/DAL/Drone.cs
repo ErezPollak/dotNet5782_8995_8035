@@ -30,7 +30,7 @@ namespace IDAL
             /// the function prints all the props of the struct.
             /// </summary>
             /// <returns></returns>
-            public string ToString()
+            public override string ToString()
             {
                 ///the function returns the current place of the item's properties.///
 

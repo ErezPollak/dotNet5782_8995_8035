@@ -24,26 +24,28 @@ namespace DalObject
 
     internal class DataSource
     {
-        public static List<IDAL.DO.Drone> drones = new List<IDAL.DO.Drone>();                      //contains up to 10 drones.
-        public static List<IDAL.DO.BaseStation> baseStations = new List<IDAL.DO.BaseStation>();     // contains up to 5 base stations
-        public static List<IDAL.DO.Customer> customers = new List<IDAL.DO.Customer>();            // contains up to 100 customers.
-        public static List<IDAL.DO.Parcel> parcels = new List<IDAL.DO.Parcel>();               // contains up to 1000 parcels.
+        public static List<IDAL.DO.Drone> drones = new List<IDAL.DO.Drone>();                      
+        public static List<IDAL.DO.BaseStation> baseStations = new List<IDAL.DO.BaseStation>();    
+        public static List<IDAL.DO.Customer> customers = new List<IDAL.DO.Customer>();            
+        public static List<IDAL.DO.Parcel> parcels = new List<IDAL.DO.Parcel>();              
+
+        //an data structure to contain all the charging of the drones.
+        public static List<IDAL.DO.DroneCharge> charges = new List<IDAL.DO.DroneCharge>();
+
 
         public static Random r = new Random();     // a static value for 
 
-        //this class is not relevent sinse we are using lists.
         //the class that holds the updated status of the free space in the arrays.
         //the properties of the class are being changed in the functions that add add or deletes properties from the arreis.
-        //internal class Config
-        //{
-        //    public static int freeDrone = 0;      //the first free place for drone.
-        //    public static int freeBaseStation = 0;//the first free place for base station.
-        //    public static int freeCustumer = 0;   //the first free place for a customer.
-        //    public static int freePerches = 0;    //the first free place for percel.
+        internal class Config
+        {
+        //public static int freeDrone = 0;      //the first free place for drone.
+        //public static int freeBaseStation = 0;//the first free place for base station.
+        //public static int freeCustumer = 0;   //the first free place for a customer.
+        //public static int freePerches = 0;    //the first free place for percel.
 
-        //    public static int serialNumberForPackeges = 0;
-        //}
-
+        public static int serialNumber = 1000;
+        }
 
         /// <summary>
         ///the fundction that initilaze the data bases with randomal values.
@@ -65,7 +67,7 @@ namespace DalObject
                     name = i.ToString(),
                     lattitude = r.NextDouble() * 180 - 90,   // randomal values from -90 to 90 in order to represent a real coordinated location.
                     longitude = r.NextDouble() * 180 - 90,   // randomal values from -90 to 90 in order to represent a real coordinated location.
-                    chargeSlots = r.Next() % 5
+                    chargeSlots = r.Next() % 5 + 2
                 };
                 //adding the base station to the list.
                 baseStations.Add(baseStation);
