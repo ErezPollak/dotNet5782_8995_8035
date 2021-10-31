@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace DalObject
 {
-    public class DalObject
+    public class DalObject : IDAL.IDal
     {
 
         //ctor
