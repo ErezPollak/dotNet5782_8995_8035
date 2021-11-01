@@ -470,11 +470,11 @@ namespace DalObject
         {
             List<IDAL.DO.Parcel> parcelsToDrones = new List<IDAL.DO.Parcel>();
 
-            for (int i = 0; i < DataSource.parcels.Count; i++)
+            foreach(IDAL.DO.Parcel parcel in DataSource.parcels)
             {
-                if (DataSource.parcels[i].droneId == -1)
+                if (parcel.droneId == -1)
                 {
-                    parcelsToDrones.Add(DataSource.parcels[i]);
+                    parcelsToDrones.Add(parcel);
                 }
             }
 
@@ -487,11 +487,11 @@ namespace DalObject
         public IEnumerable<IDAL.DO.BaseStation> GetFreeStations()
         {
             List<IDAL.DO.BaseStation> freeBaseStations = new List<IDAL.DO.BaseStation>();
-            for (int i = 0; i < DataSource.baseStations.Count; i++)
+            foreach(IDAL.DO.BaseStation baseStation in DataSource.baseStations)
             {
-                if (DataSource.baseStations[i].chargeSlots > 0)
+                if (baseStation.chargeSlots > 0)
                 {
-                    freeBaseStations.Add(DataSource.baseStations[i]);
+                    freeBaseStations.Add(baseStation);
                 }
             }
             return freeBaseStations;
@@ -506,15 +506,35 @@ namespace DalObject
         public IEnumerable<IDAL.DO.Drone> GetDroneForParcel(IDAL.DO.WeightCategories weight)
         {
             List<IDAL.DO.Drone> capableDrones = new List<IDAL.DO.Drone>();
-            for (int i = 0; i < DataSource.drones.Count; i++)
+            foreach(IDAL.DO.Drone drone in DataSource.drones)
             {
-                if(DataSource.drones[i].MaxWeight >= weight && DataSource.drones[i].Status == IDAL.DO.DroneStatuses.FREE)
+                if(drone.MaxWeight >= weight && drone.Status == IDAL.DO.DroneStatuses.FREE)
                 {
-                    capableDrones.Add(DataSource.drones[i]);
+                    capableDrones.Add(drone);
                 }
             }
             return capableDrones;
         }
+
+        /// <summary>
+        /// the class returns a list with all the parcels that was been assined to a drone but wasn't deliverd.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<IDAL.DO.Parcel> GetParcelsWithDrones()
+        {
+            DateTime defaultDate = new DateTime();
+            List<IDAL.DO.Parcel> parcelsWithoutDrone = new List<IDAL.DO.Parcel>();
+            foreach(IDAL.DO.Parcel parcel in DataSource.parcels)
+            {
+                if(parcel.droneId == -1 && parcel.delivered != defaultDate)
+                {
+                    parcelsWithoutDrone.Add(parcel);
+                }
+            }
+
+            return parcelsWithoutDrone;
+        }
+
 
         /// <summary>
         /// returns an array with the information of charging drones.

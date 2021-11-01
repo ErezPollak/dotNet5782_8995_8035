@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IDAL
 {
-    interface IDal
+    public interface IDal
     {
         /// <summary>
         /// the function creates new base station acording to given specs, and adding it to the array. 
@@ -159,6 +159,12 @@ namespace IDAL
         /// </summary>
         /// <param name="weight"></param>
         public IEnumerable<IDAL.DO.Drone> GetDroneForParcel(IDAL.DO.WeightCategories weight);
+
+        /// <summary>
+        /// the class returns a list with all the parcels that was been assined to a drone but wasn't deliverd.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<IDAL.DO.Parcel> GetParcelsWithDrones();
 
         /// <summary>
         /// 
