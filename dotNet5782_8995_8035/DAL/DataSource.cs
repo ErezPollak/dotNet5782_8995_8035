@@ -35,16 +35,19 @@ namespace DalObject
 
         public static Random r = new Random();     // a static value for 
 
-        //the class that holds the updated status of the free space in the arrays.
-        //the properties of the class are being changed in the functions that add add or deletes properties from the arreis.
+        /// <summary>
+        /// the function contains the information about the electricity use 
+        /// </summary>
         internal class Config
         {
-        //public static int freeDrone = 0;      //the first free place for drone.
-        //public static int freeBaseStation = 0;//the first free place for base station.
-        //public static int freeCustumer = 0;   //the first free place for a customer.
-        //public static int freePerches = 0;    //the first free place for percel.
+            public static double Free; // for the electricity use of a free drone
+            public static double Light; // for the electricity use of a drone that carrys a light wight.
+            public static double Middel; // for the electricity use of a drone that carrys a middle wight.
+            public static double Heavy; // for the electricity use of a drone that carrys a heavy wight.
 
-        public static int serialNumber = 1000;
+            public static double ChargingSpeed;//for the speed of the charge. precentage for hour.
+
+            public static int serialNumber = 1000;
         }
 
         /// <summary>

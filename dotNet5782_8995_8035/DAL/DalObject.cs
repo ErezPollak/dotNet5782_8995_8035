@@ -516,5 +516,14 @@ namespace DalObject
             return capableDrones;
         }
 
+        /// <summary>
+        /// returns an array with the information of charging drones.
+        /// </summary>
+        /// <returns></returns>
+        public double[] ElectricityUse()
+        {
+            double[] chargingInformation = { DataSource.Config.Free, DataSource.Config.Light, DataSource.Config.Middel, DataSource.Config.Heavy, DataSource.Config.ChargingSpeed };
+            return chargingInformation;
+        }
     }
 }
