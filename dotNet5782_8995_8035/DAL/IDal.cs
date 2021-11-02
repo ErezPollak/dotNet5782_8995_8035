@@ -24,9 +24,7 @@ namespace IDAL
         /// </summary>
         /// <param name="model"></param>
         /// <param name="weight"></param>
-        /// <param name="status"></param>
-        /// <param name="battery"></param>
-        public void AddDrone(int idNumber, string model, IDAL.DO.WeightCategories weight, IDAL.DO.DroneStatuses status, double battery);
+        public void AddDrone(int idNumber, string model, IDAL.DO.WeightCategories weight);
 
         /// <summary>
         /// the function creates new customer acording to given specs, and adding it to the array.
@@ -158,19 +156,27 @@ namespace IDAL
         /// the function returns a list with all the drones that are capable of taking it.
         /// </summary>
         /// <param name="weight"></param>
-        public IEnumerable<IDAL.DO.Drone> GetDroneForParcel(IDAL.DO.WeightCategories weight);
+        //public IEnumerable<IDAL.DO.Drone> GetDroneForParcel(IDAL.DO.WeightCategories weight);
 
         /// <summary>
         /// the class returns a list with all the parcels that was been assined to a drone but wasn't deliverd.
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<IDAL.DO.Parcel> GetParcelsWithDrones();
+        public Dictionary<int , int> GetDronesToUpdate();
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
         public double[] ElectricityUse();
+
+        /// <summary>
+        /// the function gets an id of drone or a customer and returns the station that is clothst to this drone or customer.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public int GetClothestStation(int id);
 
     }
 }

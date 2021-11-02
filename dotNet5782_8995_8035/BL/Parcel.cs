@@ -1,26 +1,15 @@
-﻿//course: Mini Project in Windows Systems
-//lecturere: Eliezer Grintsborger
-//from the students: Erez Polak 322768995
-//                   Mordehay Cohen 206958035
-
-
-
-//the program contains a struct class that represents a parcel.
-//the program contains the properties and a tostring function.
-
-
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static IBL.BO.Enums;
 
-namespace IDAL
+namespace IBAL
 {
-    namespace DO
+    namespace BO
     {
-        public struct Parcel
+        public class Parcel
         {
             public int id { get; set; }
             public int senderId { get; set; }
@@ -47,7 +36,6 @@ namespace IDAL
                     $"requested: {requested}, scheduled: {scheduled},delivered: {delivered},  " +
                     $"pickedUp: {pickedUp}\n";
             }
-
         }
     }
 }

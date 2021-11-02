@@ -84,8 +84,8 @@ namespace DalObject
                     id = i,
                     model = (char)(r.Next() % 26 + 65) + "" + (char)(r.Next() % 26 + 65) + (r.Next() % 100000).ToString(),
                     MaxWeight = (WeightCategories)(r.Next() % 3),
-                    Status = (DroneStatuses)(r.Next() % 3),
-                    battery = r.Next() % 50 + 50
+                    //Status = (DroneStatuses)(r.Next() % 3),
+                   /// battery = r.Next() % 50 + 50
                 };
                 drones.Add(drone);
             }
@@ -128,9 +128,12 @@ namespace DalObject
             }
 
             //initilazing the "scaduald" date to be after the "reqested" date. by the function below.
-            foreach (IDAL.DO.Parcel parcel in parcels)
+            for (int index = 0; index < DataSource.parcels.Count; index++)
             {
-                parcel.SetSchduled(DateTime.Now);
+                IDAL.DO.Parcel p = DataSource.parcels[index];
+                p.scheduled = pickingBiggerDate(p.requested);
+                DataSource.parcels[index] = p;
+                ++index;
             }
         }
 

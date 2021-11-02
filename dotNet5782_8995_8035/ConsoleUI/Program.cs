@@ -9,14 +9,22 @@
 using System;
 using System.Collections.Generic;
 using DalObject;
+using IBL.BO;
 
 namespace ConsoleUI
 {
     class Program
     {
         
+
+
+
         public static void Main(string[] args)
-        { 
+        {
+
+            BL bl = new BL();
+
+
 
             DalObject.DalObject dalObject = new DalObject.DalObject();
 
@@ -84,17 +92,17 @@ namespace ConsoleUI
                                         Console.Write("enter the max weight of the drone: ");
                                         IDAL.DO.WeightCategories maxWeight;
                                         IDAL.DO.WeightCategories.TryParse(Console.ReadLine(), out maxWeight);
-                                        
-                                        Console.Write("enter the status of the drone: ");
-                                        IDAL.DO.DroneStatuses status;
-                                        IDAL.DO.DroneStatuses.TryParse(Console.ReadLine(), out status);
-                                       
-                                        Console.Write("enter the battary status of the drone: ");
-                                        double battary;
-                                        double.TryParse(Console.ReadLine(), out battary);
+
+                                        //Console.Write("enter the status of the drone: ");
+                                        //IDAL.DO.DroneStatuses status;
+                                        //IDAL.DO.DroneStatuses.TryParse(Console.ReadLine(), out status);
+
+                                        //Console.Write("enter the battary status of the drone: ");
+                                        //double battary;
+                                        //double.TryParse(Console.ReadLine(), out battary);
 
 
-                                        dalObject.AddDrone(number , name , maxWeight , status , battary);
+                                        dalObject.AddDrone(number, name, maxWeight);// , status , battary);
 
                                         Console.WriteLine();
 
@@ -154,13 +162,13 @@ namespace ConsoleUI
                                   
                                         //printing the ids of the relevent drones.
                                         Console.WriteLine("choose the drone id from the avaleble drones (not in Maintenance and can carry the weight of your parcel): ");
-                                        Console.Write("the avaleble drones are: ");
-                                        IEnumerable<IDAL.DO.Drone> capableDrones = dalObject.GetDroneForParcel(weight);
-                                        foreach(IDAL.DO.Drone drone in capableDrones)
-                                        {
-                                            Console.Write(drone.id + " ");
-                                        }
-                                        Console.WriteLine();
+                                        //Console.Write("the avaleble drones are: ");
+                                        //IEnumerable<IDAL.DO.Drone> capableDrones = dalObject.GetDroneForParcel(weight);
+                                        //foreach(IDAL.DO.Drone drone in capableDrones)
+                                        //{
+                                        //    Console.Write(drone.id + " ");
+                                        //}
+                                        //Console.WriteLine();
                                         int droneId;
                                         int.TryParse(Console.ReadLine(), out droneId);
 

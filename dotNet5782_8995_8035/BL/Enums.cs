@@ -10,6 +10,9 @@ namespace IBL
     {
         public class Enums
         {
+            public enum WeightCategories { LIGHT, MIDIUM, HEAVY };
+            public enum Priorities { REGULAR, FAST, EMERGENCY };
+            public enum DroneStatuses { FREE , DELIVERY , FIXING }
         }
     }
 }
