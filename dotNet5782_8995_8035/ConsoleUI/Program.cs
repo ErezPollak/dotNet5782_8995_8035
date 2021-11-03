@@ -9,7 +9,7 @@
 using System;
 using System.Collections.Generic;
 using DalObject;
-using IBL.BO;
+using IBAL.BO;
 
 namespace ConsoleUI
 {
@@ -21,10 +21,6 @@ namespace ConsoleUI
 
         public static void Main(string[] args)
         {
-
-            BL bl = new BL();
-
-
 
             DalObject.DalObject dalObject = new DalObject.DalObject();
 

@@ -305,13 +305,6 @@ namespace DalObject
             }
             if (!isNameExists) throw new IDAL.DO.SerialNumberWasNotFoundExceptions(droneId, "chargeDrone");
 
-            //not relevent
-            ////update the status of the drone to be FIXING.    
-            //IDAL.DO.Drone newDrone = DataSource.drones[droneIndex];
-            ////newDrone.Status = IDAL.DO.DroneStatuses.FREE;
-            ////newDrone.battery = 100;
-            //DataSource.drones[droneIndex] = newDrone;
-
             //updates the number of free charging slots int he base station.
             //finds the index of the station and update when finds, no need for excption search, because the station exists for sure.
             for (int i = 0; i < DataSource.baseStations.Count; i++)

@@ -82,8 +82,14 @@ namespace IBL
                     throw new IBAL.BO.IdAlreadyExistsException(baseStation.id, "base station");
                 }
             }
-            dalObject.AddBaseStation(newBaseStation.Id, newBaseStation.Name, newBaseStation.Location.Longitude, newBaseStation.Location.Lattitude);
+            dalObject.AddBaseStation(newBaseStation.Id, newBaseStation.Name, newBaseStation.Location.Longitude, newBaseStation.Location.Lattitude , newBaseStation.ChargeSlots);
         }
+
+
+
+
+
+
 
         public void AddDrone(IBAL.BO.Drone newDrone)
         {
@@ -98,6 +104,10 @@ namespace IBL
             dalObject.AddDrone(newDrone.Id, newDrone.Model , (IDAL.DO.WeightCategories)newDrone.MaxWeight);
         }
 
+
+
+
+
         public void AddCustumer(IBAL.BO.Customer newCustomer)
         {
             foreach(IDAL.DO.Customer customer in dalObject.GetCustomers())
@@ -109,6 +119,12 @@ namespace IBL
             }
             dalObject.AddCustumer(newCustomer.Id , newCustomer.Name , newCustomer.Phone , newCustomer.Location.Longitude , newCustomer.Location.Lattitude);
         }
+
+
+
+
+
+
 
         public void AddParcel(IBAL.BO.Parcel newPparcel)
         {
@@ -137,7 +153,7 @@ namespace IBL
                     break;
                 }
             }
-            if (!isNameExists) throw new IDAL.DO.SerialNumberWasNotFoundExceptions(parcelId, "parcel");
+            if (!isNameExists) throw new IBAL.BO.IdDontExistsException(parcelId, "parcel");
 
             isNameExists = false;
             foreach (IDAL.DO.Drone drone in dalObject.GetDrones())
@@ -148,37 +164,105 @@ namespace IBL
                     break;
                 }
             }
-            if (!isNameExists) throw new IDAL.DO.SerialNumberWasNotFoundExceptions(droneId, "drone");
+            if (!isNameExists) throw new IBAL.BO.IdDontExistsException(droneId, "drone");
 
             //if the id numbers were found in the lists we can call the function from Idal.
             dalObject.UpdateDroneForAParcel(parcelId, droneId);
         }
 
+
+
         public void PickingUpParcel(int parcelId)
         {
+
+            bool isNameExists = false;
+            foreach (IDAL.DO.Parcel parcel in dalObject.GetParcels())
+            {
+                if (parcel.Id == parcelId)
+                {
+                    isNameExists = true;
+                    break;
+                }
+            }
+            if (!isNameExists) throw new IBAL.BO.IdDontExistsException(parcelId, "parcel");
+
             dalObject.PickingUpParcel(parcelId);
         }
 
         public void DeliveringParcel(int parcelId)
         {
+
+            bool isNameExists = false;
+            foreach (IDAL.DO.Parcel parcel in dalObject.GetParcels())
+            {
+                if (parcel.Id == parcelId)
+                {
+                    isNameExists = true;
+                    break;
+                }
+            }
+            if (!isNameExists) throw new IBAL.BO.IdDontExistsException(parcelId, "parcel");
+
             dalObject.DeliveringParcel(parcelId);
         }
 
         public void ChargeDrone(int baseStationId, int droneId)
         {
+
+            bool isNameExists = false;
+            foreach (IDAL.DO.BaseStation baseStation in dalObject.GetBaseStations())
+            {
+                if (baseStation.id == baseStationId)
+                {
+                    isNameExists = true;
+                    break;
+                }
+            }
+            if (!isNameExists) throw new IBAL.BO.IdDontExistsException(baseStationId, "base station");
+
+            isNameExists = false;
+            foreach (IDAL.DO.Drone drone in dalObject.GetDrones())
+            {
+                if (drone.Id == droneId)
+                {
+                    isNameExists = true;
+                    break;
+                }
+            }
+            if (!isNameExists) throw new IBAL.BO.IdDontExistsException(droneId, "drone");
+
             dalObject.ChargeDrone(baseStationId, droneId);
         }
 
+
+
+
+
         public void UnChargeDrone(int droneId)
         {
+
+            bool isNameExists = false;
+            foreach (IDAL.DO.Drone drone in dalObject.GetDrones())
+            {
+                if (drone.Id == droneId)
+                {
+                    isNameExists = true;
+                    break;
+                }
+            }
+            if (!isNameExists) throw new IDAL.DO.SerialNumberWasNotFoundExceptions(droneId, "drone");
+
             dalObject.UnChargeDrone(droneId);
         }
 
 
         ////**** getting options ****////
+        
+        /////// !!!!!!!Exceptions!!!!!!!!!!!!!    ///////////////////
 
         public IBAL.BO.BaseStation GetBaseStation(int baseStationId)
         {
+
             IDAL.DO.BaseStation dalBaseStation = dalObject.GetBaseStation(baseStationId);
             return new IBAL.BO.BaseStation()
             {
