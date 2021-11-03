@@ -24,16 +24,16 @@ namespace DalObject
 
     internal class DataSource
     {
-        public static List<IDAL.DO.Drone> drones = new List<IDAL.DO.Drone>();                      
-        public static List<IDAL.DO.BaseStation> baseStations = new List<IDAL.DO.BaseStation>();    
-        public static List<IDAL.DO.Customer> customers = new List<IDAL.DO.Customer>();            
-        public static List<IDAL.DO.Parcel> parcels = new List<IDAL.DO.Parcel>();              
+        internal static List<IDAL.DO.Drone> drones = new List<IDAL.DO.Drone>();
+        internal static List<IDAL.DO.BaseStation> baseStations = new List<IDAL.DO.BaseStation>();
+        internal static List<IDAL.DO.Customer> customers = new List<IDAL.DO.Customer>();
+        internal static List<IDAL.DO.Parcel> parcels = new List<IDAL.DO.Parcel>();
 
         //an data structure to contain all the charging of the drones.
-        public static List<IDAL.DO.DroneCharge> charges = new List<IDAL.DO.DroneCharge>();
+        internal static List<IDAL.DO.DroneCharge> charges = new List<IDAL.DO.DroneCharge>();
 
 
-        public static Random r = new Random();     // a static value for 
+        private static Random r = new Random();     // a static value for 
 
         /// <summary>
         /// the function contains the information about the electricity use 
@@ -81,8 +81,8 @@ namespace DalObject
             {
                 IDAL.DO.Drone drone = new IDAL.DO.Drone()
                 {
-                    id = i,
-                    model = (char)(r.Next() % 26 + 65) + "" + (char)(r.Next() % 26 + 65) + (r.Next() % 100000).ToString(),
+                    Id = i,
+                    Model = (char)(r.Next() % 26 + 65) + "" + (char)(r.Next() % 26 + 65) + (r.Next() % 100000).ToString(),
                     MaxWeight = (WeightCategories)(r.Next() % 3),
                     //Status = (DroneStatuses)(r.Next() % 3),
                    /// battery = r.Next() % 50 + 50
@@ -96,11 +96,11 @@ namespace DalObject
             {
                 IDAL.DO.Customer customer = new IDAL.DO.Customer()
                 {
-                    id = i,
-                    name = (char)(r.Next() % 26 + 65) + " , " + (char)(r.Next() % 26 + 65),
-                    phone = "05" + (r.Next() % 10).ToString() + "-" + (r.Next() % 1000000).ToString(),
-                    lattitude = r.NextDouble() * 180 - 90,   // randomal values from -90 to 90 in order to represent a real coordinated location.
-                    longitude = r.NextDouble() * 180 - 90   // randomal values from -90 to 90 in order to represent a real coordinated location.
+                    Id = i,
+                    Name = (char)(r.Next() % 26 + 65) + " , " + (char)(r.Next() % 26 + 65),
+                    Phone = "05" + (r.Next() % 10).ToString() + "-" + (r.Next() % 1000000).ToString(),
+                    Llattitude = r.NextDouble() * 180 - 90,   // randomal values from -90 to 90 in order to represent a real coordinated location.
+                    Longitude = r.NextDouble() * 180 - 90   // randomal values from -90 to 90 in order to represent a real coordinated location.
                 };
 
                 customers.Add(customer);
@@ -112,15 +112,15 @@ namespace DalObject
             {
                 IDAL.DO.Parcel parcel = new IDAL.DO.Parcel()
                 {
-                    id = i,
-                    senderId = customers[r.Next() % (customers.Count)].id, // random values from the avalible customers.
-                    targetId = customers[r.Next() % (customers.Count)].id, // random values from the avalible customers.
+                    Id = i,
+                    SenderId = customers[r.Next() % (customers.Count)].Id, // random values from the avalible customers.
+                    TargetId = customers[r.Next() % (customers.Count)].Id, // random values from the avalible customers.
                     Weight = (WeightCategories)(r.Next() % 3),
-                    priority = (Priorities)(r.Next() % 3),
-                    droneId = -1,                                   //initileized to not have any drone, the drone number will be updated in the dalobject class.
-                    requested = pickingBiggerDate(DateTime.Now),  // initilesed to be the time of the initialization.
-                    pickedUp = DateTime.Now,                        //initilesed for now, will change in  DalObject class, when order is updated to be picked up.
-                    delivered = DateTime.Now
+                    Priority = (Priorities)(r.Next() % 3),
+                    DroneId = -1,                                   //initileized to not have any drone, the drone number will be updated in the dalobject class.
+                    Requested = pickingBiggerDate(DateTime.Now),  // initilesed to be the time of the initialization.
+                    PickedUp = DateTime.Now,                        //initilesed for now, will change in  DalObject class, when order is updated to be picked up.
+                    Delivered = DateTime.Now
                 };
 
                 parcels.Add(parcel);
@@ -131,7 +131,7 @@ namespace DalObject
             for (int index = 0; index < DataSource.parcels.Count; index++)
             {
                 IDAL.DO.Parcel p = DataSource.parcels[index];
-                p.scheduled = pickingBiggerDate(p.requested);
+                p.Scheduled = pickingBiggerDate(p.Requested);
                 DataSource.parcels[index] = p;
                 ++index;
             }

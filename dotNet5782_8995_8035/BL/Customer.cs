@@ -10,11 +10,10 @@ namespace IBAL
     {
         public class Customer
         {
-            public int id { get; set; }
-            public string name { get; set; }
-            public string phone { get; set; }
-            public double longitude { get; set; }
-            public double lattitude { get; set; }
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public string Phone { get; set; }
+            public Location Location { get; set; }
 
             /// <summary>
             /// the function prints all the props of the struct.
@@ -24,12 +23,10 @@ namespace IBAL
             {
 
                 return $"Customer: " +
-                    $"id: {id} , " +
-                    $"name: {name} , " +
-                    $"phone : {phone } , " +
-                    $"longitude: {(int)(this.longitude)}° {(int)((this.longitude - (int)(this.longitude)) * 60)}' {((this.longitude - (int)(this.longitude)) * 60 - (int)((this.longitude - (int)(this.longitude)) * 60)) * 60}'' ," +
-                    $" lattitude: {(int)(this.lattitude)}° {(int)((this.lattitude - (int)(this.lattitude)) * 60)}' {((this.lattitude - (int)(this.lattitude)) * 60 - (int)((this.lattitude - (int)(this.lattitude)) * 60)) * 60}'' \n";
-
+                    $"id: {Id} , " +
+                    $"name: {Name} , " +
+                    $"phone : {Phone } , " +
+                    $"location: {Location.ToString()}";
             }
         }
     }

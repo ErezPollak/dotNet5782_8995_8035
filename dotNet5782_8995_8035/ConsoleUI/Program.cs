@@ -400,7 +400,7 @@ namespace ConsoleUI
                                 case 4:
                                     {
                                         //showing the list of the parcels
-                                        IEnumerable< IDAL.DO.Parcel> parcels = dalObject.GetParcheses();
+                                        IEnumerable< IDAL.DO.Parcel> parcels = dalObject.GetParcels();
                                         foreach (IDAL.DO.Parcel parcel in parcels)
                                         {
                                             Console.WriteLine(parcel);

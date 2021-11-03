@@ -20,8 +20,8 @@ namespace IDAL
     {
         public struct Drone
         {
-            public int id { get; set; }
-            public string model { get; set; }
+            public int Id { get; set; }
+            public string Model { get; set; }
             public WeightCategories MaxWeight{ get; set; }
             //public DroneStatuses Status{ get; set; }
             //public double battery { get; set; }
@@ -34,7 +34,7 @@ namespace IDAL
             {
                 ///the function returns the current place of the item's properties.///
 
-                return $"Drone: id: {id} , model: {model} , MaxWeight: {MaxWeight} \n";
+                return $"Drone: id: {Id} , model: {Model} , MaxWeight: {MaxWeight} \n";
                     //$", Status: {Status}, battery: {battery}\n";
             }
 

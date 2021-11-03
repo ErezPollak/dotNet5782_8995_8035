@@ -21,8 +21,8 @@ namespace IDAL
     {
         public struct DroneCharge
         {
-            public int droneId { get; set; }
-            public int stationId { get; set; }
+            public int DroneId { get; set; }
+            public int SstationId { get; set; }
 
             /// <summary>
             /// the function prints all the props of the struct.
@@ -33,7 +33,7 @@ namespace IDAL
 
                 ///the function returns the current place of the item's properties.///
 
-                return $"DroneCharge: droneld: {droneId} , stationled {stationId}\n";
+                return $"DroneCharge: droneld: {DroneId} , stationled {SstationId}\n";
             }
 
         }

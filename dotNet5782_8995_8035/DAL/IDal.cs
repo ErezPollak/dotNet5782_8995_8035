@@ -85,6 +85,7 @@ namespace IDAL
         /// </summary>
         /// <param name="droneId"></param>
         public void UnChargeDrone(int droneId);
+        void AddBaseStation(int id, string name, double longitude, double lattitude);
 
         ////***show options***/////
 
@@ -139,7 +140,7 @@ namespace IDAL
         /// <summary>
         /// returns the array of the parcheses
         /// </summary>
-        public IEnumerable<IDAL.DO.Parcel> GetParcheses();
+        public IEnumerable<IDAL.DO.Parcel> GetParcels();
 
         /// <summary>
         /// returns all the parcels that dont have a drone assigned to them.

@@ -22,16 +22,16 @@ namespace IDAL
     {
         public struct Parcel
         {
-            public int id { get; set; }
-            public int senderId { get; set; }
-            public int targetId { get; set; }
+            public int Id { get; set; }
+            public int SenderId { get; set; }
+            public int TargetId { get; set; }
             public WeightCategories Weight { get; set; }
-            public Priorities priority { get; set; }
-            public DateTime requested { get; set; }
-            public int droneId { get; set; }
-            public DateTime scheduled { get; set; }
-            public DateTime pickedUp { get; set; }
-            public DateTime delivered { get; set; }
+            public Priorities Priority { get; set; }
+            public DateTime Requested { get; set; }
+            public int DroneId { get; set; }
+            public DateTime Scheduled { get; set; }
+            public DateTime PickedUp { get; set; }
+            public DateTime Delivered { get; set; }
 
             /// <summary>
             /// the function prints all the props of the struct.
@@ -42,10 +42,10 @@ namespace IDAL
 
                 ///the function returns the current place of the item's properties.///
 
-                return $"Parcel: id: {id} , senderld: {senderId} , targetld : {targetId} " +
-                    $", weight: {Weight}, priority: {priority},  droneld: {droneId}, " +
-                    $"requested: {requested}, scheduled: {scheduled},delivered: {delivered},  " +
-                    $"pickedUp: {pickedUp}\n";
+                return $"Parcel: id: {Id} , senderld: {SenderId} , targetld : {TargetId} " +
+                    $", weight: {Weight}, priority: {Priority},  droneld: {DroneId}, " +
+                    $"requested: {Requested}, scheduled: {Scheduled},delivered: {Delivered},  " +
+                    $"pickedUp: {PickedUp}\n";
             }
 
         }
