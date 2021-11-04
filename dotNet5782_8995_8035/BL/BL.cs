@@ -16,7 +16,7 @@ namespace IBL
             private double heavy; // for the electricity use of a drone that carrys a heavy wight.
             private double chargingSpeed;//for the speed of the charge. precentage for hour.
 
-            private List<global::IBAL.BO.Drone> drones;
+            private List<IBAL.BO.Drone> drones;
 
 
             static DateTime nulldate = new DateTime();//needed for comperation
@@ -75,19 +75,8 @@ namespace IBL
 
         public void AddBaseStation(IBAL.BO.BaseStation newBaseStation)
         {
-            foreach(IDAL.DO.BaseStation baseStation in dalObject.GetBaseStations())
-            {
-                if(baseStation.id == newBaseStation.Id)
-                {
-                    throw new IBAL.BO.IdAlreadyExistsException(baseStation.id, "base station");
-                }
-            }
             dalObject.AddBaseStation(newBaseStation.Id, newBaseStation.Name, newBaseStation.Location.Longitude, newBaseStation.Location.Lattitude , newBaseStation.ChargeSlots);
         }
-
-
-
-
 
 
 
@@ -110,13 +99,6 @@ namespace IBL
 
         public void AddCustumer(IBAL.BO.Customer newCustomer)
         {
-            foreach(IDAL.DO.Customer customer in dalObject.GetCustomers())
-            {
-                if (customer.Id == newCustomer.Id)
-                {
-                    throw new IdAlreadyExistsException(customer.Id , "customer");
-                }
-            }
             dalObject.AddCustumer(newCustomer.Id , newCustomer.Name , newCustomer.Phone , newCustomer.Location.Longitude , newCustomer.Location.Lattitude);
         }
 
@@ -135,6 +117,7 @@ namespace IBL
                     throw new IdAlreadyExistsException(parcel.Id, "parcel");
                 }
             }
+            dalObject.AddParcel(newPparcel.Id, newPparcel.SenderId, newPparcel.TargetId, (IDAL.DO.WeightCategories)newPparcel.Weight,  (IDAL.DO.Priorities)newPparcel.priority, newPparcel.DroneId, newPparcel.Requested, newPparcel.Scheduled);
         }
 
 
