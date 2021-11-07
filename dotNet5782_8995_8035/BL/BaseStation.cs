@@ -14,6 +14,7 @@ namespace IBAL
             public string Name { get; set; }
             public IBAL.BO.Location Location { get; set; }
             public int ChargeSlots { get; set; }
+            public List<IBAL.BO.Drone> CargingDrones { get; set; }
 
             /// <summary>
             /// the function prints all the props of the struct.
@@ -22,13 +23,6 @@ namespace IBAL
             public override string ToString()
             {
 
-                ///the function returns the current place of the item's properties.///
-
-                return $"Base Station:" +
-                   $" ID: {this.Id}, " +
-                   $"Name: {this.Name}, " +
-                   $"Lockation: { this.Location.ToString()} ,"+
-                   $"chargeslotes: {this.ChargeSlots}\n";
             }
         }
     }

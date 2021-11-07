@@ -13,6 +13,7 @@ namespace IBAL
             public enum WeightCategories { LIGHT, MIDIUM, HEAVY };
             public enum Priorities { REGULAR, FAST, EMERGENCY };
             public enum DroneStatuses { FREE , DELIVERY , FIXING }
+            public enum ParcelStatus { DEFINED , ASSIGNED , PICKEDUP , DELIVERED }
         }
     }
 }

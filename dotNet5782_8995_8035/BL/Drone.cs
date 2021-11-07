@@ -13,9 +13,9 @@ namespace IBAL
         {
             public int Id { get; set; }
             public string Model { get; set; }
-            public WeightCategories MaxWeight { get; set; }
-            public DroneStatuses Status { get; set; }
+            public Enums.WeightCategories MaxWeight { get; set; }
             public double Battery { get; set; }
+            public IBAL.BO.ParcelInDelivery ParcelInDelivery { get; set; }
             public Location location { get; set; }
 
             /// <summary>
@@ -24,10 +24,6 @@ namespace IBAL
             /// <returns></returns>
             public override string ToString()
             {
-                ///the function returns the current place of the item's properties.///
-
-                return $"Drone: id: {Id} , model: {Model} , MaxWeight: {MaxWeight} " +
-                    $", Status: {Status}, battery: {Battery} , Location: {location}\n";
             }
         }
     }

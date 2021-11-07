@@ -82,6 +82,9 @@ namespace IBL
 
         public void AddDrone(IBAL.BO.Drone newDrone)
         {
+
+            if(this.drones.)
+
             foreach(IBAL.BO.Drone drone in this.drones)
             {
                 if(drone.Id == newDrone.Id)
