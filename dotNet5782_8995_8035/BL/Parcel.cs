@@ -14,12 +14,12 @@ namespace IBAL
             public IBAL.BO.CoustomerForParcel Sender { get; set; }
             public IBAL.BO.CoustomerForParcel Reciver { get; set; }
             public IBAL.BO.Enums.WeightCategories Weight { get; set; }
-            public IBAL.BO.Enums.Priorities Prioritie { get; set; }
+            public IBAL.BO.Enums.Priorities Priority { get; set; }
             public IBAL.BO.DroneForParcel Drone { get; set; }
-            public DateTime CreationTime { get; set; }
-            public DateTime AssigningTime { get; set; }
-            public DateTime PickupTime { get; set; }
-            public DateTime deliveringTime { get; set; }
+            public DateTime? CreationTime { get; set; }
+            public DateTime? AssigningTime { get; set; }
+            public DateTime? PickupTime { get; set; }
+            public DateTime? DeliveringTime { get; set; }
 
 
             public override string ToString()

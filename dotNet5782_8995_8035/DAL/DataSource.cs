@@ -68,7 +68,7 @@ namespace DalObject
                 {
                     id = i,
                     name = i.ToString(),
-                    lattitude = r.NextDouble() * 180 - 90,   // randomal values from -90 to 90 in order to represent a real coordinated location.
+                    lattitude = r.NextDouble() * 360 - 180,   // randomal values from -180 to 180 in order to represent a real coordinated location.
                     longitude = r.NextDouble() * 180 - 90,   // randomal values from -90 to 90 in order to represent a real coordinated location.
                     chargeSlots = r.Next() % 5 + 2
                 };
@@ -99,7 +99,7 @@ namespace DalObject
                     Id = i,
                     Name = (char)(r.Next() % 26 + 65) + " , " + (char)(r.Next() % 26 + 65),
                     Phone = "05" + (r.Next() % 10).ToString() + "-" + (r.Next() % 1000000).ToString(),
-                    Llattitude = r.NextDouble() * 180 - 90,   // randomal values from -90 to 90 in order to represent a real coordinated location.
+                    Llattitude = r.NextDouble() * 360 - 180,   // randomal values from -180 to 180 in order to represent a real coordinated location.
                     Longitude = r.NextDouble() * 180 - 90   // randomal values from -90 to 90 in order to represent a real coordinated location.
                 };
 
@@ -119,8 +119,8 @@ namespace DalObject
                     Priority = (Priorities)(r.Next() % 3),
                     DroneId = -1,                                   //initileized to not have any drone, the drone number will be updated in the dalobject class.
                     Requested = pickingBiggerDate(DateTime.Now),  // initilesed to be the time of the initialization.
-                    PickedUp = DateTime.Now,                        //initilesed for now, will change in  DalObject class, when order is updated to be picked up.
-                    Delivered = DateTime.Now
+                    PickedUp = null,                        //initilesed for now, will change in  DalObject class, when order is updated to be picked up.
+                    Delivered = null
                 };
 
                 parcels.Add(parcel);

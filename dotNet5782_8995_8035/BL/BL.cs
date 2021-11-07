@@ -16,14 +16,15 @@ namespace IBL
             private double heavy; // for the electricity use of a drone that carrys a heavy wight.
             private double chargingSpeed;//for the speed of the charge. precentage for hour.
 
-            private List<IBAL.BO.Drone> drones;
+            private List<IBAL.BO.DroneForList> drones;
 
 
-            static DateTime nulldate = new DateTime();//needed for comperation
+            //static DateTime nulldate = new DateTime();//needed for comperation
 
 
             public BL()
             {
+
                 dalObject = new DalObject.DalObject();
 
                 double[] electricityUse = dalObject.ElectricityUse();
@@ -35,34 +36,45 @@ namespace IBL
                 this.chargingSpeed = electricityUse[4];
 
                 
-
-                Dictionary<int, int> dronesToUpDate = dalObject.GetDronesToUpdate();
-
-                foreach (IDAL.DO.Drone drone in dalObject.GetDrones())
+                foreach(IDAL.DO.Drone dalDrone in dalObject.GetDrones())
                 {
-                    if(dronesToUpDate.ContainsKey(drone.Id)){
-                        if(dalObject.GetParcel(dronesToUpDate[drone.Id]).PickedUp == nulldate)
-                        {
-                            int senderId = dalObject.GetParcel(dronesToUpDate[drone.Id]).SenderId;
-                            int clothestBaseStation = dalObject.GetClothestStation(senderId);
-                            global::IBAL.BO.Location baseLocation = new global::IBAL.BO.Location() { Longitude = dalObject.GetBaseStation(clothestBaseStation).longitude, Lattitude = dalObject.GetBaseStation(clothestBaseStation).lattitude };
-                            this.drones.Add(new global::IBAL.BO.Drone() { Id = drone.Id, Model = drone.Model, MaxWeight = (Enums.WeightCategories)drone.MaxWeight , Status = Enums.DroneStatuses.DELIVERY , location = baseLocation});
-                        }
-                        else
-                        {
-                            int senderId = dalObject.GetParcel(dronesToUpDate[drone.Id]).SenderId;
-                            global::IBAL.BO.Location senderLocation = new global::IBAL.BO.Location() { Longitude = dalObject.GetCustomer(senderId).Longitude , Lattitude = dalObject.GetCustomer(senderId).Llattitude };
-                            this.drones.Add(new global::IBAL.BO.Drone() { Id = drone.Id, Model = drone.Model, MaxWeight = (Enums.WeightCategories)drone.MaxWeight, Status = Enums.DroneStatuses.DELIVERY, location = senderLocation});
-                        }
-                    }
-                    else
-                    {
-
-                    }
-
-                    //this.drones.Add(new IBAL.BO.Drone() { id =  drone.id, model = drone.model, MaxWeight = (Enums.WeightCategories)drone.MaxWeight });
-
+                    
+                    this.drones.Add(new DroneForList() { Id = dalDrone.Id, Model = dalDrone.Model, Weight = (IBAL.BO.Enums.WeightCategories)dalDrone.MaxWeight });    
                 }
+             
+               foreach(IDAL.DO.Parcel parcel in dalObject.GetParcelToDrone())
+                {
+                    
+                }
+
+
+                //Dictionary<int, int> dronesToUpDate = dalObject.GetDronesToUpdate();
+                //foreach (IDAL.DO.Drone drone in dalObject.GetDrones())
+                //{
+                //if (dronesToUpDate.ContainsKey(drone.Id))
+                //{
+                //    if (dalObject.GetParcel(dronesToUpDate[drone.Id]).PickedUp == nulldate)
+                //    {
+                //        int senderId = dalObject.GetParcel(dronesToUpDate[drone.Id]).SenderId;
+                //        int clothestBaseStation = dalObject.GetClothestStation(senderId);
+                //        global::IBAL.BO.Location baseLocation = new global::IBAL.BO.Location() { Longitude = dalObject.GetBaseStation(clothestBaseStation).longitude, Lattitude = dalObject.GetBaseStation(clothestBaseStation).lattitude };
+                //        this.drones.Add(new global::IBAL.BO.Drone() { Id = drone.Id, Model = drone.Model, MaxWeight = (Enums.WeightCategories)drone.MaxWeight, Status = Enums.DroneStatuses.DELIVERY, location = baseLocation });
+                //    }
+                //    else
+                //    {
+                //        int senderId = dalObject.GetParcel(dronesToUpDate[drone.Id]).SenderId;
+                //        global::IBAL.BO.Location senderLocation = new global::IBAL.BO.Location() { Longitude = dalObject.GetCustomer(senderId).Longitude, Lattitude = dalObject.GetCustomer(senderId).Llattitude };
+                //        this.drones.Add(new global::IBAL.BO.Drone() { Id = drone.Id, Model = drone.Model, MaxWeight = (Enums.WeightCategories)drone.MaxWeight, Status = Enums.DroneStatuses.DELIVERY, location = senderLocation });
+                //    }
+                //}
+                //else
+                //{
+
+                //}
+
+                //this.drones.Add(new IBAL.BO.Drone() { id = drone.id, model = drone.model, MaxWeight = (Enums.WeightCategories)drone.MaxWeight });
+
+                //}
 
                 //Console.WriteLine(this.drones[0]);
 
@@ -80,12 +92,9 @@ namespace IBL
 
 
 
-        public void AddDrone(IBAL.BO.Drone newDrone)
+        public void AddDrone(IBAL.BO.DroneForList newDrone)
         {
-
-            if(this.drones.)
-
-            foreach(IBAL.BO.Drone drone in this.drones)
+            foreach(IBAL.BO.DroneForList drone in this.drones)
             {
                 if(drone.Id == newDrone.Id)
                 {
@@ -93,10 +102,8 @@ namespace IBL
                 }
             }
             this.drones.Add(newDrone);
-            dalObject.AddDrone(newDrone.Id, newDrone.Model , (IDAL.DO.WeightCategories)newDrone.MaxWeight);
+            dalObject.AddDrone(newDrone.Id, newDrone.Model , (IDAL.DO.WeightCategories)newDrone.Weight);
         }
-
-
 
 
 
@@ -106,21 +113,9 @@ namespace IBL
         }
 
 
-
-
-
-
-
-        public void AddParcel(IBAL.BO.Parcel newPparcel)
+        public void AddParcel(IBAL.BO.Parcel parcel)
         {
-            foreach(IDAL.DO.Parcel parcel in dalObject.GetParcels())
-            {
-                if(newPparcel.Id == parcel.Id)
-                {
-                    throw new IdAlreadyExistsException(parcel.Id, "parcel");
-                }
-            }
-            dalObject.AddParcel(newPparcel.Id, newPparcel.SenderId, newPparcel.TargetId, (IDAL.DO.WeightCategories)newPparcel.Weight,  (IDAL.DO.Priorities)newPparcel.priority, newPparcel.DroneId, newPparcel.Requested, newPparcel.Scheduled);
+            dalObject.AddParcel(parcel.Id, parcel.Reciver.Id , parcel.Sender.Id , (IDAL.DO.WeightCategories)parcel.Weight,  (IDAL.DO.Priorities)parcel.Priority , parcel.Drone.Id , parcel.CreationTime, parcel.DeliveringTime);
         }
 
 
@@ -248,7 +243,6 @@ namespace IBL
 
         public IBAL.BO.BaseStation GetBaseStation(int baseStationId)
         {
-
             IDAL.DO.BaseStation dalBaseStation = dalObject.GetBaseStation(baseStationId);
             return new IBAL.BO.BaseStation()
             {
@@ -263,7 +257,7 @@ namespace IBL
             };
         }
 
-        public IBAL.BO.Drone GetDrone(int droneId)
+        public IBAL.BO.DroneForList GetDrone(int droneId)
         {
             for (int i = 0; i < this.drones.Count; i++)
             {
@@ -292,19 +286,23 @@ namespace IBL
 
         public IBAL.BO.Parcel GetParcel(int parcelId)
         {
-            IDAL.DO.Parcel newParcel = dalObject.GetParcel(parcelId);
+            IDAL.DO.Parcel dalParcel = dalObject.GetParcel(parcelId);
+            IBAL.BO.CoustomerForParcel sender = new CoustomerForParcel() { Id = dalParcel.SenderId, CustomerName = dalObject.GetCustomer(dalParcel.SenderId).Name };
+            IBAL.BO.CoustomerForParcel reciver = new CoustomerForParcel() { Id = dalParcel.TargetId, CustomerName = dalObject.GetCustomer(dalParcel.TargetId).Name };
+            IBAL.BO.DroneForParcel drone = new DroneForParcel() { Id = dalParcel.DroneId };
+          
+
             return new IBAL.BO.Parcel()
             {
-                Id = newParcel.Id,
-                SenderId = newParcel.SenderId,
-                TargetId = newParcel.TargetId,
-                DroneId = newParcel.DroneId,
-                Requested = newParcel.Requested,
-                Scheduled = newParcel.Scheduled,
-                priority = (IBAL.BO.Enums.Priorities)newParcel.Priority,
-                Weight = (IBAL.BO.Enums.WeightCategories)newParcel.Weight,
-                PickedUp = newParcel.PickedUp,
-                Delivered = newParcel.Delivered
+                Id = dalParcel.Id,
+                Sender = sender,
+                Reciver = reciver,
+                Drone = drone,
+                Priority = (IBAL.BO.Enums.Priorities)dalParcel.Priority,
+                AssigningTime = DateTime.Now,
+                CreationTime = dalParcel.Requested,
+                DeliveringTime = dalParcel.Scheduled,
+                PickupTime = dalParcel.PickedUp
             };
         }
 
@@ -328,7 +326,7 @@ namespace IBL
             return baseStations;
         }
 
-        public IEnumerable<IBAL.BO.Drone> GetDrones()
+        public IEnumerable<IBAL.BO.DroneForList> GetDrones()
         {
             return this.drones;
         }
@@ -356,45 +354,51 @@ namespace IBL
         public IEnumerable<IBAL.BO.Parcel> GetPacelss()
         {
             List<IBAL.BO.Parcel> parcels = new List<IBAL.BO.Parcel>();
-            foreach(IDAL.DO.Parcel parcel in dalObject.GetParcels())
+            foreach(IDAL.DO.Parcel dalParcel in dalObject.GetParcels())
             {
+                IBAL.BO.CoustomerForParcel sender = new CoustomerForParcel() { Id = dalParcel.SenderId, CustomerName = dalObject.GetCustomer(dalParcel.SenderId).Name };
+                IBAL.BO.CoustomerForParcel reciver = new CoustomerForParcel() { Id = dalParcel.TargetId, CustomerName = dalObject.GetCustomer(dalParcel.TargetId).Name };
+                IBAL.BO.DroneForParcel drone = new DroneForParcel() { Id = dalParcel.DroneId };
+
                 parcels.Add( new IBAL.BO.Parcel()
                 {
-                    Id = parcel.Id,
-                    SenderId = parcel.SenderId,
-                    TargetId = parcel.TargetId,
-                    DroneId = parcel.DroneId,
-                    Requested = parcel.Requested,
-                    Scheduled = parcel.Scheduled,
-                    priority = (IBAL.BO.Enums.Priorities)parcel.Priority,
-                    Weight = (IBAL.BO.Enums.WeightCategories)parcel.Weight,
-                    PickedUp = parcel.PickedUp,
-                    Delivered = parcel.Delivered
+                    Id = dalParcel.Id,
+                    Sender = sender,
+                    Reciver = reciver,
+                    Drone = drone,
+                    Priority = (IBAL.BO.Enums.Priorities)dalParcel.Priority,
+                    AssigningTime = DateTime.Now,
+                    CreationTime = dalParcel.Requested,
+                    DeliveringTime = dalParcel.Scheduled,
+                    PickupTime = dalParcel.PickedUp
                 });
             }
             return parcels;
         }
 
-        public IEnumerable<IBAL.BO.Parcel> GetParcelToDrone()
-        {
-            List<IBAL.BO.Parcel> parcels = new List<IBAL.BO.Parcel>();
-            foreach (IDAL.DO.Parcel parcel in dalObject.GetParcelToDrone())
-            {
-                parcels.Add(new IBAL.BO.Parcel()
-                {
-                    Id = parcel.Id,
-                    SenderId = parcel.SenderId,
-                    TargetId = parcel.TargetId,
-                    DroneId = parcel.DroneId,
-                    Requested = parcel.Requested,
-                    Scheduled = parcel.Scheduled,
-                    priority = (IBAL.BO.Enums.Priorities)parcel.Priority,
-                    Weight = (IBAL.BO.Enums.WeightCategories)parcel.Weight,
-                    PickedUp = parcel.PickedUp,
-                    Delivered = parcel.Delivered
-                });
-            }
-            return parcels;
-        }
+        //public IEnumerable<IBAL.BO.Parcel> GetParcelToDrone()
+        //{
+        //    List<IBAL.BO.Parcel> parcels = new List<IBAL.BO.Parcel>();
+        //    foreach (IDAL.DO.Parcel parcel in dalObject.GetParcelToDrone())
+        //    {
+        //        parcels.Add(new IBAL.BO.Parcel()
+        //        {
+        //            Id = parcel.Id,
+        //            SenderId = parcel.SenderId,
+        //            TargetId = parcel.TargetId,
+        //            DroneId = parcel.DroneId,
+        //            Requested = parcel.Requested,
+        //            Scheduled = parcel.Scheduled,
+        //            priority = (IBAL.BO.Enums.Priorities)parcel.Priority,
+        //            Weight = (IBAL.BO.Enums.WeightCategories)parcel.Weight,
+        //            PickedUp = parcel.PickedUp,
+        //            Delivered = parcel.Delivered
+        //        });
+        //    }
+        //    return parcels;
+        //}
+
+
+
     }//END BL class
 }//end IBAL

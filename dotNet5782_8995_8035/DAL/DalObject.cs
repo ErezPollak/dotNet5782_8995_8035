@@ -25,8 +25,6 @@ namespace DalObject
         public DalObject()
         {
             DataSource.Initialize();
-
-
         }
 
         //////***add options***/////
@@ -514,19 +512,21 @@ namespace DalObject
         //    return capableDrones;
         //}
 
+
+
         /// <summary>
         /// the class returns a list with all the parcels that was been assined to a drone but wasn't deliverd.
         /// </summary>
         /// <returns></returns>
-        public Dictionary<int, int> GetDronesToUpdate()
+        public List<IDAL.DO.Parcel> GetDronesToUpdate()
         {
-            DateTime defaultDate = new DateTime();// needed for comperation
-            Dictionary<int, int> parcelsWithoutDrone = new Dictionary<int, int>();
-            foreach(IDAL.DO.Parcel parcel in DataSource.parcels)
+
+            List<IDAL.DO.Parcel> parcelsWithoutDrone = new List<IDAL.DO.Parcel>();
+            foreach (IDAL.DO.Parcel parcel in DataSource.parcels)
             {
-                if(parcel.DroneId != -1 && parcel.Delivered == defaultDate)
+                if (parcel.DroneId != -1 && parcel.Delivered == null)
                 {
-                    parcelsWithoutDrone.Add(parcel.DroneId , parcel.Id);
+                    parcelsWithoutDrone.Add(parcel);
                 }
             }
 

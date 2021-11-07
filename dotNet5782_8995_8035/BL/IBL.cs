@@ -12,7 +12,7 @@ namespace IBL
         ////***add options***/////
 
         public void AddBaseStation(IBAL.BO.BaseStation baesStation);
-        public void AddDrone(IBAL.BO.Drone newDrone);
+        public void AddDrone(IBAL.BO.DroneForList newDrone);
         public void AddCustumer(IBAL.BO.Customer customer);
         public void AddParcel(IBAL.BO.Parcel newPparcel);
 
@@ -27,16 +27,16 @@ namespace IBL
         ////***show options***/////
 
         public IBAL.BO.BaseStation GetBaseStation(int baseStationId);
-        public IBAL.BO.Drone GetDrone(int droneId);
+        public IBAL.BO.DroneForList GetDrone(int droneId);
         public IBAL.BO.Customer GetCustomer(int customerId);
         public IBAL.BO.Parcel GetParcel(int parcelId);
 
         ////***get Lists***////
 
         public IEnumerable<IBAL.BO.BaseStation> GetBaseStations();
-        public IEnumerable<IBAL.BO.Drone> GetDrones();
+        public IEnumerable<IBAL.BO.DroneForList> GetDrones();
         public IEnumerable<IBAL.BO.Customer> GetCustomers();
         public IEnumerable<IBAL.BO.Parcel> GetPacelss();
-        public IEnumerable<IBAL.BO.Parcel> GetParcelToDrone();
+        //public IEnumerable<IBAL.BO.Parcel> GetParcelToDrone();
     }
 }
