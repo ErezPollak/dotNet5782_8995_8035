@@ -17,8 +17,7 @@ namespace IDAL
             public int Id { get; set; }
             public string Name { get; set; }
             public string Phone { get; set; }
-            public double Longitude { get; set; }
-            public double Llattitude { get; set; }
+            public Location Location{ get; set; }
 
             /// <summary>
             /// the function prints all the props of the struct.
@@ -31,9 +30,8 @@ namespace IDAL
                     $"id: {Id} , " +
                     $"name: {Name} , " +
                     $"phone : {Phone } , " +
-                    $"longitude: {(int)(this.Longitude)}° {(int)((this.Longitude - (int)(this.Longitude)) * 60)}' {((this.Longitude - (int)(this.Longitude)) * 60 - (int)((this.Longitude - (int)(this.Longitude)) * 60)) * 60}'' ," +
-                    $" lattitude: {(int)(this.Llattitude)}° {(int)((this.Llattitude - (int)(this.Llattitude)) * 60)}' {((this.Llattitude - (int)(this.Llattitude)) * 60 - (int)((this.Llattitude - (int)(this.Llattitude)) * 60)) * 60}'' \n";
-          
+                    $"location: {Location}" +
+                    $"";
             }
 
         }

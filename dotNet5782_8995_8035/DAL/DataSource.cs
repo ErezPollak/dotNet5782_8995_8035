@@ -68,8 +68,12 @@ namespace DalObject
                 {
                     id = i,
                     name = i.ToString(),
-                    lattitude = r.NextDouble() * 360 - 180,   // randomal values from -180 to 180 in order to represent a real coordinated location.
-                    longitude = r.NextDouble() * 180 - 90,   // randomal values from -90 to 90 in order to represent a real coordinated location.
+                    Location = new Location
+                    {
+                        Lattitude = r.NextDouble() * 360 - 180,   // randomal values from -180 to 180 in order to represent a real coordinated location.
+                        Longitude = r.NextDouble() * 180 - 90,   // randomal values from -90 to 90 in order to represent a real coordinated location.
+                    },
+
                     chargeSlots = r.Next() % 5 + 2
                 };
                 //adding the base station to the list.
@@ -99,8 +103,12 @@ namespace DalObject
                     Id = i,
                     Name = (char)(r.Next() % 26 + 65) + " , " + (char)(r.Next() % 26 + 65),
                     Phone = "05" + (r.Next() % 10).ToString() + "-" + (r.Next() % 1000000).ToString(),
-                    Llattitude = r.NextDouble() * 360 - 180,   // randomal values from -180 to 180 in order to represent a real coordinated location.
-                    Longitude = r.NextDouble() * 180 - 90   // randomal values from -90 to 90 in order to represent a real coordinated location.
+
+                    Location = new Location
+                    {
+                        Lattitude = r.NextDouble() * 360 - 180,   // randomal values from -180 to 180 in order to represent a real coordinated location.
+                        Longitude = r.NextDouble() * 180 - 90,   // randomal values from -90 to 90 in order to represent a real coordinated location.
+                    },
                 };
 
                 customers.Add(customer);
@@ -138,7 +146,7 @@ namespace DalObject
         }
 
         //the function recives a date, and randing another while making sure that the randomal date is after the given one.
-        private static DateTime pickingBiggerDate(DateTime d)
+        private static DateTime pickingBiggerDate(DateTime? d)
         {
             DateTime newD;
 

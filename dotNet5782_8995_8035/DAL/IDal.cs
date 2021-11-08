@@ -11,9 +11,9 @@ namespace IDAL
 
         ////***adding options***/////
 
-        public void AddBaseStation(int idNumber, string name, double longtude, double lattitude, int chargeslots);
+        public void AddBaseStation(int idNumber, string name, IDAL.DO.Location location, int chargeslots);
         public void AddDrone(int idNumber, string model, IDAL.DO.WeightCategories weight);
-        public void AddCustumer(int idNumber, string name, string phone, double longtitude, double lattitude);
+        public void AddCustumer(int idNumber, string name, string phone, IDAL.DO.Location location);
         public void AddParcel(int idNumber, int senderId, int targetId, IDAL.DO.WeightCategories weight, IDAL.DO.Priorities praiority, int droneId, DateTime? reqested, DateTime? scheduled);
 
 
@@ -45,9 +45,12 @@ namespace IDAL
         public IEnumerable<IDAL.DO.BaseStation> GetFreeStations();
 
         
-        //public Dictionary<int , int> GetDronesToUpdate();
+        
         public double[] ElectricityUse();
         public int GetClothestStation(int id);
+        public int GetBaseStationsNumber();
+        public int GetBaseStationId(int index);
+
 
     }
 }

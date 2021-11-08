@@ -63,5 +63,27 @@ namespace IBAL
             }
         }
 
+
+        [Serializable]
+        internal class NotEnoughRangeException : Exception
+        {
+            public NotEnoughRangeException()
+            {
+            }
+
+            public NotEnoughRangeException(string message) : base(message)
+            {
+            }
+
+            public NotEnoughRangeException(string message, Exception innerException) : base(message, innerException)
+            {
+            }
+
+            protected NotEnoughRangeException(SerializationInfo info, StreamingContext context) : base(info, context)
+            {
+            }
+        }
+
+
     }
 }

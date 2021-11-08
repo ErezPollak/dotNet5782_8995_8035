@@ -37,7 +37,7 @@ namespace DalObject
         /// <param name="longtude"></param>
         /// <param name="lattitude"></param>
         /// <param name="chargeslots"></param>
-        public void AddBaseStation(int idNumber, string name, double longtude, double lattitude, int chargeslots)
+        public void AddBaseStation(int idNumber, string name, IDAL.DO.Location location , int chargeslots)
         {
             //checking that the number is not already in the list, in witch case exeption will be thrown.
             foreach(IDAL.DO.BaseStation baseStation in DataSource.baseStations)
@@ -46,7 +46,7 @@ namespace DalObject
             }
 
             //adding the base station to the list after no matching serial numbers was fuond.
-            DataSource.baseStations.Add(new IDAL.DO.BaseStation() { id = idNumber ,name = name , longitude = longtude , lattitude = lattitude , chargeSlots = chargeslots });
+            DataSource.baseStations.Add(new IDAL.DO.BaseStation() { id = idNumber ,name = name , Location = location , chargeSlots = chargeslots });
 
         }
 
@@ -80,7 +80,7 @@ namespace DalObject
         /// <param name="phone"></param>
         /// <param name="longtitude"></param>
         /// <param name="lattitude"></param>
-        public void AddCustumer(int idNumber ,string name, string phone, double longtitude, double lattitude)
+        public void AddCustumer(int idNumber ,string name, string phone, IDAL.DO.Location location)
         {
             //checking that the number is not already in the list, in witch case exeption will be thrown.
             foreach (IDAL.DO.Customer customer in DataSource.customers)
@@ -89,7 +89,7 @@ namespace DalObject
             }
 
             //adding the base station to the list after no matching serial numbers was fuond.
-            DataSource.customers.Add(new IDAL.DO.Customer() { Id = idNumber, Name = name, Phone = phone, Llattitude = lattitude, Longitude = longtitude });
+            DataSource.customers.Add(new IDAL.DO.Customer() { Id = idNumber, Name = name, Phone = phone, Location = location });
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace DalObject
         /// <param name="droneId"></param>
         /// <param name="reqested"></param>
         /// <param name="scheduled"></param>
-        public void AddParcel(int idNumber , int senderId, int targetId, IDAL.DO.WeightCategories weight, IDAL.DO.Priorities praiority, int droneId, DateTime reqested, DateTime scheduled)
+        public void AddParcel(int idNumber , int senderId, int targetId, IDAL.DO.WeightCategories weight, IDAL.DO.Priorities praiority, int droneId, DateTime? reqested, DateTime? scheduled)
         {
             //checking that the number is not already in the list, in witch case exeption will be thrown.
             foreach (IDAL.DO.Parcel parcel in DataSource.parcels)
@@ -558,7 +558,7 @@ namespace DalObject
             IDAL.DO.Customer customer = GetCustomer(id);
             foreach(IDAL.DO.BaseStation baseStation in DataSource.baseStations)
             {
-                distanseSqered = Math.Pow(baseStation.lattitude - customer.Llattitude, 2) + Math.Pow(baseStation.longitude - customer.Longitude, 2);
+                distanseSqered = Math.Pow(baseStation.Location.Lattitude - customer.Location.Lattitude, 2) + Math.Pow(baseStation.Location.Longitude - customer.Location.Longitude, 2);
                 if(distanseSqered < minDistanceSqered)
                 {
                     minDistanceSqered = distanseSqered;
@@ -569,5 +569,30 @@ namespace DalObject
             return clothestStation;
             
         }
+
+
+        public int GetBaseStationsNumber()
+        {
+            return DataSource.baseStations.Count;
+        }
+
+        public int GetBaseStationId(int index)
+        {
+            return DataSource.baseStations[index].id;
+        }
+
+        //public int clothestStation(int customerId)
+        //{
+        //    double minDistance = distance(GetCustomer(customerId).Longitude , GetCustomer(customerId).Llattitude , this.GetBaseStations().ToList()[0].longitude , this.GetBaseStations().ToList()[0].lattitude);
+        //    foreach(IDAL.DO.BaseStation baseStation in get)
+        //}
+
+
+
+        //private double distance(double x1, double y1, double x2, double y2)
+        //{
+        //    return Math.Sqrt(Math.Pow(x1 - x2, 2) + (Math.Pow(y1 - y2, 2)));
+        //}
+
     }
 }
