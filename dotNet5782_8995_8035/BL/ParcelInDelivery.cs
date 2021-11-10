@@ -20,10 +20,10 @@ namespace IBAL
             public IBAL.BO.Location DeliveringLockation { get; set; }
             public double Distance { get; set; }
 
-            public override string ToString()
-            {
+            //public override string ToString()
+            //{
 
-            }
+            //}
 
 
         }

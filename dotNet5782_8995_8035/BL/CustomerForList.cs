@@ -18,9 +18,9 @@ namespace IBAL
             public int Recived { get; set; }
             public int OnTheWay { get; set; }
 
-            public override string ToString()
-            {
-            }
+            //public override string ToString()
+            //{
+            //}
         }
     }
 }

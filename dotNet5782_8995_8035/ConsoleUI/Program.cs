@@ -15,9 +15,6 @@ namespace ConsoleUI
 {
     class Program
     {
-        
-
-
 
         public static void Main(string[] args)
         {
@@ -43,8 +40,9 @@ namespace ConsoleUI
                             int addingChoice;
                             int.TryParse(Console.ReadLine(), out addingChoice);
 
-                            switch(addingChoice){
-                                case 1: 
+                            switch (addingChoice)
+                            {
+                                case 1:
                                     {
                                         //case 1: adding a base station
 
@@ -54,21 +52,21 @@ namespace ConsoleUI
 
                                         Console.Write("enter the name of the station: ");
                                         string name = Console.ReadLine();
-                                        
+
                                         Console.Write("enter the longtude: ");
                                         double longtude;
                                         double.TryParse(Console.ReadLine(), out longtude);
-                                        
+
                                         Console.Write("enter the lattitude: ");
                                         double lattitude;
                                         double.TryParse(Console.ReadLine(), out lattitude);
-                                        
+
                                         Console.Write("enter the number of charge slots: ");
                                         int chargeslots;
                                         int.TryParse(Console.ReadLine(), out chargeslots);
 
 
-                                        dalObject.AddBaseStation(number , name, longtude, lattitude, chargeslots);
+                                        dalObject.AddBaseStation(number, name, new IDAL.DO.Location() { Longitude = longtude, Lattitude = lattitude }, chargeslots);
 
                                         Console.WriteLine();
                                     }
@@ -84,7 +82,7 @@ namespace ConsoleUI
 
                                         Console.Write("enter the model of the drone: ");
                                         string name = Console.ReadLine();
-                                        
+
                                         Console.Write("enter the max weight of the drone: ");
                                         IDAL.DO.WeightCategories maxWeight;
                                         IDAL.DO.WeightCategories.TryParse(Console.ReadLine(), out maxWeight);
@@ -115,19 +113,19 @@ namespace ConsoleUI
 
                                         Console.Write("enter the name of the customer: ");
                                         string name = Console.ReadLine();
-                                        
+
                                         Console.Write("enter the phone: ");
                                         string phone = Console.ReadLine();
-                                        
+
                                         Console.Write("enter the longtude: ");
                                         double longtude;
                                         double.TryParse(Console.ReadLine(), out longtude);
-                                        
+
                                         Console.Write("enter the lattitude: ");
                                         double lattitude;
                                         double.TryParse(Console.ReadLine(), out lattitude);
 
-                                        dalObject.AddCustumer(number , name, phone , longtude, lattitude);
+                                        dalObject.AddCustumer(number, name, phone, new IDAL.DO.Location() { Longitude = longtude, Lattitude = lattitude });
                                         Console.WriteLine();
                                     }
                                     break;
@@ -143,19 +141,19 @@ namespace ConsoleUI
                                         Console.WriteLine("enter the sender ID: ");
                                         int senderId;
                                         int.TryParse(Console.ReadLine(), out senderId);
-                                        
+
                                         Console.WriteLine("enter the target ID: ");
                                         int targetId;
                                         int.TryParse(Console.ReadLine(), out targetId);
-                                        
+
                                         Console.WriteLine("enter the weight of the parcel: ");
                                         IDAL.DO.WeightCategories weight;
                                         IDAL.DO.WeightCategories.TryParse(Console.ReadLine(), out weight);
-                                        
+
                                         Console.WriteLine("enter the praiority of the parcel: ");
                                         IDAL.DO.Priorities priority;
                                         IDAL.DO.Priorities.TryParse(Console.ReadLine(), out priority);
-                                  
+
                                         //printing the ids of the relevent drones.
                                         Console.WriteLine("choose the drone id from the avaleble drones (not in Maintenance and can carry the weight of your parcel): ");
                                         //Console.Write("the avaleble drones are: ");
@@ -170,25 +168,25 @@ namespace ConsoleUI
 
                                         //setting the reqested time to be now.
                                         DateTime requested = DateTime.Now;
-                                        
+
                                         Console.WriteLine("How many days from now you want to schaduel your pecel?");
                                         int numOfDaysForDelivery;
                                         int.TryParse(Console.ReadLine(), out numOfDaysForDelivery);
-                                        DateTime scheduled  = requested.AddDays(numOfDaysForDelivery);
+                                        DateTime scheduled = requested.AddDays(numOfDaysForDelivery);
 
-                                        dalObject.AddParcel(number , senderId, targetId, weight, priority, droneId, requested, scheduled);
+                                        dalObject.AddParcel(number, senderId, targetId, weight, priority, droneId, requested, scheduled);
 
                                         Console.WriteLine();
-                                   }
+                                    }
                                     break;
                             }
 
                         }
                         break;
-                        //end of case 1 in the main switch
+                    //end of case 1 in the main switch
 
 
-                        //case 2: updating options
+                    //case 2: updating options
                     case 2:
                         {
                             Console.WriteLine("\n" +
@@ -196,7 +194,7 @@ namespace ConsoleUI
                                               "for updating the drone id for a parcel: 1. \n" +
                                               "for picking up a parcel by a drone: 2. \n" +
                                               "for delivering a parcel: 3.\n" +
-                                              "for snding a drone to a base station: 4.\n"+
+                                              "for snding a drone to a base station: 4.\n" +
                                               "for releasing a drone from a base station: 5.\n");
 
                             int updatingChoice;
@@ -205,7 +203,7 @@ namespace ConsoleUI
                             switch (updatingChoice)
                             {
                                 case 1:
-                                {
+                                    {
                                         // case 1: assigning drone for a parcel
                                         Console.WriteLine("enter the number of the parcel: ");
                                         int parcelID;
@@ -218,9 +216,10 @@ namespace ConsoleUI
 
                                         dalObject.UpdateDroneForAParcel(parcelID, droneID);
 
-                                }break;
+                                    }
+                                    break;
                                 case 2:
-                                {
+                                    {
                                         // case 2: updating the picking up time of the parcel to be now
                                         Console.WriteLine("enter the number of the parcel: ");
                                         int parcelID;
@@ -230,7 +229,7 @@ namespace ConsoleUI
                                     }
                                     break;
                                 case 3:
-                                { 
+                                    {
                                         // case 3: updating the delivering time of the parcel to be now
                                         Console.WriteLine("enter the number of the parcel: ");
                                         int parcelID;
@@ -238,10 +237,10 @@ namespace ConsoleUI
 
                                         dalObject.DeliveringParcel(parcelID);
 
-                                }
-                                break;
+                                    }
+                                    break;
                                 case 4:
-                                {
+                                    {
                                         //case 4: updating the charge of a drone
                                         Console.WriteLine("enter the number of the drone: ");
                                         int droneID;
@@ -261,9 +260,9 @@ namespace ConsoleUI
 
                                         dalObject.ChargeDrone(baseID, droneID);
                                     }
-                                break;
+                                    break;
                                 case 5:
-                                {
+                                    {
                                         //relicing a drone from charging
                                         Console.WriteLine("enter the number of the drone: ");
                                         int droneID;
@@ -271,16 +270,16 @@ namespace ConsoleUI
 
                                         dalObject.UnChargeDrone(droneID);
                                     }
-                                break;
+                                    break;
 
                             }
-                            
+
                         }
                         break;
-                        //end of case 2 in the main switch
+                    //end of case 2 in the main switch
 
 
-                        //case 3: shoing a cetain object.
+                    //case 3: shoing a cetain object.
                     case 3:
                         {
                             Console.WriteLine("enter your choice: \n" +
@@ -342,12 +341,12 @@ namespace ConsoleUI
                                     break;
                             }
 
-                            }
+                        }
                         break;
-                        //end of case 3 in the main switch
+                    //end of case 3 in the main switch
 
 
-                        //case 4: showing lists:
+                    //case 4: showing lists:
                     case 4:
                         {
                             Console.WriteLine("enter your choice: \n" +
@@ -367,7 +366,7 @@ namespace ConsoleUI
                                     {
                                         //showing the list of base stations
                                         IEnumerable<IDAL.DO.BaseStation> baseStations = dalObject.GetBaseStations();
-                                        foreach(IDAL.DO.BaseStation baseStation in baseStations)
+                                        foreach (IDAL.DO.BaseStation baseStation in baseStations)
                                         {
                                             Console.WriteLine(baseStation);
                                         }
@@ -376,7 +375,7 @@ namespace ConsoleUI
                                 case 2:
                                     {
                                         //showing the list of the drones
-                                        IEnumerable< IDAL.DO.Drone> drones = dalObject.GetDrones();
+                                        IEnumerable<IDAL.DO.Drone> drones = dalObject.GetDrones();
                                         foreach (IDAL.DO.Drone drone in drones)
                                         {
                                             Console.WriteLine(drone);
@@ -386,7 +385,7 @@ namespace ConsoleUI
                                 case 3:
                                     {
                                         // showing the list of the customers
-                                        IEnumerable< IDAL.DO.Customer> customers = dalObject.GetCustomers();
+                                        IEnumerable<IDAL.DO.Customer> customers = dalObject.GetCustomers();
                                         foreach (IDAL.DO.Customer customer in customers)
                                         {
                                             Console.WriteLine(customer);
@@ -396,7 +395,7 @@ namespace ConsoleUI
                                 case 4:
                                     {
                                         //showing the list of the parcels
-                                        IEnumerable< IDAL.DO.Parcel> parcels = dalObject.GetParcels();
+                                        IEnumerable<IDAL.DO.Parcel> parcels = dalObject.GetParcels();
                                         foreach (IDAL.DO.Parcel parcel in parcels)
                                         {
                                             Console.WriteLine(parcel);
@@ -407,7 +406,7 @@ namespace ConsoleUI
                                     {
                                         //shoing the list of the parcels that dont have a drine.
                                         IEnumerable<IDAL.DO.Parcel> noDroneParcels = dalObject.GetParcelToDrone();
-                                        foreach(IDAL.DO.Parcel parcel in noDroneParcels)
+                                        foreach (IDAL.DO.Parcel parcel in noDroneParcels)
                                         {
                                             Console.WriteLine(parcel);
                                         }
@@ -436,7 +435,7 @@ namespace ConsoleUI
 
             }//end of while 
 
-           
+
         }//end of Main
 
         /// <summary>

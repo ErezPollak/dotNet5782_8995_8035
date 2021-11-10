@@ -10,6 +10,7 @@
 
 
 using DalObject;
+using IDAL.DO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -547,15 +548,15 @@ namespace DalObject
         /// <summary>
         ///  the function gets an id of drone or a customer and returns the station that is clothst to this drone or customer.
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="customerId"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public int GetClothestStation(int id)
+        public int GetClothestStation(int customerId)
         {
             int clothestStation = 0;
             double distanseSqered = 0 , minDistanceSqered = 1000000;
 
-            IDAL.DO.Customer customer = GetCustomer(id);
+            IDAL.DO.Customer customer = GetCustomer(customerId);
             foreach(IDAL.DO.BaseStation baseStation in DataSource.baseStations)
             {
                 distanseSqered = Math.Pow(baseStation.Location.Lattitude - customer.Location.Lattitude, 2) + Math.Pow(baseStation.Location.Longitude - customer.Location.Longitude, 2);
@@ -579,6 +580,20 @@ namespace DalObject
         public int GetBaseStationId(int index)
         {
             return DataSource.baseStations[index].id;
+        }
+
+        public IEnumerable<IDAL.DO.Parcel> GetProvidedParcels()
+        {
+            List<IDAL.DO.Parcel> providedParcels = new List<IDAL.DO.Parcel>();
+            foreach(IDAL.DO.Parcel parcel in DataSource.parcels)
+            {
+                if(parcel.Delivered != null)
+                {
+                    providedParcels.Add(parcel);
+                }
+            }
+            return providedParcels;
+
         }
 
         //public int clothestStation(int customerId)

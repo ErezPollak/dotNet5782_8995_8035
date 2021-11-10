@@ -22,10 +22,10 @@ namespace IBAL
             public DateTime? DeliveringTime { get; set; }
 
 
-            public override string ToString()
-            { 
+            //public override string ToString()
+            //{ 
 
-            }
+            //}
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IBAL.BO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ namespace IBL
         ////***add options***/////
 
         public void AddBaseStation(IBAL.BO.BaseStation baesStation);
+        //void AddDrone(Drone drone);
         public void AddDrone(IBAL.BO.DroneForList newDrone);
         public void AddCustumer(IBAL.BO.Customer customer);
         public void AddParcel(IBAL.BO.Parcel newPparcel);

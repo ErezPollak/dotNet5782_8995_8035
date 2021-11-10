@@ -18,12 +18,12 @@ namespace IBAL
             public Location Location { get; set; }
             public int ParcelId { get; set; }
 
-            public override string ToString()
-            { 
+            //public override string ToString()
+            //{ 
 
 
 
-            }
+            //}
 
         }
     }

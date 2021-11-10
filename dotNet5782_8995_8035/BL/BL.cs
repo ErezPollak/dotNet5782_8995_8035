@@ -3,20 +3,21 @@ using System.Collections.Generic;
 using DalObject;
 using IDAL.DO;
 using IBAL.BO;
+using System.Linq;
 
 namespace IBL
 {
     public class BL : IBL
     {
-            private IDAL.IDal dalObject;
-            
-            private double free; // for the electricity use of a free drone
-            private double light; // for the electricity use of a drone that carrys a light wight.
-            private double middel; // for the electricity use of a drone that carrys a middle wight.
-            private double heavy; // for the electricity use of a drone that carrys a heavy wight.
-            private double chargingSpeed;//for the speed of the charge. precentage for hour.
+        private IDAL.IDal dalObject;
 
-            private List<IBAL.BO.DroneForList> drones;
+        private double free; // for the electricity use of a free drone
+        private double light; // for the electricity use of a drone that carrys a light wight.
+        private double middel; // for the electricity use of a drone that carrys a middle wight.
+        private double heavy; // for the electricity use of a drone that carrys a heavy wight.
+        private double chargingSpeed;//for the speed of the charge. precentage for hour.
+
+        private List<IBAL.BO.DroneForList> drones;
 
 
         private static Random r = new Random();     // a static value for 
@@ -28,6 +29,8 @@ namespace IBL
         {
 
             dalObject = new DalObject.DalObject();
+
+            drones = new List<DroneForList>();
 
             double[] electricityUse = dalObject.ElectricityUse();
 
@@ -88,14 +91,27 @@ namespace IBL
             }
 
 
-            foreach(IBAL.BO.DroneForList drone in this.drones)
+            foreach (IBAL.BO.DroneForList drone in this.drones)
             {
-                if(drone.Status == Enums.DroneStatuses.FREE)
+                if (drone.Status == Enums.DroneStatuses.FREE)
                 {
+                    List<IDAL.DO.Parcel> parcels = dalObject.GetProvidedParcels().ToList();
+                    
+                    int index = r.Next() % parcels.Count;
+                    
+                    drone.Location = locationTranslate(dalObject.GetCustomer(parcels[index].TargetId).Location);
+
+                    double deliveryDistance = distance(locationTranslate(dalObject.GetBaseStation(dalObject.GetClothestStation(parcels[index].TargetId)).Location),locationTranslate( dalObject.GetCustomer(parcels[index].TargetId).Location));
+
+                    double battayConcamption = deliveryDistance * dalObject.ElectricityUse()[(int)drone.Weight + 1];
+
+                    if (battayConcamption > 100) throw new IBAL.BO.NotEnoughRangeException($"the drone needs {battayConcamption} battary in order to complete to delivery. ");
+
+                    drone.Battary = (int)(r.NextDouble() * (100 - battayConcamption) + battayConcamption);
 
                 }
 
-                if(drone.Status == Enums.DroneStatuses.MAINTENANCE)
+                if (drone.Status == Enums.DroneStatuses.MAINTENANCE)
                 {
                     int stationNumber = r.Next() % dalObject.GetBaseStationsNumber();
                     drone.Location = locationTranslate(dalObject.GetBaseStation(dalObject.GetBaseStationId(stationNumber)).Location);
@@ -112,40 +128,40 @@ namespace IBL
 
 
 
-       ////**** adding option ****////
+        ////**** adding option ****////
 
 
         public void AddBaseStation(IBAL.BO.BaseStation newBaseStation)
         {
-            dalObject.AddBaseStation(newBaseStation.Id, newBaseStation.Name, locationTranslate(newBaseStation.Location) , newBaseStation.ChargeSlots);
+            dalObject.AddBaseStation(newBaseStation.Id, newBaseStation.Name, locationTranslate(newBaseStation.Location), newBaseStation.ChargeSlots);
         }
 
 
 
         public void AddDrone(IBAL.BO.DroneForList newDrone)
         {
-            foreach(IBAL.BO.DroneForList drone in this.drones)
+            foreach (IBAL.BO.DroneForList drone in this.drones)
             {
-                if(drone.Id == newDrone.Id)
+                if (drone.Id == newDrone.Id)
                 {
-                    throw new IdAlreadyExistsException(drone.Id , "drone");
+                    throw new IdAlreadyExistsException(drone.Id, "drone");
                 }
             }
             this.drones.Add(newDrone);
-            dalObject.AddDrone(newDrone.Id, newDrone.Model , (IDAL.DO.WeightCategories)newDrone.Weight);
+            dalObject.AddDrone(newDrone.Id, newDrone.Model, (IDAL.DO.WeightCategories)newDrone.Weight);
         }
 
 
 
         public void AddCustumer(IBAL.BO.Customer newCustomer)
         {
-            dalObject.AddCustumer(newCustomer.Id , newCustomer.Name , newCustomer.Phone , newCustomer.Location.Longitude , newCustomer.Location.Lattitude);
+            dalObject.AddCustumer(newCustomer.Id, newCustomer.Name, newCustomer.Phone, locationTranslate(newCustomer.Location));
         }
 
 
         public void AddParcel(IBAL.BO.Parcel parcel)
         {
-            dalObject.AddParcel(parcel.Id, parcel.Reciver.Id , parcel.Sender.Id , (IDAL.DO.WeightCategories)parcel.Weight,  (IDAL.DO.Priorities)parcel.Priority , parcel.Drone.Id , parcel.CreationTime, parcel.DeliveringTime);
+            dalObject.AddParcel(parcel.Id, parcel.Reciver.Id, parcel.Sender.Id, (IDAL.DO.WeightCategories)parcel.Weight, (IDAL.DO.Priorities)parcel.Priority, parcel.Drone.Id, parcel.CreationTime, parcel.DeliveringTime);
         }
 
 
@@ -246,9 +262,6 @@ namespace IBL
         }
 
 
-
-
-
         public void UnChargeDrone(int droneId)
         {
 
@@ -268,7 +281,7 @@ namespace IBL
 
 
         ////**** getting options ****////
-        
+
         /////// !!!!!!!Exceptions!!!!!!!!!!!!!    ///////////////////
 
         public IBAL.BO.BaseStation GetBaseStation(int baseStationId)
@@ -287,7 +300,7 @@ namespace IBL
         {
             for (int i = 0; i < this.drones.Count; i++)
             {
-                if(drones[i].Id == droneId)
+                if (drones[i].Id == droneId)
                 {
                     return drones[i];
                 }
@@ -313,7 +326,7 @@ namespace IBL
             IBAL.BO.CoustomerForParcel sender = new CoustomerForParcel() { Id = dalParcel.SenderId, CustomerName = dalObject.GetCustomer(dalParcel.SenderId).Name };
             IBAL.BO.CoustomerForParcel reciver = new CoustomerForParcel() { Id = dalParcel.TargetId, CustomerName = dalObject.GetCustomer(dalParcel.TargetId).Name };
             IBAL.BO.DroneForParcel drone = new DroneForParcel() { Id = dalParcel.DroneId };
-          
+
 
             return new IBAL.BO.Parcel()
             {
@@ -331,8 +344,9 @@ namespace IBL
 
         public IEnumerable<IBAL.BO.BaseStation> GetBaseStations()
         {
+
             List<IBAL.BO.BaseStation> baseStations = new List<IBAL.BO.BaseStation>();
-            foreach(IDAL.DO.BaseStation baseStation in dalObject.GetBaseStations())
+            foreach (IDAL.DO.BaseStation baseStation in dalObject.GetBaseStations())
             {
                 baseStations.Add(new IBAL.BO.BaseStation()
                 {
@@ -340,7 +354,7 @@ namespace IBL
                     Name = baseStation.name,
                     ChargeSlots = baseStation.chargeSlots,
                     Location = locationTranslate(baseStation.Location)
-                }) ;
+                });
             }
             return baseStations;
         }
@@ -353,7 +367,7 @@ namespace IBL
         public IEnumerable<IBAL.BO.Customer> GetCustomers()
         {
             List<IBAL.BO.Customer> customers = new List<IBAL.BO.Customer>();
-            foreach(IDAL.DO.Customer customer in dalObject.GetCustomers())
+            foreach (IDAL.DO.Customer customer in dalObject.GetCustomers())
             {
                 customers.Add(new IBAL.BO.Customer()
                 {
@@ -361,7 +375,7 @@ namespace IBL
                     Name = customer.Name,
                     Phone = customer.Phone,
                     Location = locationTranslate(customer.Location)
-                }) ;
+                });
             }
             return customers;
         }
@@ -369,13 +383,13 @@ namespace IBL
         public IEnumerable<IBAL.BO.Parcel> GetPacelss()
         {
             List<IBAL.BO.Parcel> parcels = new List<IBAL.BO.Parcel>();
-            foreach(IDAL.DO.Parcel dalParcel in dalObject.GetParcels())
+            foreach (IDAL.DO.Parcel dalParcel in dalObject.GetParcels())
             {
                 IBAL.BO.CoustomerForParcel sender = new CoustomerForParcel() { Id = dalParcel.SenderId, CustomerName = dalObject.GetCustomer(dalParcel.SenderId).Name };
                 IBAL.BO.CoustomerForParcel reciver = new CoustomerForParcel() { Id = dalParcel.TargetId, CustomerName = dalObject.GetCustomer(dalParcel.TargetId).Name };
                 IBAL.BO.DroneForParcel drone = new DroneForParcel() { Id = dalParcel.DroneId };
 
-                parcels.Add( new IBAL.BO.Parcel()
+                parcels.Add(new IBAL.BO.Parcel()
                 {
                     Id = dalParcel.Id,
                     Sender = sender,
@@ -392,7 +406,7 @@ namespace IBL
         }
 
 
-        private double distance(IBAL.BO.Location l1 , IBAL.BO.Location l2)
+        private double distance(IBAL.BO.Location l1, IBAL.BO.Location l2)
         {
             return Math.Sqrt(Math.Pow(l1.Longitude - l2.Longitude, 2) + Math.Pow(l1.Lattitude - l2.Lattitude, 2));
         }

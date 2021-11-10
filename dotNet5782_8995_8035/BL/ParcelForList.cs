@@ -17,11 +17,11 @@ namespace IBAL
             public IBAL.BO.Enums.Priorities Priority { get; set; }
             public IBAL.BO.Enums.ParcelStatus Status { get; set; }
 
-            public override string ToString()
-            {
+            //public override string ToString()
+            //{
 
 
-            }
+            //}
 
         }
     }
