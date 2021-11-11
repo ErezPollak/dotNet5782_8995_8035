@@ -52,6 +52,11 @@ namespace IDAL
         public int GetBaseStationId(int index);
         public IEnumerable<IDAL.DO.Parcel> GetProvidedParcels();
 
+        //functions for BL
 
+
+        public int GetSerialNumber();
+        void SetNameForADrone(int droneId, string model);
+        void UpdateBaseStation(int basStationID, string name, int slots);
     }
 }

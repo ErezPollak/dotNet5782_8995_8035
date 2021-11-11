@@ -494,7 +494,6 @@ namespace DalObject
             return freeBaseStations;
         }
 
-
         /// <summary>
         /// the function gets a  weight category of a parcel.
         /// the function returns a list with all the drones that are capable of taking it.
@@ -512,8 +511,6 @@ namespace DalObject
         //    }
         //    return capableDrones;
         //}
-
-
 
         /// <summary>
         /// the class returns a list with all the parcels that was been assined to a drone but wasn't deliverd.
@@ -533,6 +530,9 @@ namespace DalObject
 
             return parcelsWithoutDrone;
         }
+
+
+        //////////functions for BL.
 
 
         /// <summary>
@@ -571,7 +571,6 @@ namespace DalObject
             
         }
 
-
         public int GetBaseStationsNumber()
         {
             return DataSource.baseStations.Count;
@@ -594,6 +593,22 @@ namespace DalObject
             }
             return providedParcels;
 
+        }
+
+        public int GetSerialNumber()
+        {
+            return ++DataSource.Config.serialNumber;
+        }
+
+        public void SetNameForADrone(int droneId, string model)
+        {
+            int index = DataSource.drones.FindIndex(d => (d.Id == droneId));
+
+            IDAL.DO.Drone drone =  DataSource.drones[index];
+
+            drone.Model = model;
+
+            DataSource.drones[index]  = drone;
         }
 
         //public int clothestStation(int customerId)

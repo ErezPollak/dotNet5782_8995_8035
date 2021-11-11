@@ -95,9 +95,9 @@ namespace IBL
             {
                 if (drone.Status == Enums.DroneStatuses.FREE)
                 {
-                    List<IDAL.DO.Parcel> parcels = dalObject.GetProvidedParcels().ToList();
+                    List<IDAL.DO.Parcel> parcels = dalObject.GetParcels().ToList();
                     
-                    int index = r.Next() % parcels.Count;
+                    int index = r.Next() % (parcels.Count);
                     
                     drone.Location = locationTranslate(dalObject.GetCustomer(parcels[index].TargetId).Location);
 
@@ -136,8 +136,6 @@ namespace IBL
             dalObject.AddBaseStation(newBaseStation.Id, newBaseStation.Name, locationTranslate(newBaseStation.Location), newBaseStation.ChargeSlots);
         }
 
-
-
         public void AddDrone(IBAL.BO.DroneForList newDrone)
         {
             foreach (IBAL.BO.DroneForList drone in this.drones)
@@ -151,13 +149,10 @@ namespace IBL
             dalObject.AddDrone(newDrone.Id, newDrone.Model, (IDAL.DO.WeightCategories)newDrone.Weight);
         }
 
-
-
         public void AddCustumer(IBAL.BO.Customer newCustomer)
         {
             dalObject.AddCustumer(newCustomer.Id, newCustomer.Name, newCustomer.Phone, locationTranslate(newCustomer.Location));
         }
-
 
         public void AddParcel(IBAL.BO.Parcel parcel)
         {
@@ -196,8 +191,6 @@ namespace IBL
             //if the id numbers were found in the lists we can call the function from Idal.
             dalObject.UpdateDroneForAParcel(parcelId, droneId);
         }
-
-
 
         public void PickingUpParcel(int parcelId)
         {
@@ -421,6 +414,21 @@ namespace IBL
             return new IDAL.DO.Location() { Longitude = location.Longitude, Lattitude = location.Longitude };
         }
 
+        public int GetNextSerialNumberForParcel()
+        {
+            return dalObject.GetSerialNumber();
+        }
+
+        public IBAL.BO.CoustomerForParcel GetCustomerForParcel(int customerId)
+        {
+            IBAL.BO.CoustomerForParcel customer = new IBAL.BO.CoustomerForParcel()
+            {
+                Id = this.GetCustomer(customerId).Id,
+                CustomerName = this.GetCustomer(customerId).Name
+            };
+            return customer;
+        }
+
         //public IEnumerable<IBAL.BO.Parcel> GetParcelToDrone()
         //{
         //    List<IBAL.BO.Parcel> parcels = new List<IBAL.BO.Parcel>();
@@ -444,6 +452,50 @@ namespace IBL
         //}
 
 
+        ////////functions for main
 
+
+        void IBL.SetNameForADrone(int droneId, string model)
+        {
+
+            this.GetDrone(droneId).Model = model;
+
+            dalObject.SetNameForADrone(droneId, model);
+
+        }
+
+        public void UpdateBaseStation(int basStationID, string name, int slots)
+        {
+
+            int index = dalObject.GetBaseStations().ToList().FindIndex(d => (d.id == basStationID));
+
+            if (index == -1) throw new IDAL.DO.SerialNumberWasNotFoundExceptions();
+
+            IDAL.DO.BaseStation baseStation = dalObject.GetBaseStations().ToList()[index];
+
+            baseStation.name = name;
+
+            baseStation.chargeSlots = slots;
+
+            dalObject.GetBaseStations().ToList()[index] = baseStation;
+
+
+            //dalObject.UpdateBaseStation(basStationID, name, slots);
+        }
+
+        public void UpdateCustomer(int customerID, string name, string phone)
+        {
+            int index = dalObject.GetCustomers().ToList().FindIndex(d => d.Id == customerID);
+
+            if (index == -1) throw new IBAL.BO.IdDontExistsException();
+
+            IDAL.DO.Customer customer = dalObject.GetCustomers().ToList()[index];
+
+            customer.Name = name;
+
+            customer.Phone = phone;
+
+            dalObject.GetCustomers().ToList()[index] = customer;
+        }
     }//END BL class
 }//end IBAL
