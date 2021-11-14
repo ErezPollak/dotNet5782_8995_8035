@@ -50,7 +50,7 @@ namespace IBL
             {
 
 
-                if (parcel.DroneId != -1 && parcel.Delivered != null)
+                if (parcel.DroneId != -1 && parcel.AcceptedTime != null)
                 {
 
                     double deliveryDistance = 0;
@@ -343,7 +343,7 @@ namespace IBL
                 Priority = (IBAL.BO.Enums.Priorities)dalParcel.Priority,
                 AssigningTime = DateTime.Now,
                 CreationTime = dalParcel.Requested,
-                DeliveringTime = dalParcel.Scheduled,
+                DeliveringTime = dalParcel.DeliveryTime,
                 PickupTime = dalParcel.PickedUp
             };
         }
@@ -404,7 +404,7 @@ namespace IBL
                     Priority = (IBAL.BO.Enums.Priorities)dalParcel.Priority,
                     AssigningTime = DateTime.Now,
                     CreationTime = dalParcel.Requested,
-                    DeliveringTime = dalParcel.Scheduled,
+                    DeliveringTime = dalParcel.DeliveryTime,
                     PickupTime = dalParcel.PickedUp
                 });
             }

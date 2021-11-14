@@ -59,7 +59,7 @@ namespace DalObject
         ///10 parcels.
         ///the objects will be initlised with randomal values.
         /// </summary>
-        public static void Initialize()
+        internal static void Initialize()
         {
             //randomal values for base stations.
             for (int i = 0; i < 2; i++)
@@ -128,7 +128,7 @@ namespace DalObject
                     DroneId = -1,                                   //initileized to not have any drone, the drone number will be updated in the dalobject class.
                     Requested = pickingBiggerDate(DateTime.Now),  // initilesed to be the time of the initialization.
                     PickedUp = null,                        //initilesed for now, will change in  DalObject class, when order is updated to be picked up.
-                    Delivered = null
+                    AcceptedTime = null
                 };
 
                 parcels.Add(parcel);
@@ -139,7 +139,7 @@ namespace DalObject
             for (int index = 0; index < DataSource.parcels.Count; index++)
             {
                 IDAL.DO.Parcel p = DataSource.parcels[index];
-                p.Scheduled = pickingBiggerDate(p.Requested);
+                p.DeliveryTime = pickingBiggerDate(p.Requested);
                 DataSource.parcels[index] = p;
                 ++index;
             }

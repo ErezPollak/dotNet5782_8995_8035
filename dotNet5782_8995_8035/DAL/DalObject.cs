@@ -113,7 +113,7 @@ namespace DalObject
             }
 
             //adding the base station to the list after no matching serial numbers was fuond.
-            DataSource.parcels.Add(new IDAL.DO.Parcel() { Id = idNumber, SenderId = senderId, TargetId = targetId, Weight = weight, Priority = praiority, DroneId = droneId, Requested = reqested, Scheduled = scheduled });
+            DataSource.parcels.Add(new IDAL.DO.Parcel() { Id = idNumber, SenderId = senderId, TargetId = targetId, Weight = weight, Priority = praiority, DroneId = droneId, Requested = reqested, DeliveryTime = scheduled });
         }
 
         ////***update options***/////
@@ -216,7 +216,7 @@ namespace DalObject
             //updating the time of delivered field to be now.
             //according to the number that was found while looking for an exception.  
             IDAL.DO.Parcel newParcel = DataSource.parcels[parcelIndex];
-            newParcel.Delivered = DateTime.Now;
+            newParcel.AcceptedTime = DateTime.Now;
             DataSource.parcels[parcelIndex] = newParcel;
         }
 
@@ -531,7 +531,7 @@ namespace DalObject
             List<IDAL.DO.Parcel> parcelsWithoutDrone = new List<IDAL.DO.Parcel>();
             foreach (IDAL.DO.Parcel parcel in DataSource.parcels)
             {
-                if (parcel.DroneId != -1 && parcel.Delivered == null)
+                if (parcel.DroneId != -1 && parcel.AcceptedTime == null)
                 {
                     parcelsWithoutDrone.Add(parcel);
                 }
@@ -595,7 +595,7 @@ namespace DalObject
             List<IDAL.DO.Parcel> providedParcels = new List<IDAL.DO.Parcel>();
             foreach(IDAL.DO.Parcel parcel in DataSource.parcels)
             {
-                if(parcel.Delivered != null)
+                if(parcel.AcceptedTime != null)
                 {
                     providedParcels.Add(parcel);
                 }

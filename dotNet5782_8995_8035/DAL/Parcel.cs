@@ -29,9 +29,9 @@ namespace IDAL
             public Priorities Priority { get; set; }
             public DateTime? Requested { get; set; }
             public int DroneId { get; set; }
-            public DateTime? Scheduled { get; set; }
+            public DateTime? DeliveryTime { get; set; }
             public DateTime? PickedUp { get; set; }
-            public DateTime? Delivered { get; set; }
+            public DateTime? AcceptedTime { get; set; }
 
             /// <summary>
             /// the function prints all the props of the struct.
@@ -44,7 +44,7 @@ namespace IDAL
 
                 return $"Parcel: id: {Id} , senderld: {SenderId} , targetld : {TargetId} " +
                     $", weight: {Weight}, priority: {Priority},  droneld: {DroneId}, " +
-                    $"requested: {Requested}, scheduled: {Scheduled},delivered: {Delivered},  " +
+                    $"requested: {Requested}, scheduled: {DeliveryTime},delivered: {AcceptedTime},  " +
                     $"pickedUp: {PickedUp}\n";
             }
 
