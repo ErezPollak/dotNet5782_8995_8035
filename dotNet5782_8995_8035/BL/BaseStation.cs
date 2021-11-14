@@ -20,10 +20,16 @@ namespace IBAL
             /// the function prints all the props of the struct.
             /// </summary>
             /// <returns></returns>
-            //public override string ToString()
-            //{
-
-            //}
+            public override string ToString()
+            {
+                return $"Base Station: " +
+                    $"ID: {this.Id}." +
+                    $"Name: {this.Name}. " +
+                    $"Location: {this.Location}." +
+                    $"ChargeSlots: {this.ChargeSlots}." +
+                    $"drones: {this.CargingDrones}." +
+                    $"";
+            }
         }
     }
 }

@@ -235,11 +235,13 @@ namespace IBL
 
             baseStations = baseStations.OrderBy(b => distance(locationTranslate(b.Location), GetDrone(droneId).Location)).ToList();
 
-            baseStations.ForEach(b => Console.WriteLine(b.id));
+            ///baseStations.ForEach(b => Console.WriteLine(b.id));
 
-            IDAL.DO.BaseStation baseStation = baseStations.First(b => b.chargeSlots > 0);
+            IDAL.DO.BaseStation? baseStation = baseStations.First(b => b.chargeSlots > 0);
 
-            Console.WriteLine("sdfds" + baseStation.id);
+            if (baseStation == null) throw new NotAbleToSendDroneToChargeException(maxDistance);
+
+            Console.WriteLine();
             
 
             //bool isNameExists = false;
@@ -482,8 +484,6 @@ namespace IBL
             drone.Model = model;
 
             dalObject.GetDrones().ToList()[index] = drone;
-
-
 
         }
 

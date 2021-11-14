@@ -17,6 +17,7 @@ namespace IBAL
             public List<IBAL.BO.ParcelByCustomer> fromCustomer  { get; set; }
             public List<IBAL.BO.ParcelByCustomer> ToCustomer { get; set; }
 
+
             /// <summary>
             /// the function prints all the props of the struct.
             /// </summary>
@@ -28,7 +29,11 @@ namespace IBAL
                     $"id: {Id} , " +
                     $"name: {Name} , " +
                     $"phone : {Phone } , " +
-                    $"location: {Location.ToString()}";
+                    $"location: {Location.ToString()} \n" +
+                    $"the paecels that this customer got: {this.fromCustomer} \n" +
+                    $"the parcels that this customer sent: {this.ToCustomer}" +
+                    $"";
+
             }
         }
     }

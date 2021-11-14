@@ -13,11 +13,12 @@ namespace IBAL
             public int Id { get; set; }
             public int Battary { get; set; }
 
-            //public override string ToString()
-            //{
-
-
-            //}
+            public override string ToString()
+            {
+                return $"Id: {this.Id} " +
+                    $"Battary: {this.Battary} " +
+                    $"";  
+            }
         }
     }
 }

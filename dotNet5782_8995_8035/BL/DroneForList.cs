@@ -18,12 +18,17 @@ namespace IBAL
             public Location Location { get; set; }
             public int ParcelId { get; set; }
 
-            //public override string ToString()
-            //{ 
-
-
-
-            //}
+            public override string ToString()
+            {
+                return $"ID: {this.Id} " +
+                    $"model: {this.Model} " +
+                    $"weight: {this.Weight} " +
+                    $"battary: {this.Battary} " +
+                    $"status: {this.Status} " +
+                    $"location: {this.Location} " +
+                    $"parcelId: {this.ParcelId}" +
+                    $"";
+            }
 
         }
     }

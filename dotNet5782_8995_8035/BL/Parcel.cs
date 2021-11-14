@@ -22,10 +22,20 @@ namespace IBAL
             public DateTime? DeliveringTime { get; set; }
 
 
-            //public override string ToString()
-            //{ 
-
-            //}
+            public override string ToString()
+            {
+                return $"Id: {this.Id} " +
+                    $"Sender: {this.Sender} " +
+                    $"Reciver: {this.Reciver} " +
+                    $"Weight: {this.Weight} " +
+                    $"Priority: {this.Priority} " +
+                    $"Drone: {this.Drone} " +
+                    $"CreationTime: {this.CreationTime} " +
+                    $"AssigningTime: {this.AssigningTime} " +
+                    $"PickupTime: {this.PickupTime} " +
+                    $"DeliveringTime: {this.DeliveringTime} " +
+                    $"";
+            }
         }
     }
 }

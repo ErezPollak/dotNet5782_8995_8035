@@ -18,9 +18,17 @@ namespace IBAL
             public int Recived { get; set; }
             public int OnTheWay { get; set; }
 
-            //public override string ToString()
-            //{
-            //}
+            public override string ToString()
+            {
+                return $"id: {this.Id} " +
+                    $"name: {this.Name} " +
+                    $"phone {this.Phone} " +
+                    $"finished parcels: {this.SentAndDeliverd} " +
+                    $"not finished parcels: {this.SentAnDNotDelivered} " +
+                    $"recived: {this.Recived} " +
+                    $"parcels on the way: {this.OnTheWay} " +
+                    $"";
+            }
         }
     }
 }

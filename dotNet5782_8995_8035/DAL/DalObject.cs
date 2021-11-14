@@ -267,7 +267,7 @@ namespace DalObject
              DataSource.baseStations[baseStationIndex] = newBaseStation;
            
             //creating the charge drone ans adding it to the list of charges.
-            IDAL.DO.DroneCharge droneCharge = new IDAL.DO.DroneCharge() { DroneId = droneId, SstationId = baseStationId };
+            IDAL.DO.DroneCharge droneCharge = new IDAL.DO.DroneCharge() { DroneId = droneId, StationId = baseStationId };
             DataSource.charges.Add(droneCharge);
         }
 
@@ -308,11 +308,11 @@ namespace DalObject
             //finds the index of the station and update when finds, no need for excption search, because the station exists for sure.
             for (int i = 0; i < DataSource.baseStations.Count; i++)
             {
-                if(DataSource.baseStations[i].id == DataSource.charges[chargeIndex].SstationId)
+                if(DataSource.baseStations[i].id == DataSource.charges[chargeIndex].StationId)
                 {
-                    IDAL.DO.BaseStation baseStation = DataSource.baseStations[DataSource.charges[chargeIndex].SstationId];
+                    IDAL.DO.BaseStation baseStation = DataSource.baseStations[DataSource.charges[chargeIndex].StationId];
                     ++baseStation.chargeSlots;
-                    DataSource.baseStations[DataSource.charges[chargeIndex].SstationId] = baseStation;
+                    DataSource.baseStations[DataSource.charges[chargeIndex].StationId] = baseStation;
                     break;
                 }
             }
@@ -324,106 +324,106 @@ namespace DalObject
 
         ////***show options***/////
        
-        /// <summary>
-        /// the function recives an ID number of  a base station and returns the relevent station.
-        /// </summary>
-        /// <param name="baseStationId"></param>
-        /// <returns></returns>
-        public IDAL.DO.BaseStation GetBaseStation(int baseStationId)
-        {
-            int baseStationIndex = 0;
+        ///// <summary>
+        ///// the function recives an ID number of  a base station and returns the relevent station.
+        ///// </summary>
+        ///// <param name="baseStationId"></param>
+        ///// <returns></returns>
+        //public IDAL.DO.BaseStation GetBaseStation(int baseStationId)
+        //{
+        //    int baseStationIndex = 0;
 
-            //checking if the numbers of base station that was provided exist in the database or not. if not an excption will be thrown.
-            bool isNameExists = false;
-            foreach (IDAL.DO.BaseStation baseStation in DataSource.baseStations)
-            {
-                if (baseStation.id == baseStationId)
-                {
-                    isNameExists = true;
-                    break;
-                }
-                ++baseStationIndex;
-            }
-            if (!isNameExists) throw new IDAL.DO.SerialNumberWasNotFoundExceptions(baseStationId, "base station");
+        //    //checking if the numbers of base station that was provided exist in the database or not. if not an excption will be thrown.
+        //    bool isNameExists = false;
+        //    foreach (IDAL.DO.BaseStation baseStation in DataSource.baseStations)
+        //    {
+        //        if (baseStation.id == baseStationId)
+        //        {
+        //            isNameExists = true;
+        //            break;
+        //        }
+        //        ++baseStationIndex;
+        //    }
+        //    if (!isNameExists) throw new IDAL.DO.SerialNumberWasNotFoundExceptions(baseStationId, "base station");
 
-            return DataSource.baseStations[baseStationIndex];
-        }
+        //    return DataSource.baseStations[baseStationIndex];
+        //}
 
-        /// <summary>
-        /// the function recives an ID number of a drone and returns the relevent drone.
-        /// </summary>
-        /// <param name="droneId"></param>
-        /// <returns></returns>
-        public IDAL.DO.Drone GetDrone(int droneId)
-        {
-            int droneIndex = 0;
+        ///// <summary>
+        ///// the function recives an ID number of a drone and returns the relevent drone.
+        ///// </summary>
+        ///// <param name="droneId"></param>
+        ///// <returns></returns>
+        //public IDAL.DO.Drone GetDrone(int droneId)
+        //{
+        //    int droneIndex = 0;
 
-            //checking if the numbers of drone that was provided exist in the database or not. if not an excption will be thrown.
-            bool isNameExists = false;
-            foreach (IDAL.DO.Drone drone in DataSource.drones)
-            {
-                if (drone.Id == droneId)
-                {
-                    isNameExists = true;
-                    break;
-                }
-                ++droneIndex;
-            }
-            if (!isNameExists) throw new IDAL.DO.SerialNumberWasNotFoundExceptions(droneId, "drone");
+        //    //checking if the numbers of drone that was provided exist in the database or not. if not an excption will be thrown.
+        //    bool isNameExists = false;
+        //    foreach (IDAL.DO.Drone drone in DataSource.drones)
+        //    {
+        //        if (drone.Id == droneId)
+        //        {
+        //            isNameExists = true;
+        //            break;
+        //        }
+        //        ++droneIndex;
+        //    }
+        //    if (!isNameExists) throw new IDAL.DO.SerialNumberWasNotFoundExceptions(droneId, "drone");
 
-            return DataSource.drones[droneIndex];
-        }
+        //    return DataSource.drones[droneIndex];
+        //}
 
-        /// <summary>
-        /// the function recives an ID number of a customer and returns the relevent customer.
-        /// </summary>
-        /// <param name="customerId"></param>
-        /// <returns></returns>
-        public IDAL.DO.Customer GetCustomer(int customerId)
-        {
-            int customerIndex = 0;
+        ///// <summary>
+        ///// the function recives an ID number of a customer and returns the relevent customer.
+        ///// </summary>
+        ///// <param name="customerId"></param>
+        ///// <returns></returns>
+        //public IDAL.DO.Customer GetCustomer(int customerId)
+        //{
+        //    int customerIndex = 0;
 
-            //checking if the numbers of drone that was provided exist in the database or not. if not an excption will be thrown.
-            bool isNameExists = false;
-            foreach (IDAL.DO.Customer customer in DataSource.customers)
-            {
-                if (customer.Id == customerId)
-                {
-                    isNameExists = true;
-                    break;
-                }
-                ++customerIndex;
-            }
-            if (!isNameExists) throw new IDAL.DO.SerialNumberWasNotFoundExceptions(customerId, "customer");
+        //    //checking if the numbers of drone that was provided exist in the database or not. if not an excption will be thrown.
+        //    bool isNameExists = false;
+        //    foreach (IDAL.DO.Customer customer in DataSource.customers)
+        //    {
+        //        if (customer.Id == customerId)
+        //        {
+        //            isNameExists = true;
+        //            break;
+        //        }
+        //        ++customerIndex;
+        //    }
+        //    if (!isNameExists) throw new IDAL.DO.SerialNumberWasNotFoundExceptions(customerId, "customer");
 
-            return DataSource.customers[customerIndex];
-        }
+        //    return DataSource.customers[customerIndex];
+        //}
 
 
-        /// <summary>
-        /// the function recives an ID number of a parcel and returns the relevent parcel.
-        /// </summary>
-        /// <param name="parchesId"></param>
-        /// <returns></returns>
-        public IDAL.DO.Parcel GetParcel(int parcelId)
-        {
-            int parcelIndex = 0;
+        ///// <summary>
+        ///// the function recives an ID number of a parcel and returns the relevent parcel.
+        ///// </summary>
+        ///// <param name="parchesId"></param>
+        ///// <returns></returns>
+        //public IDAL.DO.Parcel GetParcel(int parcelId)
+        //{
+        //    int parcelIndex = 0;
 
-            //checking if the numbers of drone that was provided exist in the database or not. if not an excption will be thrown.
-            bool isNameExists = false;
-            foreach (IDAL.DO.Parcel parcel in DataSource.parcels)
-            {
-                if (parcel.Id == parcelId)
-                {
-                    isNameExists = true;
-                    break;
-                }
-                ++parcelIndex;
-            }
-            if (!isNameExists) throw new IDAL.DO.SerialNumberWasNotFoundExceptions(parcelId, "parcel");
+        //    //checking if the numbers of drone that was provided exist in the database or not. if not an excption will be thrown.
+        //    bool isNameExists = false;
+        //    foreach (IDAL.DO.Parcel parcel in DataSource.parcels)
+        //    {
+        //        if (parcel.Id == parcelId)
+        //        {
+        //            isNameExists = true;
+        //            break;
+        //        }
+        //        ++parcelIndex;
+        //    }
+        //    if (!isNameExists) throw new IDAL.DO.SerialNumberWasNotFoundExceptions(parcelId, "parcel");
 
-            return DataSource.parcels[parcelId];
-        }
+        //    return DataSource.parcels[parcelId];
+        //}
 
         ////***get Lists***////
 
@@ -434,13 +434,16 @@ namespace DalObject
         {
             List<IDAL.DO.BaseStation> list = new List<BaseStation>();
 
-            foreach (IDAL.DO.BaseStation baseStation in DataSource.baseStations)
-            {
-                if (f(baseStation))
-                {
-                    list.Add(baseStation);
-                }
-            }
+            DataSource.baseStations.ForEach(delegate (IDAL.DO.BaseStation b) { if (f(b)) { list.Add(b); } });
+
+            //foreach (IDAL.DO.BaseStation baseStation in DataSource.baseStations)
+            //{
+            //    if (f(baseStation))
+            //    {
+            //        list.Add(baseStation);
+            //    }
+            //}
+
             return list;
         }
 
@@ -448,7 +451,7 @@ namespace DalObject
         /// returns the array of the base drones.
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<IDAL.DO.Drone> GetDrones()
+        public IEnumerable<IDAL.DO.Drone> GetDrones(Predicate<IDAL.DO.Drone> f)
         {
             return DataSource.drones.ToList();
         }
@@ -456,7 +459,7 @@ namespace DalObject
         /// <summary>
         /// returns the array of the base customers.
         /// </summary>
-        public IEnumerable<IDAL.DO.Customer> GetCustomers()
+        public IEnumerable<IDAL.DO.Customer> GetCustomers(Predicate<IDAL.DO.Customer> f)
         {
             return DataSource.customers.ToList();
         }
@@ -464,81 +467,81 @@ namespace DalObject
         /// <summary>
         /// returns the array of the parcheses
         /// </summary>
-        public IEnumerable<IDAL.DO.Parcel> GetParcels()
+        public IEnumerable<IDAL.DO.Parcel> GetParcels(Predicate<IDAL.DO.Parcel> f)
         {
             return DataSource.parcels.ToList();
         }
 
-        /// <summary>
-        /// returns all the parcels that dont have a drone assigned to them.
-        /// </summary>
-        public IEnumerable<IDAL.DO.Parcel> GetParcelToDrone()
-        {
-            List<IDAL.DO.Parcel> parcelsToDrones = new List<IDAL.DO.Parcel>();
-
-            foreach(IDAL.DO.Parcel parcel in DataSource.parcels)
-            {
-                if (parcel.DroneId == -1)
-                {
-                    parcelsToDrones.Add(parcel);
-                }
-            }
-
-            return parcelsToDrones;
-        }
-
-        /// <summary>
-        /// returns all the base stations that have free charging slots
-        /// </summary>
-        public IEnumerable<IDAL.DO.BaseStation> GetFreeStations()
-        {
-            List<IDAL.DO.BaseStation> freeBaseStations = new List<IDAL.DO.BaseStation>();
-            foreach(IDAL.DO.BaseStation baseStation in DataSource.baseStations)
-            {
-                if (baseStation.chargeSlots > 0)
-                {
-                    freeBaseStations.Add(baseStation);
-                }
-            }
-            return freeBaseStations;
-        }
-
-        /// <summary>
-        /// the function gets a  weight category of a parcel.
-        /// the function returns a list with all the drones that are capable of taking it.
-        /// </summary>
-        /// <param name="weight"></param>
-        //public IEnumerable<IDAL.DO.Drone> GetDroneForParcel(IDAL.DO.WeightCategories weight)
+        ///// <summary>
+        ///// returns all the parcels that dont have a drone assigned to them.
+        ///// </summary>
+        //public IEnumerable<IDAL.DO.Parcel> GetParcelToDrone()
         //{
-        //    List<IDAL.DO.Drone> capableDrones = new List<IDAL.DO.Drone>();
-        //    foreach(IDAL.DO.Drone drone in DataSource.drones)
+        //    List<IDAL.DO.Parcel> parcelsToDrones = new List<IDAL.DO.Parcel>();
+
+        //    foreach(IDAL.DO.Parcel parcel in DataSource.parcels)
         //    {
-        //        if(drone.MaxWeight >= weight && drone.Status == IDAL.DO.DroneStatuses.FREE)
+        //        if (parcel.DroneId == -1)
         //        {
-        //            capableDrones.Add(drone);
+        //            parcelsToDrones.Add(parcel);
         //        }
         //    }
-        //    return capableDrones;
+
+        //    return parcelsToDrones;
         //}
 
-        /// <summary>
-        /// the class returns a list with all the parcels that was been assined to a drone but wasn't deliverd.
-        /// </summary>
-        /// <returns></returns>
-        public List<IDAL.DO.Parcel> GetDronesToUpdate()
-        {
+        ///// <summary>
+        ///// returns all the base stations that have free charging slots
+        ///// </summary>
+        //public IEnumerable<IDAL.DO.BaseStation> GetFreeStations()
+        //{
+        //    List<IDAL.DO.BaseStation> freeBaseStations = new List<IDAL.DO.BaseStation>();
+        //    foreach(IDAL.DO.BaseStation baseStation in DataSource.baseStations)
+        //    {
+        //        if (baseStation.chargeSlots > 0)
+        //        {
+        //            freeBaseStations.Add(baseStation);
+        //        }
+        //    }
+        //    return freeBaseStations;
+        //}
 
-            List<IDAL.DO.Parcel> parcelsWithoutDrone = new List<IDAL.DO.Parcel>();
-            foreach (IDAL.DO.Parcel parcel in DataSource.parcels)
-            {
-                if (parcel.DroneId != -1 && parcel.AcceptedTime == null)
-                {
-                    parcelsWithoutDrone.Add(parcel);
-                }
-            }
+        ///// <summary>
+        ///// the function gets a  weight category of a parcel.
+        ///// the function returns a list with all the drones that are capable of taking it.
+        ///// </summary>
+        ///// <param name="weight"></param>
+        ////public IEnumerable<IDAL.DO.Drone> GetDroneForParcel(IDAL.DO.WeightCategories weight)
+        ////{
+        ////    List<IDAL.DO.Drone> capableDrones = new List<IDAL.DO.Drone>();
+        ////    foreach(IDAL.DO.Drone drone in DataSource.drones)
+        ////    {
+        ////        if(drone.MaxWeight >= weight && drone.Status == IDAL.DO.DroneStatuses.FREE)
+        ////        {
+        ////            capableDrones.Add(drone);
+        ////        }
+        ////    }
+        ////    return capableDrones;
+        ////}
 
-            return parcelsWithoutDrone;
-        }
+        ///// <summary>
+        ///// the class returns a list with all the parcels that was been assined to a drone but wasn't deliverd.
+        ///// </summary>
+        ///// <returns></returns>
+        //public List<IDAL.DO.Parcel> GetDronesToUpdate()
+        //{
+
+        //    List<IDAL.DO.Parcel> parcelsWithoutDrone = new List<IDAL.DO.Parcel>();
+        //    foreach (IDAL.DO.Parcel parcel in DataSource.parcels)
+        //    {
+        //        if (parcel.DroneId != -1 && parcel.AcceptedTime == null)
+        //        {
+        //            parcelsWithoutDrone.Add(parcel);
+        //        }
+        //    }
+
+        //    return parcelsWithoutDrone;
+        //}
 
 
         //////////functions for BL.
@@ -565,7 +568,7 @@ namespace DalObject
             int clothestStation = 0;
             double distanseSqered = 0 , minDistanceSqered = 1000000;
 
-            IDAL.DO.Customer customer = GetCustomer(customerId);
+            IDAL.DO.Customer customer = GetCustomers(c =>  c.Id == customerId).First();
             foreach(IDAL.DO.BaseStation baseStation in DataSource.baseStations)
             {
                 distanseSqered = Math.Pow(baseStation.Location.Lattitude - customer.Location.Lattitude, 2) + Math.Pow(baseStation.Location.Longitude - customer.Location.Longitude, 2);
@@ -590,19 +593,19 @@ namespace DalObject
             return DataSource.baseStations[index].id;
         }
 
-        public IEnumerable<IDAL.DO.Parcel> GetProvidedParcels()
-        {
-            List<IDAL.DO.Parcel> providedParcels = new List<IDAL.DO.Parcel>();
-            foreach(IDAL.DO.Parcel parcel in DataSource.parcels)
-            {
-                if(parcel.AcceptedTime != null)
-                {
-                    providedParcels.Add(parcel);
-                }
-            }
-            return providedParcels;
+        //public IEnumerable<IDAL.DO.Parcel> GetProvidedParcels()
+        //{
+        //    List<IDAL.DO.Parcel> providedParcels = new List<IDAL.DO.Parcel>();
+        //    foreach(IDAL.DO.Parcel parcel in DataSource.parcels)
+        //    {
+        //        if(parcel.AcceptedTime != null)
+        //        {
+        //            providedParcels.Add(parcel);
+        //        }
+        //    }
+        //    return providedParcels;
 
-        }
+        //}
 
         public int GetSerialNumber()
         {

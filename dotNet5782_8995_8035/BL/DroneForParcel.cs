@@ -13,7 +13,15 @@ namespace IBAL
             public int Id { get; set; }
             public int Battary { get; set; }
             public Location CorrentLocation{ get; set; }
-        
+
+            public override string ToString()
+            {
+                return $"ID: {this.Id} " +
+                    $"battry: {this.Battary} " +
+                    $"location: {this.CorrentLocation}" +
+                    $"";
+            }
+
         }
     }
 }

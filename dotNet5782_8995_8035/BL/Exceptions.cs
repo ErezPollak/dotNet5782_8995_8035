@@ -84,6 +84,33 @@ namespace IBAL
             }
         }
 
+        [Serializable]
+        internal class NotAbleToSendDroneToChargeException : Exception
+        {
+
+            static string message = "the drone cant make it to the station "
+
+            public NotAbleToSendDroneToChargeException()
+            {
+            }
+             
+            public NotAbleToSendDroneToChargeException(string message) : base(message)
+            {
+            }
+
+            public NotAbleToSendDroneToChargeException(int distance) : base(message.)
+            {
+            }
+
+            public NotAbleToSendDroneToChargeException(string message, Exception innerException) : base(message, innerException)
+            {
+            }
+
+            protected NotAbleToSendDroneToChargeException(SerializationInfo info, StreamingContext context) : base(info, context)
+            {
+            }
+        }
+
 
     }
 }
