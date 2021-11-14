@@ -37,7 +37,7 @@ namespace IDAL
 
         ////***get Lists***////
 
-        public IEnumerable<IDAL.DO.BaseStation> GetBaseStations();
+        public IEnumerable<IDAL.DO.BaseStation> GetBaseStations(Predicate<IDAL.DO.BaseStation> f);
         public IEnumerable<IDAL.DO.Drone> GetDrones();
         public IEnumerable<IDAL.DO.Customer> GetCustomers();
         public IEnumerable<IDAL.DO.Parcel> GetParcels();
@@ -56,7 +56,7 @@ namespace IDAL
 
 
         public int GetSerialNumber();
-        void SetNameForADrone(int droneId, string model);
-        void UpdateBaseStation(int basStationID, string name, int slots);
+        //void SetNameForADrone(int droneId, string model);
+        //void UpdateBaseStation(int basStationID, string name, int slots);
     }
 }

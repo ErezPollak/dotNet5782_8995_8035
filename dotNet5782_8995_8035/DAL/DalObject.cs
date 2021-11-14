@@ -430,9 +430,18 @@ namespace DalObject
         /// <summary>
         /// returns the array of the base stations.
         /// </summary>
-        public IEnumerable<IDAL.DO.BaseStation> GetBaseStations()
+        public IEnumerable<IDAL.DO.BaseStation> GetBaseStations(Predicate<IDAL.DO.BaseStation> f)
         {
-            return DataSource.baseStations.ToList();
+            List<IDAL.DO.BaseStation> list = new List<BaseStation>();
+
+            foreach (IDAL.DO.BaseStation baseStation in DataSource.baseStations)
+            {
+                if (f(baseStation))
+                {
+                    list.Add(baseStation);
+                }
+            }
+            return list;
         }
 
         /// <summary>
@@ -600,16 +609,16 @@ namespace DalObject
             return ++DataSource.Config.serialNumber;
         }
 
-        public void SetNameForADrone(int droneId, string model)
-        {
-            int index = DataSource.drones.FindIndex(d => (d.Id == droneId));
+        //public void SetNameForADrone(int droneId, string model)
+        //{
+        //    int index = DataSource.drones.FindIndex(d => (d.Id == droneId));
 
-            IDAL.DO.Drone drone =  DataSource.drones[index];
+        //    IDAL.DO.Drone drone = DataSource.drones[index];
 
-            drone.Model = model;
+        //    drone.Model = model;
 
-            DataSource.drones[index]  = drone;
-        }
+        //    DataSource.drones[index] = drone;
+        //}
 
         //public int clothestStation(int customerId)
         //{

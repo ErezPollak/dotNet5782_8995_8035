@@ -365,7 +365,7 @@ namespace ConsoleUI
                                 case 1:
                                     {
                                         //showing the list of base stations
-                                        IEnumerable<IDAL.DO.BaseStation> baseStations = dalObject.GetBaseStations();
+                                        IEnumerable<IDAL.DO.BaseStation> baseStations = dalObject.GetBaseStations(delegate (IDAL.DO.BaseStation b) { return true; });
                                         foreach (IDAL.DO.BaseStation baseStation in baseStations)
                                         {
                                             Console.WriteLine(baseStation);

@@ -226,30 +226,43 @@ namespace IBL
             dalObject.DeliveringParcel(parcelId);
         }
 
-        public void ChargeDrone(int baseStationId, int droneId)
+        public void ChargeDrone(int droneId)
         {
+            double maxDistance = this.drones[droneId].Battary * dalObject.ElectricityUse()[(int)this.drones[droneId].Weight + 1];
 
-            bool isNameExists = false;
-            foreach (IDAL.DO.BaseStation baseStation in dalObject.GetBaseStations())
-            {
-                if (baseStation.id == baseStationId)
-                {
-                    isNameExists = true;
-                    break;
-                }
-            }
-            if (!isNameExists) throw new IBAL.BO.IdDontExistsException(baseStationId, "base station");
+            //returns all the stations that the drone has enough fuel to get to.
+            List<IDAL.DO.BaseStation> baseStations = dalObject.GetBaseStations(delegate (IDAL.DO.BaseStation b) { return distance(locationTranslate(b.Location), GetDrone(droneId).Location) <= maxDistance; }).ToList();
 
-            isNameExists = false;
-            foreach (IDAL.DO.Drone drone in dalObject.GetDrones())
-            {
-                if (drone.Id == droneId)
-                {
-                    isNameExists = true;
-                    break;
-                }
-            }
-            if (!isNameExists) throw new IBAL.BO.IdDontExistsException(droneId, "drone");
+            baseStations = baseStations.OrderBy(b => distance(locationTranslate(b.Location), GetDrone(droneId).Location)).ToList();
+
+            baseStations.ForEach(b => Console.WriteLine(b.id));
+
+            IDAL.DO.BaseStation baseStation = baseStations.First(b => b.chargeSlots > 0);
+
+            Console.WriteLine("sdfds" + baseStation.id);
+            
+
+            //bool isNameExists = false;
+            //foreach (IDAL.DO.BaseStation baseStation in dalObject.GetBaseStations())
+            //{
+            //    if (baseStation.id == baseStationId)
+            //    {
+            //        isNameExists = true;
+            //        break;
+            //    }
+            //}
+            //if (!isNameExists) throw new IBAL.BO.IdDontExistsException(baseStationId, "base station");
+
+            //isNameExists = false;
+            //foreach (IDAL.DO.Drone drone in dalObject.GetDrones())
+            //{
+            //    if (drone.Id == droneId)
+            //    {
+            //        isNameExists = true;
+            //        break;
+            //    }
+            //}
+            //if (!isNameExists) throw new IBAL.BO.IdDontExistsException(droneId, "drone");
 
             dalObject.ChargeDrone(baseStationId, droneId);
         }
@@ -339,7 +352,7 @@ namespace IBL
         {
 
             List<IBAL.BO.BaseStation> baseStations = new List<IBAL.BO.BaseStation>();
-            foreach (IDAL.DO.BaseStation baseStation in dalObject.GetBaseStations())
+            foreach (IDAL.DO.BaseStation baseStation in dalObject.GetBaseStations(delegate (IDAL.DO.BaseStation b) { return true; }))
             {
                 baseStations.Add(new IBAL.BO.BaseStation()
                 {
@@ -455,29 +468,39 @@ namespace IBL
         ////////functions for main
 
 
-        void IBL.SetNameForADrone(int droneId, string model)
+        public void SetNameForADrone(int droneId, string model)
         {
 
             this.GetDrone(droneId).Model = model;
 
-            dalObject.SetNameForADrone(droneId, model);
+            //dalObject.SetNameForADrone(droneId, model);
+
+            int index = dalObject.GetDrones().ToList().FindIndex(d => (d.Id == droneId));
+
+            IDAL.DO.Drone drone = dalObject.GetDrones().ToList()[index];
+
+            drone.Model = model;
+
+            dalObject.GetDrones().ToList()[index] = drone;
+
+
 
         }
 
         public void UpdateBaseStation(int basStationID, string name, int slots)
         {
 
-            int index = dalObject.GetBaseStations().ToList().FindIndex(d => (d.id == basStationID));
+            int index = dalObject.GetBaseStations(delegate (IDAL.DO.BaseStation b) { return true; }).ToList().FindIndex(d => (d.id == basStationID));
 
             if (index == -1) throw new IDAL.DO.SerialNumberWasNotFoundExceptions();
 
-            IDAL.DO.BaseStation baseStation = dalObject.GetBaseStations().ToList()[index];
+            IDAL.DO.BaseStation baseStation = dalObject.GetBaseStations(delegate (IDAL.DO.BaseStation b) { return true; }).ToList()[index];
 
             baseStation.name = name;
 
             baseStation.chargeSlots = slots;
 
-            dalObject.GetBaseStations().ToList()[index] = baseStation;
+            dalObject.GetBaseStations(delegate (IDAL.DO.BaseStation b) { return true; }).ToList()[index] = baseStation;
 
 
             //dalObject.UpdateBaseStation(basStationID, name, slots);

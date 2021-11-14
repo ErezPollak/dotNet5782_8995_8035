@@ -277,19 +277,8 @@ namespace ConsoleUI_BL
                                         int droneID;
                                         int.TryParse(Console.ReadLine(), out droneID);
 
+                                        bl.ChargeDrone(droneID);
 
-                                        Console.WriteLine("pick up the number of the baseStation out of the avalible ones: ");
-                                        Console.Write("the avalible bases are: ");
-                                        IEnumerable<IDAL.DO.BaseStation> freeBaseStations = dalObject.GetFreeStations();
-                                        foreach (IDAL.DO.BaseStation baseStation in freeBaseStations)
-                                        {
-                                            Console.Write(baseStation.id + " ");
-                                        }
-                                        Console.WriteLine();
-                                        int baseID;
-                                        int.TryParse(Console.ReadLine(), out baseID);
-
-                                        dalObject.ChargeDrone(baseID, droneID);
                                     }
                                     break;
                                 case 5:

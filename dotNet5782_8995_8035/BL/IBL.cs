@@ -22,7 +22,7 @@ namespace IBL
         public void UpdateDroneForAParcel(int parcelId, int droneId);
         public void PickingUpParcel(int parcelId);
         public void DeliveringParcel(int parcelId);
-        public void ChargeDrone(int baseStationId, int droneId);
+        public void ChargeDrone(int droneId);
         public void UnChargeDrone(int droneId);
 
         ////***show options***/////
