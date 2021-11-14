@@ -13,19 +13,19 @@ namespace IDAL
         /// the Exception that accours when the user tries to add an Item with serial number that already exists in the database.
         /// </summary>
         [Serializable]
-        public class SerialNumberExistsExceptions : Exception
+        public class IdAlreadyExistsException : Exception
         {
             //the number that the user tried to add even though it is already in the list.
             int number;
 
             //the recommended constractors for all the Exeption classes
-            public SerialNumberExistsExceptions() : base() { }
-            public SerialNumberExistsExceptions(string message) : base(message) { }
-            public SerialNumberExistsExceptions(string message, Exception inner) : base(message, inner) { }
-            protected SerialNumberExistsExceptions(SerializationInfo info, StreamingContext context) : base(info, context) { }
+            public IdAlreadyExistsException() : base() { }
+            public IdAlreadyExistsException(string message) : base(message) { }
+            public IdAlreadyExistsException(string message, Exception inner) : base(message, inner) { }
+            protected IdAlreadyExistsException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 
             //Special constractor for the needs of the excption
-            public SerialNumberExistsExceptions(int number) : base()
+            public IdAlreadyExistsException(int number) : base()
             {
                 this.number = number;
             }
@@ -46,7 +46,7 @@ namespace IDAL
         /// the Exception that accours when the user tries to update an Item with serial number that does not exist in the database.
         /// </summary>
         [Serializable]
-        public class SerialNumberWasNotFoundExceptions : Exception
+        public class IdDontExistsException : Exception
         {
             //the number that the user tried to add even though it is not in the list.
             int number;
@@ -54,13 +54,13 @@ namespace IDAL
             string type;
 
             //the recommended constractors for all the Exeption classes
-            public SerialNumberWasNotFoundExceptions() : base() { }
-            public SerialNumberWasNotFoundExceptions(string message) : base(message) { }
-            public SerialNumberWasNotFoundExceptions(string message, Exception inner) : base(message, inner) { }
-            protected SerialNumberWasNotFoundExceptions(SerializationInfo info, StreamingContext context) : base(info, context) { }
+            public IdDontExistsException() : base() { }
+            public IdDontExistsException(string message) : base(message) { }
+            public IdDontExistsException(string message, Exception inner) : base(message, inner) { }
+            protected IdDontExistsException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 
             //Special constractor for the needs of the excption
-            public SerialNumberWasNotFoundExceptions(int number, string type) : base()
+            public IdDontExistsException(int number, string type) : base()
             {
                 this.number = number;
                 this.type = type;

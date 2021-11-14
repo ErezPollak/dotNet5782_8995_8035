@@ -34,10 +34,10 @@ namespace IBL
 
         ////***get Lists***////
 
-        public IEnumerable<IBAL.BO.BaseStation> GetBaseStations();
-        public IEnumerable<IBAL.BO.DroneForList> GetDrones();
-        public IEnumerable<IBAL.BO.Customer> GetCustomers();
-        public IEnumerable<IBAL.BO.Parcel> GetPacelss();
+        public IEnumerable<IBAL.BO.BaseStation> GetBaseStations(Predicate<IBAL.BO.BaseStationForList> f);
+        public IEnumerable<IBAL.BO.DroneForList> GetDrones(Predicate<IBAL.BO.DroneForList> f);
+        public IEnumerable<IBAL.BO.Customer> GetCustomers(Predicate<IBAL.BO.CustomerForList> f);
+        public IEnumerable<IBAL.BO.Parcel> GetPacelss(Predicate<IBAL.BO.ParcelForList> f);
         //public IEnumerable<IBAL.BO.Parcel> GetParcelToDrone();
 
 

@@ -28,6 +28,7 @@ namespace IDAL
 
         ////***show options***/////
 
+
         public IDAL.DO.BaseStation GetBaseStation(int baseStationId);
         public IDAL.DO.Drone GetDrone(int droneId);
         public IDAL.DO.Customer GetCustomer(int customerId);
@@ -38,19 +39,19 @@ namespace IDAL
         ////***get Lists***////
 
         public IEnumerable<IDAL.DO.BaseStation> GetBaseStations(Predicate<IDAL.DO.BaseStation> f);
-        public IEnumerable<IDAL.DO.Drone> GetDrones();
-        public IEnumerable<IDAL.DO.Customer> GetCustomers();
-        public IEnumerable<IDAL.DO.Parcel> GetParcels();
-        public IEnumerable<IDAL.DO.Parcel> GetParcelToDrone();
-        public IEnumerable<IDAL.DO.BaseStation> GetFreeStations();
+        public IEnumerable<IDAL.DO.Drone> GetDrones(Predicate<IDAL.DO.Drone> f);
+        public IEnumerable<IDAL.DO.Customer> GetCustomers(Predicate<IDAL.DO.Customer> f);
+        public IEnumerable<IDAL.DO.Parcel> GetParcels(Predicate<IDAL.DO.Parcel> f);
+        //public IEnumerable<IDAL.DO.Parcel> GetParcelToDrone();
+        //public IEnumerable<IDAL.DO.BaseStation> GetFreeStations();
+        public IEnumerable<IDAL.DO.DroneCharge> GetChargeDrones(Predicate<IDAL.DO.DroneCharge> f);
 
-        
-        
+
         public double[] ElectricityUse();
         public int GetClothestStation(int id);
         public int GetBaseStationsNumber();
         public int GetBaseStationId(int index);
-        public IEnumerable<IDAL.DO.Parcel> GetProvidedParcels();
+        //public IEnumerable<IDAL.DO.Parcel> GetProvidedParcels();
 
         //functions for BL
 

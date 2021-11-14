@@ -42,7 +42,7 @@ namespace IBAL
         public class IdDontExistsException : Exception
         {
 
-            public IdDontExistsException(int idNumber, string type) : base($"the id {idNumber} alredy exists in the database of {type}.")
+            public IdDontExistsException(int idNumber, string type) : base($"the id {idNumber} dont exists in the database of {type}.")
             {
             }
 
@@ -54,7 +54,7 @@ namespace IBAL
             {
             }
 
-            public IdDontExistsException(string message, Exception innerException) : base(message, innerException)
+            public IdDontExistsException(int idNumber, string type, Exception innerException) : base($"the id {idNumber} dont exists in the database of {type}.", innerException)
             {
             }
 
@@ -88,7 +88,7 @@ namespace IBAL
         internal class NotAbleToSendDroneToChargeException : Exception
         {
 
-            static string message = "the drone cant make it to the station "
+            static string message = "the drone cant make it to the station, the maximum distance is: ";
 
             public NotAbleToSendDroneToChargeException()
             {
@@ -98,7 +98,7 @@ namespace IBAL
             {
             }
 
-            public NotAbleToSendDroneToChargeException(int distance) : base(message.)
+            public NotAbleToSendDroneToChargeException(int distance) : base(message + distance.ToString())
             {
             }
 
