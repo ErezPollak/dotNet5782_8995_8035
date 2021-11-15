@@ -15,29 +15,29 @@ namespace IDAL
         [Serializable]
         public class IdAlreadyExistsException : Exception
         {
-            //the number that the user tried to add even though it is already in the list.
-            int number;
-
             //the recommended constractors for all the Exeption classes
-            public IdAlreadyExistsException() : base() { }
-            public IdAlreadyExistsException(string message) : base(message) { }
-            public IdAlreadyExistsException(string message, Exception inner) : base(message, inner) { }
-            protected IdAlreadyExistsException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+            public IdAlreadyExistsException() : base() 
+            {
+            }
+            
+            public IdAlreadyExistsException(string message) : base(message)
+            {
+            }
+
+
+            public IdAlreadyExistsException(string message, Exception inner) : base(message, inner)
+            { 
+            }
+
+            protected IdAlreadyExistsException(SerializationInfo info, StreamingContext context) : base(info, context)
+            {
+            }
 
             //Special constractor for the needs of the excption
-            public IdAlreadyExistsException(int number) : base()
+            public IdAlreadyExistsException(int number , string type) : base($"the list of {type}s already contains an item with the id {number}. ")
             {
-                this.number = number;
             }
 
-            /// <summary>
-            /// the function returns a string with the Details of the excption.
-            /// </summary>
-            /// <returns></returns>
-            override public string ToString()
-            {
-                return "SerialNumberExistsExceptions: the number: " + number + " already exists in the list.";
-            }
         }
 
 

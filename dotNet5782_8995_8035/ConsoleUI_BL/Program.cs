@@ -184,9 +184,9 @@ namespace ConsoleUI_BL
                                             Priority = priority,
                                             Drone = null,
                                             Weight = weight,
-                                            CreationTime = DateTime.Now,
+                                            RequestedTime = DateTime.Now,
                                             PickupTime = new DateTime(),
-                                            AssigningTime = new DateTime(),
+                                            AcceptedTime = new DateTime(),
                                             DeliveringTime = new DateTime()
                                         };
 
@@ -213,9 +213,9 @@ namespace ConsoleUI_BL
                                               "for updating model of a drone: 1. \n" +
                                               "for updating ditails of a base station: 2. \n" +
                                               "for updating ditails of customer: 3.\n" +
-
                                               "for snding a drone to a base station: 4.\n" +
-                                              "for releasing a drone from a base station: 5.\n");
+                                              "for releasing a drone from a base station: 5.\n" +
+                                              "to assign a parcel to a drone: 6.\n");
 
                             int updatingChoice;
                             int.TryParse(Console.ReadLine(), out updatingChoice);
@@ -288,7 +288,21 @@ namespace ConsoleUI_BL
                                         int droneID;
                                         int.TryParse(Console.ReadLine(), out droneID);
 
-                                        dalObject.UnChargeDrone(droneID);
+                                        Console.WriteLine("enter number of minutes that  the drone was charged: ");
+                                        int minutes;
+                                        int.TryParse(Console.ReadLine(), out minutes);
+
+                                        bl.UnChargeDrone(droneID , minutes);
+                                    }
+                                    break;
+                                case 6:
+                                    {
+                                        //case 6: assigning a parcel to a drone.
+                                        Console.WriteLine("enter the number of the drone: ");
+                                        int droneID;
+                                        int.TryParse(Console.ReadLine(), out droneID);
+
+                                        bl.AssignParcelTOADrone(droneID);
                                     }
                                     break;
 

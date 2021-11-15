@@ -23,7 +23,7 @@ namespace IBL
         public void PickingUpParcel(int parcelId);
         public void DeliveringParcel(int parcelId);
         public void ChargeDrone(int droneId);
-        public void UnChargeDrone(int droneId);
+        public void UnChargeDrone(int droneId, int minutes);
 
         ////***show options***/////
 
@@ -50,5 +50,6 @@ namespace IBL
         void SetNameForADrone(int droneId, string model);
         void UpdateBaseStation(int basStationID, string name, int slots);
         void UpdateCustomer(int customerID, string name, string phone);
+        void AssignParcelTOADrone(int droneID);
     }
 }

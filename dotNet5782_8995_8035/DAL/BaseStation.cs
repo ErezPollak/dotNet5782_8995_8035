@@ -16,10 +16,10 @@ namespace IDAL
         public struct BaseStation
         {
            
-            public int id { get; set; }
-            public string name { get; set; }
+            public int Id { get; set; }
+            public string Name { get; set; }
             public IDAL.DO.Location Location { get; set; }
-            public int chargeSlots { get; set; }
+            public int ChargeSlots { get; set; }
 
             /// <summary>
             /// the function prints all the props of the struct.
@@ -31,10 +31,10 @@ namespace IDAL
                 ///the function returns the current place of the item's properties.///
 
                 return $"Base Station:" +
-                   $" ID: {this.id}, " +
-                   $"Name: {this.name}, " +
+                   $" ID: {this.Id}, " +
+                   $"Name: {this.Name}, " +
                    $"longitude: {Location}" +
-                   $"chargeslotes: {this.chargeSlots}\n";
+                   $"chargeslotes: {this.ChargeSlots}\n";
             }
 
         }

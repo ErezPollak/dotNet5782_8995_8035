@@ -16,8 +16,8 @@ namespace IBAL
             public IBAL.BO.Enums.WeightCategories Weight { get; set; }
             public IBAL.BO.Enums.Priorities Priority { get; set; }
             public IBAL.BO.DroneForParcel Drone { get; set; }
-            public DateTime? CreationTime { get; set; }
-            public DateTime? AssigningTime { get; set; }
+            public DateTime? RequestedTime { get; set; } // time of request
+            public DateTime? AcceptedTime { get; set; } //
             public DateTime? PickupTime { get; set; }
             public DateTime? DeliveringTime { get; set; }
 
@@ -30,8 +30,8 @@ namespace IBAL
                     $"Weight: {this.Weight} " +
                     $"Priority: {this.Priority} " +
                     $"Drone: {this.Drone} " +
-                    $"CreationTime: {this.CreationTime} " +
-                    $"AssigningTime: {this.AssigningTime} " +
+                    $"CreationTime: {this.RequestedTime} " +
+                    $"AssigningTime: {this.AcceptedTime} " +
                     $"PickupTime: {this.PickupTime} " +
                     $"DeliveringTime: {this.DeliveringTime} " +
                     $"";

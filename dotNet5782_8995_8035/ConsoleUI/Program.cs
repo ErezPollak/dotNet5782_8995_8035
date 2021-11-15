@@ -252,7 +252,7 @@ namespace ConsoleUI
                                         IEnumerable<IDAL.DO.BaseStation> freeBaseStations = dalObject.GetFreeStations();
                                         foreach (IDAL.DO.BaseStation baseStation in freeBaseStations)
                                         {
-                                            Console.Write(baseStation.id + " ");
+                                            Console.Write(baseStation.Id + " ");
                                         }
                                         Console.WriteLine();
                                         int baseID;

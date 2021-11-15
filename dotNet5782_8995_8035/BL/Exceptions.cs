@@ -112,5 +112,26 @@ namespace IBAL
         }
 
 
+        [Serializable]
+        internal class NotAbleToFreeDroneToChargeException : Exception
+        {
+            public NotAbleToFreeDroneToChargeException()
+            {
+            }
+
+            public NotAbleToFreeDroneToChargeException(string message) : base(message)
+            {
+            }
+
+            public NotAbleToFreeDroneToChargeException(string message, Exception innerException) : base(message, innerException)
+            {
+            }
+
+            protected NotAbleToFreeDroneToChargeException(SerializationInfo info, StreamingContext context) : base(info, context)
+            {
+            }
+        }
+
+
     }
 }

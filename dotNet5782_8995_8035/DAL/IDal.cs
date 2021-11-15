@@ -11,10 +11,10 @@ namespace IDAL
 
         ////***adding options***/////
 
-        public void AddBaseStation(int idNumber, string name, IDAL.DO.Location location, int chargeslots);
-        public void AddDrone(int idNumber, string model, IDAL.DO.WeightCategories weight);
-        public void AddCustumer(int idNumber, string name, string phone, IDAL.DO.Location location);
-        public void AddParcel(int idNumber, int senderId, int targetId, IDAL.DO.WeightCategories weight, IDAL.DO.Priorities praiority, int droneId, DateTime? reqested, DateTime? scheduled);
+        public void AddBaseStation(IDAL.DO.BaseStation baseStation);
+        public void AddDrone(IDAL.DO.Drone drone);
+        public void AddCustumer(IDAL.DO.Customer customer);
+        public void AddParcel(IDAL.DO.Parcel parcel);
 
 
 

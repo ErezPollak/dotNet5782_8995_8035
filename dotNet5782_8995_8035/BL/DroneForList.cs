@@ -13,7 +13,7 @@ namespace IBAL
             public int Id { get; set; }
             public string Model { get; set; }
             public IBAL.BO.Enums.WeightCategories Weight { get; set; }
-            public int Battary { get; set; }
+            public double Battary { get; set; }
             public IBAL.BO.Enums.DroneStatuses Status { get; set; }
             public Location Location { get; set; }
             public int ParcelId { get; set; }

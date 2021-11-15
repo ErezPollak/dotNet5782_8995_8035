@@ -4,6 +4,7 @@ using DalObject;
 using IDAL.DO;
 using IBAL.BO;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace IBL
 {
@@ -60,7 +61,7 @@ namespace IBL
                 this.GetDrone(parcel.DroneId).ParcelId = parcel.Id;
 
 
-                if (parcel.PickedUp == null)
+                if (parcel.PickedUpTime == null)
                 {
 
                     this.GetDrone(parcel.DroneId).Location = locationTranslate(dalObject.GetBaseStation(dalObject.GetClothestStation(parcel.SenderId)).Location);
@@ -130,30 +131,66 @@ namespace IBL
 
         public void AddBaseStation(IBAL.BO.BaseStation newBaseStation)
         {
-            dalObject.AddBaseStation(newBaseStation.Id, newBaseStation.Name, locationTranslate(newBaseStation.Location), newBaseStation.ChargeSlots);
+
+            IDAL.DO.BaseStation baseStation = new IDAL.DO.BaseStation()
+            {
+                Id = newBaseStation.Id,
+                Name = newBaseStation.Name,
+                Location = locationTranslate(newBaseStation.Location),
+                ChargeSlots = newBaseStation.ChargeSlots
+            };
+
+            dalObject.AddBaseStation(baseStation);
         }
 
         public void AddDrone(IBAL.BO.DroneForList newDrone)
         {
-            foreach (IBAL.BO.DroneForList drone in this.drones)
-            {
-                if (drone.Id == newDrone.Id)
-                {
-                    throw new IBAL.BO.IdAlreadyExistsException(drone.Id, "drone");
-                }
-            }
+
+            if (this.drones.Any(d => d.Id == newDrone.Id)) throw new IBAL.BO.IdAlreadyExistsException(newDrone.Id, "droen");
+
             this.drones.Add(newDrone);
-            dalObject.AddDrone(newDrone.Id, newDrone.Model, (IDAL.DO.WeightCategories)newDrone.Weight);
+
+            IDAL.DO.Drone dalDrone = new IDAL.DO.Drone()
+            {
+                Id = newDrone.Id,
+                Model = newDrone.Model,
+                MaxWeight = (IDAL.DO.WeightCategories)newDrone.Weight
+            };
+            
+            dalObject.AddDrone(dalDrone);
         }
 
         public void AddCustumer(IBAL.BO.Customer newCustomer)
         {
-            dalObject.AddCustumer(newCustomer.Id, newCustomer.Name, newCustomer.Phone, locationTranslate(newCustomer.Location));
+            IDAL.DO.Customer customer = new IDAL.DO.Customer()
+            {
+                Id = newCustomer.Id,
+                Name = newCustomer.Name,
+                Phone = newCustomer.Phone,
+                Location = locationTranslate(newCustomer.Location)
+            };
+
+            dalObject.AddCustumer(customer);
         }
 
-        public void AddParcel(IBAL.BO.Parcel parcel)
+        public void AddParcel(IBAL.BO.Parcel newParcel)
         {
-            dalObject.AddParcel(parcel.Id, parcel.Reciver.Id, parcel.Sender.Id, (IDAL.DO.WeightCategories)parcel.Weight, (IDAL.DO.Priorities)parcel.Priority, parcel.Drone.Id, parcel.CreationTime, parcel.DeliveringTime);
+            IDAL.DO.Parcel dalParcel1 = new IDAL.DO.Parcel()
+            {
+                Id = newParcel.Id,
+                SenderId = newParcel.Sender.Id,
+                TargetId = newParcel.Reciver.Id,
+                Weight = (IDAL.DO.WeightCategories)newParcel.Weight,
+                Priority = (IDAL.DO.Priorities)newParcel.Priority,
+                DroneId = newParcel.Drone.Id,
+                RequestedTime = newParcel.RequestedTime,
+                DeliveryTime = newParcel.DeliveringTime,
+                AcceptedTime = newParcel.AcceptedTime,
+                PickedUpTime = newParcel.PickupTime
+            };
+
+
+            dalObject.AddParcel(dalParcel1);
         }
 
 
@@ -195,9 +232,13 @@ namespace IBL
 
         public void ChargeDrone(int droneId)
         {
+            
             int droneIndex = this.drones.FindIndex(d => d.Id == droneId);
 
             if (droneIndex == -1) throw new IBAL.BO.IdDontExistsException(droneId, "drone");
+
+            //chacks if the drone is free, and if not exception will be thrown.
+            if (this.drones[droneIndex].Status != Enums.DroneStatuses.FREE) throw new NotAbleToSendDroneToChargeException("the drone is not free");
 
             //geting the maximum distance the drone can make according to the level of battary multiplied by the number of kilometers the drone can do for one precent do battary. 
             double maxDistance = this.drones[droneIndex].Battary * dalObject.ElectricityUse()[(int)this.drones[droneIndex].Weight + 1];
@@ -209,21 +250,41 @@ namespace IBL
             baseStations = baseStations.OrderBy(b => distance(locationTranslate(b.Location), GetDrone(droneId).Location)).ToList();
 
             //gives the first station in the list that has free slots for charging.
-            IDAL.DO.BaseStation? baseStation = baseStations.First(b => b.chargeSlots > 0);
+            IDAL.DO.BaseStation? baseStation = baseStations.First(b => b.ChargeSlots > 0);
 
             //if there is no suitable station an exception will be thrown.
-            if (baseStation == null) throw new NotAbleToSendDroneToChargeException();
+            if (baseStation == null) throw new NotAbleToSendDroneToChargeException("there is no station that matches the needs of this drone");
 
-            //if the tation do exist activating the dal function.
-            dalObject.ChargeDrone(baseStation.Value.id, droneId);
+            /////drone updates//////
+
+            //update the battary status.
+            this.drones[droneIndex].Battary -= distance(locationTranslate(baseStation.Value.Location), GetDrone(droneId).Location) / dalObject.ElectricityUse()[(int)this.drones[droneIndex].Weight + 1];
+
+            //update the localtion of the drone to be the locatin of the base station.
+            this.drones[droneIndex].Location = locationTranslate(baseStation.Value.Location);
+
+            //updating the status of the drone.
+            this.drones[droneIndex].Status = Enums.DroneStatuses.MAINTENANCE;
+
+            //update the number of the charge slots and adding an element in the dal functions.
+            dalObject.ChargeDrone(baseStation.Value.Id, droneId);
 
         }
 
-
-        public void UnChargeDrone(int droneId)
+        public void UnChargeDrone(int droneId , int minutes)
         {
+            int droneIndex = this.drones.FindIndex(d => d.Id == droneId);
 
-            if (!dalObject.GetDrones(d => true).Any(d => d.Id == droneId)) throw new IBAL.BO.IdDontExistsException(droneId, "drone");
+            if (droneIndex == -1) throw new IBAL.BO.IdDontExistsException(droneId, "drone");
+
+            //chacks if the drone is free, and if not exception will be thrown.
+            if (this.drones[droneIndex].Status != Enums.DroneStatuses.MAINTENANCE) throw new NotAbleToFreeDroneToChargeException("the drone is not in maintanance");
+
+            //update the battary status.
+            this.drones[droneIndex].Battary += minutes * dalObject.ElectricityUse()[4];
+
+            //updating the status of the drone.
+            this.drones[droneIndex].Status = Enums.DroneStatuses.FREE;
 
             dalObject.UnChargeDrone(droneId);
         }
@@ -240,9 +301,9 @@ namespace IBL
                 IDAL.DO.BaseStation dalBaseStation = dalObject.GetBaseStation(baseStationId);
                 return new IBAL.BO.BaseStation()
                 {
-                    Id = dalBaseStation.id,
-                    Name = dalBaseStation.name,
-                    ChargeSlots = dalBaseStation.chargeSlots,
+                    Id = dalBaseStation.Id,
+                    Name = dalBaseStation.Name,
+                    ChargeSlots = dalBaseStation.ChargeSlots,
                     Location = locationTranslate(dalBaseStation.Location)
                 };
             }
@@ -295,10 +356,10 @@ namespace IBL
                     Reciver = reciver,
                     Drone = drone,
                     Priority = (IBAL.BO.Enums.Priorities)dalParcel.Priority,
-                    AssigningTime = DateTime.Now,
-                    CreationTime = dalParcel.Requested,
+                    AcceptedTime = DateTime.Now,
+                    RequestedTime = dalParcel.RequestedTime,
                     DeliveringTime = dalParcel.DeliveryTime,
-                    PickupTime = dalParcel.PickedUp
+                    PickupTime = dalParcel.PickedUpTime
                 };
             }
             catch (IDAL.DO.IdDontExistsException e)
@@ -317,10 +378,10 @@ namespace IBL
             {
                 baseStations.Add(new IBAL.BO.BaseStationForList()
                 {
-                    Id = baseStation.id,
-                    Name = baseStation.name,
-                    FreeChargingSlots = baseStation.chargeSlots - dalObject.GetChargeDrones(cd => cd.StationId == baseStation.id).Count(),
-                    TakenCharingSlots = dalObject.GetChargeDrones(cd => cd.StationId == baseStation.id).Count()
+                    Id = baseStation.Id,
+                    Name = baseStation.Name,
+                    FreeChargingSlots = baseStation.ChargeSlots - dalObject.GetChargeDrones(cd => cd.StationId == baseStation.Id).Count(),
+                    TakenCharingSlots = dalObject.GetChargeDrones(cd => cd.StationId == baseStation.Id).Count()
                 });
             }
             return baseStations;
@@ -363,10 +424,10 @@ namespace IBL
                     Reciver = reciver,
                     Drone = drone,
                     Priority = (IBAL.BO.Enums.Priorities)dalParcel.Priority,
-                    AssigningTime = DateTime.Now,
-                    CreationTime = dalParcel.Requested,
+                    AcceptedTime = DateTime.Now,
+                    RequestedTime = dalParcel.RequestedTime,
                     DeliveringTime = dalParcel.DeliveryTime,
-                    PickupTime = dalParcel.PickedUp
+                    PickupTime = dalParcel.PickedUpTime
                 });
             }
             return parcels;
@@ -439,28 +500,28 @@ namespace IBL
 
             //dalObject.SetNameForADrone(droneId, model);
 
-            int index = dalObject.GetDrones().ToList().FindIndex(d => (d.Id == droneId));
+            int index = dalObject.GetDrones(d => true).ToList().FindIndex(d => (d.Id == droneId));
 
-            IDAL.DO.Drone drone = dalObject.GetDrones().ToList()[index];
+            IDAL.DO.Drone drone = dalObject.GetDrones(d => true).ToList()[index];
 
             drone.Model = model;
 
-            dalObject.GetDrones().ToList()[index] = drone;
+            dalObject.GetDrones(d => true).ToList()[index] = drone;
 
         }
 
         public void UpdateBaseStation(int basStationID, string name, int slots)
         {
 
-            int index = dalObject.GetBaseStations(delegate (IDAL.DO.BaseStation b) { return true; }).ToList().FindIndex(d => (d.id == basStationID));
+            int index = dalObject.GetBaseStations(delegate (IDAL.DO.BaseStation b) { return true; }).ToList().FindIndex(d => (d.Id == basStationID));
 
             if (index == -1) throw new IDAL.DO.IdDontExistsException();
 
             IDAL.DO.BaseStation baseStation = dalObject.GetBaseStations(delegate (IDAL.DO.BaseStation b) { return true; }).ToList()[index];
 
-            baseStation.name = name;
+            baseStation.Name = name;
 
-            baseStation.chargeSlots = slots;
+            baseStation.ChargeSlots = slots;
 
             dalObject.GetBaseStations(delegate (IDAL.DO.BaseStation b) { return true; }).ToList()[index] = baseStation;
 
@@ -470,17 +531,38 @@ namespace IBL
 
         public void UpdateCustomer(int customerID, string name, string phone)
         {
-            int index = dalObject.GetCustomers().ToList().FindIndex(d => d.Id == customerID);
+            int index = dalObject.GetCustomers(c => true).ToList().FindIndex(d => d.Id == customerID);
 
             if (index == -1) throw new IBAL.BO.IdDontExistsException();
 
-            IDAL.DO.Customer customer = dalObject.GetCustomers().ToList()[index];
+            IDAL.DO.Customer customer = dalObject.GetCustomers(c => true).ToList()[index];
 
             customer.Name = name;
 
             customer.Phone = phone;
 
-            dalObject.GetCustomers().ToList()[index] = customer;
+            dalObject.GetCustomers(c => true).ToList()[index] = customer;
         }
+
+        void AssignParcelTOADrone(int droneId)
+        {
+            int droneIndex = this.drones.FindIndex(d => d.Id == droneId);
+
+            if (droneIndex == -1) throw new IBAL.BO.IdDontExistsException(droneId, "drone");
+
+            //chacks if the drone is free, and if not exception will be thrown.
+            if (this.drones[droneIndex].Status != Enums.DroneStatuses.FREE) throw new NotAbleToSendDroneToChargeException("the drone is not free");
+
+            List<IDAL.DO.Parcel> parcels = dalObject.GetParcels(p => true).OrderBy(b => (int)b.Priority).ToList();
+
+            parcels.RemoveAll(p => (int)p.Weight > (int)drones[droneIndex].Weight || p.a);
+
+            parcels.OrderBy(p => distance(drones[droneIndex].Location,  ))
+
+        }
+
+
     }//END BL class
+
+   
 }//end IBAL

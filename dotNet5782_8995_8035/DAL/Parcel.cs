@@ -27,10 +27,10 @@ namespace IDAL
             public int TargetId { get; set; }
             public WeightCategories Weight { get; set; }
             public Priorities Priority { get; set; }
-            public DateTime? Requested { get; set; }
+            public DateTime? RequestedTime { get; set; }
             public int DroneId { get; set; }
             public DateTime? DeliveryTime { get; set; }
-            public DateTime? PickedUp { get; set; }
+            public DateTime? PickedUpTime { get; set; }
             public DateTime? AcceptedTime { get; set; }
 
             /// <summary>
@@ -44,8 +44,8 @@ namespace IDAL
 
                 return $"Parcel: id: {Id} , senderld: {SenderId} , targetld : {TargetId} " +
                     $", weight: {Weight}, priority: {Priority},  droneld: {DroneId}, " +
-                    $"requested: {Requested}, scheduled: {DeliveryTime},delivered: {AcceptedTime},  " +
-                    $"pickedUp: {PickedUp}\n";
+                    $"requested: {RequestedTime}, scheduled: {DeliveryTime},delivered: {AcceptedTime},  " +
+                    $"pickedUp: {PickedUpTime}\n";
             }
 
         }

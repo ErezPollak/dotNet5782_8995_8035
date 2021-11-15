@@ -66,15 +66,15 @@ namespace DalObject
             {
                 IDAL.DO.BaseStation baseStation = new IDAL.DO.BaseStation()
                 {
-                    id = i,
-                    name = i.ToString(),
+                    Id = i,
+                    Name = i.ToString(),
                     Location = new Location
                     {
                         Lattitude = r.NextDouble() * 360 - 180,   // randomal values from -180 to 180 in order to represent a real coordinated location.
                         Longitude = r.NextDouble() * 180 - 90,   // randomal values from -90 to 90 in order to represent a real coordinated location.
                     },
 
-                    chargeSlots = r.Next() % 5 + 2
+                    ChargeSlots = r.Next() % 5 + 2
                 };
                 //adding the base station to the list.
                 baseStations.Add(baseStation);
@@ -126,8 +126,8 @@ namespace DalObject
                     Weight = (WeightCategories)(r.Next() % 3),
                     Priority = (Priorities)(r.Next() % 3),
                     DroneId = -1,                                   //initileized to not have any drone, the drone number will be updated in the dalobject class.
-                    Requested = pickingBiggerDate(DateTime.Now),  // initilesed to be the time of the initialization.
-                    PickedUp = null,                        //initilesed for now, will change in  DalObject class, when order is updated to be picked up.
+                    RequestedTime = pickingBiggerDate(DateTime.Now),  // initilesed to be the time of the initialization.
+                    PickedUpTime = null,                        //initilesed for now, will change in  DalObject class, when order is updated to be picked up.
                     AcceptedTime = null
                 };
 
@@ -139,7 +139,7 @@ namespace DalObject
             for (int index = 0; index < DataSource.parcels.Count; index++)
             {
                 IDAL.DO.Parcel p = DataSource.parcels[index];
-                p.DeliveryTime = pickingBiggerDate(p.Requested);
+                p.DeliveryTime = pickingBiggerDate(p.RequestedTime);
                 DataSource.parcels[index] = p;
                 ++index;
             }
