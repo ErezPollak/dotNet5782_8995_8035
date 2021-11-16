@@ -42,9 +42,15 @@ namespace IBL
             this.chargingSpeed = electricityUse[4];
 
             //translats all the drones from the data lavel to 
-            foreach (IDAL.DO.Drone dalDrone in dalObject.GetDrones(d => true))
+            foreach (IDAL.DO.Drone dalDrone in dalObject.GetDrones(d => true).ToList())
             {
-                this.drones.Add(new DroneForList() { Id = dalDrone.Id, Model = dalDrone.Model, Weight = (IBAL.BO.Enums.WeightCategories)dalDrone.MaxWeight, Status = (IBAL.BO.Enums.DroneStatuses)(r.Next() % 2 * 2) });
+                this.drones.Add(new DroneForList()
+                { 
+                    Id = dalDrone.Id, 
+                    Model = dalDrone.Model, 
+                    Weight = (IBAL.BO.Enums.WeightCategories)dalDrone.MaxWeight, 
+                    Status = (IBAL.BO.Enums.DroneStatuses)(r.Next() % 2 * 2) 
+                });
             }
 
             foreach (IDAL.DO.Parcel parcel in dalObject.GetParcels(parcel => parcel.DroneId != -1 && parcel.AcceptedTime != null))
@@ -66,7 +72,8 @@ namespace IBL
 
                     this.GetDrone(parcel.DroneId).Location = locationTranslate(dalObject.GetBaseStation(dalObject.GetClothestStation(parcel.SenderId)).Location);
 
-                    deliveryDistance = distance(locationTranslate(dalObject.GetBaseStation(dalObject.GetClothestStation(parcel.SenderId)).Location), locationTranslate(dalObject.GetCustomer(parcel.SenderId).Location));
+                    // caculating the distance between the base station to the sender.
+                    deliveryDistance += distance(locationTranslate(dalObject.GetBaseStation(dalObject.GetClothestStation(parcel.SenderId)).Location), locationTranslate(dalObject.GetCustomer(parcel.SenderId).Location));
 
                     int minimumeValue = (int)(dalObject.ElectricityUse()[(int)this.GetDrone(parcel.DroneId).Weight] * deliveryDistance);
 
@@ -196,38 +203,103 @@ namespace IBL
 
         ////**** update options ****////
 
-
-        public void UpdateDroneForAParcel(int parcelId, int droneId)
+        public void SetNameForADrone(int droneId, string model)
         {
-            //checking if the numbers of parcel and drone that was provided exist in the database or not. if not an excption will be thrown.
 
-            if (!dalObject.GetParcels(p => true).Any(p => p.Id == parcelId)) throw new IBAL.BO.IdDontExistsException(parcelId, "parcel");
+            this.GetDrone(droneId).Model = model;
 
-            if (!dalObject.GetDrones(d => true).Any(d => d.Id == droneId)) throw new IBAL.BO.IdDontExistsException(droneId, "drone");
+            //dalObject.SetNameForADrone(droneId, model);
 
-            //if the id numbers were found in the lists we can call the function from Idal.
-            dalObject.UpdateDroneForAParcel(parcelId, droneId);
+            int index = dalObject.GetDrones(d => true).ToList().FindIndex(d => (d.Id == droneId));
+
+            IDAL.DO.Drone drone = dalObject.GetDrones(d => true).ToList()[index];
+
+            drone.Model = model;
+
+            dalObject.GetDrones(d => true).ToList()[index] = drone;
+
         }
 
-        public void PickingUpParcel(int parcelId)
+        public void UpdateBaseStation(int basStationID, string name, int slots)
         {
-            //checking if the number of parcel that was provided exist in the database or not. if not an excption will be thrown.
 
-            if (!dalObject.GetParcels(p => true).Any(p => p.Id == parcelId)) throw new IBAL.BO.IdDontExistsException(parcelId, "parcel");
+            int index = dalObject.GetBaseStations(delegate (IDAL.DO.BaseStation b) { return true; }).ToList().FindIndex(d => (d.Id == basStationID));
 
-            //if the id numbers were found in the lists we can call the function from Idal.
-            dalObject.PickingUpParcel(parcelId);
+            if (index == -1) throw new IDAL.DO.IdDontExistsException();
+
+            IDAL.DO.BaseStation baseStation = dalObject.GetBaseStations(delegate (IDAL.DO.BaseStation b) { return true; }).ToList()[index];
+
+            baseStation.Name = name;
+
+            baseStation.ChargeSlots = slots;
+
+            dalObject.GetBaseStations(delegate (IDAL.DO.BaseStation b) { return true; }).ToList()[index] = baseStation;
+
+
+            //dalObject.UpdateBaseStation(basStationID, name, slots);
         }
 
-        public void DeliveringParcel(int parcelId)
+        public void UpdateCustomer(int customerID, string name, string phone)
         {
+            int index = dalObject.GetCustomers(c => true).ToList().FindIndex(d => d.Id == customerID);
 
-            //checking if the number of parcel that was provided exist in the database or not. if not an excption will be thrown.
+            if (index == -1) throw new IBAL.BO.IdDontExistsException();
 
-            if (!dalObject.GetParcels(p => true).Any(p => p.Id == parcelId)) throw new IBAL.BO.IdDontExistsException(parcelId, "parcel");
+            IDAL.DO.Customer customer = dalObject.GetCustomers(c => true).ToList()[index];
 
-            //if the id numbers were found in the lists we can call the function from Idal.
-            dalObject.DeliveringParcel(parcelId);
+            customer.Name = name;
+
+            customer.Phone = phone;
+
+            dalObject.GetCustomers(c => true).ToList()[index] = customer;
+        }
+
+        public void AssignParcelTOADrone(int droneId)
+        {
+            int droneIndex = this.drones.FindIndex(d => d.Id == droneId);
+
+            if (droneIndex == -1) throw new IBAL.BO.IdDontExistsException(droneId, "drone");
+
+            //chacks if the drone is free, and if not exception will be thrown.
+            if (this.drones[droneIndex].Status != Enums.DroneStatuses.FREE) throw new NotAbleToSendDroneToChargeException("the drone is not free");
+
+            //importing all thr parcels and sorting them aaccording to their praiority.
+            List<IDAL.DO.Parcel> parcels = dalObject.GetParcels(p => true).OrderBy(b => (int)b.Priority).ToList();
+
+            //removing from the list all the parcels that wight more than the drone can carry.
+            parcels.RemoveAll(p => (int)p.Weight > (int)drones[droneIndex].Weight);
+
+            //sorting by the distanse between the drone's locaation and the parcel's location.
+            parcels.OrderBy(p => distance(drones[droneIndex].Location, locationTranslate(dalObject.GetCustomer(p.SenderId).Location)));
+
+            //removing all the drones that dont have enough battary for the jerny from the sender to the reciver and to the clothest base station.
+            parcels.RemoveAll(p => distance(drones[droneIndex].Location, locationTranslate(dalObject.GetCustomer(p.SenderId).Location))  /*adding the distance between the reciver to the base station*/ >= drones[droneIndex].Battary * dalObject.ElectricityUse()[(int)drones[droneIndex].Weight + 1]);
+
+            if (parcels.Count == 0) throw new UnableToAssignParcelToTheDroneException(droneId);
+
+            //
+            this.drones[droneIndex].Status = Enums.DroneStatuses.DELIVERY;
+
+            this.drones[droneIndex].ParcelId = parcels.First().Id;
+
+            dalObject.PickingUpParcel(parcels.First().Id, droneId);
+
+        }
+
+        public void DeliveringParcelFromADrone(int droneId)
+        {
+            if (this.GetDrone(droneId).Status != Enums.DroneStatuses.DELIVERY) throw new UnableToDeliverParcelToTheDroneException(droneId);
+
+            double deliveryDistance = distance(locationTranslate(dalObject.GetCustomer(dalObject.GetParcel(this.GetDrone(droneId).ParcelId).SenderId).Location), locationTranslate(dalObject.GetCustomer(dalObject.GetParcel(this.GetDrone(droneId).ParcelId).TargetId).Location));
+
+            //battary update
+            this.GetDrone(droneId).Battary -= deliveryDistance / dalObject.ElectricityUse()[(int)this.GetDrone(droneId).Weight + 1];
+
+            // location update
+            this.GetDrone(droneId).Location = locationTranslate(dalObject.GetCustomer(dalObject.GetParcel(this.GetDrone(droneId).ParcelId).TargetId).Location);/////adapt to function.
+
+            //status update
+            this.GetDrone(droneId).Status = Enums.DroneStatuses.FREE;
         }
 
         public void ChargeDrone(int droneId)
@@ -290,9 +362,7 @@ namespace IBL
         }
 
 
-        ////**** getting options ****////
-
-        /////// !!!!!!!Exceptions!!!!!!!!!!!!!    ///////////////////
+        ////**** show options ****////
 
         public IBAL.BO.BaseStation GetBaseStation(int baseStationId)
         {
@@ -387,55 +457,59 @@ namespace IBL
             return baseStations;
         }
 
-        public IEnumerable<IBAL.BO.DroneForList> GetDrones(Predicate<IBAL.BO.DroneForList> f)
+        public IEnumerable<IBAL.BO.DroneForList> GetDrones(Predicate<IDAL.DO.Drone> f)
         {
-            return this.drones;
+            return null;//return dalObject.GetDrones(f);   //this.drones.FindAll(f);
         }
 
-        public IEnumerable<IBAL.BO.CustomerForList> GetCustomers(Predicate<IBAL.BO.CustomerForList> f)
+        public IEnumerable<IBAL.BO.CustomerForList> GetCustomers(Predicate<IDAL.DO.Customer> f)
         {
-            List<IBAL.BO.Customer> customers = new List<IBAL.BO.Customer>();
-            foreach (IDAL.DO.Customer customer in dalObject.GetCustomers(c => true))
+            List<IBAL.BO.CustomerForList> customers = new List<IBAL.BO.CustomerForList>();
+            foreach (IDAL.DO.Customer customer in dalObject.GetCustomers(f))
             {
-                customers.Add(new IBAL.BO.Customer()
+                customers.Add(new IBAL.BO.CustomerForList()
                 {
                     Id = customer.Id,
-                    Name = customer.Name,
-                    Phone = customer.Phone,
-                    Location = locationTranslate(customer.Location)
+                    Name = customer.Name
+                    //OnTheWay = customer.
+                    //Phone = customer.Phone,
+                    //Location = locationTranslate(customer.Location)
                 });
             }
             return customers;
         }
 
-        public IEnumerable<IBAL.BO.ParcelForList> GetPacelss(Predicate<IBAL.BO.ParcelForList> f)
+        public IEnumerable<IBAL.BO.ParcelForList> GetPacels(Predicate<IDAL.DO.Parcel> f)
         {
-            List<IBAL.BO.Parcel> parcels = new List<IBAL.BO.Parcel>();
+            List<IBAL.BO.ParcelForList> parcels = new List<IBAL.BO.ParcelForList>();
             foreach (IDAL.DO.Parcel dalParcel in dalObject.GetParcels(p => true))
             {
-                IBAL.BO.CoustomerForParcel sender = new CoustomerForParcel() { Id = dalParcel.SenderId, CustomerName = dalObject.GetCustomer(dalParcel.SenderId).Name };
-                IBAL.BO.CoustomerForParcel reciver = new CoustomerForParcel() { Id = dalParcel.TargetId, CustomerName = dalObject.GetCustomer(dalParcel.TargetId).Name };
-                IBAL.BO.DroneForParcel drone = new DroneForParcel() { Id = dalParcel.DroneId };
+                //IBAL.BO.CoustomerForParcel sender = new CoustomerForParcel() { Id = dalParcel.SenderId, CustomerName = dalObject.GetCustomer(dalParcel.SenderId).Name };
+                //IBAL.BO.CoustomerForParcel reciver = new CoustomerForParcel() { Id = dalParcel.TargetId, CustomerName = dalObject.GetCustomer(dalParcel.TargetId).Name };
+                //IBAL.BO.DroneForParcel drone = new DroneForParcel() { Id = dalParcel.DroneId };
 
-                parcels.Add(new IBAL.BO.Parcel()
+                parcels.Add(new IBAL.BO.ParcelForList()
                 {
                     Id = dalParcel.Id,
-                    Sender = sender,
-                    Reciver = reciver,
-                    Drone = drone,
+                    //Sender = sender,
+                    //Reciver = reciver,
+                    //Drone = drone,
                     Priority = (IBAL.BO.Enums.Priorities)dalParcel.Priority,
-                    AcceptedTime = DateTime.Now,
-                    RequestedTime = dalParcel.RequestedTime,
-                    DeliveringTime = dalParcel.DeliveryTime,
-                    PickupTime = dalParcel.PickedUpTime
+                    //Status = dalParcel.   need to caculate
+                    SenderName = dalObject.GetCustomer(dalParcel.SenderId).Name,
+                    ReciverName = dalObject.GetCustomer(dalParcel.TargetId).Name,
+                    Weight = (Enums.WeightCategories)dalParcel.Weight
+                    //AcceptedTime = DateTime.Now,
+                    //RequestedTime = dalParcel.RequestedTime,
+                    //DeliveringTime = dalParcel.DeliveryTime,
+                    //PickupTime = dalParcel.PickedUpTime
                 });
             }
             return parcels;
         }
 
 
-
-
+        //operation functions.
 
         private double distance(IBAL.BO.Location l1, IBAL.BO.Location l2)
         {
@@ -466,102 +540,7 @@ namespace IBL
             };
             return customer;
         }
-
-        //public IEnumerable<IBAL.BO.Parcel> GetParcelToDrone()
-        //{
-        //    List<IBAL.BO.Parcel> parcels = new List<IBAL.BO.Parcel>();
-        //    foreach (IDAL.DO.Parcel parcel in dalObject.GetParcelToDrone())
-        //    {
-        //        parcels.Add(new IBAL.BO.Parcel()
-        //        {
-        //            Id = parcel.Id,
-        //            SenderId = parcel.SenderId,
-        //            TargetId = parcel.TargetId,
-        //            DroneId = parcel.DroneId,
-        //            Requested = parcel.Requested,
-        //            Scheduled = parcel.Scheduled,
-        //            priority = (IBAL.BO.Enums.Priorities)parcel.Priority,
-        //            Weight = (IBAL.BO.Enums.WeightCategories)parcel.Weight,
-        //            PickedUp = parcel.PickedUp,
-        //            Delivered = parcel.Delivered
-        //        });
-        //    }
-        //    return parcels;
-        //}
-
-
-        ////////functions for main
-
-
-        public void SetNameForADrone(int droneId, string model)
-        {
-
-            this.GetDrone(droneId).Model = model;
-
-            //dalObject.SetNameForADrone(droneId, model);
-
-            int index = dalObject.GetDrones(d => true).ToList().FindIndex(d => (d.Id == droneId));
-
-            IDAL.DO.Drone drone = dalObject.GetDrones(d => true).ToList()[index];
-
-            drone.Model = model;
-
-            dalObject.GetDrones(d => true).ToList()[index] = drone;
-
-        }
-
-        public void UpdateBaseStation(int basStationID, string name, int slots)
-        {
-
-            int index = dalObject.GetBaseStations(delegate (IDAL.DO.BaseStation b) { return true; }).ToList().FindIndex(d => (d.Id == basStationID));
-
-            if (index == -1) throw new IDAL.DO.IdDontExistsException();
-
-            IDAL.DO.BaseStation baseStation = dalObject.GetBaseStations(delegate (IDAL.DO.BaseStation b) { return true; }).ToList()[index];
-
-            baseStation.Name = name;
-
-            baseStation.ChargeSlots = slots;
-
-            dalObject.GetBaseStations(delegate (IDAL.DO.BaseStation b) { return true; }).ToList()[index] = baseStation;
-
-
-            //dalObject.UpdateBaseStation(basStationID, name, slots);
-        }
-
-        public void UpdateCustomer(int customerID, string name, string phone)
-        {
-            int index = dalObject.GetCustomers(c => true).ToList().FindIndex(d => d.Id == customerID);
-
-            if (index == -1) throw new IBAL.BO.IdDontExistsException();
-
-            IDAL.DO.Customer customer = dalObject.GetCustomers(c => true).ToList()[index];
-
-            customer.Name = name;
-
-            customer.Phone = phone;
-
-            dalObject.GetCustomers(c => true).ToList()[index] = customer;
-        }
-
-        void AssignParcelTOADrone(int droneId)
-        {
-            int droneIndex = this.drones.FindIndex(d => d.Id == droneId);
-
-            if (droneIndex == -1) throw new IBAL.BO.IdDontExistsException(droneId, "drone");
-
-            //chacks if the drone is free, and if not exception will be thrown.
-            if (this.drones[droneIndex].Status != Enums.DroneStatuses.FREE) throw new NotAbleToSendDroneToChargeException("the drone is not free");
-
-            List<IDAL.DO.Parcel> parcels = dalObject.GetParcels(p => true).OrderBy(b => (int)b.Priority).ToList();
-
-            parcels.RemoveAll(p => (int)p.Weight > (int)drones[droneIndex].Weight || p.a);
-
-            parcels.OrderBy(p => distance(drones[droneIndex].Location,  ))
-
-        }
-
-
+        
     }//END BL class
 
    

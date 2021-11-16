@@ -19,9 +19,11 @@ namespace IBL
 
         ////***update options***/////
 
-        public void UpdateDroneForAParcel(int parcelId, int droneId);
-        public void PickingUpParcel(int parcelId);
-        public void DeliveringParcel(int parcelId);
+        public void SetNameForADrone(int droneId, string model);
+        public void UpdateBaseStation(int basStationID, string name, int slots);
+        public void UpdateCustomer(int customerID, string name, string phone);
+        public void AssignParcelTOADrone(int droneId);
+        public void DeliveringParcelFromADrone(int droneId);
         public void ChargeDrone(int droneId);
         public void UnChargeDrone(int droneId, int minutes);
 
@@ -34,10 +36,10 @@ namespace IBL
 
         ////***get Lists***////
 
-        public IEnumerable<IBAL.BO.BaseStation> GetBaseStations(Predicate<IBAL.BO.BaseStationForList> f);
-        public IEnumerable<IBAL.BO.DroneForList> GetDrones(Predicate<IBAL.BO.DroneForList> f);
-        public IEnumerable<IBAL.BO.Customer> GetCustomers(Predicate<IBAL.BO.CustomerForList> f);
-        public IEnumerable<IBAL.BO.Parcel> GetPacelss(Predicate<IBAL.BO.ParcelForList> f);
+        public IEnumerable<IBAL.BO.BaseStationForList> GetBaseStations(Predicate<IDAL.DO.BaseStation> f);
+        public IEnumerable<IBAL.BO.DroneForList> GetDrones(Predicate<IDAL.DO.Drone> f);
+        public IEnumerable<IBAL.BO.CustomerForList> GetCustomers(Predicate<IDAL.DO.Customer> f);
+        public IEnumerable<IBAL.BO.ParcelForList> GetPacels(Predicate<IDAL.DO.Parcel> f);
         //public IEnumerable<IBAL.BO.Parcel> GetParcelToDrone();
 
 
@@ -47,9 +49,6 @@ namespace IBL
         public int GetNextSerialNumberForParcel();
         public IBAL.BO.CoustomerForParcel GetCustomerForParcel(int customerId);
         
-        void SetNameForADrone(int droneId, string model);
-        void UpdateBaseStation(int basStationID, string name, int slots);
-        void UpdateCustomer(int customerID, string name, string phone);
-        void AssignParcelTOADrone(int droneID);
+       
     }
 }

@@ -1,6 +1,7 @@
 ﻿using IBL;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ConsoleUI_BL
 {
@@ -215,7 +216,8 @@ namespace ConsoleUI_BL
                                               "for updating ditails of customer: 3.\n" +
                                               "for snding a drone to a base station: 4.\n" +
                                               "for releasing a drone from a base station: 5.\n" +
-                                              "to assign a parcel to a drone: 6.\n");
+                                              "to assign a parcel to a drone: 6.\n" +
+                                              "to deliver a parcel from a drone: 7.\n");
 
                             int updatingChoice;
                             int.TryParse(Console.ReadLine(), out updatingChoice);
@@ -305,7 +307,16 @@ namespace ConsoleUI_BL
                                         bl.AssignParcelTOADrone(droneID);
                                     }
                                     break;
+                                case 7:
+                                    {
+                                        //case 7: delivering a parcel from a drone.
+                                        Console.WriteLine("enter the number of the drone: ");
+                                        int droneID;
+                                        int.TryParse(Console.ReadLine(), out droneID);
 
+                                        bl.DeliveringParcelFromADrone(droneID);
+                                    }
+                                    break;
                             }
 
                         }
@@ -334,8 +345,7 @@ namespace ConsoleUI_BL
                                         int baseID;
                                         int.TryParse(Console.ReadLine(), out baseID);
 
-                                        IDAL.DO.BaseStation baseStation = dalObject.GetBaseStation(baseID);
-                                        Console.WriteLine(baseStation);
+                                        Console.WriteLine(bl.GetBaseStation(baseID));
 
                                     }
                                     break;
@@ -346,8 +356,7 @@ namespace ConsoleUI_BL
                                         int droneID;
                                         int.TryParse(Console.ReadLine(), out droneID);
 
-                                        IDAL.DO.Drone drone = dalObject.GetDrone(droneID);
-                                        Console.WriteLine(drone);
+                                        Console.WriteLine(bl.GetDrone(droneID));
                                     }
                                     break;
                                 case 3:
@@ -357,9 +366,7 @@ namespace ConsoleUI_BL
                                         int customerID;
                                         int.TryParse(Console.ReadLine(), out customerID);
 
-
-                                        IDAL.DO.Customer customer = dalObject.GetCustomer(customerID);
-                                        Console.WriteLine(customer);
+                                        Console.WriteLine(bl.GetCustomer(customerID));
                                     }
                                     break;
                                 case 4:
@@ -369,8 +376,7 @@ namespace ConsoleUI_BL
                                         int parcelID;
                                         int.TryParse(Console.ReadLine(), out parcelID);
 
-                                        IDAL.DO.Parcel parcel = dalObject.GetParcel(parcelID);
-                                        Console.WriteLine(parcel);
+                                        Console.WriteLine(bl.GetParcel(parcelID));
                                     }
                                     break;
                             }
@@ -399,61 +405,37 @@ namespace ConsoleUI_BL
                                 case 1:
                                     {
                                         //showing the list of base stations
-                                        IEnumerable<IDAL.DO.BaseStation> baseStations = dalObject.GetBaseStations();
-                                        foreach (IDAL.DO.BaseStation baseStation in baseStations)
-                                        {
-                                            Console.WriteLine(baseStation);
-                                        }
+                                        bl.GetBaseStations(b => true).ToList().ForEach(b => Console.WriteLine(b));
                                     }
                                     break;
                                 case 2:
                                     {
                                         //showing the list of the drones
-                                        IEnumerable<IDAL.DO.Drone> drones = dalObject.GetDrones();
-                                        foreach (IDAL.DO.Drone drone in drones)
-                                        {
-                                            Console.WriteLine(drone);
-                                        }
+                                        bl.GetDrones(d => true).ToList().ForEach(d => Console.WriteLine(d));
                                     }
                                     break;
                                 case 3:
                                     {
                                         // showing the list of the customers
-                                        IEnumerable<IDAL.DO.Customer> customers = dalObject.GetCustomers();
-                                        foreach (IDAL.DO.Customer customer in customers)
-                                        {
-                                            Console.WriteLine(customer);
-                                        }
+                                        bl.GetCustomers(c => true).ToList().ForEach(c => Console.WriteLine(c));
                                     }
                                     break;
                                 case 4:
                                     {
                                         //showing the list of the parcels
-                                        IEnumerable<IDAL.DO.Parcel> parcels = dalObject.GetParcels();
-                                        foreach (IDAL.DO.Parcel parcel in parcels)
-                                        {
-                                            Console.WriteLine(parcel);
-                                        }
+                                        bl.GetPacels(p => true).ToList().ForEach(p => Console.WriteLine(p));
                                     }
                                     break;
                                 case 5:
                                     {
                                         //shoing the list of the parcels that dont have a drine.
-                                        IEnumerable<IDAL.DO.Parcel> noDroneParcels = dalObject.GetParcelToDrone();
-                                        foreach (IDAL.DO.Parcel parcel in noDroneParcels)
-                                        {
-                                            Console.WriteLine(parcel);
-                                        }
+                                        bl.GetPacels(p => bl.GetParcel(p.Id).Drone.Id == -1).ToList().ForEach(p => Console.WriteLine(p));
                                     }
                                     break;
                                 case 6:
                                     {
                                         //shoing the base stations that have free charging slots
-                                        IEnumerable<IDAL.DO.BaseStation> freebaseStations = dalObject.GetFreeStations();
-                                        foreach (IDAL.DO.BaseStation baseStation in freebaseStations)
-                                        {
-                                            Console.WriteLine(baseStation);
-                                        }
+                                        bl.GetBaseStations(b => b.ChargeSlots >= 0).ToList().ForEach(c => Console.WriteLine(c));
                                     }
                                     break;
                             }

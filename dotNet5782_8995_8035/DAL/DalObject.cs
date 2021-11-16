@@ -141,7 +141,7 @@ namespace DalObject
         ///updating the time of pickup in the parcel, and changing the status of the drone to delivery.
         /// </summary>
         /// <param name="parcelId"></param>
-        public void PickingUpParcel(int parcelId)
+        public void PickingUpParcel(int parcelId , int droneId)
         {
             //keeps the index in witch the idNumber was found in order to update it without iterting over the list again.
             int parcelIndex = 0;
@@ -163,6 +163,7 @@ namespace DalObject
             //according to the number that was found while looking for an exception.  
             IDAL.DO.Parcel newParcel = DataSource.parcels[parcelIndex];
             newParcel.PickedUpTime = DateTime.Now;
+            newParcel.DroneId = droneId;
             DataSource.parcels[parcelIndex] = newParcel;
         }
 

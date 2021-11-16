@@ -133,5 +133,60 @@ namespace IBAL
         }
 
 
+        [Serializable]
+        public class UnableToAssignParcelToTheDroneException : Exception
+        {
+            private int droneId;
+
+            public UnableToAssignParcelToTheDroneException()
+            {
+            }
+
+            public UnableToAssignParcelToTheDroneException(int droneId)
+            {
+                this.droneId = droneId;
+            }
+
+            public UnableToAssignParcelToTheDroneException(string message) : base(message)
+            {
+            }
+
+            public UnableToAssignParcelToTheDroneException(string message, Exception innerException) : base(message, innerException)
+            {
+            }
+
+            protected UnableToAssignParcelToTheDroneException(SerializationInfo info, StreamingContext context) : base(info, context)
+            {
+            }
+        }
+
+        [Serializable]
+        public class UnableToDeliverParcelToTheDroneException : Exception
+        {
+            private int droneId;
+
+            public UnableToDeliverParcelToTheDroneException()
+            {
+            }
+
+            public UnableToDeliverParcelToTheDroneException(int droneId)
+            {
+                this.droneId = droneId;
+            }
+
+            public UnableToDeliverParcelToTheDroneException(string message) : base(message)
+            {
+            }
+
+            public UnableToDeliverParcelToTheDroneException(string message, Exception innerException) : base(message, innerException)
+            {
+            }
+
+            protected UnableToDeliverParcelToTheDroneException(SerializationInfo info, StreamingContext context) : base(info, context)
+            {
+            }
+        }
+
+
     }
 }
