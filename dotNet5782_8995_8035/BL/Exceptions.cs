@@ -89,6 +89,34 @@ namespace IBAL
 
 
         [Serializable]
+        public class UnableToAssignParcelToTheDroneException : Exception
+        {
+            private int droneId;
+
+            public UnableToAssignParcelToTheDroneException()
+            {
+            }
+           
+            public UnableToAssignParcelToTheDroneException(int droneId , string massage) :base($"BL_Exception: not able to assign any parcel to the drone {droneId} due to: " + massage)
+            {
+            }
+
+            public UnableToAssignParcelToTheDroneException(string message) : base(message)
+            {
+            }
+
+            public UnableToAssignParcelToTheDroneException(int droneId ,string message, Exception innerException) : base($"BL_Exception: not able to assign any parcel to the drone {droneId} due to: " + message, innerException)
+            {
+            }
+
+            protected UnableToAssignParcelToTheDroneException(SerializationInfo info, StreamingContext context) : base(info, context)
+            {
+            }
+        }
+
+
+
+        [Serializable]
         internal class NotAbleToSendDroneToChargeException : Exception
         {
 
@@ -131,32 +159,7 @@ namespace IBAL
         }
 
 
-        [Serializable]
-        public class UnableToAssignParcelToTheDroneException : Exception
-        {
-            private int droneId;
-
-            public UnableToAssignParcelToTheDroneException()
-            {
-            }
-
-            public UnableToAssignParcelToTheDroneException(int droneId)
-            {
-                this.droneId = droneId;
-            }
-
-            public UnableToAssignParcelToTheDroneException(string message) : base(message)
-            {
-            }
-
-            public UnableToAssignParcelToTheDroneException(string message, Exception innerException) : base(message, innerException)
-            {
-            }
-
-            protected UnableToAssignParcelToTheDroneException(SerializationInfo info, StreamingContext context) : base(info, context)
-            {
-            }
-        }
+       
 
         [Serializable]
         public class UnableToDeliverParcelToTheDroneException : Exception

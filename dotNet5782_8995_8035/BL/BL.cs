@@ -254,14 +254,14 @@ namespace IBL
             }
         }
 
-        public bool AssignParcelTOADrone(int droneId)
+        public bool AssignParcelToADrone(int droneId)
         {
             int droneIndex = this.drones.FindIndex(d => d.Id == droneId);
 
-            if (droneIndex == -1) throw new IBAL.BO.IdDontExistsException(droneId, "drone");
+            if (droneIndex == -1) throw new IBAL.BO.UnableToAssignParcelToTheDroneException(droneId , " drone is not in the database." , new IBAL.BO.IdDontExistsException(droneId , "drone"));//IBAL.BO.IdDontExistsException(droneId, "drone");
 
             //chacks if the drone is free, and if not exception will be thrown.
-            if (this.drones[droneIndex].Status != Enums.DroneStatuses.FREE) throw new IBAL.BO.UnableToAssignParcelToTheDroneException("the drone is not free");
+            if (this.drones[droneIndex].Status != Enums.DroneStatuses.FREE) throw new IBAL.BO.UnableToAssignParcelToTheDroneException(droneId , " the drone is not free");
 
             //importing all thr parcels and sorting them aaccording to their praiority.
             List<IDAL.DO.Parcel> parcels = dalObject.GetParcels(p => true).OrderBy(b => (int)b.Priority).ToList();
@@ -275,9 +275,8 @@ namespace IBL
             //removing all the drones that dont have enough battary for the jerny from the sender to the reciver and to the clothest base station.
             parcels.RemoveAll(p => distance(drones[droneIndex].Location, locationTranslate(dalObject.GetCustomer(p.SenderId).Location))  /*adding the distance between the reciver to the base station*/ >= drones[droneIndex].Battary * dalObject.ElectricityUse()[(int)drones[droneIndex].Weight + 1]);
 
-            if (parcels.Count == 0) throw new UnableToAssignParcelToTheDroneException(droneId);
+            if (parcels.Count == 0) throw new UnableToAssignParcelToTheDroneException(droneId , " there is no parcel that can be sent by this drone");
 
-            //
             this.drones[droneIndex].Status = Enums.DroneStatuses.DELIVERY;
 
             this.drones[droneIndex].ParcelId = parcels.First().Id;

@@ -427,7 +427,7 @@ namespace ConsoleUI_BL
 
                                         try
                                         {
-                                            if (bl.AssignParcelTOADrone(droneId))
+                                            if (bl.AssignParcelToADrone(droneId))
                                             {
                                                 Console.WriteLine($"\nthe drone {droneId} assign to the persel {bl.GetDrone(droneId).ParcelId} successfully.");
                                             }
