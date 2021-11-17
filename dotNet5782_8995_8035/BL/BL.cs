@@ -287,8 +287,9 @@ namespace IBL
 
         public bool DeliveringParcelFromADrone(int droneId)
         {
+            
             //if the drone is not in thr database, an exception will be thrown.
-            if (this.GetDrone(droneId).Status != Enums.DroneStatuses.DELIVERY) throw new UnableToDeliverParcelToTheDroneException(droneId);
+            if (this.GetDrone(droneId).Status != Enums.DroneStatuses.DELIVERY) throw new UnableToDeliverParcelFromTheDroneException(droneId , "the drone is not delivering any parcel.");
 
             //caculating the distance of the delivery.
             double deliveryDistance = distance(locationTranslate(dalObject.GetCustomer(dalObject.GetParcel(this.GetDrone(droneId).ParcelId).SenderId).Location), locationTranslate(dalObject.GetCustomer(dalObject.GetParcel(this.GetDrone(droneId).ParcelId).TargetId).Location));
@@ -305,7 +306,6 @@ namespace IBL
             //update the parcel from the dal.
             return dalObject.DeliveringParcel(this.GetDrone(droneId).ParcelId);
             
-
         }
 
         public bool ChargeDrone(int droneId)
@@ -316,7 +316,7 @@ namespace IBL
             if (droneIndex == -1) throw new IBAL.BO.IdDontExistsException(droneId, "drone");
 
             //chacks if the drone is free, and if not exception will be thrown.
-            if (this.drones[droneIndex].Status != Enums.DroneStatuses.FREE) throw new NotAbleToSendDroneToChargeException("the drone is not free");
+            if (this.drones[droneIndex].Status != Enums.DroneStatuses.FREE) throw new NotAbleToSendDroneToChargeException(" the drone is not free");
 
             //geting the maximum distance the drone can make according to the level of battary multiplied by the number of kilometers the drone can do for one precent do battary. 
             double maxDistance = this.drones[droneIndex].Battary * dalObject.ElectricityUse()[(int)this.drones[droneIndex].Weight + 1];
@@ -331,7 +331,7 @@ namespace IBL
             IDAL.DO.BaseStation? baseStation = baseStations.First(b => b.ChargeSlots > 0);
 
             //if there is no suitable station an exception will be thrown.
-            if (baseStation == null) throw new NotAbleToSendDroneToChargeException("there is no station that matches the needs of this drone");
+            if (baseStation == null) throw new NotAbleToSendDroneToChargeException(" there is no station that matches the needs of this drone");
 
             /////drone updates//////
 
@@ -356,7 +356,7 @@ namespace IBL
             if (droneIndex == -1) throw new IBAL.BO.IdDontExistsException(droneId, "drone");
 
             //chacks if the drone is free, and if not exception will be thrown.
-            if (this.drones[droneIndex].Status != Enums.DroneStatuses.MAINTENANCE) throw new NotAbleToFreeDroneFromChargeException("the drone is not in maintanance");
+            if (this.drones[droneIndex].Status != Enums.DroneStatuses.MAINTENANCE) throw new NotAbleToReleaseDroneFromChargeException(droneId ,"the drone is not in maintanance");
 
             //update the battary status.
             this.drones[droneIndex].Battary += minutes * dalObject.ElectricityUse()[4];

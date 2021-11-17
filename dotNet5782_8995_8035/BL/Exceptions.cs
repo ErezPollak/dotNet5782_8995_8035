@@ -70,9 +70,9 @@ namespace IBAL
         [Serializable]
         public class BL_ConstaractorException : Exception
         {
-            public BL_ConstaractorException()
-            {
-            }
+            //public BL_ConstaractorException()
+            //{
+            //}
 
             public BL_ConstaractorException(string message) : base(" BL_ConstaractorException: " + message)
             {
@@ -82,9 +82,9 @@ namespace IBAL
             {
             }
 
-            protected BL_ConstaractorException(SerializationInfo info, StreamingContext context) : base(info, context)
-            {
-            }
+            //protected BL_ConstaractorException(SerializationInfo info, StreamingContext context) : base(info, context)
+            //{
+            //}
         }
 
 
@@ -93,27 +93,46 @@ namespace IBAL
         {
             private int droneId;
 
-            public UnableToAssignParcelToTheDroneException()
-            {
-            }
+            //public UnableToAssignParcelToTheDroneException()
+            //{
+            //}
            
             public UnableToAssignParcelToTheDroneException(int droneId , string massage) :base($"BL_Exception: not able to assign any parcel to the drone {droneId} due to: " + massage)
             {
             }
 
-            public UnableToAssignParcelToTheDroneException(string message) : base(message)
-            {
-            }
+            //public UnableToAssignParcelToTheDroneException(string message) : base(message)
+            //{
+            //}
 
             public UnableToAssignParcelToTheDroneException(int droneId ,string message, Exception innerException) : base($"BL_Exception: not able to assign any parcel to the drone {droneId} due to: " + message, innerException)
             {
             }
 
-            protected UnableToAssignParcelToTheDroneException(SerializationInfo info, StreamingContext context) : base(info, context)
+            //protected UnableToAssignParcelToTheDroneException(SerializationInfo info, StreamingContext context) : base(info, context)
+            //{
+            //}
+        }
+
+        [Serializable]
+        public class UnableToDeliverParcelFromTheDroneException : Exception
+        {
+            public UnableToDeliverParcelFromTheDroneException()
+            {
+            }
+
+            public UnableToDeliverParcelFromTheDroneException(int droneId, string message) : base($"unable to deliver aparcel from the  drone {droneId} due to: " + message)
+            {
+            }
+
+            public UnableToDeliverParcelFromTheDroneException(string message, Exception innerException) : base(message, innerException)
+            {
+            }
+
+            protected UnableToDeliverParcelFromTheDroneException(SerializationInfo info, StreamingContext context) : base(info, context)
             {
             }
         }
-
 
 
         [Serializable]
@@ -124,7 +143,7 @@ namespace IBAL
             {
             }
              
-            public NotAbleToSendDroneToChargeException(string message) : base("Not Able To Send The Drone To Charge Due To: "+message)
+            public NotAbleToSendDroneToChargeException(string message) : base("Not Able To Send The Drone To Charge Due To: " + message)
             {
             }
 
@@ -139,21 +158,21 @@ namespace IBAL
 
 
         [Serializable]
-        internal class NotAbleToFreeDroneFromChargeException : Exception
+        internal class NotAbleToReleaseDroneFromChargeException : Exception
         {
-            public NotAbleToFreeDroneFromChargeException()
+            public NotAbleToReleaseDroneFromChargeException()
+            {
+            }
+             
+            public NotAbleToReleaseDroneFromChargeException(int droneId, string message) : base($"Unable to release the drone {droneId} from charging  Due to: " +  message)
             {
             }
 
-            public NotAbleToFreeDroneFromChargeException(string message) : base(message)
+            public NotAbleToReleaseDroneFromChargeException(string message, Exception innerException) : base(message, innerException)
             {
             }
 
-            public NotAbleToFreeDroneFromChargeException(string message, Exception innerException) : base(message, innerException)
-            {
-            }
-
-            protected NotAbleToFreeDroneFromChargeException(SerializationInfo info, StreamingContext context) : base(info, context)
+            protected NotAbleToReleaseDroneFromChargeException(SerializationInfo info, StreamingContext context) : base(info, context)
             {
             }
         }
@@ -161,32 +180,7 @@ namespace IBAL
 
        
 
-        [Serializable]
-        public class UnableToDeliverParcelToTheDroneException : Exception
-        {
-            private int droneId;
-
-            public UnableToDeliverParcelToTheDroneException()
-            {
-            }
-
-            public UnableToDeliverParcelToTheDroneException(int droneId)
-            {
-                this.droneId = droneId;
-            }
-
-            public UnableToDeliverParcelToTheDroneException(string message) : base(message)
-            {
-            }
-
-            public UnableToDeliverParcelToTheDroneException(string message, Exception innerException) : base(message, innerException)
-            {
-            }
-
-            protected UnableToDeliverParcelToTheDroneException(SerializationInfo info, StreamingContext context) : base(info, context)
-            {
-            }
-        }
+       
 
 
     }
