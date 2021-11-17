@@ -15,7 +15,7 @@ namespace IDAL
         [Serializable]
         public class IdAlreadyExistsException : Exception
         {
-            //the recommended constractors for all the Exeption classes
+           
             public IdAlreadyExistsException() : base() 
             {
             }
@@ -34,7 +34,7 @@ namespace IDAL
             }
 
             //Special constractor for the needs of the excption
-            public IdAlreadyExistsException(int number , string type) : base($"the list of {type}s already contains an item with the id {number}. ")
+            public IdAlreadyExistsException(int idNumber , string type) : base($"DAL_Exception: the id {idNumber} dont exists in the database of {type}.")
             {
             }
 
@@ -48,31 +48,27 @@ namespace IDAL
         [Serializable]
         public class IdDontExistsException : Exception
         {
-            //the number that the user tried to add even though it is not in the list.
-            int number;
-            //represents the type to Item witch is missing from the database.
-            string type;
-
-            //the recommended constractors for all the Exeption classes
-            public IdDontExistsException() : base() { }
-            public IdDontExistsException(string message) : base(message) { }
-            public IdDontExistsException(string message, Exception inner) : base(message, inner) { }
-            protected IdDontExistsException(SerializationInfo info, StreamingContext context) : base(info, context) { }
-
-            //Special constractor for the needs of the excption
-            public IdDontExistsException(int number, string type) : base()
+         
+            public IdDontExistsException() : base()
             {
-                this.number = number;
-                this.type = type;
             }
 
-            /// <summary>
-            /// the function returns a string with the Details of the excption.
-            /// </summary>
-            /// <returns></returns>
-            override public string ToString()
+            public IdDontExistsException(string message) : base(message)
             {
-                return "SerialNumberWasNotFoundExceptions: the number: " + this.number + " does not exist in the list of the "  + this.type+ "s.";
+            }
+
+
+            public IdDontExistsException(string message, Exception inner) : base(message, inner)
+            {
+            }
+
+            protected IdDontExistsException(SerializationInfo info, StreamingContext context) : base(info, context)
+            {
+            }
+
+            //Special constractor for the needs of the excption
+            public IdDontExistsException(int idNumber, string type) : base($"DAL_Exception: the id {idNumber} already exists in the database of {type}.")
+            {
             }
         }
 

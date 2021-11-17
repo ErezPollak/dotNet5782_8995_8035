@@ -118,6 +118,7 @@ namespace DalObject
         }
 
         public bool UpdateBaseStation(int baseStationId, string name, int slots)
+
         {
             int index = DataSource.baseStations.FindIndex(b => (b.Id == baseStationId));
 

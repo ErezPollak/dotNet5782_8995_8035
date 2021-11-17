@@ -77,7 +77,7 @@ namespace IBL
 
                     int minimumeValue = (int)(dalObject.ElectricityUse()[(int)this.GetDrone(parcel.DroneId).Weight] * deliveryDistance);
 
-                    if (minimumeValue > 100) throw new IBAL.BO.NotEnoughRangeException($"the drone needs {minimumeValue} battary in order to complete to delivery. ");
+                    if (minimumeValue > 100) throw new IBAL.BO.BL_ConstaractorException($"the drone needs {minimumeValue} battary in order to complete to delivery. ");
 
                     this.GetDrone(parcel.DroneId).Battary = r.Next() % (100 - minimumeValue) + minimumeValue;
 
@@ -88,7 +88,7 @@ namespace IBL
 
                     int minimumeValue = (int)(dalObject.ElectricityUse()[(int)this.GetDrone(parcel.DroneId).Weight] * deliveryDistance);
 
-                    if (minimumeValue > 100) throw new IBAL.BO.NotEnoughRangeException($"the drone needs {minimumeValue} battary in order to complete to delivery. ");
+                    if (minimumeValue > 100) throw new IBAL.BO.BL_ConstaractorException($"the drone needs {minimumeValue} battary in order to complete to delivery. ");
 
                     this.GetDrone(parcel.DroneId).Battary = r.Next() % (100 - minimumeValue) + minimumeValue;
 
@@ -110,7 +110,7 @@ namespace IBL
 
                     double battayConcamption = deliveryDistance * dalObject.ElectricityUse()[(int)drone.Weight + 1];
 
-                    if (battayConcamption > 100) throw new IBAL.BO.NotEnoughRangeException($"the drone needs {battayConcamption} battary in order to complete to delivery. ");
+                    if (battayConcamption > 100) throw new IBAL.BO.BL_ConstaractorException($"the drone needs {battayConcamption} battary in order to complete to delivery. ");
 
                     drone.Battary = (int)(r.NextDouble() * (100 - battayConcamption) + battayConcamption);
 
@@ -135,7 +135,11 @@ namespace IBL
 
         ////**** adding option ****////
 
-
+        /// <summary>
+        /// the funciton gets a logical baseStation and invits the dal function to add the base sation to the database.
+        /// </summary>
+        /// <param name="newBaseStation"></param>
+        /// <returns></returns>
         public bool AddBaseStation(IBAL.BO.BaseStation newBaseStation)
         {
 
@@ -147,8 +151,13 @@ namespace IBL
                 ChargeSlots = newBaseStation.ChargeSlots
             };
 
-            return dalObject.AddBaseStation(baseStation);
-
+            try
+            {
+                return dalObject.AddBaseStation(baseStation);
+            }catch(Exception e)
+            {
+                throw new IBAL.BO.IdAlreadyExistsException(newBaseStation.Id, "base station", e);
+            }
         }
 
         public bool AddDrone(IBAL.BO.DroneForList newDrone)
@@ -252,7 +261,7 @@ namespace IBL
             if (droneIndex == -1) throw new IBAL.BO.IdDontExistsException(droneId, "drone");
 
             //chacks if the drone is free, and if not exception will be thrown.
-            if (this.drones[droneIndex].Status != Enums.DroneStatuses.FREE) throw new NotAbleToSendDroneToChargeException("the drone is not free");
+            if (this.drones[droneIndex].Status != Enums.DroneStatuses.FREE) throw new IBAL.BO.UnableToAssignParcelToTheDroneException("the drone is not free");
 
             //importing all thr parcels and sorting them aaccording to their praiority.
             List<IDAL.DO.Parcel> parcels = dalObject.GetParcels(p => true).OrderBy(b => (int)b.Priority).ToList();
@@ -348,7 +357,7 @@ namespace IBL
             if (droneIndex == -1) throw new IBAL.BO.IdDontExistsException(droneId, "drone");
 
             //chacks if the drone is free, and if not exception will be thrown.
-            if (this.drones[droneIndex].Status != Enums.DroneStatuses.MAINTENANCE) throw new NotAbleToFreeDroneToChargeException("the drone is not in maintanance");
+            if (this.drones[droneIndex].Status != Enums.DroneStatuses.MAINTENANCE) throw new NotAbleToFreeDroneFromChargeException("the drone is not in maintanance");
 
             //update the battary status.
             this.drones[droneIndex].Battary += minutes * dalObject.ElectricityUse()[4];

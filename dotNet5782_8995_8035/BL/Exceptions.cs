@@ -14,7 +14,7 @@ namespace IBAL
         public class IdAlreadyExistsException : Exception
         {
 
-            public IdAlreadyExistsException(int idNumber , string type) : base($"the id {idNumber} alredy exists in the database of {type}.")
+            public IdAlreadyExistsException(int idNumber , string type) : base($"BL_Exception:  the id {idNumber} alredy exists in the database of {type}.")
             {
             }
 
@@ -30,19 +30,20 @@ namespace IBAL
             {
             }
 
+            public IdAlreadyExistsException(int idNumber ,string type, Exception innerException) : base($"BL_Exception:  the id {idNumber} already exists in the database of {type}.", innerException)
+            {
+            }
+
             protected IdAlreadyExistsException(SerializationInfo info, StreamingContext context) : base(info, context)
             {
             }
         }
 
-
-        
-
         [Serializable]
         public class IdDontExistsException : Exception
         {
 
-            public IdDontExistsException(int idNumber, string type) : base($"the id {idNumber} dont exists in the database of {type}.")
+            public IdDontExistsException(int idNumber, string type) : base($"BL_Exception:  the id {idNumber} dont exists in the database of {type}.")
             {
             }
 
@@ -54,7 +55,7 @@ namespace IBAL
             {
             }
 
-            public IdDontExistsException(int idNumber, string type, Exception innerException) : base($"the id {idNumber} dont exists in the database of {type}.", innerException)
+            public IdDontExistsException(int idNumber, string type, Exception innerException) : base($"BL_Exception: the id {idNumber} dont exists in the database of {type}.", innerException)
             {
             }
 
@@ -63,42 +64,39 @@ namespace IBAL
             }
         }
 
-
+        /// <summary>
+        /// describes all the exceptions that happen in the bl ctor.
+        /// </summary>
         [Serializable]
-        internal class NotEnoughRangeException : Exception
+        public class BL_ConstaractorException : Exception
         {
-            public NotEnoughRangeException()
+            public BL_ConstaractorException()
             {
             }
 
-            public NotEnoughRangeException(string message) : base(message)
+            public BL_ConstaractorException(string message) : base(" BL_ConstaractorException: " + message)
             {
             }
 
-            public NotEnoughRangeException(string message, Exception innerException) : base(message, innerException)
+            public BL_ConstaractorException(string message, Exception innerException) : base(message, innerException)
             {
             }
 
-            protected NotEnoughRangeException(SerializationInfo info, StreamingContext context) : base(info, context)
+            protected BL_ConstaractorException(SerializationInfo info, StreamingContext context) : base(info, context)
             {
             }
         }
+
 
         [Serializable]
         internal class NotAbleToSendDroneToChargeException : Exception
         {
 
-            static string message = "the drone cant make it to the station, the maximum distance is: ";
-
             public NotAbleToSendDroneToChargeException()
             {
             }
              
-            public NotAbleToSendDroneToChargeException(string message) : base(message)
-            {
-            }
-
-            public NotAbleToSendDroneToChargeException(int distance) : base(message + distance.ToString())
+            public NotAbleToSendDroneToChargeException(string message) : base("Not Able To Send The Drone To Charge Due To: "+message)
             {
             }
 
@@ -113,21 +111,21 @@ namespace IBAL
 
 
         [Serializable]
-        internal class NotAbleToFreeDroneToChargeException : Exception
+        internal class NotAbleToFreeDroneFromChargeException : Exception
         {
-            public NotAbleToFreeDroneToChargeException()
+            public NotAbleToFreeDroneFromChargeException()
             {
             }
 
-            public NotAbleToFreeDroneToChargeException(string message) : base(message)
+            public NotAbleToFreeDroneFromChargeException(string message) : base(message)
             {
             }
 
-            public NotAbleToFreeDroneToChargeException(string message, Exception innerException) : base(message, innerException)
+            public NotAbleToFreeDroneFromChargeException(string message, Exception innerException) : base(message, innerException)
             {
             }
 
-            protected NotAbleToFreeDroneToChargeException(SerializationInfo info, StreamingContext context) : base(info, context)
+            protected NotAbleToFreeDroneFromChargeException(SerializationInfo info, StreamingContext context) : base(info, context)
             {
             }
         }

@@ -9,9 +9,11 @@ namespace ConsoleUI_BL
     { 
         private static Random r = new Random();     // a static value for 
 
-
         public static void Main(string[] args)
         {
+
+            Console.WriteLine("Welcome to the ConsoleUI_BL program.\n");
+
             IBL.IBL bl = new BL();
 
             int choice = inputChoice();
@@ -24,7 +26,7 @@ namespace ConsoleUI_BL
                     //case 1: adding options
                     case 1:
                         {
-                            Console.WriteLine("enter your choice: \n" +
+                            Console.WriteLine("Adding Options: \n Enter your choice: \n\n" +
                                                "for adding a base station to the list: 1. \n" +
                                                "for adding a drone to the list: 2. \n" +
                                                "for adding a customer to the list: 3.\n" +
@@ -38,6 +40,8 @@ namespace ConsoleUI_BL
                                 case 1:
                                     {
                                         //case 1: adding a base station
+
+                                        Console.WriteLine("1 : adding a base station: \n");
 
                                         Console.Write("Enter the number of the station: ");
                                         int number;
@@ -70,9 +74,22 @@ namespace ConsoleUI_BL
                                             } 
                                         };
 
-                                        bl.AddBaseStation(baseStation);
-
-                                        Console.WriteLine();
+                                        try
+                                        {
+                                            if (bl.AddBaseStation(baseStation))
+                                            {
+                                                Console.WriteLine($"\nbasestation {name} successfully added to the list.");
+                                            }
+                                        }catch(Exception e)
+                                        {
+                                            Console.WriteLine("\nException: ");
+                                            printException(e);
+                                        }
+                                        finally
+                                        {
+                                            Console.WriteLine();
+                                        }
+                                       
                                     }
                                     break;
                                 case 2:
@@ -106,9 +123,24 @@ namespace ConsoleUI_BL
                                             Location = bl.GetBaseStation(stationNumber).Location
                                         };
 
-                                        bl.AddDrone(drone);// , status , battary);
 
-                                        Console.WriteLine();
+
+                                        try
+                                        {
+                                            if (bl.AddDrone(drone))
+                                            {
+                                                Console.WriteLine($"\nthe drone {name} successfully added to the list.");
+                                            }
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            Console.WriteLine("\n Exception: ");
+                                            printException(e);
+                                        }
+                                        finally
+                                        {
+                                            Console.WriteLine();
+                                        }
 
                                     }
                                     break;
@@ -147,9 +179,24 @@ namespace ConsoleUI_BL
                                             } 
                                         };
 
-                                        bl.AddCustumer(customer);
-                                        
-                                        Console.WriteLine();
+                                        try
+                                        {
+                                            if (bl.AddCustumer(customer))
+                                            {
+                                                Console.WriteLine($"\ncustomer {name} successfully added to the list.");
+                                            }
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            Console.WriteLine("\n Exception: ");
+                                            printException(e);
+                                        }
+                                        finally
+                                        {
+                                            Console.WriteLine();
+                                        }
+
+
                                     }
                                     break;
                                 case 4:
@@ -193,9 +240,24 @@ namespace ConsoleUI_BL
                                         };
 
 
-                                        bl.AddParcel(parcel);
+                                        try
+                                        {
+                                            if (bl.AddParcel(parcel))
+                                            {
+                                                Console.WriteLine($"\nparcel successfully added to the list.");
+                                            }
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            Console.WriteLine("\n Exception: ");
+                                            printException(e);
+                                        }
+                                        finally
+                                        {
+                                            Console.WriteLine();
+                                        }
 
-                                        Console.WriteLine();
+
                                     }
                                     break;
                             }
@@ -524,7 +586,7 @@ namespace ConsoleUI_BL
         /// <returns></returns>
         private static int inputChoice()
         {
-            Console.WriteLine("enter your choice: \n" +
+            Console.WriteLine("Enter your choice: \n\n" +
                 "for adding options: 1. \n" +
                 "for updating options: 2. \n" +
                 "for showing certine object options: 3.\n" +
@@ -540,11 +602,11 @@ namespace ConsoleUI_BL
 
         private static void printException(Exception e)
         {
-            if (e == null) Console.WriteLine() ;
-
-            Console.WriteLine(e.Message);
+            if (e == null) return;
 
             printException(e.InnerException);
+
+            Console.WriteLine(e.Message);
         }
 
     
