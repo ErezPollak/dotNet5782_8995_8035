@@ -12,11 +12,11 @@ namespace IBL
     {
         private IDAL.IDal dalObject;
 
-        private double free; // for the electricity use of a free drone
-        private double light; // for the electricity use of a drone that carrys a light wight.
-        private double middel; // for the electricity use of a drone that carrys a middle wight.
-        private double heavy; // for the electricity use of a drone that carrys a heavy wight.
-        private double chargingSpeed;//for the speed of the charge. precentage for hour.
+        //private double free; // for the electricity use of a free drone
+        //private double light; // for the electricity use of a drone that carrys a light wight.
+        //private double middel; // for the electricity use of a drone that carrys a middle wight.
+        //private double heavy; // for the electricity use of a drone that carrys a heavy wight.
+        //private double chargingSpeed;//for the speed of the charge. precentage for hour.
 
         private List<IBAL.BO.DroneForList> drones;
 
@@ -35,11 +35,11 @@ namespace IBL
 
             double[] electricityUse = dalObject.ElectricityUse();
 
-            this.free = electricityUse[0];
-            this.light = electricityUse[1];
-            this.middel = electricityUse[2];
-            this.heavy = electricityUse[3];
-            this.chargingSpeed = electricityUse[4];
+            // this.free = electricityUse[0];
+            // this.light = electricityUse[1];
+            // this.middel = electricityUse[2];
+            // this.heavy = electricityUse[3];
+            // this.chargingSpeed = electricityUse[4];
 
             //translats all the drones from the data lavel to 
             foreach (IDAL.DO.Drone dalDrone in dalObject.GetDrones(d => true).ToList())
@@ -53,7 +53,7 @@ namespace IBL
                 });
             }
 
-            foreach (IDAL.DO.Parcel parcel in dalObject.GetParcels(parcel => parcel.DroneId != -1 && parcel.AcceptedTime != null))
+            foreach (IDAL.DO.Parcel parcel in dalObject.GetParcels(parcel => parcel.DroneId != -1 && parcel.AcceptedTime == null))
             {
 
                 double deliveryDistance = 0;
@@ -75,7 +75,7 @@ namespace IBL
                     // caculating the distance between the base station to the sender.
                     deliveryDistance += distance(locationTranslate(dalObject.GetBaseStation(dalObject.GetClothestStation(parcel.SenderId)).Location), locationTranslate(dalObject.GetCustomer(parcel.SenderId).Location));
 
-                    int minimumeValue = (int)(dalObject.ElectricityUse()[(int)this.GetDrone(parcel.DroneId).Weight] * deliveryDistance);
+                    double minimumeValue = deliveryDistance / (int)(dalObject.ElectricityUse()[(int)this.GetDrone(parcel.DroneId).Weight]);
 
                     if (minimumeValue > 100) throw new IBAL.BO.BL_ConstaractorException($"the drone needs {minimumeValue} battary in order to complete to delivery. ");
 
@@ -86,7 +86,7 @@ namespace IBL
                 {
                     this.GetDrone(parcel.DroneId).Location = locationTranslate(dalObject.GetCustomer(parcel.SenderId).Location);
 
-                    int minimumeValue = (int)(dalObject.ElectricityUse()[(int)this.GetDrone(parcel.DroneId).Weight] * deliveryDistance);
+                    double minimumeValue = deliveryDistance / (int)(dalObject.ElectricityUse()[(int)this.GetDrone(parcel.DroneId).Weight]);
 
                     if (minimumeValue > 100) throw new IBAL.BO.BL_ConstaractorException($"the drone needs {minimumeValue} battary in order to complete to delivery. ");
 
@@ -94,7 +94,6 @@ namespace IBL
 
                 }
             }
-
 
             foreach (IBAL.BO.DroneForList drone in this.drones)
             {
@@ -108,7 +107,7 @@ namespace IBL
 
                     double deliveryDistance = distance(locationTranslate(dalObject.GetBaseStation(dalObject.GetClothestStation(parcels[index].TargetId)).Location), locationTranslate(dalObject.GetCustomer(parcels[index].TargetId).Location));
 
-                    double battayConcamption = deliveryDistance * dalObject.ElectricityUse()[(int)drone.Weight + 1];
+                    double battayConcamption = deliveryDistance / dalObject.ElectricityUse()[(int)drone.Weight + 1];
 
                     if (battayConcamption > 100) throw new IBAL.BO.BL_ConstaractorException($"the drone needs {battayConcamption} battary in order to complete to delivery. ");
 

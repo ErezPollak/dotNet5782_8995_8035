@@ -14,8 +14,17 @@ namespace ConsoleUI_BL
 
             Console.WriteLine("Welcome to the ConsoleUI_BL program.\n");
 
-            IBL.IBL bl = new BL();
+            IBL.IBL bl;
 
+            try
+            {
+              bl  = new BL();
+            }catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return;
+            }
+            
             int choice = inputChoice();
 
             while (choice != 5)
@@ -374,7 +383,6 @@ namespace ConsoleUI_BL
                                         int droneId;
                                         int.TryParse(Console.ReadLine(), out droneId);
 
-
                                         try
                                         {
                                             if (bl.ChargeDrone(droneId))
@@ -387,8 +395,6 @@ namespace ConsoleUI_BL
                                         {
                                             printException(e);
                                         }
-
-                                        
 
                                     }
                                     break;

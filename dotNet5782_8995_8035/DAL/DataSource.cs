@@ -61,6 +61,14 @@ namespace DalObject
         /// </summary>
         internal static void Initialize()
         {
+
+            //initilize valuws of the config function.
+            Config.Free = r.NextDouble() * 100 + 50;
+            Config.Light = Config.Free - r.NextDouble() * 30;
+            Config.Middel = Config.Light - r.NextDouble() * 30;
+            Config.Heavy = Config.Middel - r.NextDouble() * 30;
+            Config.ChargingSpeed = r.NextDouble() * 100 + 50;
+
             //randomal values for base stations.
             for (int i = 0; i < 2; i++)
             {
@@ -125,7 +133,7 @@ namespace DalObject
                     TargetId = customers[r.Next() % (customers.Count)].Id, // random values from the avalible customers.
                     Weight = (WeightCategories)(r.Next() % 3),
                     Priority = (Priorities)(r.Next() % 3),
-                    DroneId = -1,                                   //initileized to not have any drone, the drone number will be updated in the dalobject class.
+                    DroneId = 0,                                   //initileized to not have any drone, the drone number will be updated in the dalobject class.
                     RequestedTime = pickingBiggerDate(DateTime.Now),  // initilesed to be the time of the initialization.
                     PickedUpTime = null,                        //initilesed for now, will change in  DalObject class, when order is updated to be picked up.
                     AcceptedTime = null
