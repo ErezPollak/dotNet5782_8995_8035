@@ -34,7 +34,7 @@ namespace IDAL
             }
 
             //Special constractor for the needs of the excption
-            public IdAlreadyExistsException(int idNumber , string type) : base($"DAL_Exception: the id {idNumber} dont exists in the database of {type}.")
+            public IdAlreadyExistsException(int idNumber , string type) : base($"DAL_Exception: the id {idNumber} alreay exists in the database of {type}.")
             {
             }
 
@@ -67,7 +67,7 @@ namespace IDAL
             }
 
             //Special constractor for the needs of the excption
-            public IdDontExistsException(int idNumber, string type) : base($"DAL_Exception: the id {idNumber} already exists in the database of {type}.")
+            public IdDontExistsException(int idNumber, string type) : base($"DAL_Exception: the id {idNumber} don't exists in the database of {type}.")
             {
             }
         }

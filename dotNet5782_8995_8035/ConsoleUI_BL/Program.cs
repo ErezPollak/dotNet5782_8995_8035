@@ -26,7 +26,7 @@ namespace ConsoleUI_BL
                     //case 1: adding options
                     case 1:
                         {
-                            Console.WriteLine("Adding Options: \n Enter your choice: \n\n" +
+                            Console.WriteLine("Adding Options: \n\n Enter your choice: \n\n" +
                                                "for adding a base station to the list: 1. \n" +
                                                "for adding a drone to the list: 2. \n" +
                                                "for adding a customer to the list: 3.\n" +
@@ -273,7 +273,7 @@ namespace ConsoleUI_BL
                     case 2:
                         {
                             Console.WriteLine("\n" +
-                                              "enter your choice: \n" +
+                                              "updationg option:\n\n" + "enter your choice: \n\n" +
                                               "for updating model of a drone: 1. \n" +
                                               "for updating ditails of a base station: 2. \n" +
                                               "for updating ditails of customer: 3.\n" +
@@ -299,7 +299,10 @@ namespace ConsoleUI_BL
 
                                         try
                                         {
-                                            bl.UpdateNameForADrone(droneId, model);
+                                            if (bl.UpdateNameForADrone(droneId, model))
+                                            {
+                                                Console.WriteLine($"\nthe name of the drone {droneId} updated to {model} successfully.");
+                                            }
                                         }catch(Exception e)
                                         {
                                             printException(e);
@@ -322,7 +325,11 @@ namespace ConsoleUI_BL
 
                                         try
                                         {
-                                            bl.UpdateBaseStation(basStationID, name, slots);
+                                            if (bl.UpdateBaseStation(basStationID, name, slots))
+                                            {
+                                                Console.WriteLine($"\ndetails of the basStation {basStationID} updated successfully.");
+                                            }
+                                            
                                         }
                                         catch (Exception e)
                                         {
@@ -346,7 +353,11 @@ namespace ConsoleUI_BL
 
                                         try
                                         {
-                                            bl.UpdateCustomer(customerID, name, phone);
+                                            if (bl.UpdateCustomer(customerID, name, phone))
+                                            {
+                                                Console.WriteLine($"\nthe name of the customer {customerID} update successfully.");
+                                            }
+                                         
                                         }
                                         catch (Exception e)
                                         {
@@ -359,13 +370,17 @@ namespace ConsoleUI_BL
                                     {
                                         //case 4: updating the charge of a drone
                                         Console.WriteLine("enter the number of the drone: ");
-                                        int droneID;
-                                        int.TryParse(Console.ReadLine(), out droneID);
+                                        int droneId;
+                                        int.TryParse(Console.ReadLine(), out droneId);
 
 
                                         try
                                         {
-                                            bl.ChargeDrone(droneID);
+                                            if (bl.ChargeDrone(droneId))
+                                            {
+                                                Console.WriteLine($"\nthe drone {droneId} send to charging successfully.");
+                                            }
+                                          
                                         }
                                         catch (Exception e)
                                         {
@@ -380,8 +395,8 @@ namespace ConsoleUI_BL
                                     {
                                         //relicing a drone from charging
                                         Console.WriteLine("enter the number of the drone: ");
-                                        int droneID;
-                                        int.TryParse(Console.ReadLine(), out droneID);
+                                        int droneId;
+                                        int.TryParse(Console.ReadLine(), out droneId);
 
                                         Console.WriteLine("enter number of minutes that  the drone was charged: ");
                                         int minutes;
@@ -389,7 +404,11 @@ namespace ConsoleUI_BL
 
                                         try
                                         {
-                                            bl.UnChargeDrone(droneID, minutes);
+                                            if  (bl.UnChargeDrone(droneId, minutes))
+                                            {
+                                                Console.WriteLine($"\nthe drone {droneId} released from charging successfully.");
+                                            }
+                                           
                                         }
                                         catch (Exception e)
                                         {
@@ -403,12 +422,16 @@ namespace ConsoleUI_BL
                                     {
                                         //case 6: assigning a parcel to a drone.
                                         Console.WriteLine("enter the number of the drone: ");
-                                        int droneID;
-                                        int.TryParse(Console.ReadLine(), out droneID);
+                                        int droneId;
+                                        int.TryParse(Console.ReadLine(), out droneId);
 
                                         try
                                         {
-                                            bl.AssignParcelTOADrone(droneID);
+                                            if (bl.AssignParcelTOADrone(droneId))
+                                            {
+                                                Console.WriteLine($"\nthe drone {droneId} assign to the persel {bl.GetDrone(droneId).ParcelId} successfully.");
+                                            }
+                                           
                                         }
                                         catch (Exception e)
                                         {
@@ -427,7 +450,11 @@ namespace ConsoleUI_BL
 
                                         try
                                         {
-                                            bl.DeliveringParcelFromADrone(droneID);
+                                            if (bl.DeliveringParcelFromADrone(droneID))
+                                            {
+                                                Console.WriteLine($"\nthe parcel {bl.GetDrone(droneID).ParcelId} delivered successfully.");
+                                            }
+                                            
                                         }
                                         catch (Exception e)
                                         {
@@ -586,7 +613,7 @@ namespace ConsoleUI_BL
         /// <returns></returns>
         private static int inputChoice()
         {
-            Console.WriteLine("Enter your choice: \n\n" +
+            Console.WriteLine("\nEnter your choice: \n\n" +
                 "for adding options: 1. \n" +
                 "for updating options: 2. \n" +
                 "for showing certine object options: 3.\n" +
