@@ -11,20 +11,23 @@ namespace IDAL
 
         ////***adding options***/////
 
-        public void AddBaseStation(IDAL.DO.BaseStation baseStation);
-        public void AddDrone(IDAL.DO.Drone drone);
-        public void AddCustumer(IDAL.DO.Customer customer);
-        public void AddParcel(IDAL.DO.Parcel parcel);
+        public bool AddBaseStation(IDAL.DO.BaseStation baseStation);
+        public bool AddDrone(IDAL.DO.Drone drone);
+        public bool AddCustumer(IDAL.DO.Customer customer);
+        public bool AddParcel(IDAL.DO.Parcel parcel);
 
 
 
         ////***update options***/////
 
-        public void UpdateDroneForAParcel(int parcelId, int droneId);
-        public void PickingUpParcel(int parcelId, int droneId);
-        public void DeliveringParcel(int parcelId);
-        public void ChargeDrone(int baseStationId, int droneId);
-        public void UnChargeDrone(int droneId);
+        public bool UpdateNameForADrone(int droneId, string model);
+        public bool UpdateBaseStation(int basStationID, string name, int slots);
+        public bool UpdateCustomer(int customerID, string name, string phone);
+        public bool UpdateDroneForAParcel(int parcelId, int droneId);
+        public bool PickingUpParcel(int parcelId, int droneId);
+        public bool DeliveringParcel(int parcelId);
+        public bool ChargeDrone(int baseStationId, int droneId);
+        public bool UnChargeDrone(int droneId);
 
         ////***show options***/////
 

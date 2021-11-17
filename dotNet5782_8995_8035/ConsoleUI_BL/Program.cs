@@ -136,7 +136,8 @@ namespace ConsoleUI_BL
                                         double.TryParse(Console.ReadLine(), out lattitude);
 
                                         IBAL.BO.Customer customer = new IBAL.BO.Customer() 
-                                        { Id = number, 
+                                        { 
+                                            Id = number, 
                                             Name = name, 
                                             Phone = phone,
                                             Location = new IBAL.BO.Location()
@@ -234,8 +235,13 @@ namespace ConsoleUI_BL
                                         Console.WriteLine("enter the new model of the drone: ");
                                         string model = Console.ReadLine();
 
-                                        bl.SetNameForADrone(droneId, model);
-
+                                        try
+                                        {
+                                            bl.UpdateNameForADrone(droneId, model);
+                                        }catch(Exception e)
+                                        {
+                                            printException(e);
+                                        }
                                     }
                                     break;
                                 case 2:
@@ -252,12 +258,20 @@ namespace ConsoleUI_BL
                                         int slots;
                                         int.TryParse(Console.ReadLine(), out slots);
 
-                                        bl.UpdateBaseStation(basStationID, name, slots);
+                                        try
+                                        {
+                                            bl.UpdateBaseStation(basStationID, name, slots);
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            printException(e);
+                                        }
                                     }
                                     break;
                                 case 3:
                                     {
                                         // case 3: updating the delivering time of the parcel to be now
+                                        
                                         Console.WriteLine("enter the number of the customer: ");
                                         int customerID;
                                         int.TryParse(Console.ReadLine(), out customerID);
@@ -268,7 +282,14 @@ namespace ConsoleUI_BL
                                         Console.WriteLine("enter the new phone of the customer: ");
                                         string phone = Console.ReadLine();
 
-                                        bl.UpdateCustomer(customerID, name, phone);
+                                        try
+                                        {
+                                            bl.UpdateCustomer(customerID, name, phone);
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            printException(e);
+                                        }
 
                                     }
                                     break;
@@ -279,7 +300,17 @@ namespace ConsoleUI_BL
                                         int droneID;
                                         int.TryParse(Console.ReadLine(), out droneID);
 
-                                        bl.ChargeDrone(droneID);
+
+                                        try
+                                        {
+                                            bl.ChargeDrone(droneID);
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            printException(e);
+                                        }
+
+                                        
 
                                     }
                                     break;
@@ -294,7 +325,16 @@ namespace ConsoleUI_BL
                                         int minutes;
                                         int.TryParse(Console.ReadLine(), out minutes);
 
-                                        bl.UnChargeDrone(droneID , minutes);
+                                        try
+                                        {
+                                            bl.UnChargeDrone(droneID, minutes);
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            printException(e);
+                                        }
+
+                                       
                                     }
                                     break;
                                 case 6:
@@ -304,7 +344,16 @@ namespace ConsoleUI_BL
                                         int droneID;
                                         int.TryParse(Console.ReadLine(), out droneID);
 
-                                        bl.AssignParcelTOADrone(droneID);
+                                        try
+                                        {
+                                            bl.AssignParcelTOADrone(droneID);
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            printException(e);
+                                        }
+
+                                        
                                     }
                                     break;
                                 case 7:
@@ -314,7 +363,16 @@ namespace ConsoleUI_BL
                                         int droneID;
                                         int.TryParse(Console.ReadLine(), out droneID);
 
-                                        bl.DeliveringParcelFromADrone(droneID);
+                                        try
+                                        {
+                                            bl.DeliveringParcelFromADrone(droneID);
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            printException(e);
+                                        }
+
+                                        
                                     }
                                     break;
                             }
@@ -406,36 +464,42 @@ namespace ConsoleUI_BL
                                     {
                                         //showing the list of base stations
                                         bl.GetBaseStations(b => true).ToList().ForEach(b => Console.WriteLine(b));
+                                        Console.WriteLine();
                                     }
                                     break;
                                 case 2:
                                     {
                                         //showing the list of the drones
-                                        bl.GetDrones(d => true).ToList().ForEach(d => Console.WriteLine(d));
+                                         bl.GetDrones(d => true).ToList().ForEach(d => Console.WriteLine(d));
+                                        Console.WriteLine();
                                     }
                                     break;
                                 case 3:
                                     {
                                         // showing the list of the customers
                                         bl.GetCustomers(c => true).ToList().ForEach(c => Console.WriteLine(c));
+                                        Console.WriteLine();
                                     }
                                     break;
                                 case 4:
                                     {
                                         //showing the list of the parcels
                                         bl.GetPacels(p => true).ToList().ForEach(p => Console.WriteLine(p));
+                                        Console.WriteLine();
                                     }
                                     break;
                                 case 5:
                                     {
                                         //shoing the list of the parcels that dont have a drine.
                                         bl.GetPacels(p => bl.GetParcel(p.Id).Drone.Id == -1).ToList().ForEach(p => Console.WriteLine(p));
+                                        Console.WriteLine();
                                     }
                                     break;
                                 case 6:
                                     {
                                         //shoing the base stations that have free charging slots
                                         bl.GetBaseStations(b => b.ChargeSlots >= 0).ToList().ForEach(c => Console.WriteLine(c));
+                                        Console.WriteLine();
                                     }
                                     break;
                             }
@@ -474,29 +538,14 @@ namespace ConsoleUI_BL
         }
 
 
+        private static void printException(Exception e)
+        {
+            if (e == null) Console.WriteLine() ;
 
+            Console.WriteLine(e.Message);
 
-        //IBAL.BO.DroneForList drone = new IBAL.BO.DroneForList()
-        //{
-        //    Id = 200,
-        //    Battary = 100,
-        //    Location = new IBAL.BO.Location()
-        //    {
-        //        Lattitude = 10,
-        //        Longitude = 20
-        //    },
-        //    Model = "AA11111",
-        //    ParcelId = 3,
-        //    Weight = 0,
-        //    Status = (IBAL.BO.Enums.DroneStatuses)1
-        //};
-
-        //bl.AddDrone(drone);
-
-        //foreach(IBAL.BO.DroneForList d in bl.GetDrones())
-        //{
-        //    Console.WriteLine(d.Id);
-        //}
+            printException(e.InnerException);
+        }
 
     
     }

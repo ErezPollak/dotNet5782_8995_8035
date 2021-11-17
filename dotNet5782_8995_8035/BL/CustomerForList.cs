@@ -12,21 +12,21 @@ namespace IBAL
         {
             public int Id { get; set; }
             public string Name { get; set; }
-            public int Phone { get; set; }
-            public int SentAndDeliverd { get; set; }
-            public int SentAnDNotDelivered { get; set; }
-            public int Recived { get; set; }
-            public int OnTheWay { get; set; }
+            public string Phone { get; set; }
+            public int SentToAndDeliverd { get; set; }
+            public int SentToAnDNotDelivered { get; set; }
+            public int SentFromAndDeliverd { get; set; }
+            public int SentFromAndNotDeliverd { get; set; }
 
             public override string ToString()
             {
                 return $"id: {this.Id} " +
                     $"name: {this.Name} " +
                     $"phone {this.Phone} " +
-                    $"finished parcels: {this.SentAndDeliverd} " +
-                    $"not finished parcels: {this.SentAnDNotDelivered} " +
-                    $"recived: {this.Recived} " +
-                    $"parcels on the way: {this.OnTheWay} " +
+                    $"finished parcels: {this.SentToAndDeliverd} " +
+                    $"not finished parcels: {this.SentToAnDNotDelivered} " +
+                    $"recived: {this.SentFromAndDeliverd} " +
+                    $"parcels on the way: {this.SentFromAndNotDeliverd} " +
                     $"";
             }
         }

@@ -37,13 +37,15 @@ namespace DalObject
         /// <param name="longtude"></param>
         /// <param name="lattitude"></param>
         /// <param name="chargeslots"></param>
-        public void AddBaseStation(IDAL.DO.BaseStation baseStation)
+        public bool AddBaseStation(IDAL.DO.BaseStation baseStation)
         {
             //checking that the number is not already in the list, in witch case exeption will be thrown.
             if(DataSource.baseStations.Any(b => b.Id == baseStation.Id)) throw new IDAL.DO.IdAlreadyExistsException(baseStation.Id , "baseSattion");
 
             //adding the base station to the list after no matching serial numbers was fuond.
             DataSource.baseStations.Add(baseStation);
+
+            return true;
 
         }
 
@@ -55,7 +57,7 @@ namespace DalObject
         /// <param name="weight"></param>
         /// <param name="status"></param>
         /// <param name="battery"></param>
-        public void AddDrone(IDAL.DO.Drone drone)
+        public bool AddDrone(IDAL.DO.Drone drone)
         {
 
             //checking that the number is not already in the list, in witch case exeption will be thrown.
@@ -64,42 +66,97 @@ namespace DalObject
             //adding the base station to the list after no matching serial numbers was fuond.
             DataSource.drones.Add(drone);
 
+            return true;
+
         }
         
         /// <summary>
         /// the function gets a new customer and adding it to the list, if the id alraedy exists an excption will be thrown.
         /// </summary>
-        public void AddCustumer(IDAL.DO.Customer customer)
+        public bool AddCustumer(IDAL.DO.Customer customer)
         {
             //checking that the number is not already in the list, in witch case exeption will be thrown.
             if (DataSource.customers.Any(c => c.Id == customer.Id)) throw new IDAL.DO.IdAlreadyExistsException(customer.Id, "customer");
 
             //adding the base station to the list after no matching serial numbers was fuond.
             DataSource.customers.Add(customer);
+
+            return true;
         }
 
         /// <summary>
         ///  /// the function gets a new patcel and adding it to the list, if the id alraedy exists an excption will be thrown.
         /// </summary>
         /// <param name="parcel"></param>
-        public void AddParcel(IDAL.DO.Parcel parcel)
+        public bool AddParcel(IDAL.DO.Parcel parcel)
         {
             //checking that the number is not already in the list, in witch case exeption will be thrown.
             if (DataSource.parcels.Any(p => p.Id == parcel.Id)) throw new IDAL.DO.IdAlreadyExistsException(parcel.Id, "parcel");
 
             //adding the base station to the list after no matching serial numbers was fuond.
             DataSource.parcels.Add(parcel);
+
+            return true;
         }
 
         ////***update options***/////
 
+
+        public bool UpdateNameForADrone(int droneId , string model)
+        {
+            int index = DataSource.drones.FindIndex(d => (d.Id == droneId));
+
+            if (index == -1) throw new IdDontExistsException(droneId , "drone");
+
+            IDAL.DO.Drone drone = DataSource.drones[index];
+
+            drone.Model = model;
+
+            DataSource.drones[index] = drone;
+
+            return true;
+        }
+
+        public bool UpdateBaseStation(int baseStationId, string name, int slots)
+        {
+            int index = DataSource.baseStations.FindIndex(b => (b.Id == baseStationId));
+
+            if (index == -1) throw new IDAL.DO.IdDontExistsException(baseStationId, "baseStation");
+
+            IDAL.DO.BaseStation baseStation = DataSource.baseStations[index];
+
+            baseStation.Name = name;
+
+            baseStation.ChargeSlots = slots;
+
+          DataSource.baseStations[index] = baseStation;
+
+            return true;
+        }
+
+        public bool UpdateCustomer(int customerID, string name, string phone)
+        {
+            int index = DataSource.customers.FindIndex(d => d.Id == customerID);
+
+            if (index == -1) throw new IDAL.DO.IdDontExistsException();
+
+            IDAL.DO.Customer customer = DataSource.customers[index];
+
+            customer.Name = name;
+
+            customer.Phone = phone;
+
+            DataSource.customers[index] = customer;
+
+            return true;
+        }
 
         /// <summary>
         ///the function is givig the parcel the number of the drone.
         /// </summary>
         /// <param name="parcelId"></param>
         /// <param name="droneId"></param>
-        public void UpdateDroneForAParcel(int parcelId, int droneId)
+        public bool UpdateDroneForAParcel(int parcelId, int droneId)
         {
             //keeps the index in witch the idNumber was found in order to update it without iterting over the list again.
             int parcelIndex = 0;
@@ -134,14 +191,16 @@ namespace DalObject
             IDAL.DO.Parcel newParcel = DataSource.parcels[parcelIndex];
             newParcel.DroneId = droneId;
             DataSource.parcels[parcelIndex] = newParcel;
-                
+
+            return true;
+
         }
 
         /// <summary>
         ///updating the time of pickup in the parcel, and changing the status of the drone to delivery.
         /// </summary>
         /// <param name="parcelId"></param>
-        public void PickingUpParcel(int parcelId , int droneId)
+        public bool PickingUpParcel(int parcelId , int droneId)
         {
             //keeps the index in witch the idNumber was found in order to update it without iterting over the list again.
             int parcelIndex = 0;
@@ -165,13 +224,16 @@ namespace DalObject
             newParcel.PickedUpTime = DateTime.Now;
             newParcel.DroneId = droneId;
             DataSource.parcels[parcelIndex] = newParcel;
+
+            return true;
+
         }
 
        /// <summary>
        ///updating the time of delivering in the parcel, and changing the status of the drone to free.
        /// </summary>
        /// <param name="parcelId"></param>
-        public void DeliveringParcel(int parcelId)
+        public bool DeliveringParcel(int parcelId)
         {
             //keeps the index in witch the idNumber was found in order to update it without iterting over the list again.
             int parcelIndex = 0;
@@ -194,6 +256,9 @@ namespace DalObject
             IDAL.DO.Parcel newParcel = DataSource.parcels[parcelIndex];
             newParcel.AcceptedTime = DateTime.Now;
             DataSource.parcels[parcelIndex] = newParcel;
+
+            return true;
+
         }
 
         /// <summary>
@@ -201,7 +266,7 @@ namespace DalObject
         /// </summary>
         /// <param name="baseStationId"></param>
         /// <param name="droneId"></param>
-        public void ChargeDrone(int baseStationId, int droneId)
+        public bool ChargeDrone(int baseStationId, int droneId)
         {
 
             //keeps the index in witch the idNumber was found in order to update it without iterting over the list again.
@@ -245,13 +310,16 @@ namespace DalObject
             //creating the charge drone ans adding it to the list of charges.
             IDAL.DO.DroneCharge droneCharge = new IDAL.DO.DroneCharge() { DroneId = droneId, StationId = baseStationId };
             DataSource.charges.Add(droneCharge);
+
+            return true;
+
         }
 
         /// <summary>
         ///deleting the droneCharge from the list. 
         /// </summary>
         /// <param name="droneId"></param>
-        public void UnChargeDrone(int droneId)
+        public bool UnChargeDrone(int droneId)
         {
             bool isNameExists = false;
             //int droneIndex = 0; not relevent
@@ -295,6 +363,8 @@ namespace DalObject
 
             //removing the cahrge from the list.
             DataSource.charges.Remove(DataSource.charges[chargeIndex]);
+
+            return true;
 
         }
 
@@ -527,6 +597,9 @@ namespace DalObject
             return clothestStation;
             
         }
+
+
+        // delete these two functpns.
 
         public int GetBaseStationsNumber()
         {
