@@ -284,6 +284,7 @@ namespace ConsoleUI_BL
 
                             int updatingChoice;
                             int.TryParse(Console.ReadLine(), out updatingChoice);
+                            Console.WriteLine();
 
                             switch (updatingChoice)
                             {
@@ -478,7 +479,7 @@ namespace ConsoleUI_BL
                                               "to show a base station: 1. \n" +
                                               "to show a drone: 2. \n" +
                                               "to show a custumer: 3.\n" +
-                                              "to show a parcel: 4.\n");
+                                              "to show a parcel: 4.\n\n");
 
                             int showChoice;
                             int.TryParse(Console.ReadLine(), out showChoice);
@@ -542,7 +543,7 @@ namespace ConsoleUI_BL
                                               "to show the list of the custumers: 3.\n" +
                                               "to show the list of the parcels: 4.\n" +
                                               "to show the list of the parcels that dont have a drone: 5.\n" +
-                                              "to show the list of the base stations with available chrging slots: 6");
+                                              "to show the list of the base stations with available chrging slots: 6\n\n");
 
                             int showChoice;
                             int.TryParse(Console.ReadLine(), out showChoice);
