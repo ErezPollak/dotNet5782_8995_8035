@@ -38,7 +38,7 @@ namespace IBL
 
         
         /// <summary>
-        /// 
+        /// constractor for the Bl class
         /// </summary>
         public BL()
         {
