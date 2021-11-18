@@ -45,10 +45,8 @@ namespace IBL
 
         /////////functions for BL
 
-
         public int GetNextSerialNumberForParcel();
-        public IBAL.BO.CoustomerForParcel GetCustomerForParcel(int customerId);
-        
+       
        
     }
 }

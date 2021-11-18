@@ -237,8 +237,8 @@ namespace ConsoleUI_BL
                                         IBAL.BO.Parcel parcel = new IBAL.BO.Parcel()
                                         {
                                             Id = bl.GetNextSerialNumberForParcel(),
-                                            Sender = bl.GetCustomerForParcel(senderId),
-                                            Reciver = bl.GetCustomerForParcel(targetId),
+                                            Sender = new IBAL.BO.CoustomerForParcel() {Id = bl.GetCustomer(senderId).Id , CustomerName = bl.GetCustomer(senderId).Name },
+                                            Reciver = new IBAL.BO.CoustomerForParcel() { Id = bl.GetCustomer(targetId).Id, CustomerName = bl.GetCustomer(targetId).Name },
                                             Priority = priority,
                                             Drone = null,
                                             Weight = weight,
@@ -520,7 +520,17 @@ namespace ConsoleUI_BL
                                         int customerID;
                                         int.TryParse(Console.ReadLine(), out customerID);
 
-                                        Console.WriteLine(bl.GetCustomer(customerID));
+                                         try
+                                        {
+                                            
+                                            Console.WriteLine(bl.GetCustomer(customerID));
+                                            
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            printException(e);
+                                        }
+
                                     }
                                     break;
                                 case 4:

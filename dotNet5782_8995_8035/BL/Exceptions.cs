@@ -114,6 +114,9 @@ namespace IBAL
             //}
         }
 
+        /// <summary>
+        /// exaption for the function of  delivering parccel that is carried by a drone.
+        /// </summary>
         [Serializable]
         public class UnableToDeliverParcelFromTheDroneException : Exception
         {
@@ -134,45 +137,49 @@ namespace IBAL
             }
         }
 
-
+        /// <summary>
+        /// exception that descrine the reasons why a drone cannot be charged.
+        /// </summary>
         [Serializable]
-        internal class NotAbleToSendDroneToChargeException : Exception
+        internal class UnAbleToSendDroneToChargeException : Exception
         {
 
-            public NotAbleToSendDroneToChargeException()
+            public UnAbleToSendDroneToChargeException()
             {
             }
              
-            public NotAbleToSendDroneToChargeException(string message) : base("Not Able To Send The Drone To Charge Due To: " + message)
+            public UnAbleToSendDroneToChargeException(string message) : base("Not Able To Send The Drone To Charge Due To: " + message)
             {
             }
 
-            public NotAbleToSendDroneToChargeException(string message, Exception innerException) : base(message, innerException)
+            public UnAbleToSendDroneToChargeException(string message, Exception innerException) : base(message, innerException)
             {
             }
 
-            protected NotAbleToSendDroneToChargeException(SerializationInfo info, StreamingContext context) : base(info, context)
+            protected UnAbleToSendDroneToChargeException(SerializationInfo info, StreamingContext context) : base(info, context)
             {
             }
         }
 
-
+        /// <summary>
+        /// exception that describes drone cannot be released from charge.
+        /// </summary>
         [Serializable]
-        internal class NotAbleToReleaseDroneFromChargeException : Exception
+        internal class UnAbleToReleaseDroneFromChargeException : Exception
         {
-            public NotAbleToReleaseDroneFromChargeException()
+            public UnAbleToReleaseDroneFromChargeException()
             {
             }
              
-            public NotAbleToReleaseDroneFromChargeException(int droneId, string message) : base($"Unable to release the drone {droneId} from charging  Due to: " +  message)
+            public UnAbleToReleaseDroneFromChargeException(int droneId, string message) : base($"Unable to release the drone {droneId} from charging  Due to: " +  message)
             {
             }
 
-            public NotAbleToReleaseDroneFromChargeException(string message, Exception innerException) : base(message, innerException)
+            public UnAbleToReleaseDroneFromChargeException(string message, Exception innerException) : base(message, innerException)
             {
             }
 
-            protected NotAbleToReleaseDroneFromChargeException(SerializationInfo info, StreamingContext context) : base(info, context)
+            protected UnAbleToReleaseDroneFromChargeException(SerializationInfo info, StreamingContext context) : base(info, context)
             {
             }
         }
