@@ -520,7 +520,7 @@ namespace ConsoleUI_BL
                                         int customerID;
                                         int.TryParse(Console.ReadLine(), out customerID);
 
-                                         try
+                                        try
                                         {
                                             
                                             Console.WriteLine(bl.GetCustomer(customerID));
