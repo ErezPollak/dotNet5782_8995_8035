@@ -108,8 +108,10 @@ namespace IBL
 
                 }
 
+                Console.WriteLine("{0:0.###}" , minimumValue);
+
                 //if the distance is too long, an exception will be thrown.
-                if (minimumValue > 100) throw new IBAL.BO.BL_ConstaractorException($"the drone needs {minimumValue} battary in order to complete to delivery. ");
+                //if (minimumValue > 100) throw new IBAL.BO.BL_ConstaractorException($"the drone needs {minimumValue} battary in order to complete to delivery. ");
 
                 //if the precentage is ok, the value of the battry is being randomiseied between the minimum value to one handred.
                 this.GetDrone(parcel.DroneId).Battary = r.Next() % (100 - minimumValue) + minimumValue;
@@ -138,7 +140,7 @@ namespace IBL
                     double battayConcamption = deliveryDistance / dalObject.ElectricityUse()[(int)drone.Weight + 1];
 
                     //the there is not enough battary, exception will be thrown.
-                    if (battayConcamption > 100) throw new IBAL.BO.BL_ConstaractorException($"the drone needs {battayConcamption} battary in order to complete to delivery. ");
+                    //if (battayConcamption > 100) throw new IBAL.BO.BL_ConstaractorException($"the drone needs {battayConcamption} battary in order to complete to delivery. ");
 
                     //seting the battry to be randomised between the minimum value to 100.
                     drone.Battary = (int)(r.NextDouble() * (100 - battayConcamption) + battayConcamption);
