@@ -71,20 +71,35 @@ namespace ConsoleUI_BL
                                         int chargeslots;
                                         int.TryParse(Console.ReadLine(), out chargeslots);
 
-                                        IBAL.BO.BaseStation baseStation = new IBAL.BO.BaseStation() { 
-                                            Id = number, 
-                                            Name = name, 
-                                            CargingDrones = new List<IBAL.BO.Drone>(), 
-                                            ChargeSlots = chargeslots, 
-                                            Location = new IBAL.BO.Location()
-                                            { 
-                                                Longitude = longtude, 
-                                                Lattitude = lattitude
-                                            } 
-                                        };
-
                                         try
                                         {
+
+                                            if (longtude > 90 || longtude < -90)
+                                            {
+                                                throw new IBAL.BO.WrongInoutException("longtude has to be between -90 to 90");
+                                            }
+                                            if (lattitude > 180 || lattitude < -180)
+                                            {
+                                                throw new IBAL.BO.WrongInoutException("latitude has to be between -180 to 180");
+                                            }
+                                            if (chargeslots <= 0)
+                                            {
+                                                throw new IBAL.BO.WrongInoutException("number of charging gslots has to be biger then zero.");
+                                            }
+
+                                            IBAL.BO.BaseStation baseStation = new IBAL.BO.BaseStation()
+                                            {
+                                                Id = number,
+                                                Name = name,
+                                                CargingDrones = new List<IBAL.BO.Drone>(),
+                                                ChargeSlots = chargeslots,
+                                                Location = new IBAL.BO.Location()
+                                                {
+                                                    Longitude = longtude,
+                                                    Latitude = lattitude
+                                                }
+                                            };
+
                                             if (bl.AddBaseStation(baseStation))
                                             {
                                                 Console.WriteLine($"\nbasestation {name} successfully added to the list.");
@@ -121,21 +136,21 @@ namespace ConsoleUI_BL
                                         int stationNumber;
                                         int.TryParse(Console.ReadLine(), out stationNumber);
 
-                                        IBAL.BO.DroneForList drone = new IBAL.BO.DroneForList()
-                                        {
-                                            Id = number,
-                                            Battary = r.Next() % 20 + 20,
-                                            Model = name,
-                                            Status = IBAL.BO.Enums.DroneStatuses.MAINTENANCE,
-                                            ParcelId = -1,
-                                            Weight = maxWeight,
-                                            Location = bl.GetBaseStation(stationNumber).Location
-                                        };
-
-
-
+                                        
                                         try
                                         {
+                                            IBAL.BO.DroneForList drone = new IBAL.BO.DroneForList()
+                                            {
+                                                Id = number,
+                                                Battary = r.Next() % 20 + 20,
+                                                Model = name,
+                                                Status = IBAL.BO.Enums.DroneStatuses.MAINTENANCE,
+                                                ParcelId = -1,
+                                                Weight = maxWeight,
+                                                Location = bl.GetBaseStation(stationNumber).Location
+                                            };
+
+
                                             if (bl.AddDrone(drone))
                                             {
                                                 Console.WriteLine($"\nthe drone {name} successfully added to the list.");
@@ -176,20 +191,33 @@ namespace ConsoleUI_BL
                                         double lattitude;
                                         double.TryParse(Console.ReadLine(), out lattitude);
 
-                                        IBAL.BO.Customer customer = new IBAL.BO.Customer() 
-                                        { 
-                                            Id = number, 
-                                            Name = name, 
-                                            Phone = phone,
-                                            Location = new IBAL.BO.Location()
-                                            { 
-                                                Longitude = longtude, 
-                                                Lattitude = lattitude 
-                                            } 
-                                        };
+                                       
 
                                         try
                                         {
+
+                                            if (longtude > 90 || longtude < -90)
+                                            {
+                                                throw new IBAL.BO.WrongInoutException("longtude has to be between -90 to 90");
+                                            }
+                                            if (lattitude > 180 || lattitude < -180)
+                                            {
+                                                throw new IBAL.BO.WrongInoutException("latitude has to be between -180 to 180");
+                                            }
+
+                                            IBAL.BO.Customer customer = new IBAL.BO.Customer()
+                                            {
+                                                Id = number,
+                                                Name = name,
+                                                Phone = phone,
+                                                Location = new IBAL.BO.Location()
+                                                {
+                                                    Longitude = longtude,
+                                                    Latitude = lattitude
+                                                }
+                                            };
+
+
                                             if (bl.AddCustumer(customer))
                                             {
                                                 Console.WriteLine($"\ncustomer {name} successfully added to the list.");
@@ -213,10 +241,6 @@ namespace ConsoleUI_BL
 
                                         //case 4: adding a parcel
 
-                                        //Console.Write("Enter the number of the parcel: ");
-                                        //int number;
-                                        //int.TryParse(Console.ReadLine(), out number);
-
                                         Console.WriteLine("enter the sender ID: ");
                                         int senderId;
                                         int.TryParse(Console.ReadLine(), out senderId);
@@ -234,23 +258,24 @@ namespace ConsoleUI_BL
                                         IBAL.BO.Enums.Priorities.TryParse(Console.ReadLine(), out priority);
 
 
-                                        IBAL.BO.Parcel parcel = new IBAL.BO.Parcel()
-                                        {
-                                            Id = bl.GetNextSerialNumberForParcel(),
-                                            Sender = new IBAL.BO.CoustomerForParcel() {Id = bl.GetCustomer(senderId).Id , CustomerName = bl.GetCustomer(senderId).Name },
-                                            Reciver = new IBAL.BO.CoustomerForParcel() { Id = bl.GetCustomer(targetId).Id, CustomerName = bl.GetCustomer(targetId).Name },
-                                            Priority = priority,
-                                            Drone = null,
-                                            Weight = weight,
-                                            RequestedTime = DateTime.Now,
-                                            PickupTime = new DateTime(),
-                                            AcceptedTime = new DateTime(),
-                                            DeliveringTime = new DateTime()
-                                        };
-
-
                                         try
                                         {
+
+                                            IBAL.BO.Parcel parcel = new IBAL.BO.Parcel()
+                                            {
+                                                Id = bl.GetNextSerialNumberForParcel(),
+                                                Sender = new IBAL.BO.CoustomerForParcel() { Id = bl.GetCustomer(senderId).Id, CustomerName = bl.GetCustomer(senderId).Name },
+                                                Reciver = new IBAL.BO.CoustomerForParcel() { Id = bl.GetCustomer(targetId).Id, CustomerName = bl.GetCustomer(targetId).Name },
+                                                Priority = priority,
+                                                Drone = null,
+                                                Weight = weight,
+                                                RequestedTime = DateTime.Now,
+                                                PickupTime = new DateTime(),
+                                                AcceptedTime = new DateTime(),
+                                                DeliveringTime = new DateTime()
+                                            };
+
+
                                             if (bl.AddParcel(parcel))
                                             {
                                                 Console.WriteLine($"\nparcel successfully added to the list.");
@@ -477,7 +502,6 @@ namespace ConsoleUI_BL
                         break;
                     //end of case 2 in the main switch
 
-
                     //case 3: shoing a cetain object.
                     case 3:
                         {
@@ -499,7 +523,14 @@ namespace ConsoleUI_BL
                                         int baseID;
                                         int.TryParse(Console.ReadLine(), out baseID);
 
-                                        Console.WriteLine(bl.GetBaseStation(baseID));
+                                        try
+                                        {
+                                            Console.WriteLine(bl.GetBaseStation(baseID));
+                                        }
+                                        catch(Exception e)
+                                        {
+                                            printException(e);
+                                        }
 
                                     }
                                     break;
@@ -510,7 +541,15 @@ namespace ConsoleUI_BL
                                         int droneID;
                                         int.TryParse(Console.ReadLine(), out droneID);
 
-                                        Console.WriteLine(bl.GetDrone(droneID));
+                                        try
+                                        {
+                                            Console.WriteLine(bl.GetDrone(droneID));
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            printException(e);
+                                        }
+                                        
                                     }
                                     break;
                                 case 3:
@@ -540,7 +579,16 @@ namespace ConsoleUI_BL
                                         int parcelID;
                                         int.TryParse(Console.ReadLine(), out parcelID);
 
-                                        Console.WriteLine(bl.GetParcel(parcelID));
+                                        try
+                                        {
+                                            Console.WriteLine(bl.GetParcel(parcelID));
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            printException(e);
+                                        }
+
+                                       
                                     }
                                     break;
                             }

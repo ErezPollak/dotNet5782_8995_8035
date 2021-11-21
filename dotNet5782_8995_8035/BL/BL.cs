@@ -76,6 +76,7 @@ namespace IBL
                 //caculating the distance between the reciver of the parcel, and the clothest station to the reciver. 
                 deliveryDistance += distance(locationTranslate(dalObject.GetCustomer(parcel.TargetId).Location), locationTranslate(dalObject.GetBaseStation(dalObject.GetClothestStation(parcel.TargetId)).Location));
 
+                double minimumValue;
 
                 this.GetDrone(parcel.DroneId).Status = IBAL.BO.Enums.DroneStatuses.DELIVERY;
                 this.GetDrone(parcel.DroneId).ParcelId = parcel.Id;
@@ -83,30 +84,35 @@ namespace IBL
 
                 if (parcel.PickedUpTime == null)
                 {
-
+                    //
                     this.GetDrone(parcel.DroneId).Location = locationTranslate(dalObject.GetBaseStation(dalObject.GetClothestStation(parcel.SenderId)).Location);
 
                     // caculating the distance between the base station to the sender.
                     deliveryDistance += distance(locationTranslate(dalObject.GetBaseStation(dalObject.GetClothestStation(parcel.SenderId)).Location), locationTranslate(dalObject.GetCustomer(parcel.SenderId).Location));
 
-                    double minimumeValue = deliveryDistance / (int)(dalObject.ElectricityUse()[(int)this.GetDrone(parcel.DroneId).Weight]);
+                    minimumValue = deliveryDistance / (int)(dalObject.ElectricityUse()[(int)this.GetDrone(parcel.DroneId).Weight]);
 
-                    if (minimumeValue > 100) throw new IBAL.BO.BL_ConstaractorException($"the drone needs {minimumeValue} battary in order to complete to delivery. ");
+                    if (minimumValue > 100) throw new IBAL.BO.BL_ConstaractorException($"the drone needs {minimumValue} battary in order to complete to delivery. ");
 
-                    this.GetDrone(parcel.DroneId).Battary = r.Next() % (100 - minimumeValue) + minimumeValue;
+                    this.GetDrone(parcel.DroneId).Battary = r.Next() % (100 - minimumValue) + minimumValue;
 
                 }
                 else
                 {
                     this.GetDrone(parcel.DroneId).Location = locationTranslate(dalObject.GetCustomer(parcel.SenderId).Location);
 
-                    double minimumeValue = deliveryDistance / (int)(dalObject.ElectricityUse()[(int)this.GetDrone(parcel.DroneId).Weight]);
+                    minimumValue = deliveryDistance / (int)(dalObject.ElectricityUse()[(int)this.GetDrone(parcel.DroneId).Weight]);
 
-                    if (minimumeValue > 100) throw new IBAL.BO.BL_ConstaractorException($"the drone needs {minimumeValue} battary in order to complete to delivery. ");
+                    if (minimumValue > 100) throw new IBAL.BO.BL_ConstaractorException($"the drone needs {minimumValue} battary in order to complete to delivery. ");
 
-                    this.GetDrone(parcel.DroneId).Battary = r.Next() % (100 - minimumeValue) + minimumeValue;
+                    this.GetDrone(parcel.DroneId).Battary = r.Next() % (100 - minimumValue) + minimumValue;
 
                 }
+
+                Console.Write("{0:0.##}", deliveryDistance);
+                Console.Write("   ");
+                Console.WriteLine("{0:0.##}" , minimumValue);
+
             }
 
             foreach (IBAL.BO.DroneForList drone in this.drones)
@@ -131,6 +137,7 @@ namespace IBL
 
                 if (drone.Status == Enums.DroneStatuses.MAINTENANCE)
                 {
+                    
                     int stationNumber = r.Next() % dalObject.GetBaseStationsNumber();
                     drone.Location = locationTranslate(dalObject.GetBaseStation(dalObject.GetBaseStationId(stationNumber)).Location);
 
@@ -156,7 +163,6 @@ namespace IBL
         /// <returns>true if the adding eas successful</returns>
         public bool AddBaseStation(IBAL.BO.BaseStation newBaseStation)
         {
-
             IDAL.DO.BaseStation baseStation = new IDAL.DO.BaseStation()
             {
                 Id = newBaseStation.Id,
@@ -182,7 +188,7 @@ namespace IBL
         /// <returns>true if the adding eas successful</returns>
         public bool AddDrone(IBAL.BO.DroneForList newDrone)
         {
-
+            
             if (this.drones.Any(d => d.Id == newDrone.Id)) throw new IBAL.BO.IdAlreadyExistsException(newDrone.Id, "droen");
 
             this.drones.Add(newDrone);
@@ -193,7 +199,7 @@ namespace IBL
                 Model = newDrone.Model,
                 MaxWeight = (IDAL.DO.WeightCategories)newDrone.Weight
             };
-            
+            //since we checked in the list there is no chance to have the same number of drone in the dal list.
             return dalObject.AddDrone(dalDrone);
         }
 
@@ -331,15 +337,17 @@ namespace IBL
             //removing from the list all the parcels that wight more than the drone can carry.
             parcels.RemoveAll(p => (int)p.Weight > (int)drones[droneIndex].Weight);
 
+            //if no parcel left in the list after the removings it means that no parcel can be sent be thi drone, so exception will be thrown.
+            if (parcels.Count == 0) throw new UnableToAssignParcelToTheDroneException(droneId, " there is no parcel that can be sent by this drone due to: all the parcels are too heavy.");
+
             //sorting by the distanse between the drone's locaation and the parcel's location.
-            parcels.OrderBy(p => distance(drones[droneIndex].Location, locationTranslate(dalObject.GetCustomer(p.SenderId).Location)));
+            parcels = parcels.OrderBy(p => distance(drones[droneIndex].Location, locationTranslate(dalObject.GetCustomer(p.SenderId).Location))).ToList();
 
             //removing all the drones that dont have enough battary for the jerny from the sender to the reciver and to the clothest base station.
             parcels.RemoveAll(p => distance(drones[droneIndex].Location, locationTranslate(dalObject.GetCustomer(p.SenderId).Location))  /*adding the distance between the reciver to the base station*/ >= drones[droneIndex].Battary * dalObject.ElectricityUse()[(int)drones[droneIndex].Weight + 1]);
 
             //if no parcel left in the list after the removings it means that no parcel can be sent be thi drone, so exception will be thrown.
-            if (parcels.Count == 0) throw new UnableToAssignParcelToTheDroneException(droneId , " there is no parcel that can be sent by this drone");
-
+            if (parcels.Count == 0) throw new UnableToAssignParcelToTheDroneException(droneId , " there is no parcel that can be sent by this drone due to: too long distanses");
 
             //if there is a parcel that matches the needings of the drone the rewwuaiered will happen.
             this.drones[droneIndex].Status = Enums.DroneStatuses.DELIVERY;
@@ -670,7 +678,21 @@ namespace IBL
         /// <returns></returns>
         private double distance(IBAL.BO.Location l1, IBAL.BO.Location l2)
         {
-            return Math.Sqrt(Math.Pow(l1.Longitude - l2.Longitude, 2) + Math.Pow(l1.Lattitude - l2.Lattitude, 2));
+            // return Math.Sqrt(Math.Pow(l1.Longitude - l2.Longitude, 2) + Math.Pow(l1.Lattitude - l2.Lattitude, 2));
+            var baseRad = Math.PI * l1.Latitude / 180;
+            var targetRad = Math.PI * l2.Latitude / 180;
+            var theta = l1.Longitude - l2.Longitude;
+            var thetaRad = Math.PI * theta / 180;
+
+            double dist =
+                Math.Sin(baseRad) * Math.Sin(targetRad) + Math.Cos(baseRad) *
+                Math.Cos(targetRad) * Math.Cos(thetaRad);
+            dist = Math.Acos(dist);
+
+            dist = dist * 180 / Math.PI;
+            dist = dist * 9 * 1.1515; // the size in not the original size of earth.
+
+            return dist;
         }
 
         /// <summary>
@@ -680,7 +702,7 @@ namespace IBL
         /// <returns></returns>
         private IBAL.BO.Location locationTranslate(IDAL.DO.Location location)
         {
-            return new IBAL.BO.Location() { Longitude = location.Longitude, Lattitude = location.Longitude };
+            return new IBAL.BO.Location() { Longitude = location.Longitude, Latitude = location.Longitude };
         }
 
         /// <summary>
@@ -705,5 +727,5 @@ namespace IBL
         
     }//END BL class
 
-   
+    
 }//end IBAL

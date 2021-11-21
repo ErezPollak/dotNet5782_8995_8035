@@ -185,9 +185,27 @@ namespace IBAL
         }
 
 
-       
 
-       
+        [Serializable]
+        public class WrongInoutException : Exception
+        {
+            public WrongInoutException()
+            {
+            }
+
+            public WrongInoutException(string message) : base("the input is wrong because: " + message)
+            {
+            }
+
+            public WrongInoutException(string message, Exception innerException) : base(message, innerException)
+            {
+            }
+
+            protected WrongInoutException(SerializationInfo info, StreamingContext context) : base(info, context)
+            {
+            }
+        }
+
 
 
     }
