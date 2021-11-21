@@ -600,32 +600,15 @@ namespace DalObject
             
         }
 
-
-        // delete these two functpns.
-
-        public int GetBaseStationsNumber()
-        {
-            return DataSource.baseStations.Count;
-        }
-
+        /// <summary>
+        /// to delete....
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public int GetBaseStationId(int index)
         {
             return DataSource.baseStations[index].Id;
         }
-
-        //public IEnumerable<IDAL.DO.Parcel> GetProvidedParcels()
-        //{
-        //    List<IDAL.DO.Parcel> providedParcels = new List<IDAL.DO.Parcel>();
-        //    foreach(IDAL.DO.Parcel parcel in DataSource.parcels)
-        //    {
-        //        if(parcel.AcceptedTime != null)
-        //        {
-        //            providedParcels.Add(parcel);
-        //        }
-        //    }
-        //    return providedParcels;
-
-        //}
 
         public int GetSerialNumber()
         {

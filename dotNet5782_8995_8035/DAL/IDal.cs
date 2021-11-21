@@ -52,7 +52,6 @@ namespace IDAL
 
         public double[] ElectricityUse();
         public int GetClothestStation(int id);
-        public int GetBaseStationsNumber();
         public int GetBaseStationId(int index);
         //public IEnumerable<IDAL.DO.Parcel> GetProvidedParcels();
 

@@ -16,11 +16,11 @@ namespace IBL
         /// </summary>
         private IDAL.IDal dalObject;
 
-        //private double free; // for the electricity use of a free drone
-        //private double light; // for the electricity use of a drone that carrys a light wight.
-        //private double middel; // for the electricity use of a drone that carrys a middle wight.
-        //private double heavy; // for the electricity use of a drone that carrys a heavy wight.
-        //private double chargingSpeed;//for the speed of the charge. precentage for hour.
+        private double free; // for the electricity use of a free drone
+        private double light; // for the electricity use of a drone that carrys a light wight.
+        private double middel; // for the electricity use of a drone that carrys a middle wight.
+        private double heavy; // for the electricity use of a drone that carrys a heavy wight.
+        private double chargingSpeed;//for the speed of the charge. precentage for hour.
 
 
         /// <summary>
@@ -49,11 +49,11 @@ namespace IBL
 
             double[] electricityUse = dalObject.ElectricityUse();
 
-            // this.free = electricityUse[0];
-            // this.light = electricityUse[1];
-            // this.middel = electricityUse[2];
-            // this.heavy = electricityUse[3];
-            // this.chargingSpeed = electricityUse[4];
+            this.free = electricityUse[0];
+            this.light = electricityUse[1];
+            this.middel = electricityUse[2];
+            this.heavy = electricityUse[3];
+            this.chargingSpeed = electricityUse[4];
 
             //translats all the drones from the data lavel to 
             foreach (IDAL.DO.Drone dalDrone in dalObject.GetDrones(d => true).ToList())
@@ -67,9 +67,11 @@ namespace IBL
                 });
             }
 
+            //going through all the parcels that have a drone, and was not delivered.
             foreach (IDAL.DO.Parcel parcel in dalObject.GetParcels(parcel => parcel.DroneId != -1 && parcel.AcceptedTime == null))
             {
 
+                //caculate the distance of the delivery.
                 double deliveryDistance = 0;
                 //caculating the distance between the sender of the parcel, and the reciver. 
                 deliveryDistance += distance(locationTranslate(dalObject.GetCustomer(parcel.SenderId).Location), locationTranslate(dalObject.GetCustomer(parcel.TargetId).Location));
@@ -78,69 +80,79 @@ namespace IBL
 
                 double minimumValue;
 
+                //updates the status of the drone to be delivery. 
                 this.GetDrone(parcel.DroneId).Status = IBAL.BO.Enums.DroneStatuses.DELIVERY;
+                //updates the parcel number to be delivery.
                 this.GetDrone(parcel.DroneId).ParcelId = parcel.Id;
 
-
+                //if the oarcel wasnt picked up.
                 if (parcel.PickedUpTime == null)
                 {
-                    //
+                    //seting the location of the drone to be in the clothest station to the sender.
                     this.GetDrone(parcel.DroneId).Location = locationTranslate(dalObject.GetBaseStation(dalObject.GetClothestStation(parcel.SenderId)).Location);
 
                     // caculating the distance between the base station to the sender.
                     deliveryDistance += distance(locationTranslate(dalObject.GetBaseStation(dalObject.GetClothestStation(parcel.SenderId)).Location), locationTranslate(dalObject.GetCustomer(parcel.SenderId).Location));
 
+                    // caculating the minimum precentage of batteary the drone needs in order to deliver the parcel and go to charge afterwards.
                     minimumValue = deliveryDistance / (int)(dalObject.ElectricityUse()[(int)this.GetDrone(parcel.DroneId).Weight]);
 
-                    if (minimumValue > 100) throw new IBAL.BO.BL_ConstaractorException($"the drone needs {minimumValue} battary in order to complete to delivery. ");
-
-                    this.GetDrone(parcel.DroneId).Battary = r.Next() % (100 - minimumValue) + minimumValue;
-
                 }
-                else
+                else // if the parcel was picked up.
                 {
+                    //seting the location of the drone to be the location of the sender.
                     this.GetDrone(parcel.DroneId).Location = locationTranslate(dalObject.GetCustomer(parcel.SenderId).Location);
 
+                    // caculating the minimum precentage of batteary the drone needs in order to deliver the parcel and go to charge afterwards.
                     minimumValue = deliveryDistance / (int)(dalObject.ElectricityUse()[(int)this.GetDrone(parcel.DroneId).Weight]);
-
-                    if (minimumValue > 100) throw new IBAL.BO.BL_ConstaractorException($"the drone needs {minimumValue} battary in order to complete to delivery. ");
-
-                    this.GetDrone(parcel.DroneId).Battary = r.Next() % (100 - minimumValue) + minimumValue;
 
                 }
 
-                Console.Write("{0:0.##}", deliveryDistance);
-                Console.Write("   ");
-                Console.WriteLine("{0:0.##}" , minimumValue);
+                //if the distance is too long, an exception will be thrown.
+                if (minimumValue > 100) throw new IBAL.BO.BL_ConstaractorException($"the drone needs {minimumValue} battary in order to complete to delivery. ");
+
+                //if the precentage is ok, the value of the battry is being randomiseied between the minimum value to one handred.
+                this.GetDrone(parcel.DroneId).Battary = r.Next() % (100 - minimumValue) + minimumValue;
 
             }
 
+            //needed for the iteration.
+            List<IDAL.DO.Parcel> parcels = dalObject.GetParcels(p => true).ToList();
+
+            //going through all the drones.
             foreach (IBAL.BO.DroneForList drone in this.drones)
             {
+                // if the drone wasn't changed in the last iteration, meaning that the status is either FREE or MAINTENANCE.
                 if (drone.Status == Enums.DroneStatuses.FREE)
                 {
-                    List<IDAL.DO.Parcel> parcels = dalObject.GetParcels(p => true).ToList();
-
+                    //getting random value from the list.
                     int index = r.Next() % (parcels.Count);
 
+                    //seting the drones location the drone to be in a target location of the randomisied parcel.
                     drone.Location = locationTranslate(dalObject.GetCustomer(parcels[index].TargetId).Location);
 
+                    //caculating the distance to the clothest station.
                     double deliveryDistance = distance(locationTranslate(dalObject.GetBaseStation(dalObject.GetClothestStation(parcels[index].TargetId)).Location), locationTranslate(dalObject.GetCustomer(parcels[index].TargetId).Location));
 
+                    //caculating the battary consamption.
                     double battayConcamption = deliveryDistance / dalObject.ElectricityUse()[(int)drone.Weight + 1];
 
+                    //the there is not enough battary, exception will be thrown.
                     if (battayConcamption > 100) throw new IBAL.BO.BL_ConstaractorException($"the drone needs {battayConcamption} battary in order to complete to delivery. ");
 
+                    //seting the battry to be randomised between the minimum value to 100.
                     drone.Battary = (int)(r.NextDouble() * (100 - battayConcamption) + battayConcamption);
 
                 }
-
-                if (drone.Status == Enums.DroneStatuses.MAINTENANCE)
+                else if (drone.Status == Enums.DroneStatuses.MAINTENANCE)
                 {
+                    //random number of a station.
+                    int stationNumber = r.Next() % dalObject.GetBaseStations(b => true).ToList().Count;
                     
-                    int stationNumber = r.Next() % dalObject.GetBaseStationsNumber();
+                    //setting the location of the drone to be the location of the randomaised station.
                     drone.Location = locationTranslate(dalObject.GetBaseStation(dalObject.GetBaseStationId(stationNumber)).Location);
 
+                    // updating the battary to be a random value from 0 to 20.
                     drone.Battary = r.Next() % 20;
 
                 }

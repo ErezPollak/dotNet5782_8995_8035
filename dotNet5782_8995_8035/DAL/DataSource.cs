@@ -96,8 +96,7 @@ namespace DalObject
                     Id = i,
                     Model = (char)(r.Next() % 26 + 65) + "" + (char)(r.Next() % 26 + 65) + (r.Next() % 100000).ToString(),
                     MaxWeight = (WeightCategories)(r.Next() % 3),
-                    //Status = (DroneStatuses)(r.Next() % 3),
-                   /// battery = r.Next() % 50 + 50
+                    
                 };
                 drones.Add(drone);
             }
