@@ -14,16 +14,7 @@ namespace ConsoleUI_BL
 
             Console.WriteLine("Welcome to the ConsoleUI_BL program.\n");
 
-            IBL.IBL bl;
-
-            try
-            {
-              bl  = new BL();
-            }catch(Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return;
-            }
+            IBL.IBL bl = new BL();
             
             int choice = inputChoice();
 
@@ -32,6 +23,9 @@ namespace ConsoleUI_BL
                 //the main switch to choose the category of the needed action.
                 switch (choice)
                 {
+
+
+
                     //case 1: adding options
                     case 1:
                         {
@@ -91,7 +85,7 @@ namespace ConsoleUI_BL
                                             {
                                                 Id = number,
                                                 Name = name,
-                                                CargingDrones = new List<IBAL.BO.Drone>(),
+                                                ChargingDrones = new List<IBAL.BO.DroneInCharge>(),
                                                 ChargeSlots = chargeslots,
                                                 Location = new IBAL.BO.Location()
                                                 {
@@ -132,11 +126,10 @@ namespace ConsoleUI_BL
                                         IBAL.BO.Enums.WeightCategories maxWeight;
                                         IBAL.BO.Enums.WeightCategories.TryParse(Console.ReadLine(), out maxWeight);
 
-                                        Console.WriteLine("enter the number if the station to put the drone fir initial charge: ");
+                                        Console.WriteLine("enter the number if the station to put the drone for initial charge: ");
                                         int stationNumber;
                                         int.TryParse(Console.ReadLine(), out stationNumber);
-
-                                        
+                
                                         try
                                         {
                                             IBAL.BO.DroneForList drone = new IBAL.BO.DroneForList()
@@ -144,7 +137,7 @@ namespace ConsoleUI_BL
                                                 Id = number,
                                                 Battary = r.Next() % 20 + 20,
                                                 Model = name,
-                                                Status = IBAL.BO.Enums.DroneStatuses.MAINTENANCE,
+                                                Status = IBAL.BO.Enums.DroneStatuses.FREE,
                                                 ParcelId = -1,
                                                 Weight = maxWeight,
                                                 Location = bl.GetBaseStation(stationNumber).Location
@@ -158,7 +151,7 @@ namespace ConsoleUI_BL
                                         }
                                         catch (Exception e)
                                         {
-                                            Console.WriteLine("\n Exception: ");
+                                            Console.WriteLine("\nException: ");
                                             printException(e);
                                         }
                                         finally
@@ -272,7 +265,7 @@ namespace ConsoleUI_BL
                                                 RequestedTime = DateTime.Now,
                                                 PickupTime = new DateTime(),
                                                 AcceptedTime = new DateTime(),
-                                                DeliveringTime = new DateTime()
+                                                DeliveringTime = DateTime.Now.AddDays(10)
                                             };
 
 
@@ -561,9 +554,7 @@ namespace ConsoleUI_BL
 
                                         try
                                         {
-                                            
                                             Console.WriteLine(bl.GetCustomer(customerID));
-                                            
                                         }
                                         catch (Exception e)
                                         {
@@ -698,7 +689,7 @@ namespace ConsoleUI_BL
 
             printException(e.InnerException);
 
-            Console.WriteLine(e.Message);
+            Console.WriteLine(e.Message + " " + e.Source);
         }
 
     

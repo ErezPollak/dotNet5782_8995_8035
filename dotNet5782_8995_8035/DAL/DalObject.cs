@@ -256,7 +256,7 @@ namespace DalObject
             //updating the time of delivered field to be now.
             //according to the number that was found while looking for an exception.  
             IDAL.DO.Parcel newParcel = DataSource.parcels[parcelIndex];
-            newParcel.AcceptedTime = DateTime.Now;
+            newParcel.DeliveryTime = DateTime.Now;
             DataSource.parcels[parcelIndex] = newParcel;
 
             return true;
@@ -272,46 +272,21 @@ namespace DalObject
         {
 
             //keeps the index in witch the idNumber was found in order to update it without iterting over the list again.
-            int baseStationIndex = 0; //droneIndex = 0;
+            int baseStationIndex = DataSource.baseStations.FindIndex(b => b.Id == baseStationId);
+            if (baseStationIndex == -1) throw new IDAL.DO.IdDontExistsException(baseStationId, "base station");
 
-            //checking if the numbers of parcel and drone that was provided exist in the database or not. if not an excption will be thrown.
-            bool isNameExists = false;
-            foreach (IDAL.DO.BaseStation baseStation in DataSource.baseStations)
-            {
-                if (baseStation.Id == baseStationId)
-                {
-                    isNameExists = true;
-                    break;
-                }
-                ++baseStationIndex;
-            }
-            if (!isNameExists) throw new IDAL.DO.IdDontExistsException(baseStationId, "base station");
+            
+            if (!DataSource.drones.Any(d => d.Id == droneId)) throw new IDAL.DO.IdDontExistsException(droneId, "drone");
 
-            isNameExists = false;
-            foreach (IDAL.DO.Drone drone in DataSource.drones)
-            {
-                if (drone.Id == droneId)
-                {
-                    isNameExists = true;
-                    break;
-                }
-                //++droneIndex;
-            }
-            if (!isNameExists) throw new IDAL.DO.IdDontExistsException(droneId, "drone");
-
-            //update the status of the drone to be FIXING.
-            //IDAL.DO.Drone newDrone = DataSource.drones[droneIndex];
-            //newDrone.Status = IDAL.DO.DroneStatuses.FIXING;
-            //DataSource.drones[droneIndex] = newDrone;
             
             //update the number of the free charge slots at the base station to be one less.
-            IDAL.DO.BaseStation newBaseStation = DataSource.baseStations[baseStationIndex];
+             IDAL.DO.BaseStation newBaseStation = DataSource.baseStations[baseStationIndex];
              --newBaseStation.ChargeSlots;
              DataSource.baseStations[baseStationIndex] = newBaseStation;
            
             //creating the charge drone ans adding it to the list of charges.
             IDAL.DO.DroneCharge droneCharge = new IDAL.DO.DroneCharge() { DroneId = droneId, StationId = baseStationId };
-            DataSource.charges.Add(droneCharge);
+            DataSource.droneCharges.Add(droneCharge);
 
             return true;
 
@@ -324,7 +299,6 @@ namespace DalObject
         public bool UnChargeDrone(int droneId)
         {
             bool isNameExists = false;
-            //int droneIndex = 0; not relevent
             foreach (IDAL.DO.Drone drone in DataSource.drones)
             {
                 if (drone.Id == droneId)
@@ -332,39 +306,29 @@ namespace DalObject
                     isNameExists = true;
                     break;
                 }
-                //++droneIndex; not relevent
             }
             if (!isNameExists) throw new IDAL.DO.IdDontExistsException(droneId, "drone");
 
             //check if the name of the drone exist in the charges list. of not an excption will be thrown.
-            int chargeIndex = 0;
-            isNameExists = false;
-            foreach(IDAL.DO.DroneCharge droneCharge in DataSource.charges)
-            {
-                if(droneCharge.DroneId == droneId)
-                {
-                    isNameExists = true;
-                    break;
-                }
-                ++chargeIndex; 
-            }
-            if (!isNameExists) throw new IDAL.DO.IdDontExistsException(droneId, "chargeDrone");
+            int chargeIndex = DataSource.droneCharges.FindIndex(cd => cd.DroneId == droneId);
+
+            if(chargeIndex == -1) throw new IDAL.DO.IdDontExistsException(droneId, "chargeDrone");
 
             //updates the number of free charging slots int he base station.
             //finds the index of the station and update when finds, no need for excption search, because the station exists for sure.
             for (int i = 0; i < DataSource.baseStations.Count; i++)
             {
-                if(DataSource.baseStations[i].Id == DataSource.charges[chargeIndex].StationId)
+                if(DataSource.baseStations[i].Id == DataSource.droneCharges[chargeIndex].StationId)
                 {
-                    IDAL.DO.BaseStation baseStation = DataSource.baseStations[DataSource.charges[chargeIndex].StationId];
+                    IDAL.DO.BaseStation baseStation = DataSource.baseStations[DataSource.droneCharges[chargeIndex].StationId];
                     ++baseStation.ChargeSlots;
-                    DataSource.baseStations[DataSource.charges[chargeIndex].StationId] = baseStation;
+                    DataSource.baseStations[DataSource.droneCharges[chargeIndex].StationId] = baseStation;
                     break;
                 }
             }
 
             //removing the cahrge from the list.
-            DataSource.charges.Remove(DataSource.charges[chargeIndex]);
+            DataSource.droneCharges.Remove(DataSource.droneCharges[chargeIndex]);
 
             return true;
 
@@ -483,7 +447,7 @@ namespace DalObject
         {
             List<IDAL.DO.DroneCharge> droneCarges = new List<IDAL.DO.DroneCharge>();
 
-            DataSource.charges.ForEach(delegate (IDAL.DO.DroneCharge dc) { if (f(dc)) { droneCarges.Add(dc); } });
+            DataSource.droneCharges.ForEach(delegate (IDAL.DO.DroneCharge dc) { if (f(dc)) { droneCarges.Add(dc); } });
 
             return droneCarges;
         }

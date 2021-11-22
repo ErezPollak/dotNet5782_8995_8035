@@ -30,7 +30,7 @@ namespace DalObject
         internal static List<IDAL.DO.Parcel> parcels = new List<IDAL.DO.Parcel>();
 
         //an data structure to contain all the charging of the drones.
-        internal static List<IDAL.DO.DroneCharge> charges = new List<IDAL.DO.DroneCharge>();
+        internal static List<IDAL.DO.DroneCharge> droneCharges = new List<IDAL.DO.DroneCharge>();
 
 
         private static Random r = new Random();     // a static value for 

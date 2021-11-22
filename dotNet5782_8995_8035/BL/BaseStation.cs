@@ -14,7 +14,7 @@ namespace IBAL
             public string Name { get; set; }
             public IBAL.BO.Location Location { get; set; }
             public int ChargeSlots { get; set; }
-            public List<IBAL.BO.Drone> CargingDrones { get; set; }
+            public List<IBAL.BO.DroneInCharge> ChargingDrones { get; set; }
 
             /// <summary>
             /// the function prints all the props of the struct.
@@ -22,13 +22,17 @@ namespace IBAL
             /// <returns></returns>
             public override string ToString()
             {
-                return $"Base Station: " +
-                    $"ID: {this.Id}." +
+                string str = $"Base Station: " +
+                    $"ID: {this.Id}. " +
                     $"Name: {this.Name}. " +
-                    $"Location: {this.Location}." +
-                    $"ChargeSlots: {this.ChargeSlots}." +
-                    $"drones: {this.CargingDrones}." +
-                    $"";
+                    $"Location: {this.Location}. " +
+                    $"ChargeSlots: {this.ChargeSlots}. " +
+                    $"drones: {ChargingDrones.Count} ";
+
+                    this.ChargingDrones.ForEach(cd => str += cd.ToString());
+
+                return str;
+            
             }
         }
     }
