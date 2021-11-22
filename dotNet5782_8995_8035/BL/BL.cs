@@ -713,7 +713,6 @@ namespace IBL
         /// <returns></returns>
         private double distance(IBAL.BO.Location l1, IBAL.BO.Location l2)
         {
-            // return Math.Sqrt(Math.Pow(l1.Longitude - l2.Longitude, 2) + Math.Pow(l1.Lattitude - l2.Lattitude, 2));
             var baseRad = Math.PI * l1.Latitude / 180;
             var targetRad = Math.PI * l2.Latitude / 180;
             var theta = l1.Longitude - l2.Longitude;

@@ -62,7 +62,7 @@ namespace DalObject
         internal static void Initialize()
         {
 
-            //initilize valuws of the config function.
+            //initilize values of the config function.
             Config.Free = r.NextDouble() * 100 + 50;
             Config.Light = Config.Free - r.NextDouble() * 30;
             Config.Middel = Config.Light - r.NextDouble() * 30;
