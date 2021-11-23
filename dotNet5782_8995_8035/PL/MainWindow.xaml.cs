@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IBL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,22 @@ namespace PL
     /// </summary>
     public partial class MainWindow : Window
     {
+
+        private IBL.IBL bl;
+
         public MainWindow()
         {
             InitializeComponent();
+            bl = new BL();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            //ListOfDronesViewWindow listOfDronesViewWindow = new ListOfDronesViewWindow(bl) ;
+            //listOfDronesViewWindow.Show();//.Activate();
+
+            new ListOfDronesViewWindow(bl).Show();
+
         }
     }
 }

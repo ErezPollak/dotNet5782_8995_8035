@@ -11,6 +11,25 @@
             <RowDefinition Height="50*"/>
             <RowDefinition Height="400*"/>
         </Grid.RowDefinitions>
+        <ComboBox Name="StatusSelector" HorizontalAlignment="Stretch" Margin="182,58,0,0" Grid.Row="1" Grid.Column="1" VerticalAlignment="Stretch" Width="120" Height="34"/>
+        <ComboBox Name="WeightSelecter"  HorizontalAlignment="Stretch" Margin="459,58,0,0" Grid.Row="1" Grid.Column="1" VerticalAlignment="Stretch" Width="120" Height="34"/>
+        <TextBox Name="TBD" HorizontalAlignment="Left" Margin="120,104,0,0" Grid.Row="1" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="170" Height="27">
+            <TextBox.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-0.941"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </TextBox.RenderTransform>
+        </TextBox>
+        <ListView x:Name="ListOfDronesView" Grid.Row="1" Margin="94,243,445,158">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn/>
+                </GridView>
+            </ListView.View>
+        </ListView>
 
     </Grid>
 </Window>
