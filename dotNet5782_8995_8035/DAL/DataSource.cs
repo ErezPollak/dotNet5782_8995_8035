@@ -40,14 +40,14 @@ namespace DalObject
         /// </summary>
         internal class Config
         {
-            public static double Free; // for the electricity use of a free drone
-            public static double Light; // for the electricity use of a drone that carrys a light wight.
-            public static double Middel; // for the electricity use of a drone that carrys a middle wight.
-            public static double Heavy; // for the electricity use of a drone that carrys a heavy wight.
+            internal static double Free; // for the electricity use of a free drone
+            internal static double Light; // for the electricity use of a drone that carrys a light wight.
+            internal static double Middel; // for the electricity use of a drone that carrys a middle wight.
+            internal static double Heavy; // for the electricity use of a drone that carrys a heavy wight.
 
-            public static double ChargingSpeed;//for the speed of the charge. precentage for hour.
+            internal static double ChargingSpeed;//for the speed of the charge. precentage for hour.
 
-            public static int serialNumber = 1000;
+            internal static int serialNumber = 1000;
         }
 
         /// <summary>

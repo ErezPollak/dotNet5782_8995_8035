@@ -184,8 +184,6 @@ namespace ConsoleUI_BL
                                         double lattitude;
                                         double.TryParse(Console.ReadLine(), out lattitude);
 
-                                       
-
                                         try
                                         {
 
