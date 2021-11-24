@@ -23,12 +23,11 @@ namespace IBAL
             public override string ToString()
             {
                 string str = $"Base Station: " +
-                    $"ID: {this.Id}. " +
-                    $"Name: {this.Name}. " +
-                    $"Location: {this.Location}. " +
-                    $"ChargeSlots: {this.ChargeSlots}. " +
-                    $"drones: {ChargingDrones.Count} ";
-
+                    $"ID: {this.Id}. \n" +
+                    $"Name: {this.Name}. \n" +
+                    $"Location: {this.Location}. \n" +
+                    $"ChargeSlots: {this.ChargeSlots}. \n" +
+                    $"drones: {ChargingDrones.Count} \n";
                     this.ChargingDrones.ForEach(cd => str += cd.ToString());
 
                 return str;

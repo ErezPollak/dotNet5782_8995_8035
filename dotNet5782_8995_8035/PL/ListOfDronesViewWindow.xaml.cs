@@ -26,6 +26,20 @@ namespace PL
             InitializeComponent();
             this.bl = bl;
             ListOfDronesView.ItemsSource = bl.GetDrones(t => true);
+            this.StatusSelector.ItemsSource = Enum.GetValues(typeof(IBAL.BO.Enums.DroneStatuses));
+            this.WeightSelecter.ItemsSource = Enum.GetValues(typeof(IBAL.BO.Enums.WeightCategories));
+        }
+
+        private void StatusChoose(object sender, SelectionChangedEventArgs e)
+        {
+            
+
+            ListOfDronesView.ItemsSource = bl.GetDrones(t => t.Status.ToString() == this.StatusSelector.SelectedItem.ToString()); 
+        }
+
+        private void WeightChoose(object sender, SelectionChangedEventArgs e)
+        {
+            ListOfDronesView.ItemsSource = bl.GetDrones(t => t.Weight.ToString() == this.WeightSelecter.SelectedItem.ToString());
         }
     }
 }

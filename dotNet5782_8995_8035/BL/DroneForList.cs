@@ -20,13 +20,13 @@ namespace IBAL
 
             public override string ToString()
             {
-                return $"ID: {this.Id} " +
-                    $"model: {this.Model} " +
-                    $"weight: {this.Weight} " +
-                    $"battary: {this.Battary} " +
-                    $"status: {this.Status} " +
-                    $"location: {this.Location} " +
-                    $"parcelId: {this.ParcelId}" +
+                return $"ID: {this.Id} \n" +
+                    $"model: {this.Model} \n" +
+                    $"weight: {this.Weight} \n" +
+                    $"battary: {this.Battary} \n" +
+                    $"status: {this.Status} \n" +
+                    $"location: {this.Location} \n" +
+                    $"parcelId: {this.ParcelId}\n" +
                     $"";
             }
 

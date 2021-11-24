@@ -91,7 +91,6 @@ namespace IBAL
         [Serializable]
         public class UnableToAssignParcelToTheDroneException : Exception
         {
-            private int droneId;
 
             //public UnableToAssignParcelToTheDroneException()
             //{

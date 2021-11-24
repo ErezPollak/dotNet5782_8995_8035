@@ -7,6 +7,8 @@
         mc:Ignorable="d"
         Title="DroneViewWindow" Height="450" Width="800">
     <Grid>
-        
+        <Grid Margin="89,45,89,45" RenderTransformOrigin="0.503,0.507"/>
+        <Grid HorizontalAlignment="Left" Height="65" Margin="-2,-1,0,0" VerticalAlignment="Top" Width="78"/>
+
     </Grid>
 </Window>
