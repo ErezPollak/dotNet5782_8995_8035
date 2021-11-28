@@ -25,21 +25,68 @@ namespace PL
         {
             InitializeComponent();
             this.bl = bl;
+            
             ListOfDronesView.ItemsSource = bl.GetDrones(t => true);
-            this.StatusSelector.ItemsSource = Enum.GetValues(typeof(IBAL.BO.Enums.DroneStatuses));
+
+            List<string> statusesSelector = Enum.GetNames(typeof(IBAL.BO.Enums.DroneStatuses)).Cast<string>().ToList();
+
+            statusesSelector.Add("Show all");
+
+            this.StatusSelector.ItemsSource = statusesSelector;//.GetValues(typeof(IBAL.BO.Enums.DroneStatuses));
+
             this.WeightSelecter.ItemsSource = Enum.GetValues(typeof(IBAL.BO.Enums.WeightCategories));
+
         }
 
         private void StatusChoose(object sender, SelectionChangedEventArgs e)
         {
-            
+            if (this.StatusSelector.SelectedItem.ToString() == "Show all")
+            {
+                //ListOfDronesView.ItemsSource = bl.GetDrones(t => true);
 
-            ListOfDronesView.ItemsSource = bl.GetDrones(t => t.Status.ToString() == this.StatusSelector.SelectedItem.ToString()); 
+                if (this.WeightSelecter.SelectedItem != null)
+                {
+                    ListOfDronesView.ItemsSource = bl.GetDrones(t => t.Weight.ToString() == this.WeightSelecter.SelectedItem.ToString());
+                }
+                else
+                {
+                    ListOfDronesView.ItemsSource = bl.GetDrones(t => true);
+                }
+            }
+            else
+            {
+
+                // && t.Weight.ToString() == this.WeightSelecter.SelectedItem.ToString()
+
+                if (this.WeightSelecter.SelectedItem != null)
+                {
+                    ListOfDronesView.ItemsSource = bl.GetDrones(t => t.Status.ToString() == this.StatusSelector.SelectedItem.ToString() && t.Weight.ToString() == this.WeightSelecter.SelectedItem.ToString());
+                }
+                else
+                {
+                    ListOfDronesView.ItemsSource = bl.GetDrones(t => t.Status.ToString() == this.StatusSelector.SelectedItem.ToString());
+                }
+            }
         }
 
         private void WeightChoose(object sender, SelectionChangedEventArgs e)
         {
-            ListOfDronesView.ItemsSource = bl.GetDrones(t => t.Weight.ToString() == this.WeightSelecter.SelectedItem.ToString());
+            
+            if (this.StatusSelector.SelectedItem != null)
+            {
+                ListOfDronesView.ItemsSource = bl.GetDrones(t => t.Weight.ToString() == this.WeightSelecter.SelectedItem.ToString() && (t.Status.ToString() == this.StatusSelector.SelectedItem.ToString() || this.StatusSelector.SelectedItem.ToString() == "Show all"));
+            }
+            else
+            {
+                ListOfDronesView.ItemsSource = bl.GetDrones(t => t.Weight.ToString() == this.WeightSelecter.SelectedItem.ToString());
+            }
+
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            AddDroneWindow addDroneWindow = new AddDroneWindow(bl);
+            addDroneWindow.Show();
         }
     }
 }

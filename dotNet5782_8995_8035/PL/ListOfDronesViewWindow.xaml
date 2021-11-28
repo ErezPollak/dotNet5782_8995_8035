@@ -21,7 +21,7 @@
 
         <ComboBox x:Name="StatusSelector" Margin="40,19,40,16" Grid.Column="2" Width="120" Height="34" SelectionChanged ="StatusChoose"/>
 
-        <ComboBox x:Name="WeightSelecter" Margin="40,18,40,17" Grid.Column="3" Width="120" Height="34" SelectionChanged ="WeightChoose"/>
+        <ComboBox x:Name="WeightSelecter" Margin="40,19,40,16" Grid.Column="3" Width="120" Height="34" SelectionChanged ="WeightChoose"/>
 
         <TextBox x:Name="TBD" HorizontalAlignment="Left" Margin="10,0,0,0" Text="choose element" TextWrapping="Wrap" VerticalAlignment="Center" Width="170" Height="27">
             <TextBox.RenderTransform>
@@ -40,5 +40,6 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        <Button Content="add drone" Grid.Column="1" Margin="40,19,0,16" Click="Button_Click" HorizontalAlignment="Left" Width="120"  />
     </Grid>
 </Window>

@@ -13,7 +13,7 @@ namespace IBL
         ////***add options***/////
 
         public bool AddBaseStation(IBAL.BO.BaseStation baesStation);
-        public bool AddDrone(IBAL.BO.DroneForList newDrone);
+        public bool AddDrone(IBAL.BO.Drone newDrone);
         public bool AddCustumer(IBAL.BO.Customer customer);
         public bool AddParcel(IBAL.BO.Parcel newPparcel);
 

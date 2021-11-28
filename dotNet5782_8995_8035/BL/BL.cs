@@ -200,18 +200,46 @@ namespace IBL
         /// </summary>
         /// <param name="lpgical dronre"></param>
         /// <returns>true if the adding eas successful</returns>
-        public bool AddDrone(IBAL.BO.DroneForList newDrone)
+        public bool AddDrone(IBAL.BO.Drone newDrone)
         {
             
             if (this.drones.Any(d => d.Id == newDrone.Id)) throw new IBAL.BO.IdAlreadyExistsException(newDrone.Id, "droen");
 
-            this.drones.Add(newDrone);
+            int parcel;
+            if(newDrone.ParcelInDelivery == null)
+            {
+                parcel = -1;
+            }
+            else
+            {
+                parcel = newDrone.ParcelInDelivery.Id;
+            }
+
+            if(newDrone.Location == null)
+            {
+                List<IBAL.BO.BaseStationForList> avalibaleBaseStations =  GetBaseStations(b => b.ChargeSlots > 0).ToList();
+                if (avalibaleBaseStations.Count == 0) throw new IBAL.BO.UnableToAddDroneException("No BaseStation Avalible");
+                newDrone.Location = GetBaseStation(avalibaleBaseStations[r.Next(avalibaleBaseStations.Count)].Id).Location;
+            }
+
+            IBAL.BO.DroneForList balDrone = new IBAL.BO.DroneForList()
+            {
+                Id = newDrone.Id,
+                Model = newDrone.Model,
+                Weight = newDrone.MaxWeight,
+                Battary = newDrone.Battery,
+                Location = newDrone.Location,
+                Status = newDrone.Status,
+                ParcelId = parcel
+            };
+
+            this.drones.Add(balDrone);
             
             IDAL.DO.Drone dalDrone = new IDAL.DO.Drone()
             {
                 Id = newDrone.Id,
                 Model = newDrone.Model,
-                MaxWeight = (IDAL.DO.WeightCategories)newDrone.Weight
+                MaxWeight = (IDAL.DO.WeightCategories)newDrone.MaxWeight
             };
 
             //since we checked in the list there is no chance to have the same number of drone in the dal list.   

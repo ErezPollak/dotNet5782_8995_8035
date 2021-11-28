@@ -23,9 +23,7 @@ namespace IDAL
             public int Id { get; set; }
             public string Model { get; set; }
             public WeightCategories MaxWeight{ get; set; }
-            //public DroneStatuses Status{ get; set; }
-            //public double battery { get; set; }
-
+           
             /// <summary>
             /// the function prints all the props of the struct.
             /// </summary>

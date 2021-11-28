@@ -205,6 +205,27 @@ namespace IBAL
             }
         }
 
+        [Serializable]
+        public class UnableToAddDroneException : Exception
+        {
+
+            public UnableToAddDroneException()
+            {
+            }
+
+            public UnableToAddDroneException(string message) : base(message)
+            {
+            }
+
+            public UnableToAddDroneException(string message, Exception innerException) : base(message, innerException)
+            {
+            }
+
+            protected UnableToAddDroneException(SerializationInfo info, StreamingContext context) : base(info, context)
+            {
+            }
+        }
+
 
 
     }
