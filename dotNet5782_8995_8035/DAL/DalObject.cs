@@ -22,7 +22,7 @@ namespace DalObject
     public class DalObject : IDAL.IDal
     {
         //ctor
-        
+
         public DalObject()
         {
             DataSource.Initialize();
@@ -38,7 +38,7 @@ namespace DalObject
         public bool AddBaseStation(IDAL.DO.BaseStation baseStation)
         {
             //checking that the number is not already in the list, in witch case exeption will be thrown.
-            if(DataSource.baseStations.Any(b => b.Id == baseStation.Id)) throw new IDAL.DO.IdAlreadyExistsException(baseStation.Id , "baseSattion");
+            if (DataSource.baseStations.Any(b => b.Id == baseStation.Id)) throw new IDAL.DO.IdAlreadyExistsException(baseStation.Id, "baseSattion");
 
             //adding the base station to the list after no matching serial numbers was fuond.
             DataSource.baseStations.Add(baseStation);
@@ -99,11 +99,11 @@ namespace DalObject
         ////***update options***/////
 
 
-        public bool UpdateNameForADrone(int droneId , string model)
+        public bool UpdateNameForADrone(int droneId, string model)
         {
             int index = DataSource.drones.FindIndex(d => (d.Id == droneId));
 
-            if (index == -1) throw new IdDontExistsException(droneId , "drone");
+            if (index == -1) throw new IdDontExistsException(droneId, "drone");
 
             IDAL.DO.Drone drone = DataSource.drones[index];
 
@@ -184,7 +184,7 @@ namespace DalObject
         ///updating the time of pickup in the parcel, and changing the status of the drone to delivery.
         /// </summary>
         /// <param name="parcelId"></param>
-        public bool PickingUpParcel(int parcelId , int droneId)
+        public bool PickingUpParcel(int parcelId, int droneId)
         {
             //keeps the index in witch the idNumber was found in order to update it without iterting over the list again.
 
@@ -211,10 +211,10 @@ namespace DalObject
 
         }
 
-       /// <summary>
-       ///updating the time of delivering in the parcel, and changing the status of the drone to free.
-       /// </summary>
-       /// <param name="parcelId"></param>
+        /// <summary>
+        ///updating the time of delivering in the parcel, and changing the status of the drone to free.
+        /// </summary>
+        /// <param name="parcelId"></param>
         public bool DeliveringParcel(int parcelId)
         {
             //keeps the index in witch the idNumber was found in order to update it without iterting over the list again.
@@ -248,15 +248,15 @@ namespace DalObject
             int baseStationIndex = DataSource.baseStations.FindIndex(b => b.Id == baseStationId);
             if (baseStationIndex == -1) throw new IDAL.DO.IdDontExistsException(baseStationId, "base station");
 
-            
+
             if (!DataSource.drones.Any(d => d.Id == droneId)) throw new IDAL.DO.IdDontExistsException(droneId, "drone");
 
-            
+
             //update the number of the free charge slots at the base station to be one less.
-             IDAL.DO.BaseStation newBaseStation = DataSource.baseStations[baseStationIndex];
-             --newBaseStation.ChargeSlots;
-             DataSource.baseStations[baseStationIndex] = newBaseStation;
-           
+            IDAL.DO.BaseStation newBaseStation = DataSource.baseStations[baseStationIndex];
+            --newBaseStation.ChargeSlots;
+            DataSource.baseStations[baseStationIndex] = newBaseStation;
+
             //creating the charge drone ans adding it to the list of charges.
             IDAL.DO.DroneCharge droneCharge = new IDAL.DO.DroneCharge() { DroneId = droneId, StationId = baseStationId };
             DataSource.droneCharges.Add(droneCharge);
@@ -325,7 +325,7 @@ namespace DalObject
         public IDAL.DO.Drone GetDrone(int droneId)
         {
             int droneIndex = DataSource.drones.FindIndex(d => d.Id == droneId);
-           
+
             if (droneIndex == -1) throw new IDAL.DO.IdDontExistsException(droneId, "drone");
 
             return DataSource.drones[droneIndex];
@@ -365,11 +365,17 @@ namespace DalObject
         /// returns the array of the base stations.
         /// </summary>
         /// <param name="f"></param>
-        public IEnumerable<IDAL.DO.BaseStation> GetBaseStations(Predicate<IDAL.DO.BaseStation> f)
+        public IEnumerable<BaseStation> GetBaseStations(Predicate<BaseStation> f)
         {
-            List<IDAL.DO.BaseStation> list = new List<BaseStation>();
+            // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+            // return DataSource.baseStations.Where(b => f(b));    ///its like what you done jast shorter.
+            //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+            //List<BaseStation> list = new List<BaseStation>();
+            //DataSource.baseStations.ForEach(b => { if (f(b)) list.Add(b); });
+            //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
-            DataSource.baseStations.ForEach(delegate (IDAL.DO.BaseStation b) { if (f(b)) { list.Add(b); } });
+            List<BaseStation> list = new List<BaseStation>();
+            DataSource.baseStations.ForEach(delegate (BaseStation b) { if (f(b)) { list.Add(b); } });
 
             return list;
         }
@@ -380,6 +386,10 @@ namespace DalObject
         /// <param name="f"></param>
         public IEnumerable<IDAL.DO.Drone> GetDrones(Predicate<IDAL.DO.Drone> f)
         {
+            //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+            //return DataSource.drones.Where(d => f(d));
+            //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
             List<IDAL.DO.Drone> drones = new List<IDAL.DO.Drone>();
 
             DataSource.drones.ForEach(delegate (IDAL.DO.Drone d) { if (f(d)) { drones.Add(d); } });
@@ -512,18 +522,17 @@ namespace DalObject
         ///  the function gets an id of drone or a customer and returns the station that is clothst to this drone or customer.
         /// </summary>
         /// <param name="customerId"></param>
-        /// <param name="type"></param>
         /// <returns></returns>
         public int GetClothestStation(int customerId)
         {
             int clothestStation = 0;
-            double distanseSqered = 0 , minDistanceSqered = 1000000;
+            double distanseSqered = 0, minDistanceSqered = 1000000;
 
-            IDAL.DO.Customer customer = GetCustomers(c =>  c.Id == customerId).First();
-            foreach(IDAL.DO.BaseStation baseStation in DataSource.baseStations)
+            IDAL.DO.Customer customer = GetCustomers(c => c.Id == customerId).First();
+            foreach (IDAL.DO.BaseStation baseStation in DataSource.baseStations)
             {
                 distanseSqered = Math.Pow(baseStation.Location.Lattitude - customer.Location.Lattitude, 2) + Math.Pow(baseStation.Location.Longitude - customer.Location.Longitude, 2);
-                if(distanseSqered < minDistanceSqered)
+                if (distanseSqered < minDistanceSqered)
                 {
                     minDistanceSqered = distanseSqered;
                     clothestStation = baseStation.Id;
@@ -531,7 +540,7 @@ namespace DalObject
             }
 
             return clothestStation;
-            
+
         }
 
         /// <summary>
@@ -549,7 +558,7 @@ namespace DalObject
             return ++DataSource.Config.serialNumber;
         }
 
-       
+
 
 
         //public void SetNameForADrone(int droneId, string model)

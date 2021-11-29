@@ -84,7 +84,7 @@ namespace IBL
                 //updates the parcel number to be delivery.
                 this.GetDrone(parcel.DroneId).ParcelId = parcel.Id;
 
-                //if the oarcel wasnt picked up.
+                //if the parcel wasnt picked up.
                 if (parcel.PickedUpTime == null)
                 {
                     //seting the location of the drone to be in the clothest station to the sender.
@@ -108,7 +108,7 @@ namespace IBL
                 }
                 
                 //if the precentage is ok, the value of the battry is being randomiseied between the minimum value to one handred.
-                this.GetDrone(parcel.DroneId).Battary = r.Next() % (100 - minimumValue) + minimumValue;
+                this.GetDrone(parcel.DroneId).Battary = minimumValue + r.Next() % (100 - minimumValue);
 
             }
 
@@ -137,7 +137,7 @@ namespace IBL
                     //if (battayConcamption > 100) throw new IBAL.BO.BL_ConstaractorException($"the drone needs {battayConcamption} battary in order to complete to delivery. ");
 
                     //seting the battry to be randomised between the minimum value to 100.
-                    drone.Battary = (int)(r.NextDouble() * (100 - battayConcamption) + battayConcamption);
+                    drone.Battary = (int)(battayConcamption + r.NextDouble() * (100 - battayConcamption));
 
                 }
                 else if (drone.Status == Enums.DroneStatuses.MAINTENANCE)
