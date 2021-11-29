@@ -367,17 +367,7 @@ namespace DalObject
         /// <param name="f"></param>
         public IEnumerable<BaseStation> GetBaseStations(Predicate<BaseStation> f)
         {
-            // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-            // return DataSource.baseStations.Where(b => f(b));    ///its like what you done jast shorter.
-            //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-            //List<BaseStation> list = new List<BaseStation>();
-            //DataSource.baseStations.ForEach(b => { if (f(b)) list.Add(b); });
-            //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-
-            List<BaseStation> list = new List<BaseStation>();
-            DataSource.baseStations.ForEach(delegate (BaseStation b) { if (f(b)) { list.Add(b); } });
-
-            return list;
+            return DataSource.baseStations.Where(b => f(b));    ///its like what you done jast shorter.
         }
 
         /// <summary>
@@ -386,15 +376,7 @@ namespace DalObject
         /// <param name="f"></param>
         public IEnumerable<IDAL.DO.Drone> GetDrones(Predicate<IDAL.DO.Drone> f)
         {
-            //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-            //return DataSource.drones.Where(d => f(d));
-            //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-
-            List<IDAL.DO.Drone> drones = new List<IDAL.DO.Drone>();
-
-            DataSource.drones.ForEach(delegate (IDAL.DO.Drone d) { if (f(d)) { drones.Add(d); } });
-
-            return drones;
+            return DataSource.drones.Where(d => f(d));
         }
 
         /// <summary>
@@ -403,11 +385,7 @@ namespace DalObject
         /// <param name="f"></param>
         public IEnumerable<IDAL.DO.Customer> GetCustomers(Predicate<IDAL.DO.Customer> f)
         {
-            List<IDAL.DO.Customer> customers = new List<IDAL.DO.Customer>();
-
-            DataSource.customers.ForEach(delegate (IDAL.DO.Customer c) { if (f(c)) { customers.Add(c); } });
-
-            return customers;
+            return DataSource.customers.Where(c => f(c));
         }
 
         /// <summary>
@@ -416,97 +394,13 @@ namespace DalObject
         /// <param name="f"></param>
         public IEnumerable<IDAL.DO.Parcel> GetParcels(Predicate<IDAL.DO.Parcel> f)
         {
-            List<IDAL.DO.Parcel> parcels = new List<Parcel>();
-
-            DataSource.parcels.ForEach(delegate (IDAL.DO.Parcel p) { if (f(p)) { parcels.Add(p); } });
-
-            return parcels;
+            return DataSource.parcels.Where(p => f(p));
         }
 
         public IEnumerable<DroneCharge> GetChargeDrones(Predicate<IDAL.DO.DroneCharge> f)
         {
-            List<IDAL.DO.DroneCharge> droneCarges = new List<IDAL.DO.DroneCharge>();
-
-            DataSource.droneCharges.ForEach(delegate (IDAL.DO.DroneCharge dc) { if (f(dc)) { droneCarges.Add(dc); } });
-
-            return droneCarges;
+            return DataSource.droneCharges.Where(dc => f(dc));
         }
-
-
-        ///// <summary>
-        ///// returns all the parcels that dont have a drone assigned to them.
-        ///// </summary>
-        //public IEnumerable<IDAL.DO.Parcel> GetParcelToDrone()
-        //{
-        //    List<IDAL.DO.Parcel> parcelsToDrones = new List<IDAL.DO.Parcel>();
-
-        //    foreach(IDAL.DO.Parcel parcel in DataSource.parcels)
-        //    {
-        //        if (parcel.DroneId == -1)
-        //        {
-        //            parcelsToDrones.Add(parcel);
-        //        }
-        //    }
-
-        //    return parcelsToDrones;
-        //}
-
-        ///// <summary>
-        ///// returns all the base stations that have free charging slots
-        ///// </summary>
-        //public IEnumerable<IDAL.DO.BaseStation> GetFreeStations()
-        //{
-        //    List<IDAL.DO.BaseStation> freeBaseStations = new List<IDAL.DO.BaseStation>();
-        //    foreach(IDAL.DO.BaseStation baseStation in DataSource.baseStations)
-        //    {
-        //        if (baseStation.chargeSlots > 0)
-        //        {
-        //            freeBaseStations.Add(baseStation);
-        //        }
-        //    }
-        //    return freeBaseStations;
-        //}
-
-        ///// <summary>
-        ///// the function gets a  weight category of a parcel.
-        ///// the function returns a list with all the drones that are capable of taking it.
-        ///// </summary>
-        ///// <param name="weight"></param>
-        ////public IEnumerable<IDAL.DO.Drone> GetDroneForParcel(IDAL.DO.WeightCategories weight)
-        ////{
-        ////    List<IDAL.DO.Drone> capableDrones = new List<IDAL.DO.Drone>();
-        ////    foreach(IDAL.DO.Drone drone in DataSource.drones)
-        ////    {
-        ////        if(drone.MaxWeight >= weight && drone.Status == IDAL.DO.DroneStatuses.FREE)
-        ////        {
-        ////            capableDrones.Add(drone);
-        ////        }
-        ////    }
-        ////    return capableDrones;
-        ////}
-
-        ///// <summary>
-        ///// the class returns a list with all the parcels that was been assined to a drone but wasn't deliverd.
-        ///// </summary>
-        ///// <returns></returns>
-        //public List<IDAL.DO.Parcel> GetDronesToUpdate()
-        //{
-
-        //    List<IDAL.DO.Parcel> parcelsWithoutDrone = new List<IDAL.DO.Parcel>();
-        //    foreach (IDAL.DO.Parcel parcel in DataSource.parcels)
-        //    {
-        //        if (parcel.DroneId != -1 && parcel.AcceptedTime == null)
-        //        {
-        //            parcelsWithoutDrone.Add(parcel);
-        //        }
-        //    }
-
-        //    return parcelsWithoutDrone;
-        //}
-
-
-        //////////functions for BL.
-
 
         /// <summary>
         /// returns an array with the information of charging drones.
@@ -557,33 +451,6 @@ namespace DalObject
         {
             return ++DataSource.Config.serialNumber;
         }
-
-
-
-
-        //public void SetNameForADrone(int droneId, string model)
-        //{
-        //    int index = DataSource.drones.FindIndex(d => (d.Id == droneId));
-
-        //    IDAL.DO.Drone drone = DataSource.drones[index];
-
-        //    drone.Model = model;
-
-        //    DataSource.drones[index] = drone;
-        //}
-
-        //public int clothestStation(int customerId)
-        //{
-        //    double minDistance = distance(GetCustomer(customerId).Longitude , GetCustomer(customerId).Llattitude , this.GetBaseStations().ToList()[0].longitude , this.GetBaseStations().ToList()[0].lattitude);
-        //    foreach(IDAL.DO.BaseStation baseStation in get)
-        //}
-
-
-
-        //private double distance(double x1, double y1, double x2, double y2)
-        //{
-        //    return Math.Sqrt(Math.Pow(x1 - x2, 2) + (Math.Pow(y1 - y2, 2)));
-        //}
 
     }
 }

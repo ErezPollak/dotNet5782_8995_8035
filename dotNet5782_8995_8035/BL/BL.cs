@@ -94,7 +94,7 @@ namespace IBL
                     deliveryDistance += distance(locationTranslate(dalObject.GetBaseStation(dalObject.GetClothestStation(parcel.SenderId)).Location), locationTranslate(dalObject.GetCustomer(parcel.SenderId).Location));
 
                     // caculating the minimum precentage of batteary the drone needs in order to deliver the parcel and go to charge afterwards.
-                    minimumValue = deliveryDistance / (int)(dalObject.ElectricityUse()[(int)this.GetDrone(parcel.DroneId).Weight]);
+                    minimumValue = deliveryDistance / (int)(dalObject.ElectricityUse()[(int)this.GetDrone(parcel.DroneId).Weight + 1]);
 
                 }
                 else // if the parcel was picked up.
@@ -103,7 +103,7 @@ namespace IBL
                     this.GetDrone(parcel.DroneId).Location = locationTranslate(dalObject.GetCustomer(parcel.SenderId).Location);
 
                     // caculating the minimum precentage of batteary the drone needs in order to deliver the parcel and go to charge afterwards.
-                    minimumValue = deliveryDistance / (int)(dalObject.ElectricityUse()[(int)this.GetDrone(parcel.DroneId).Weight]);
+                    minimumValue = deliveryDistance / (int)(dalObject.ElectricityUse()[(int)this.GetDrone(parcel.DroneId).Weight + 1]);
 
                 }
                 
