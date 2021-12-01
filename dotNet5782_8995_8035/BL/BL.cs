@@ -500,7 +500,8 @@ namespace IBL
                 .OrderBy(b => distance(locationTranslate(b.Location), GetDrone(droneId).Location)).ToList();
 
             //if there is no suitable station an exception will be thrown.
-            if (baseStations.Count == 0) throw new UnAbleToSendDroneToChargeException(" there is no station that matches the needs of this drone");
+            if (baseStations.Count == 0)
+                throw new UnAbleToSendDroneToChargeException(" there is no station that matches the needs of this drone");
 
             IDAL.DO.BaseStation baseStation = baseStations.First();
 
@@ -532,7 +533,8 @@ namespace IBL
             if (droneIndex == -1) throw new IBAL.BO.IdDontExistsException(droneId, "drone");
 
             //chacks if the drone is free, and if not exception will be thrown.
-            if (this.drones[droneIndex].Status != Enums.DroneStatuses.MAINTENANCE) throw new UnAbleToReleaseDroneFromChargeException(droneId, "the drone is not in maintanance");
+            if (this.drones[droneIndex].Status != Enums.DroneStatuses.MAINTENANCE) 
+                throw new UnAbleToReleaseDroneFromChargeException(droneId, "the drone is not in maintanance");
 
             //update the battary status.
             this.drones[droneIndex].Battary += minutes * dalObject.ElectricityUse()[4];
@@ -557,32 +559,35 @@ namespace IBL
         /// <returns></returns>
         public IBAL.BO.BaseStation GetBaseStation(int baseStationId)
         {
+            IDAL.DO.BaseStation dalBaseStation;
             try
             {
-                IDAL.DO.BaseStation dalBaseStation = dalObject.GetBaseStation(baseStationId);
-
-                List<IBAL.BO.DroneInCharge> charges = cargeDroneToDroneInCharge(dalObject.GetChargeDrones(d => d.StationId == dalBaseStation.Id).ToList());
-
-                return new IBAL.BO.BaseStation()
-                {
-                    Id = dalBaseStation.Id,
-                    Name = dalBaseStation.Name,
-                    ChargeSlots = dalBaseStation.ChargeSlots,
-                    Location = locationTranslate(dalBaseStation.Location),
-                    ChargingDrones = charges
-                };
+                dalBaseStation = dalObject.GetBaseStation(baseStationId);
             }
             catch (Exception e)
             {
                 throw new IBAL.BO.IdDontExistsException(baseStationId, "base station", e);
             }
+
+            List<IBAL.BO.DroneInCharge> charges = cargeDroneToDroneInCharge(dalObject.GetChargeDrones(d => d.StationId == dalBaseStation.Id).ToList());
+
+            return new IBAL.BO.BaseStation()
+            {
+                Id = dalBaseStation.Id,
+                Name = dalBaseStation.Name,
+                ChargeSlots = dalBaseStation.ChargeSlots,
+                Location = locationTranslate(dalBaseStation.Location),
+                ChargingDrones = charges
+            };
         }
 
         private List<DroneInCharge> cargeDroneToDroneInCharge(List<DroneCharge> droneCharges)
         {
-            List<DroneInCharge> droneInCharges = new List<DroneInCharge>();
-            droneCharges.ForEach(dc => droneInCharges.Add(new DroneInCharge() { Id = dc.DroneId, Battary = GetDrone(dc.DroneId).Battary }));
-            return droneInCharges;
+            return droneCharges.ConvertAll(dc => new DroneInCharge()
+            {
+                Id = dc.DroneId,
+                Battary = GetDrone(dc.DroneId).Battary
+            });
         }
 
         /// <summary>

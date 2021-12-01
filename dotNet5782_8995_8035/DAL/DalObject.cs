@@ -246,10 +246,12 @@ namespace DalObject
 
             //keeps the index in witch the idNumber was found in order to update it without iterting over the list again.
             int baseStationIndex = DataSource.baseStations.FindIndex(b => b.Id == baseStationId);
-            if (baseStationIndex == -1) throw new IDAL.DO.IdDontExistsException(baseStationId, "base station");
+            if (baseStationIndex == -1)
+                throw new IDAL.DO.IdDontExistsException(baseStationId, "base station");
 
 
-            if (!DataSource.drones.Any(d => d.Id == droneId)) throw new IDAL.DO.IdDontExistsException(droneId, "drone");
+            if (!DataSource.drones.Any(d => d.Id == droneId)) 
+                throw new IDAL.DO.IdDontExistsException(droneId, "drone");
 
 
             //update the number of the free charge slots at the base station to be one less.
