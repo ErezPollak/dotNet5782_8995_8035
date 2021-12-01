@@ -56,7 +56,7 @@ namespace DalObject
         {
 
             //checking that the number is not already in the list, in witch case exeption will be thrown.
-            if (DataSource.drones.Any(d => d.Id == drone.Id)) throw new IDAL.DO.IdAlreadyExistsException(drone.Id, "drone");
+            if (DataSource.drones.Exists(d => d.Id == drone.Id)) throw new IDAL.DO.IdAlreadyExistsException(drone.Id, "drone");
 
             //adding the base station to the list after no matching serial numbers was fuond.
             DataSource.drones.Add(drone);

@@ -36,7 +36,7 @@ namespace IBL
 
         //static DateTime nulldate = new DateTime();//needed for comperation
 
-        
+
         /// <summary>
         /// constractor for the Bl class
         /// </summary>
@@ -59,11 +59,11 @@ namespace IBL
             foreach (IDAL.DO.Drone dalDrone in dalObject.GetDrones(d => true).ToList())
             {
                 this.drones.Add(new DroneForList()
-                { 
-                    Id = dalDrone.Id, 
-                    Model = dalDrone.Model, 
-                    Weight = (IBAL.BO.Enums.WeightCategories)dalDrone.MaxWeight, 
-                    Status = (IBAL.BO.Enums.DroneStatuses)(r.Next() % 2 * 2) 
+                {
+                    Id = dalDrone.Id,
+                    Model = dalDrone.Model,
+                    Weight = (IBAL.BO.Enums.WeightCategories)dalDrone.MaxWeight,
+                    Status = (IBAL.BO.Enums.DroneStatuses)(r.Next() % 2 * 2)
                 });
             }
 
@@ -106,7 +106,7 @@ namespace IBL
                     minimumValue = deliveryDistance / (int)(dalObject.ElectricityUse()[(int)this.GetDrone(parcel.DroneId).Weight + 1]);
 
                 }
-                
+
                 //if the precentage is ok, the value of the battry is being randomiseied between the minimum value to one handred.
                 this.GetDrone(parcel.DroneId).Battary = minimumValue + r.Next() % (100 - minimumValue);
 
@@ -147,7 +147,7 @@ namespace IBL
 
                     //random number of a station.
                     int stationNumber = r.Next() % avalibleBaseStations.Count;
-                    
+
                     //setting the location of the drone to be the location of the randomaised station.
                     drone.Location = locationTranslate(avalibleBaseStations[stationNumber].Location);
 
@@ -168,12 +168,12 @@ namespace IBL
 
 
         ////**** adding option ****////
-        
-        
+
+
         /// <summary>
         /// the function gets a logical base station, converting it to a dal basestation and adding it to the database. 
         /// </summary>
-        /// <param name="lpgical basestation"></param>
+        /// <param name="newBaseStation">logical basestation</param>
         /// <returns>true if the adding eas successful</returns>
         public bool AddBaseStation(IBAL.BO.BaseStation newBaseStation)
         {
@@ -188,7 +188,8 @@ namespace IBL
             try
             {
                 return dalObject.AddBaseStation(baseStation);
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
                 throw new IBAL.BO.IdAlreadyExistsException(newBaseStation.Id, "base station", e);
             }
@@ -198,26 +199,29 @@ namespace IBL
         /// <summary>
         /// the function gets a logical drone, converting it to a dal drone and adding it to the database. 
         /// </summary>
-        /// <param name="lpgical dronre"></param>
+        /// <param name="newDrone">logical drone</param>
         /// <returns>true if the adding eas successful</returns>
         public bool AddDrone(IBAL.BO.Drone newDrone)
         {
-            
-            if (this.drones.Any(d => d.Id == newDrone.Id)) throw new IBAL.BO.IdAlreadyExistsException(newDrone.Id, "droen");
 
-            int parcel;
-            if(newDrone.ParcelInDelivery == null)
+            if (this.drones.Exists(d => d.Id == newDrone.Id))
             {
-                parcel = -1;
+                throw new IBAL.BO.IdAlreadyExistsException(newDrone.Id, "droen");
+            }
+
+            int parcelId;
+            if (newDrone.ParcelInDelivery == null)
+            {
+                parcelId = -1;
             }
             else
             {
-                parcel = newDrone.ParcelInDelivery.Id;
+                parcelId = newDrone.ParcelInDelivery.Id;
             }
 
-            if(newDrone.Location == null)
+            if (newDrone.Location == null)
             {
-                List<IBAL.BO.BaseStationForList> avalibaleBaseStations =  GetBaseStations(b => b.ChargeSlots > 0).ToList();
+                List<IBAL.BO.BaseStationForList> avalibaleBaseStations = GetBaseStations(b => b.ChargeSlots > 0).ToList();
                 if (avalibaleBaseStations.Count == 0) throw new IBAL.BO.UnableToAddDroneException("No BaseStation Avalible");
                 newDrone.Location = GetBaseStation(avalibaleBaseStations[r.Next(avalibaleBaseStations.Count)].Id).Location;
             }
@@ -230,11 +234,11 @@ namespace IBL
                 Battary = newDrone.Battery,
                 Location = newDrone.Location,
                 Status = newDrone.Status,
-                ParcelId = parcel
+                ParcelId = parcelId
             };
 
             this.drones.Add(balDrone);
-            
+
             IDAL.DO.Drone dalDrone = new IDAL.DO.Drone()
             {
                 Id = newDrone.Id,
@@ -254,7 +258,7 @@ namespace IBL
         /// <summary>
         /// the function gets a logical customer, converting it to a dal custamer and adding it to the database. 
         /// </summary>
-        /// <param name="lpgical custumer"></param>
+        /// <param name="newCustomer">logical custumer</param>
         /// <returns>true if the adding eas successful</returns>
         public bool AddCustumer(IBAL.BO.Customer newCustomer)
         {
@@ -266,14 +270,22 @@ namespace IBL
                 Location = locationTranslate(newCustomer.Location)
             };
 
-            return dalObject.AddCustumer(customer);
+            try
+            {
+                return dalObject.AddCustumer(customer);
+            }
+            catch (Exception e)
+            {
+                throw new IBAL.BO.IdAlreadyExistsException(newCustomer.Id, "customer", e);
+            }
+
         }
 
 
         /// <summary>
         /// the function gets a logical parcel, converting it to a dal parcel and adding it to the database. 
         /// </summary>
-        /// <param name="lpgical basestation"></param>
+        /// <param name="newParcel">logical parcel</param>
         /// <returns>true if the adding eas successful</returns>
         public bool AddParcel(IBAL.BO.Parcel newParcel)
         {
@@ -291,14 +303,21 @@ namespace IBL
                 PickedUpTime = newParcel.PickupTime
             };
 
-            return dalObject.AddParcel(dalParcel);
-        
+            try
+            {
+                return dalObject.AddParcel(dalParcel);
+            }
+            catch (Exception e)
+            {
+
+                throw new IBAL.BO.IdAlreadyExistsException(newParcel.Id, "parcel", e);
+            }
         }
 
 
         ////**** update options ****////
 
-        
+
         /// <summary>
         /// calling the function from the dal that changesd the name of the drone
         /// </summary>
@@ -335,9 +354,9 @@ namespace IBL
             {
                 return dalObject.UpdateBaseStation(basStationID, name, slots);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                throw new IBAL.BO.IdDontExistsException(basStationID, "baseStation" , e);
+                throw new IBAL.BO.IdDontExistsException(basStationID, "baseStation", e);
             }
 
         }
@@ -361,7 +380,7 @@ namespace IBL
             }
         }
 
-       
+
         /// <summary>
         /// finding the best parcel and assining it to the given drone.
         /// </summary>
@@ -373,19 +392,20 @@ namespace IBL
             int droneIndex = this.drones.FindIndex(d => d.Id == droneId);
 
             //if the index is -1 it means that no such is id in the database so an exception will be thrown.
-            if (droneIndex == -1) throw new IBAL.BO.UnableToAssignParcelToTheDroneException(droneId , " drone is not in the database." , new IBAL.BO.IdDontExistsException(droneId , "drone"));//IBAL.BO.IdDontExistsException(droneId, "drone");
+            if (droneIndex == -1)
+                throw new IBAL.BO.UnableToAssignParcelToTheDroneException(droneId, " drone is not in the database.",
+                    new IBAL.BO.IdDontExistsException(droneId, "drone"));//IBAL.BO.IdDontExistsException(droneId, "drone");
 
             //chacks if the drone is free, and if not exception will be thrown.
-            if (this.drones[droneIndex].Status != Enums.DroneStatuses.FREE) throw new IBAL.BO.UnableToAssignParcelToTheDroneException(droneId , " the drone is not free");
+            if (this.drones[droneIndex].Status != Enums.DroneStatuses.FREE) 
+                throw new IBAL.BO.UnableToAssignParcelToTheDroneException(droneId, " the drone is not free");
 
             //importing all the parcels and sorting them aaccording to their praiority.
-            List<IDAL.DO.Parcel> parcels = dalObject.GetParcels(p => true).OrderBy(p => (int)p.Priority).ToList();
-
-            //removing from the list all the parcels that wight more than the drone can carry.
-            parcels.RemoveAll(p => (int)p.Weight > (int)drones[droneIndex].Weight);
+            List<IDAL.DO.Parcel> parcels = dalObject.GetParcels(p => (int)p.Weight <= (int)drones[droneIndex].Weight).OrderBy(p => (int)p.Priority).ToList();
 
             //if no parcel left in the list after the removings it means that no parcel can be sent be thi drone, so exception will be thrown.
-            if (parcels.Count == 0) throw new UnableToAssignParcelToTheDroneException(droneId, " there is no parcel that can be sent by this drone due to: all the parcels are too heavy.");
+            if (parcels.Count == 0)
+                throw new UnableToAssignParcelToTheDroneException(droneId, " there is no parcel that can be sent by this drone due to: all the parcels are too heavy.");
 
             //sorting by the distanse between the drone's locaation and the parcel's location.
             parcels = parcels.OrderBy(p => distance(drones[droneIndex].Location, locationTranslate(dalObject.GetCustomer(p.SenderId).Location))).ToList();
@@ -394,7 +414,7 @@ namespace IBL
             parcels.RemoveAll(p => distance(drones[droneIndex].Location, locationTranslate(dalObject.GetCustomer(p.SenderId).Location))  /*adding the distance between the reciver to the base station*/ >= drones[droneIndex].Battary * dalObject.ElectricityUse()[(int)drones[droneIndex].Weight + 1]);
 
             //if no parcel left in the list after the removings it means that no parcel can be sent be thi drone, so exception will be thrown.
-            if (parcels.Count == 0) throw new UnableToAssignParcelToTheDroneException(droneId , " there is no parcel that can be sent by this drone due to: too long distanses");
+            if (parcels.Count == 0) throw new UnableToAssignParcelToTheDroneException(droneId, " there is no parcel that can be sent by this drone due to: too long distanses");
 
             //if there is a parcel that matches the needings of the drone the rewwuaiered will happen.
             this.drones[droneIndex].Status = Enums.DroneStatuses.DELIVERY;
@@ -405,8 +425,8 @@ namespace IBL
             return dalObject.PickingUpParcel(parcels.First().Id, droneId);
 
         }
-        
-        
+
+
         /// <summary>
         /// the function is deliveriong the parcel that the drone is delivering 
         /// and updating the properties according to the distance of the delivery.
@@ -415,9 +435,9 @@ namespace IBL
         /// <returns></returns>
         public bool DeliveringParcelFromADrone(int droneId)
         {
-            
+
             //if the drone is not in thr database, an exception will be thrown.
-            if (this.GetDrone(droneId).Status != Enums.DroneStatuses.DELIVERY) throw new UnableToDeliverParcelFromTheDroneException(droneId , "the drone is not delivering any parcel.");
+            if (this.GetDrone(droneId).Status != Enums.DroneStatuses.DELIVERY) throw new UnableToDeliverParcelFromTheDroneException(droneId, "the drone is not delivering any parcel.");
 
             //caculating the distance of the delivery.
             double deliveryDistance = distance(locationTranslate(dalObject.GetCustomer(dalObject.GetParcel(this.GetDrone(droneId).ParcelId).SenderId).Location), locationTranslate(dalObject.GetCustomer(dalObject.GetParcel(this.GetDrone(droneId).ParcelId).TargetId).Location));
@@ -433,7 +453,7 @@ namespace IBL
 
             //update the parcel from the dal.
             return dalObject.DeliveringParcel(this.GetDrone(droneId).ParcelId);
-            
+
         }
 
         /// <summary>
@@ -491,17 +511,17 @@ namespace IBL
         /// <param name="droneId"></param>
         /// <param name="minutes"></param>
         /// <returns></returns>
-        public bool UnChargeDrone(int droneId , int minutes)
+        public bool UnChargeDrone(int droneId, int minutes)
         {
             int droneIndex = this.drones.FindIndex(d => d.Id == droneId);
             if (droneIndex == -1) throw new IBAL.BO.IdDontExistsException(droneId, "drone");
 
             //chacks if the drone is free, and if not exception will be thrown.
-            if (this.drones[droneIndex].Status != Enums.DroneStatuses.MAINTENANCE) throw new UnAbleToReleaseDroneFromChargeException(droneId ,"the drone is not in maintanance");
+            if (this.drones[droneIndex].Status != Enums.DroneStatuses.MAINTENANCE) throw new UnAbleToReleaseDroneFromChargeException(droneId, "the drone is not in maintanance");
 
             //update the battary status.
             this.drones[droneIndex].Battary += minutes * dalObject.ElectricityUse()[4];
-            if(this.drones[droneIndex].Battary > 100)
+            if (this.drones[droneIndex].Battary > 100)
             {
                 this.drones[droneIndex].Battary = 100;
             }
@@ -527,7 +547,7 @@ namespace IBL
                 IDAL.DO.BaseStation dalBaseStation = dalObject.GetBaseStation(baseStationId);
 
                 List<IBAL.BO.DroneInCharge> charges = cargeDroneToDroneInCharge(dalObject.GetChargeDrones(d => d.StationId == dalBaseStation.Id).ToList());
-                
+
                 return new IBAL.BO.BaseStation()
                 {
                     Id = dalBaseStation.Id,
@@ -658,9 +678,9 @@ namespace IBL
                 Id = d.Id,
                 Model = d.Model,
                 Battary = d.Battary,
-                Location = d.Location, 
+                Location = d.Location,
                 Weight = d.Weight,
-                Status = d.Status ,
+                Status = d.Status,
                 ParcelId = d.ParcelId
             }));
 
@@ -690,7 +710,7 @@ namespace IBL
                     SentFromAndDeliverd = dalObject.GetParcels(p => p.SenderId == customer.Id && p.PickedUpTime != null && p.DeliveryTime != null).Count(),
                     //caculating the number of parcels that were sent from this customer that were sent and not deliverd. 
                     SentFromAndNotDeliverd = dalObject.GetParcels(p => p.SenderId == customer.Id && p.PickedUpTime != null && p.DeliveryTime == null).Count(),
-                    
+
                 });
             }
             return customers;
@@ -777,7 +797,7 @@ namespace IBL
             return new IDAL.DO.Location() { Longitude = location.Longitude, Lattitude = location.Longitude };
         }
 
-       
+
 
         /// <summary>
         /// geting all the ditails from the class config to the BL.
@@ -788,8 +808,8 @@ namespace IBL
             return dalObject.GetSerialNumber();
         }
 
-        
+
     }//END BL class
 
-    
+
 }//end IBAL
