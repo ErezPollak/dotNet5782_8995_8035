@@ -469,7 +469,7 @@ namespace IBL
                 case Enums.CustomerEnum.SENDER:
                     return locationTranslate(dalObject.GetCustomer(dalObject.GetParcel(this.GetDrone(droneId).ParcelId).SenderId).Location);
                 case Enums.CustomerEnum.TARGET:
-                    return locationTranslate(dalObject.GetCustomer(dalObject.GetParcel(this.GetDrone(droneId).ParcelId).t).Location);
+                    return locationTranslate(dalObject.GetCustomer(dalObject.GetParcel(this.GetDrone(droneId).ParcelId).TargetId).Location);
                 default:
                     throw new Exception("type of cusomer is not CustomerEnum");
             }
