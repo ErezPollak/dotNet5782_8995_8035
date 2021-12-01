@@ -417,7 +417,15 @@ namespace IBL
             this.drones[droneIndex].ParcelId = parcels.First().Id;
 
             //calling to the function from the dal to make the changes in the data level.
-            return dalObject.PickingUpParcel(parcels.First().Id, droneId);
+            try
+            {
+                return dalObject.PickingUpParcel(parcels.First().Id, droneId);
+            }
+            catch (Exception e)
+            {
+                throw new UnableToAssignParcelToTheDroneException(droneId, "parcel or drone is not exist", e);
+            }
+           
 
         }
 
@@ -432,16 +440,19 @@ namespace IBL
         {
 
             //if the drone is not in thr database, an exception will be thrown.
-            if (this.GetDrone(droneId).Status != Enums.DroneStatuses.DELIVERY) throw new UnableToDeliverParcelFromTheDroneException(droneId, "the drone is not delivering any parcel.");
+            if (this.GetDrone(droneId).Status != Enums.DroneStatuses.DELIVERY)
+                throw new UnableToDeliverParcelFromTheDroneException(droneId, "the drone is not delivering any parcel.");
 
             //caculating the distance of the delivery.
-            double deliveryDistance = distance(locationTranslate(dalObject.GetCustomer(dalObject.GetParcel(this.GetDrone(droneId).ParcelId).SenderId).Location), locationTranslate(dalObject.GetCustomer(dalObject.GetParcel(this.GetDrone(droneId).ParcelId).TargetId).Location));
+            double deliveryDistance = distance(
+                GetLocationOfCustomer(droneId, Enums.CustomerEnum.SENDER),
+                GetLocationOfCustomer(droneId, Enums.CustomerEnum.TARGET));
 
             //battary update
             this.GetDrone(droneId).Battary -= deliveryDistance / dalObject.ElectricityUse()[(int)this.GetDrone(droneId).Weight + 1];
 
             // location update
-            this.GetDrone(droneId).Location = locationTranslate(dalObject.GetCustomer(dalObject.GetParcel(this.GetDrone(droneId).ParcelId).TargetId).Location);/////adapt to function.
+            this.GetDrone(droneId).Location = GetLocationOfCustomer(droneId, Enums.CustomerEnum.TARGET);
 
             //status update
             this.GetDrone(droneId).Status = Enums.DroneStatuses.FREE;
@@ -449,6 +460,20 @@ namespace IBL
             //update the parcel from the dal.
             return dalObject.DeliveringParcel(this.GetDrone(droneId).ParcelId);
 
+        }
+
+        private IBAL.BO.Location GetLocationOfCustomer(int droneId, Enums.CustomerEnum typeOfCustomer)
+        {
+            switch (typeOfCustomer)
+            {
+                case Enums.CustomerEnum.SENDER:
+                    return locationTranslate(dalObject.GetCustomer(dalObject.GetParcel(this.GetDrone(droneId).ParcelId).SenderId).Location);
+                case Enums.CustomerEnum.TARGET:
+                    return locationTranslate(dalObject.GetCustomer(dalObject.GetParcel(this.GetDrone(droneId).ParcelId).t).Location);
+                default:
+                    throw new Exception("type of cusomer is not CustomerEnum");
+            }
+            
         }
 
         /// <summary>
