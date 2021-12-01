@@ -144,7 +144,15 @@ namespace ConsoleUI_BL
                                             };
 
 
-                                            if (bl.AddDrone(drone))
+                                            if (bl.AddDrone(new IBAL.BO.Drone()
+                                            {
+                                                Id = drone.Id,
+                                                Battery = drone.Battary,
+                                                Location = drone.Location,
+                                                MaxWeight = drone.Weight,
+                                                Model = drone.Model,
+                                                Status = drone.Status
+                                            }))
                                             {
                                                 Console.WriteLine($"\nthe drone {name} successfully added to the list.");
                                             }
@@ -641,7 +649,7 @@ namespace ConsoleUI_BL
                                 case 6:
                                     {
                                         //shoing the base stations that have free charging slots
-                                        bl.GetBaseStations(b => b.ChargeSlots >= 0).ToList().ForEach(c => Console.WriteLine(c));
+                                        bl.GetBaseStations(b => b.FreeChargingSlots > 0).ToList().ForEach(c => Console.WriteLine(c));
                                         Console.WriteLine();
                                     }
                                     break;
