@@ -401,20 +401,15 @@ namespace IBL
                 throw new IBAL.BO.UnableToAssignParcelToTheDroneException(droneId, " the drone is not free");
 
             //importing all the parcels and sorting them aaccording to their praiority.
-            List<IDAL.DO.Parcel> parcels = dalObject.GetParcels(p => (int)p.Weight <= (int)drones[droneIndex].Weight).OrderBy(p => (int)p.Priority).ToList();
+            List<IDAL.DO.Parcel> parcels = dalObject.GetParcels(p => ((int)p.Weight <= (int)drones[droneIndex].Weight)
+                && (distance(drones[droneIndex].Location, locationTranslate(dalObject.GetCustomer(p.SenderId).Location))  /*adding the distance between the reciver to the base station*/ 
+                >= drones[droneIndex].Battary * dalObject.ElectricityUse()[(int)drones[droneIndex].Weight + 1]))
+                .OrderByDescending(p => (int)p.Priority)
+                .ThenBy(p => distance(drones[droneIndex].Location, locationTranslate(dalObject.GetCustomer(p.SenderId).Location))).ToList();
 
             //if no parcel left in the list after the removings it means that no parcel can be sent be thi drone, so exception will be thrown.
             if (parcels.Count == 0)
-                throw new UnableToAssignParcelToTheDroneException(droneId, " there is no parcel that can be sent by this drone due to: all the parcels are too heavy.");
-
-            //sorting by the distanse between the drone's locaation and the parcel's location.
-            parcels = parcels.OrderBy(p => distance(drones[droneIndex].Location, locationTranslate(dalObject.GetCustomer(p.SenderId).Location))).ToList();
-
-            //removing all the drones that dont have enough battary for the jerny from the sender to the reciver and to the clothest base station.
-            parcels.RemoveAll(p => distance(drones[droneIndex].Location, locationTranslate(dalObject.GetCustomer(p.SenderId).Location))  /*adding the distance between the reciver to the base station*/ >= drones[droneIndex].Battary * dalObject.ElectricityUse()[(int)drones[droneIndex].Weight + 1]);
-
-            //if no parcel left in the list after the removings it means that no parcel can be sent be thi drone, so exception will be thrown.
-            if (parcels.Count == 0) throw new UnableToAssignParcelToTheDroneException(droneId, " there is no parcel that can be sent by this drone due to: too long distanses");
+                throw new UnableToAssignParcelToTheDroneException(droneId, " there is no parcel that can be sent by this drone due to: all the parcels are too heavy or too long distanses.");
 
             //if there is a parcel that matches the needings of the drone the rewwuaiered will happen.
             this.drones[droneIndex].Status = Enums.DroneStatuses.DELIVERY;
