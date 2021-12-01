@@ -599,7 +599,8 @@ namespace IBL
         {
             int index = this.drones.FindIndex(d => d.Id == droneId);
 
-            if (index == -1) throw new IBAL.BO.IdDontExistsException(droneId, "drone", new IDAL.DO.IdDontExistsException(droneId, "drone"));
+            if (index == -1) 
+                throw new IBAL.BO.IdDontExistsException(droneId, "drone", new IDAL.DO.IdDontExistsException(droneId, "drone"));
 
             return this.drones[index];
         }
@@ -611,21 +612,24 @@ namespace IBL
         /// <returns></returns>
         public IBAL.BO.Customer GetCustomer(int customerId)
         {
+            IDAL.DO.Customer dalCustomer;
+
             try
             {
-                IDAL.DO.Customer dalCustomer = dalObject.GetCustomer(customerId);
-                return new IBAL.BO.Customer()
-                {
-                    Id = dalCustomer.Id,
-                    Name = dalCustomer.Name,
-                    Phone = dalCustomer.Phone,
-                    Location = locationTranslate(dalCustomer.Location)
-                };
+                dalCustomer = dalObject.GetCustomer(customerId);
             }
             catch (IDAL.DO.IdDontExistsException e)
             {
                 throw new IBAL.BO.IdDontExistsException(customerId, "customer", e);
             }
+
+            return new IBAL.BO.Customer()
+            {
+                Id = dalCustomer.Id,
+                Name = dalCustomer.Name,
+                Phone = dalCustomer.Phone,
+                Location = locationTranslate(dalCustomer.Location)
+            };
         }
 
         /// <summary>
@@ -638,9 +642,23 @@ namespace IBL
             try
             {
                 IDAL.DO.Parcel dalParcel = dalObject.GetParcel(parcelId);
-                IBAL.BO.CoustomerForParcel sender = new CoustomerForParcel() { Id = dalParcel.SenderId, CustomerName = dalObject.GetCustomer(dalParcel.SenderId).Name };
-                IBAL.BO.CoustomerForParcel reciver = new CoustomerForParcel() { Id = dalParcel.TargetId, CustomerName = dalObject.GetCustomer(dalParcel.TargetId).Name };
-                IBAL.BO.DroneForParcel drone = new DroneForParcel() { Id = dalParcel.DroneId };
+                IBAL.BO.CoustomerForParcel sender = new CoustomerForParcel() 
+                { 
+                    Id = dalParcel.SenderId, 
+                    CustomerName = dalObject.GetCustomer(dalParcel.SenderId).Name
+                };
+
+                IBAL.BO.CoustomerForParcel reciver = new CoustomerForParcel()
+                {
+                    Id = dalParcel.TargetId,
+                    CustomerName = dalObject.GetCustomer(dalParcel.TargetId).Name
+                };
+
+                IBAL.BO.DroneForParcel drone = new DroneForParcel() 
+                { 
+                    Id = dalParcel.DroneId
+                };
+
                 return new IBAL.BO.Parcel()
                 {
                     Id = dalParcel.Id,
