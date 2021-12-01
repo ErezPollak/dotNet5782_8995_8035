@@ -485,24 +485,19 @@ namespace IBL
         {
             int droneIndex = this.drones.FindIndex(d => d.Id == droneId);
 
-            if (droneIndex == -1) throw new IBAL.BO.IdDontExistsException(droneId, "drone");
+            if (droneIndex == -1)
+                throw new IBAL.BO.IdDontExistsException(droneId, "drone");
 
             //chacks if the drone is free, and if not exception will be thrown.
-            if (this.drones[droneIndex].Status != Enums.DroneStatuses.FREE) throw new UnAbleToSendDroneToChargeException(" the drone is not free");
+            if (this.drones[droneIndex].Status != Enums.DroneStatuses.FREE)
+                throw new UnAbleToSendDroneToChargeException(" the drone is not free");
 
             //geting the maximum distance the drone can make according to the level of battary multiplied by the number of kilometers the drone can do for one precent do battary. 
             double maxDistance = this.drones[droneIndex].Battary * dalObject.ElectricityUse()[(int)this.drones[droneIndex].Weight + 1];
 
-            //returns all the stations that the drone has enough fuel to get to.
-            List<IDAL.DO.BaseStation> baseStations = dalObject.GetBaseStations(delegate (IDAL.DO.BaseStation b) { return distance(locationTranslate(b.Location), GetDrone(droneId).Location) <= maxDistance; }).ToList();
-
-            //sorting the stations according to the distance from the drone.
-            baseStations = baseStations.OrderBy(b => distance(locationTranslate(b.Location), GetDrone(droneId).Location)).ToList();
-
-            //gives the first station in the list that has free slots for charging.
-            //IDAL.DO.BaseStation baseStation = baseStations.First(b => b.ChargeSlots > 0);
-
-            baseStations.RemoveAll(b => b.ChargeSlots <= 0);
+            //returns all the stations that the drone has enough fuel to get to, ordered by the closest base station.
+            List<IDAL.DO.BaseStation> baseStations = dalObject.GetBaseStations(b => (distance(locationTranslate(b.Location), GetDrone(droneId).Location) <= maxDistance) && (b.ChargeSlots > 0))
+                .OrderBy(b => distance(locationTranslate(b.Location), GetDrone(droneId).Location)).ToList();
 
             //if there is no suitable station an exception will be thrown.
             if (baseStations.Count == 0) throw new UnAbleToSendDroneToChargeException(" there is no station that matches the needs of this drone");
