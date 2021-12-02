@@ -1,27 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace IBAL
+﻿namespace IBAL
 {
     namespace BO
     {
-        public class DroneForParcel
+        public record DroneForParcel
+        (
+            int Id = default,
+            int Battery = default,
+            Location CurrentLocation = default
+        )
         {
-            public int Id { get; set; }
-            public int Battary { get; set; }
-            public Location CorrentLocation{ get; set; }
-
-            public override string ToString()
-            {
-                return $"ID: {this.Id} " +
-                    $"battry: {this.Battary} " +
-                    $"location: {this.CorrentLocation}" +
-                    $"";
-            }
-
+            public override string ToString() =>
+                $"ID: {Id} " +
+                $"battery: {Battery} " +
+                $"location: {CurrentLocation}" +
+                $"";
         }
     }
 }

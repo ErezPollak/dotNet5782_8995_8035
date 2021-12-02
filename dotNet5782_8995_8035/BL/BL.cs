@@ -591,7 +591,7 @@ namespace IBL
             return droneCharges.ConvertAll(dc => new DroneInCharge()
             {
                 Id = dc.DroneId,
-                Battary = GetDrone(dc.DroneId).Battery
+                Battery = GetDrone(dc.DroneId).Battery
             });
         }
 
@@ -772,7 +772,7 @@ namespace IBL
                         Id = dalParcel.Id,
                         Priority = (IBAL.BO.Enums.Priorities) dalParcel.Priority,
                         SenderName = _dalObject.GetCustomer(dalParcel.SenderId).Name,
-                        ReciverName = _dalObject.GetCustomer(dalParcel.TargetId).Name,
+                        ReceiverName = _dalObject.GetCustomer(dalParcel.TargetId).Name,
                         Weight = (Enums.WeightCategories) dalParcel.Weight
                     })
                 .Where(dp => f(dp));

@@ -2,17 +2,16 @@
 {
     namespace BO
     {
-        public class CoustomerForParcel
+        public record CoustomerForParcel
+        (
+            int Id = default,
+            string CustomerName = default
+        )
         {
-            public int Id { get; set; }
-            public string CustomerName { get; set; }
-
-            public override string ToString()
-            {
-                return $"ID: {Id} " +
-                    $"customer name: {CustomerName} " +
-                    $"";
-            }
+            public override string ToString() =>
+                $"ID: {Id} " +
+                $"customer name: {CustomerName} " +
+                $"";
         }
     }
 }

@@ -2,24 +2,21 @@
 {
     namespace BO
     {
-        public class ParcelByCustomer
+        public record ParcelByCustomer
+        (
+            int Id = default,
+            Enums.WeightCategories Weight = default,
+            Enums.Priorities Priority = default,
+            Enums.ParcelStatus Status = default,
+            CoustomerForParcel SenderOrReceiver = default
+        )
         {
-            public int Id { get; set; }
-            public Enums.WeightCategories Weight { get; set; }
-            public Enums.Priorities Priority { get; set; }
-            public Enums.ParcelStatus Status { get; set; }
-            public CoustomerForParcel SenderOrReciver { get; set; }
-
-            public override string ToString()
-            {
-                return $"Weight: {Weight} " +
-                    $"Priority: {Priority} " +
-                    $"Status: {Status} " +
-                    $"SenderOrReciver: {SenderOrReciver} " +
-                    $"";
-            }
-
-
+            public override string ToString() =>
+                $"Weight: {Weight} " +
+                $"Priority: {Priority} " +
+                $"Status: {Status} " +
+                $"SenderOrReceiver: {SenderOrReceiver} " +
+                $"";
         }
     }
 }

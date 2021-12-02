@@ -2,26 +2,24 @@
 {
     namespace BO
     {
-        public class ParcelForList
+        public record ParcelForList
+        (
+            int Id = default,
+            string SenderName = default,
+            string ReceiverName = default,
+            Enums.WeightCategories Weight = default,
+            Enums.Priorities Priority = default,
+            Enums.ParcelStatus Status = default
+        )
         {
-            public int Id { get; set; }
-            public string SenderName { get; set; }
-            public string ReciverName { get; set; }
-            public Enums.WeightCategories Weight { get; set; }
-            public Enums.Priorities Priority { get; set; }
-            public Enums.ParcelStatus Status { get; set; }
-
-            public override string ToString()
-            {
-                return $"Id: {Id} " +
-                    $"SenderName: {SenderName} " +
-                    $"ReciverName: {ReciverName} " +
-                    $"Weight: {Weight} " +
-                    $"Priority: {Priority} " +
-                    $"Status: {Status} " +
-                    $"";
-            }
-
+            public override string ToString() =>
+                $"Id: {Id} " +
+                $"SenderName: {SenderName} " +
+                $"ReceiverName: {ReceiverName} " +
+                $"Weight: {Weight} " +
+                $"Priority: {Priority} " +
+                $"Status: {Status} " +
+                $"";
         }
     }
 }

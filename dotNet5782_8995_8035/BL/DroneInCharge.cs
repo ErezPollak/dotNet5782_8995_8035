@@ -2,17 +2,16 @@
 {
     namespace BO
     {
-        public class DroneInCharge
+        public record DroneInCharge
+        (
+            int Id = default,
+            double Battery = default
+        )
         {
-            public int Id { get; set; }
-            public double Battary { get; set; }
-
-            public override string ToString()
-            {
-                return $"Id: {Id} " +
-                    $"Battary: {Battary} " +
-                    $"";  
-            }
+            public override string ToString() =>
+                $"Id: {Id} " +
+                $"Battery: {Battery} " +
+                $"";
         }
     }
 }

@@ -2,32 +2,29 @@
 {
     namespace BO
     {
-        public class ParcelInDelivery
+        public record ParcelInDelivery
+        (
+            int Id = default,
+            Enums.ParcelStatus Status = default,
+            Enums.Priorities Priority = default,
+            Enums.WeightCategories Weight = default,
+            CoustomerForParcel Sender = default,
+            CoustomerForParcel Reciver = default,
+            Location PickupLocation = default,
+            Location DeliveringLocation = default,
+            double Distance = default
+        )
         {
-            public int Id { get; set; }
-            public Enums.ParcelStatus Status { get; set; }
-            public Enums.Priorities Priority { get; set; }
-            public Enums.WeightCategories Weight { get; set; }
-            public CoustomerForParcel Sender { get; set; }
-            public CoustomerForParcel Reciver { get; set; }
-            public Location PickupLockation { get; set; }
-            public Location DeliveringLockation { get; set; }
-            public double Distance { get; set; }
-
-            public override string ToString()
-            {
-                return $"Id: {Id} " +
-                   $"Status: {Status} " +
-                   $"Priority: {Priority} " +
-                   $"Weight: {Weight} " +
-                   $"Sender: {Sender} " +
-                   $"reciver: {Reciver} " +
-                   $"PickupLockation: {PickupLockation} " +
-                   $"Distance: {Distance} " +
-                   $"";
-            }
-
-
+            public override string ToString() =>
+                $"Id: {Id} " +
+                $"Status: {Status} " +
+                $"Priority: {Priority} " +
+                $"Weight: {Weight} " +
+                $"Sender: {Sender} " +
+                $"Receiver: {Reciver} " +
+                $"PickupLocation: {PickupLocation} " +
+                $"Distance: {Distance} " +
+                $"";
         }
     }
 }
