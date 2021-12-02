@@ -95,7 +95,7 @@ namespace DalObject
 
         public bool UpdateNameForADrone(int droneId, string model)
         {
-            int index = DataSource.drones.FindIndex(d => (d.Id == droneId));
+            int index = DataSource.drones.FindIndex(d => d.Id == droneId);
 
             if (index == -1) throw new IdDontExistsException(droneId, "drone");
 
@@ -111,7 +111,7 @@ namespace DalObject
         public bool UpdateBaseStation(int baseStationId, string name, int slots)
 
         {
-            int index = DataSource.baseStations.FindIndex(b => (b.Id == baseStationId));
+            int index = DataSource.baseStations.FindIndex(b => b.Id == baseStationId);
 
             if (index == -1) throw new IdDontExistsException(baseStationId, "baseStation");
 
@@ -446,7 +446,7 @@ namespace DalObject
 
         public int GetSerialNumber()
         {
-            return ++DataSource.Config.serialNumber;
+            return ++DataSource.Config.SerialNumber;
         }
     }
 }

@@ -8,7 +8,7 @@ namespace IBL
 {
     public class BL : IBL
     {
-        private readonly IDAL.IDal _dalObject = new DalObject.DalObject();
+        private readonly IDAL.IDal dalObject = new DalObject.DalObject();
 
         // for the electricity use of a free drone
         private double Free { get; }
@@ -26,7 +26,7 @@ namespace IBL
         private double ChargingSpeed { get; }
 
 
-        private readonly List<DroneForList> _drones = new();
+        private readonly List<DroneForList> drones = new();
 
         private static readonly Random Random = new();
 
@@ -36,7 +36,7 @@ namespace IBL
         /// </summary>
         public BL()
         {
-            double[] electricityUse = _dalObject.ElectricityUse();
+            double[] electricityUse = dalObject.ElectricityUse();
 
             Free = electricityUse[0];
             Light = electricityUse[1];
@@ -45,9 +45,9 @@ namespace IBL
             ChargingSpeed = electricityUse[4];
 
             //translates all the drones from the data level to 
-            foreach (IDAL.DO.Drone dalDrone in _dalObject.GetDrones(_ => true).ToList())
+            foreach (IDAL.DO.Drone dalDrone in dalObject.GetDrones(_ => true).ToList())
             {
-                _drones.Add(new DroneForList()
+                drones.Add(new DroneForList()
                 {
                     Id = dalDrone.Id,
                     Model = dalDrone.Model,
@@ -57,17 +57,17 @@ namespace IBL
             }
 
             //going through all the parcels that have a drone, and was not delivered.
-            foreach (IDAL.DO.Parcel parcel in _dalObject.GetParcels(parcel =>
+            foreach (IDAL.DO.Parcel parcel in dalObject.GetParcels(parcel =>
                 parcel.DroneId != -1 && parcel.AcceptedTime == null))
             {
                 //caculate the distance of the delivery.
                 double deliveryDistance = 0;
                 //caculating the distance between the sender of the parcel, and the reciver. 
-                deliveryDistance += Distance(LocationTranslate(_dalObject.GetCustomer(parcel.SenderId).Location),
-                    LocationTranslate(_dalObject.GetCustomer(parcel.TargetId).Location));
+                deliveryDistance += Distance(LocationTranslate(dalObject.GetCustomer(parcel.SenderId).Location),
+                    LocationTranslate(dalObject.GetCustomer(parcel.TargetId).Location));
                 //caculating the distance between the reciver of the parcel, and the clothest station to the reciver. 
-                deliveryDistance += Distance(LocationTranslate(_dalObject.GetCustomer(parcel.TargetId).Location),
-                    LocationTranslate(_dalObject.GetBaseStation(_dalObject.GetClosestStation(parcel.TargetId))
+                deliveryDistance += Distance(LocationTranslate(dalObject.GetCustomer(parcel.TargetId).Location),
+                    LocationTranslate(dalObject.GetBaseStation(dalObject.GetClosestStation(parcel.TargetId))
                         .Location));
 
                 double minimumValue;
@@ -81,28 +81,28 @@ namespace IBL
                 if (parcel.PickedUpTime == null)
                 {
                     //seting the location of the drone to be in the clothest station to the sender.
-                    GetDrone(parcel.DroneId).Location = LocationTranslate(_dalObject
-                        .GetBaseStation(_dalObject.GetClosestStation(parcel.SenderId)).Location);
+                    GetDrone(parcel.DroneId).Location = LocationTranslate(dalObject
+                        .GetBaseStation(dalObject.GetClosestStation(parcel.SenderId)).Location);
 
                     // caculating the distance between the base station to the sender.
                     deliveryDistance +=
                         Distance(
-                            LocationTranslate(_dalObject.GetBaseStation(_dalObject.GetClosestStation(parcel.SenderId))
-                                .Location), LocationTranslate(_dalObject.GetCustomer(parcel.SenderId).Location));
+                            LocationTranslate(dalObject.GetBaseStation(dalObject.GetClosestStation(parcel.SenderId))
+                                .Location), LocationTranslate(dalObject.GetCustomer(parcel.SenderId).Location));
 
                     // caculating the minimum precentage of batteary the drone needs in order to deliver the parcel and go to charge afterwards.
                     minimumValue = deliveryDistance /
-                                   (int) (_dalObject.ElectricityUse()[(int) GetDrone(parcel.DroneId).Weight + 1]);
+                                   (int) (dalObject.ElectricityUse()[(int) GetDrone(parcel.DroneId).Weight + 1]);
                 }
                 else // if the parcel was picked up.
                 {
                     //seting the location of the drone to be the location of the sender.
                     GetDrone(parcel.DroneId).Location =
-                        LocationTranslate(_dalObject.GetCustomer(parcel.SenderId).Location);
+                        LocationTranslate(dalObject.GetCustomer(parcel.SenderId).Location);
 
                     // caculating the minimum precentage of batteary the drone needs in order to deliver the parcel and go to charge afterwards.
                     minimumValue = deliveryDistance /
-                                   (int) (_dalObject.ElectricityUse()[(int) GetDrone(parcel.DroneId).Weight + 1]);
+                                   (int) (dalObject.ElectricityUse()[(int) GetDrone(parcel.DroneId).Weight + 1]);
                 }
 
                 //if the precentage is ok, the value of the battry is being randomiseied between the minimum value to one handred.
@@ -110,10 +110,10 @@ namespace IBL
             }
 
             //needed for the iteration.
-            List<IDAL.DO.Parcel> parcels = _dalObject.GetParcels(_ => true).ToList();
+            List<IDAL.DO.Parcel> parcels = dalObject.GetParcels(_ => true).ToList();
 
             //going through all the drones.
-            foreach (DroneForList drone in _drones)
+            foreach (DroneForList drone in drones)
             {
                 // if the drone wasn't changed in the last iteration, meaning that the status is either FREE or MAINTENANCE.
                 if (drone.Status == Enums.DroneStatuses.FREE)
@@ -122,17 +122,17 @@ namespace IBL
                     int index = Random.Next() % (parcels.Count);
 
                     //seting the drones location the drone to be in a target location of the randomisied parcel.
-                    drone.Location = LocationTranslate(_dalObject.GetCustomer(parcels[index].TargetId).Location);
+                    drone.Location = LocationTranslate(dalObject.GetCustomer(parcels[index].TargetId).Location);
 
                     //caculating the distance to the clothest station.
                     double deliveryDistance =
                         Distance(
-                            LocationTranslate(_dalObject
-                                .GetBaseStation(_dalObject.GetClosestStation(parcels[index].TargetId)).Location),
-                            LocationTranslate(_dalObject.GetCustomer(parcels[index].TargetId).Location));
+                            LocationTranslate(dalObject
+                                .GetBaseStation(dalObject.GetClosestStation(parcels[index].TargetId)).Location),
+                            LocationTranslate(dalObject.GetCustomer(parcels[index].TargetId).Location));
 
                     //caculating the battary consamption.
-                    double battayConcamption = deliveryDistance / _dalObject.ElectricityUse()[(int) drone.Weight + 1];
+                    double battayConcamption = deliveryDistance / dalObject.ElectricityUse()[(int) drone.Weight + 1];
 
                     //the there is not enough battary, exception will be thrown.
                     //if (battayConcamption > 100) throw new IBAL.BO.BL_ConstaractorException($"the drone needs {battayConcamption} battary in order to complete to delivery. ");
@@ -143,7 +143,7 @@ namespace IBL
                 else if (drone.Status == Enums.DroneStatuses.MAINTENANCE)
                 {
                     List<IDAL.DO.BaseStation> avalibleBaseStations =
-                        _dalObject.GetBaseStations(b => b.ChargeSlots > 0).ToList();
+                        dalObject.GetBaseStations(b => b.ChargeSlots > 0).ToList();
 
                     //random number of a station.
                     int stationNumber = Random.Next() % avalibleBaseStations.Count;
@@ -155,7 +155,7 @@ namespace IBL
                     drone.Battery = Random.Next() % 20;
 
                     //sending the drone to charge.
-                    _dalObject.ChargeDrone(stationNumber, drone.Id);
+                    dalObject.ChargeDrone(stationNumber, drone.Id);
                 }
             }
         } //end BL ctor
@@ -181,7 +181,7 @@ namespace IBL
 
             try
             {
-                return _dalObject.AddBaseStation(baseStation);
+                return dalObject.AddBaseStation(baseStation);
             }
             catch (Exception e)
             {
@@ -197,7 +197,7 @@ namespace IBL
         /// <returns>true if the adding eas successful</returns>
         public bool AddDrone(IBAL.BO.Drone newDrone)
         {
-            if (_drones.Exists(d => d.Id == newDrone.Id))
+            if (drones.Exists(d => d.Id == newDrone.Id))
             {
                 throw new IBAL.BO.IdAlreadyExistsException(newDrone.Id, "droen");
             }
@@ -233,7 +233,7 @@ namespace IBL
                 ParcelId = parcelId
             };
 
-            _drones.Add(balDrone);
+            drones.Add(balDrone);
 
             IDAL.DO.Drone dalDrone = new IDAL.DO.Drone()
             {
@@ -243,7 +243,7 @@ namespace IBL
             };
 
             //since we checked in the list there is no chance to have the same number of drone in the dal list.   
-            bool b = _dalObject.AddDrone(dalDrone);
+            bool b = dalObject.AddDrone(dalDrone);
 
             ChargeDrone(newDrone.Id);
 
@@ -268,7 +268,7 @@ namespace IBL
 
             try
             {
-                return _dalObject.AddCustumer(customer);
+                return dalObject.AddCustumer(customer);
             }
             catch (Exception e)
             {
@@ -300,7 +300,7 @@ namespace IBL
 
             try
             {
-                return _dalObject.AddParcel(dalParcel);
+                return dalObject.AddParcel(dalParcel);
             }
             catch (Exception e)
             {
@@ -324,7 +324,7 @@ namespace IBL
 
             try
             {
-                return _dalObject.UpdateNameForADrone(droneId, model);
+                return dalObject.UpdateNameForADrone(droneId, model);
             }
             catch (Exception e)
             {
@@ -344,7 +344,7 @@ namespace IBL
         {
             try
             {
-                return _dalObject.UpdateBaseStation(basStationId, name, slots);
+                return dalObject.UpdateBaseStation(basStationId, name, slots);
             }
             catch (Exception e)
             {
@@ -363,7 +363,7 @@ namespace IBL
         {
             try
             {
-                return _dalObject.UpdateCustomer(customerId, name, phone);
+                return dalObject.UpdateCustomer(customerId, name, phone);
             }
             catch (Exception e)
             {
@@ -380,7 +380,7 @@ namespace IBL
         public bool AssignParcelToADrone(int droneId)
         {
             //fining the index of the drone with that id.
-            int droneIndex = _drones.FindIndex(d => d.Id == droneId);
+            int droneIndex = drones.FindIndex(d => d.Id == droneId);
 
             //if the index is -1 it means that no such is id in the database so an exception will be thrown.
             if (droneIndex == -1)
@@ -389,22 +389,22 @@ namespace IBL
                         "drone")); //IBAL.BO.IdDontExistsException(droneId, "drone");
 
             //chacks if the drone is free, and if not exception will be thrown.
-            if (_drones[droneIndex].Status != Enums.DroneStatuses.FREE)
+            if (drones[droneIndex].Status != Enums.DroneStatuses.FREE)
                 throw new UnableToAssignParcelToTheDroneException(droneId, " the drone is not free");
 
             //importing all the parcels and sorting them aaccording to their praiority.
-            List<IDAL.DO.Parcel> parcels = _dalObject.GetParcels(p =>
-                    ((int) p.Weight <= (int) _drones[droneIndex].Weight)
-                    && (Distance(_drones[droneIndex].Location,
-                            LocationTranslate(_dalObject
+            List<IDAL.DO.Parcel> parcels = dalObject.GetParcels(p =>
+                    ((int) p.Weight <= (int) drones[droneIndex].Weight)
+                    && (Distance(drones[droneIndex].Location,
+                            LocationTranslate(dalObject
                                 .GetCustomer(p.SenderId)
                                 .Location)) /*adding the distance between the reciver to the base station*/
-                        >= _drones[droneIndex].Battery *
-                        _dalObject.ElectricityUse()[
-                            (int) _drones[droneIndex].Weight + 1]))
+                        >= drones[droneIndex].Battery *
+                        dalObject.ElectricityUse()[
+                            (int) drones[droneIndex].Weight + 1]))
                 .OrderByDescending(p => (int) p.Priority)
-                .ThenBy(p => Distance(_drones[droneIndex].Location,
-                    LocationTranslate(_dalObject.GetCustomer(p.SenderId).Location))).ToList();
+                .ThenBy(p => Distance(drones[droneIndex].Location,
+                    LocationTranslate(dalObject.GetCustomer(p.SenderId).Location))).ToList();
 
             //if no parcel left in the list after the removings it means that no parcel can be sent be thi drone, so exception will be thrown.
             if (parcels.Count == 0)
@@ -412,14 +412,14 @@ namespace IBL
                     " there is no parcel that can be sent by this drone due to: all the parcels are too heavy or too long distanses.");
 
             //if there is a parcel that matches the needings of the drone the rewwuaiered will happen.
-            _drones[droneIndex].Status = Enums.DroneStatuses.DELIVERY;
+            drones[droneIndex].Status = Enums.DroneStatuses.DELIVERY;
 
-            _drones[droneIndex].ParcelId = parcels.First().Id;
+            drones[droneIndex].ParcelId = parcels.First().Id;
 
             //calling to the function from the dal to make the changes in the data level.
             try
             {
-                return _dalObject.PickingUpParcel(parcels.First().Id, droneId);
+                return dalObject.PickingUpParcel(parcels.First().Id, droneId);
             }
             catch (Exception e)
             {
@@ -448,7 +448,7 @@ namespace IBL
 
             //battary update
             GetDrone(droneId).Battery -=
-                deliveryDistance / _dalObject.ElectricityUse()[(int) GetDrone(droneId).Weight + 1];
+                deliveryDistance / dalObject.ElectricityUse()[(int) GetDrone(droneId).Weight + 1];
 
             // location update
             GetDrone(droneId).Location = GetLocationOfCustomer(droneId, Enums.CustomerEnum.TARGET);
@@ -457,7 +457,7 @@ namespace IBL
             GetDrone(droneId).Status = Enums.DroneStatuses.FREE;
 
             //update the parcel from the dal.
-            return _dalObject.DeliveringParcel(GetDrone(droneId).ParcelId);
+            return dalObject.DeliveringParcel(GetDrone(droneId).ParcelId);
         }
 
         private IBAL.BO.Location GetLocationOfCustomer(int droneId, Enums.CustomerEnum typeOfCustomer)
@@ -465,11 +465,11 @@ namespace IBL
             switch (typeOfCustomer)
             {
                 case Enums.CustomerEnum.SENDER:
-                    return LocationTranslate(_dalObject
-                        .GetCustomer(_dalObject.GetParcel(GetDrone(droneId).ParcelId).SenderId).Location);
+                    return LocationTranslate(dalObject
+                        .GetCustomer(dalObject.GetParcel(GetDrone(droneId).ParcelId).SenderId).Location);
                 case Enums.CustomerEnum.TARGET:
-                    return LocationTranslate(_dalObject
-                        .GetCustomer(_dalObject.GetParcel(GetDrone(droneId).ParcelId).TargetId).Location);
+                    return LocationTranslate(dalObject
+                        .GetCustomer(dalObject.GetParcel(GetDrone(droneId).ParcelId).TargetId).Location);
                 default:
                     throw new Exception("type of cusomer is not CustomerEnum");
             }
@@ -482,21 +482,21 @@ namespace IBL
         /// <returns></returns>
         public bool ChargeDrone(int droneId)
         {
-            int droneIndex = _drones.FindIndex(d => d.Id == droneId);
+            int droneIndex = drones.FindIndex(d => d.Id == droneId);
 
             if (droneIndex == -1)
                 throw new IBAL.BO.IdDontExistsException(droneId, "drone");
 
             //chacks if the drone is free, and if not exception will be thrown.
-            if (_drones[droneIndex].Status != Enums.DroneStatuses.FREE)
+            if (drones[droneIndex].Status != Enums.DroneStatuses.FREE)
                 throw new UnAbleToSendDroneToChargeException(" the drone is not free");
 
             //geting the maximum distance the drone can make according to the level of battary multiplied by the number of kilometers the drone can do for one precent do battary. 
-            double maxDistance = _drones[droneIndex].Battery *
-                                 _dalObject.ElectricityUse()[(int) _drones[droneIndex].Weight + 1];
+            double maxDistance = drones[droneIndex].Battery *
+                                 dalObject.ElectricityUse()[(int) drones[droneIndex].Weight + 1];
 
             //returns all the stations that the drone has enough fuel to get to, ordered by the closest base station.
-            List<IDAL.DO.BaseStation> baseStations = _dalObject.GetBaseStations(b =>
+            List<IDAL.DO.BaseStation> baseStations = dalObject.GetBaseStations(b =>
                     (Distance(LocationTranslate(b.Location), GetDrone(droneId).Location) <= maxDistance) &&
                     (b.ChargeSlots > 0))
                 .OrderBy(b => Distance(LocationTranslate(b.Location), GetDrone(droneId).Location)).ToList();
@@ -511,18 +511,18 @@ namespace IBL
             /////drone updates//////
 
             //update the battary status.
-            _drones[droneIndex].Battery -=
+            drones[droneIndex].Battery -=
                 Distance(LocationTranslate(baseStation.Location), GetDrone(droneId).Location) /
-                _dalObject.ElectricityUse()[(int) _drones[droneIndex].Weight + 1];
+                dalObject.ElectricityUse()[(int) drones[droneIndex].Weight + 1];
 
             //update the localtion of the drone to be the locatin of the base station.
-            _drones[droneIndex].Location = LocationTranslate(baseStation.Location);
+            drones[droneIndex].Location = LocationTranslate(baseStation.Location);
 
             //updating the status of the drone.
-            _drones[droneIndex].Status = Enums.DroneStatuses.MAINTENANCE;
+            drones[droneIndex].Status = Enums.DroneStatuses.MAINTENANCE;
 
             //update the number of the charge slots and adding an element in the dal functions.
-            return _dalObject.ChargeDrone(baseStation.Id, droneId);
+            return dalObject.ChargeDrone(baseStation.Id, droneId);
         }
 
         /// <summary>
@@ -533,24 +533,24 @@ namespace IBL
         /// <returns></returns>
         public bool UnChargeDrone(int droneId, int minutes)
         {
-            int droneIndex = _drones.FindIndex(d => d.Id == droneId);
+            int droneIndex = drones.FindIndex(d => d.Id == droneId);
             if (droneIndex == -1) throw new IBAL.BO.IdDontExistsException(droneId, "drone");
 
             //chacks if the drone is free, and if not exception will be thrown.
-            if (_drones[droneIndex].Status != Enums.DroneStatuses.MAINTENANCE)
+            if (drones[droneIndex].Status != Enums.DroneStatuses.MAINTENANCE)
                 throw new UnAbleToReleaseDroneFromChargeException(droneId, "the drone is not in maintanance");
 
             //update the battary status.
-            _drones[droneIndex].Battery += minutes * _dalObject.ElectricityUse()[4];
-            if (_drones[droneIndex].Battery > 100)
+            drones[droneIndex].Battery += minutes * dalObject.ElectricityUse()[4];
+            if (drones[droneIndex].Battery > 100)
             {
-                _drones[droneIndex].Battery = 100;
+                drones[droneIndex].Battery = 100;
             }
 
             //updating the status of the drone.
-            _drones[droneIndex].Status = Enums.DroneStatuses.FREE;
+            drones[droneIndex].Status = Enums.DroneStatuses.FREE;
 
-            return _dalObject.UnChargeDrone(droneId);
+            return dalObject.UnChargeDrone(droneId);
         }
 
 
@@ -566,7 +566,7 @@ namespace IBL
             IDAL.DO.BaseStation dalBaseStation;
             try
             {
-                dalBaseStation = _dalObject.GetBaseStation(baseStationId);
+                dalBaseStation = dalObject.GetBaseStation(baseStationId);
             }
             catch (Exception e)
             {
@@ -574,7 +574,7 @@ namespace IBL
             }
 
             List<DroneInCharge> charges =
-                ChargeDroneToDroneInCharge(_dalObject.GetChargeDrones(d => d.StationId == dalBaseStation.Id).ToList());
+                ChargeDroneToDroneInCharge(dalObject.GetChargeDrones(d => d.StationId == dalBaseStation.Id).ToList());
 
             return new IBAL.BO.BaseStation()
             {
@@ -602,13 +602,13 @@ namespace IBL
         /// <returns></returns>
         public DroneForList GetDrone(int droneId)
         {
-            int index = _drones.FindIndex(d => d.Id == droneId);
+            int index = drones.FindIndex(d => d.Id == droneId);
 
             if (index == -1)
                 throw new IBAL.BO.IdDontExistsException(droneId, "drone",
                     new IDAL.DO.IdDontExistsException(droneId, "drone"));
 
-            return _drones[index];
+            return drones[index];
         }
 
         /// <summary>
@@ -622,7 +622,7 @@ namespace IBL
 
             try
             {
-                dalCustomer = _dalObject.GetCustomer(customerId);
+                dalCustomer = dalObject.GetCustomer(customerId);
             }
             catch (IDAL.DO.IdDontExistsException e)
             {
@@ -647,17 +647,17 @@ namespace IBL
         {
             try
             {
-                IDAL.DO.Parcel dalParcel = _dalObject.GetParcel(parcelId);
+                IDAL.DO.Parcel dalParcel = dalObject.GetParcel(parcelId);
                 CoustomerForParcel sender = new CoustomerForParcel()
                 {
                     Id = dalParcel.SenderId,
-                    CustomerName = _dalObject.GetCustomer(dalParcel.SenderId).Name
+                    CustomerName = dalObject.GetCustomer(dalParcel.SenderId).Name
                 };
 
                 CoustomerForParcel reciver = new CoustomerForParcel()
                 {
                     Id = dalParcel.TargetId,
-                    CustomerName = _dalObject.GetCustomer(dalParcel.TargetId).Name
+                    CustomerName = dalObject.GetCustomer(dalParcel.TargetId).Name
                 };
 
                 DroneForParcel drone = new DroneForParcel()
@@ -693,14 +693,14 @@ namespace IBL
         /// <returns></returns>
         public IEnumerable<BaseStationForList> GetBaseStations(Predicate<BaseStationForList> f)
         {
-            return _dalObject.GetBaseStations(_ => true)
+            return dalObject.GetBaseStations(_ => true)
                 .Select(db =>
                     new BaseStationForList()
                     {
                         Id = db.Id,
                         Name = db.Name,
                         FreeChargingSlots = db.ChargeSlots,
-                        TakenCharingSlots = _dalObject.GetChargeDrones(cd => cd.StationId == db.Id).Count()
+                        TakenCharingSlots = dalObject.GetChargeDrones(cd => cd.StationId == db.Id).Count()
                     })
                 .Where(bs => f(bs));
         }
@@ -714,7 +714,7 @@ namespace IBL
         {
             List<DroneForList> balDrones = new List<DroneForList>();
 
-            _drones.FindAll(d => f(d)).ForEach(d => balDrones.Add(new DroneForList()
+            drones.FindAll(d => f(d)).ForEach(d => balDrones.Add(new DroneForList()
             {
                 Id = d.Id,
                 Model = d.Model,
@@ -735,7 +735,7 @@ namespace IBL
         /// <returns></returns>
         public IEnumerable<CustomerForList> GetCustomers(Predicate<CustomerForList> f)
         {
-            return _dalObject.GetCustomers(_ => true)
+            return dalObject.GetCustomers(_ => true)
                 .Select(c =>
                     new CustomerForList()
                     {
@@ -743,16 +743,16 @@ namespace IBL
                         Name = c.Name,
                         Phone = c.Phone,
                         //caculating the number of parcels that were sent to this customer that were sent and deliverd. 
-                        SentToAndDeliverd = _dalObject.GetParcels(p =>
+                        SentToAndDeliverd = dalObject.GetParcels(p =>
                             p.TargetId == c.Id && p.PickedUpTime != null && p.DeliveryTime != null).Count(),
                         //caculating the number of parcels that were sent to this customer that were sent and not deliverd. 
-                        SentToAnDNotDelivered = _dalObject.GetParcels(p =>
+                        SentToAnDNotDelivered = dalObject.GetParcels(p =>
                             p.TargetId == c.Id && p.PickedUpTime != null && p.DeliveryTime == null).Count(),
                         //caculating the number of parcels that were sent from this customer that were sent and deliverd. 
-                        SentFromAndDeliverd = _dalObject.GetParcels(p =>
+                        SentFromAndDeliverd = dalObject.GetParcels(p =>
                             p.SenderId == c.Id && p.PickedUpTime != null && p.DeliveryTime != null).Count(),
                         //caculating the number of parcels that were sent from this customer that were sent and not deliverd. 
-                        SentFromAndNotDeliverd = _dalObject.GetParcels(p =>
+                        SentFromAndNotDeliverd = dalObject.GetParcels(p =>
                             p.SenderId == c.Id && p.PickedUpTime != null && p.DeliveryTime == null).Count(),
                     })
                 .Where(c => f(c));
@@ -765,14 +765,14 @@ namespace IBL
         /// <returns></returns>
         public IEnumerable<ParcelForList> GetPacels(Predicate<ParcelForList> f)
         {
-            return _dalObject.GetParcels(_ => true)
+            return dalObject.GetParcels(_ => true)
                 .Select(dalParcel =>
                     new ParcelForList()
                     {
                         Id = dalParcel.Id,
                         Priority = (IBAL.BO.Enums.Priorities) dalParcel.Priority,
-                        SenderName = _dalObject.GetCustomer(dalParcel.SenderId).Name,
-                        ReceiverName = _dalObject.GetCustomer(dalParcel.TargetId).Name,
+                        SenderName = dalObject.GetCustomer(dalParcel.SenderId).Name,
+                        ReceiverName = dalObject.GetCustomer(dalParcel.TargetId).Name,
                         Weight = (Enums.WeightCategories) dalParcel.Weight
                     })
                 .Where(dp => f(dp));
@@ -832,7 +832,7 @@ namespace IBL
         /// <returns></returns>
         public int GetNextSerialNumberForParcel()
         {
-            return _dalObject.GetSerialNumber();
+            return dalObject.GetSerialNumber();
         }
     } //END BL class
 } //end IBAL

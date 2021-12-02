@@ -21,16 +21,16 @@ namespace DalObject
 
     internal class DataSource
     {
-        internal static List<Drone> drones = new List<Drone>();
-        internal static List<BaseStation> baseStations = new List<BaseStation>();
-        internal static List<Customer> customers = new List<Customer>();
-        internal static List<Parcel> parcels = new List<Parcel>();
+        internal static readonly List<Drone> drones = new();
+        internal static readonly List<BaseStation> baseStations = new();
+        internal static readonly List<Customer> customers = new();
+        internal static readonly List<Parcel> parcels = new();
 
         //an data structure to contain all the charging of the drones.
-        internal static List<DroneCharge> droneCharges = new List<DroneCharge>();
+        internal static List<DroneCharge> droneCharges = new();
 
 
-        private static Random r = new Random();     // a static value for 
+        private static readonly Random Random = new(); 
 
         /// <summary>
         /// the function contains the information about the electricity use 
@@ -44,7 +44,7 @@ namespace DalObject
 
             internal static double ChargingSpeed;//for the speed of the charge. precentage for hour.
 
-            internal static int serialNumber = 1000;
+            internal static int SerialNumber = 1000;
         }
 
         /// <summary>
@@ -60,11 +60,11 @@ namespace DalObject
         {
 
             //initilize values of the config function.
-            Config.Free = r.NextDouble() * 100 + 50;
-            Config.Light = Config.Free - r.NextDouble() * 30;
-            Config.Middel = Config.Light - r.NextDouble() * 30;
-            Config.Heavy = Config.Middel - r.NextDouble() * 30;
-            Config.ChargingSpeed = r.NextDouble() * 100 + 50;
+            Config.Free = Random.NextDouble() * 100 + 50;
+            Config.Light = Config.Free - Random.NextDouble() * 30;
+            Config.Middel = Config.Light - Random.NextDouble() * 30;
+            Config.Heavy = Config.Middel - Random.NextDouble() * 30;
+            Config.ChargingSpeed = Random.NextDouble() * 100 + 50;
 
             //randomal values for base stations.
             for (int i = 0; i < 2; i++)
@@ -75,11 +75,11 @@ namespace DalObject
                     Name = i.ToString(),
                     Location = new Location
                     {
-                        Lattitude = r.NextDouble() * 360 - 180,   // randomal values from -180 to 180 in order to represent a real coordinated location.
-                        Longitude = r.NextDouble() * 180 - 90,   // randomal values from -90 to 90 in order to represent a real coordinated location.
+                        Lattitude = Random.NextDouble() * 360 - 180,   // randomal values from -180 to 180 in order to represent a real coordinated location.
+                        Longitude = Random.NextDouble() * 180 - 90,   // randomal values from -90 to 90 in order to represent a real coordinated location.
                     },
 
-                    ChargeSlots = r.Next() % 5 + 2
+                    ChargeSlots = Random.Next() % 5 + 2
                 };
                 //adding the base station to the list.
                 baseStations.Add(baseStation);
@@ -91,8 +91,8 @@ namespace DalObject
                 Drone drone = new Drone()
                 {
                     Id = i,
-                    Model = (char)(r.Next() % 26 + 65) + "" + (char)(r.Next() % 26 + 65) + (r.Next() % 100000).ToString(),
-                    MaxWeight = (WeightCategories)(r.Next() % 3),
+                    Model = (char)(Random.Next() % 26 + 65) + "" + (char)(Random.Next() % 26 + 65) + Random.Next() % 100000,
+                    MaxWeight = (WeightCategories)(Random.Next() % 3),
                     
                 };
                 drones.Add(drone);
@@ -105,13 +105,13 @@ namespace DalObject
                 Customer customer = new Customer()
                 {
                     Id = i,
-                    Name = (char)(r.Next() % 26 + 65) + " , " + (char)(r.Next() % 26 + 65),
-                    Phone = "05" + (r.Next() % 10).ToString() + "-" + (r.Next() % 1000000).ToString(),
+                    Name = (char)(Random.Next() % 26 + 65) + " , " + (char)(Random.Next() % 26 + 65),
+                    Phone = "05" + Random.Next() % 10 + "-" + Random.Next() % 1000000,
 
                     Location = new Location
                     {
-                        Lattitude = r.NextDouble() * 360 - 180,   // randomal values from -180 to 180 in order to represent a real coordinated location.
-                        Longitude = r.NextDouble() * 180 - 90,   // randomal values from -90 to 90 in order to represent a real coordinated location.
+                        Lattitude = Random.NextDouble() * 360 - 180,   // randomal values from -180 to 180 in order to represent a real coordinated location.
+                        Longitude = Random.NextDouble() * 180 - 90,   // randomal values from -90 to 90 in order to represent a real coordinated location.
                     },
                 };
 
@@ -125,12 +125,12 @@ namespace DalObject
                 Parcel parcel = new Parcel()
                 {
                     Id = i,
-                    SenderId = customers[r.Next() % (customers.Count)].Id, // random values from the avalible customers.
-                    TargetId = customers[r.Next() % (customers.Count)].Id, // random values from the avalible customers.
-                    Weight = (WeightCategories)(r.Next() % 3),
-                    Priority = (Priorities)(r.Next() % 3),
+                    SenderId = customers[Random.Next() % customers.Count].Id, // random values from the avalible customers.
+                    TargetId = customers[Random.Next() % customers.Count].Id, // random values from the avalible customers.
+                    Weight = (WeightCategories)(Random.Next() % 3),
+                    Priority = (Priorities)(Random.Next() % 3),
                     DroneId = 0,                                   //initileized to not have any drone, the drone number will be updated in the dalobject class.
-                    RequestedTime = pickingBiggerDate(DateTime.Now),  // initilesed to be the time of the initialization.
+                    RequestedTime = PickingBiggerDate(DateTime.Now),  // initilesed to be the time of the initialization.
                     PickedUpTime = null,                        //initilesed for now, will change in  DalObject class, when order is updated to be picked up.
                     AcceptedTime = null
                 };
@@ -143,20 +143,20 @@ namespace DalObject
             for (int index = 0; index < parcels.Count; index++)
             {
                 Parcel p = parcels[index];
-                p.DeliveryTime = pickingBiggerDate(p.RequestedTime);
+                p.DeliveryTime = PickingBiggerDate(p.RequestedTime);
                 parcels[index] = p;
                 ++index;
             }
         }
 
         //the function recives a date, and randing another while making sure that the randomal date is after the given one.
-        private static DateTime pickingBiggerDate(DateTime? d)
+        private static DateTime PickingBiggerDate(DateTime? d)
         {
             DateTime newD;
 
             do
             {
-                newD = new DateTime(r.Next() % 4 + 2020, r.Next() % 5 + 1, r.Next() % 5 + 1, r.Next() % 24, r.Next() % 60, r.Next() % 60);
+                newD = new DateTime(Random.Next() % 4 + 2020, Random.Next() % 5 + 1, Random.Next() % 5 + 1, Random.Next() % 24, Random.Next() % 60, Random.Next() % 60);
             } while (newD < d);
 
             return newD;
