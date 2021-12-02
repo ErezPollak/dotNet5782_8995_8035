@@ -4,17 +4,11 @@
 //                   Mordehay Cohen 206958035
 
 
-
 //the program contains a struct class that represents a parcel.
 //the program contains the properties and a tostring function.
 
 
-
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IDAL
 {
@@ -39,15 +33,13 @@ namespace IDAL
             /// <returns></returns>
             public override string ToString()
             {
-
-                ///the function returns the current place of the item's properties.///
+                //the function returns the current place of the item's properties.///
 
                 return $"Parcel: id: {Id} , senderld: {SenderId} , targetld : {TargetId} " +
-                    $", weight: {Weight}, priority: {Priority},  droneld: {DroneId}, " +
-                    $"requested: {RequestedTime}, scheduled: {DeliveryTime},delivered: {AcceptedTime},  " +
-                    $"pickedUp: {PickedUpTime}\n";
+                       $", weight: {Weight}, priority: {Priority},  droneld: {DroneId}, " +
+                       $"requested: {RequestedTime}, scheduled: {DeliveryTime},delivered: {AcceptedTime},  " +
+                       $"pickedUp: {PickedUpTime}\n";
             }
-
         }
     }
 }

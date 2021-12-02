@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static IBAL.BO.Enums;
-
-namespace IBAL
+﻿namespace IBAL
 {
     namespace BO
     {
@@ -15,8 +8,8 @@ namespace IBAL
             public string Model { get; set; }
             public Enums.WeightCategories MaxWeight { get; set; }
             public double Battery { get; set; }
-            public IBAL.BO.Enums.DroneStatuses Status { get; set; }
-            public IBAL.BO.ParcelInDelivery ParcelInDelivery { get; set; }
+            public Enums.DroneStatuses Status { get; set; }
+            public ParcelInDelivery ParcelInDelivery { get; set; }
             public Location Location { get; set; }
 
             /// <summary>
@@ -25,13 +18,13 @@ namespace IBAL
             /// <returns></returns>
             public override string ToString()
             {
-                return $"ID: {this.Id} \n" +
-                    $"Model: {this.Model} \n" +
-                    $"max Weight: {this.MaxWeight} \n" +
-                    $"status: {this.Status}\n" +
-                    $"battary: {this.Battery} \n" +
-                    $"parcel in delivery: {this.ParcelInDelivery} \n" +
-                    $"locstion: {this.Location} \n" +
+                return $"ID: {Id} \n" +
+                    $"Model: {Model} \n" +
+                    $"max Weight: {MaxWeight} \n" +
+                    $"status: {Status}\n" +
+                    $"battery: {Battery} \n" +
+                    $"parcel in delivery: {ParcelInDelivery} \n" +
+                    $"location: {Location} \n" +
                     $"";
             }
         }

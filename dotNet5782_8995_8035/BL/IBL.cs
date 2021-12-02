@@ -1,9 +1,5 @@
-﻿using IBAL.BO;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IBL
 {
@@ -20,8 +16,8 @@ namespace IBL
         ////***update options***/////
 
         public bool UpdateNameForADrone(int droneId, string model);
-        public bool UpdateBaseStation(int basStationID, string name, int slots);
-        public bool UpdateCustomer(int customerID, string name, string phone);
+        public bool UpdateBaseStation(int basStationId, string name, int slots);
+        public bool UpdateCustomer(int customerId, string name, string phone);
         public bool AssignParcelToADrone(int droneId);
         public bool DeliveringParcelFromADrone(int droneId);
         public bool ChargeDrone(int droneId);

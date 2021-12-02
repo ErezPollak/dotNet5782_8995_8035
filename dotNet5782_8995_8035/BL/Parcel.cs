@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IBAL
 {
@@ -11,11 +7,11 @@ namespace IBAL
         public class Parcel
         {
             public int Id { get; set; }
-            public IBAL.BO.CoustomerForParcel Sender { get; set; }
-            public IBAL.BO.CoustomerForParcel Reciver { get; set; }
-            public IBAL.BO.Enums.WeightCategories Weight { get; set; }
-            public IBAL.BO.Enums.Priorities Priority { get; set; }
-            public IBAL.BO.DroneForParcel Drone { get; set; }
+            public CoustomerForParcel Sender { get; set; }
+            public CoustomerForParcel Reciver { get; set; }
+            public Enums.WeightCategories Weight { get; set; }
+            public Enums.Priorities Priority { get; set; }
+            public DroneForParcel Drone { get; set; }
             public DateTime? RequestedTime { get; set; } // time of request
             public DateTime? AcceptedTime { get; set; } //
             public DateTime? PickupTime { get; set; }
@@ -24,16 +20,16 @@ namespace IBAL
 
             public override string ToString()
             {
-                return $"Id: {this.Id} " +
-                    $"Sender: {this.Sender} " +
-                    $"Reciver: {this.Reciver} " +
-                    $"Weight: {this.Weight} " +
-                    $"Priority: {this.Priority} " +
-                    $"Drone: {this.Drone} " +
-                    $"CreationTime: {this.RequestedTime} " +
-                    $"AssigningTime: {this.AcceptedTime} " +
-                    $"PickupTime: {this.PickupTime} " +
-                    $"DeliveringTime: {this.DeliveringTime} " +
+                return $"Id: {Id} " +
+                    $"Sender: {Sender} " +
+                    $"Reciver: {Reciver} " +
+                    $"Weight: {Weight} " +
+                    $"Priority: {Priority} " +
+                    $"Drone: {Drone} " +
+                    $"CreationTime: {RequestedTime} " +
+                    $"AssigningTime: {AcceptedTime} " +
+                    $"PickupTime: {PickupTime} " +
+                    $"DeliveringTime: {DeliveringTime} " +
                     $"";
             }
         }

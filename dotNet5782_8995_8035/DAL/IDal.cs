@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IDAL
 {
@@ -11,10 +8,10 @@ namespace IDAL
 
         ////***adding options***/////
 
-        public bool AddBaseStation(IDAL.DO.BaseStation baseStation);
-        public bool AddDrone(IDAL.DO.Drone drone);
-        public bool AddCustumer(IDAL.DO.Customer customer);
-        public bool AddParcel(IDAL.DO.Parcel parcel);
+        public bool AddBaseStation(DO.BaseStation baseStation);
+        public bool AddDrone(DO.Drone drone);
+        public bool AddCustumer(DO.Customer customer);
+        public bool AddParcel(DO.Parcel parcel);
 
 
 
@@ -32,26 +29,26 @@ namespace IDAL
         ////***show options***/////
 
 
-        public IDAL.DO.BaseStation GetBaseStation(int baseStationId);
-        public IDAL.DO.Drone GetDrone(int droneId);
-        public IDAL.DO.Customer GetCustomer(int customerId);
-        public IDAL.DO.Parcel GetParcel(int parcelId);
+        public DO.BaseStation GetBaseStation(int baseStationId);
+        public DO.Drone GetDrone(int droneId);
+        public DO.Customer GetCustomer(int customerId);
+        public DO.Parcel GetParcel(int parcelId);
 
 
 
         ////***get Lists***////
 
-        public IEnumerable<IDAL.DO.BaseStation> GetBaseStations(Predicate<IDAL.DO.BaseStation> f);
-        public IEnumerable<IDAL.DO.Drone> GetDrones(Predicate<IDAL.DO.Drone> f);
-        public IEnumerable<IDAL.DO.Customer> GetCustomers(Predicate<IDAL.DO.Customer> f);
-        public IEnumerable<IDAL.DO.Parcel> GetParcels(Predicate<IDAL.DO.Parcel> f);
+        public IEnumerable<DO.BaseStation> GetBaseStations(Predicate<DO.BaseStation> f);
+        public IEnumerable<DO.Drone> GetDrones(Predicate<DO.Drone> f);
+        public IEnumerable<DO.Customer> GetCustomers(Predicate<DO.Customer> f);
+        public IEnumerable<DO.Parcel> GetParcels(Predicate<DO.Parcel> f);
         //public IEnumerable<IDAL.DO.Parcel> GetParcelToDrone();
         //public IEnumerable<IDAL.DO.BaseStation> GetFreeStations();
-        public IEnumerable<IDAL.DO.DroneCharge> GetChargeDrones(Predicate<IDAL.DO.DroneCharge> f);
+        public IEnumerable<DO.DroneCharge> GetChargeDrones(Predicate<DO.DroneCharge> f);
 
 
         public double[] ElectricityUse();
-        public int GetClothestStation(int id);
+        public int GetClosestStation(int id);
         public int GetBaseStationId(int index);
         //public IEnumerable<IDAL.DO.Parcel> GetProvidedParcels();
 

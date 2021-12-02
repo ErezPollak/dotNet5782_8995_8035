@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace IBAL
+﻿namespace IBAL
 {
     namespace BO
     {
@@ -15,8 +9,8 @@ namespace IBAL
 
             public override string ToString()
             {
-                return $"Id: {this.Id} " +
-                    $"Battary: {this.Battary} " +
+                return $"Id: {Id} " +
+                    $"Battary: {Battary} " +
                     $"";  
             }
         }

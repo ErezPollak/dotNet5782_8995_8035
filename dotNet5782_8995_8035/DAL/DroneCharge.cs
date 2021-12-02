@@ -4,16 +4,9 @@
 //                   Mordehay Cohen 206958035
 
 
-
 //the program contains a struct class that represents a connection between a drone and a base station.
 //the program contains the properties and a tostring function.
 
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IDAL
 {
@@ -30,12 +23,10 @@ namespace IDAL
             /// <returns></returns>
             public override string ToString()
             {
-
-                ///the function returns the current place of the item's properties.///
+                //the function returns the current place of the item's properties.///
 
                 return $"DroneCharge: droneld: {DroneId} , stationled {StationId}\n";
             }
-
         }
     }
 }

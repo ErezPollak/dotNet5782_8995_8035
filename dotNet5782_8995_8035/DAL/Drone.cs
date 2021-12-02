@@ -8,12 +8,6 @@
 //the program contains a struct class that represents a drone.
 //the program contains the properties and a tostring function.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace IDAL
 {
     namespace DO

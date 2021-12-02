@@ -7,7 +7,6 @@
 
 //the program contains a struct that represents a base station.
 //the program contains the properties and a tostring function.
-using System;
 
 namespace IDAL
 {
@@ -18,7 +17,7 @@ namespace IDAL
            
             public int Id { get; set; }
             public string Name { get; set; }
-            public IDAL.DO.Location Location { get; set; }
+            public Location Location { get; set; }
             public int ChargeSlots { get; set; }
 
             /// <summary>
@@ -28,13 +27,13 @@ namespace IDAL
             public override string ToString()
             {
 
-                ///the function returns the current place of the item's properties.///
+                //the function returns the current place of the item's properties.//
 
                 return $"Base Station:" +
-                   $" ID: {this.Id}, " +
-                   $"Name: {this.Name}, " +
+                   $" ID: {Id}, " +
+                   $"Name: {Name}, " +
                    $"longitude: {Location}" +
-                   $"chargeslotes: {this.ChargeSlots}\n";
+                   $"chargeslotes: {ChargeSlots}\n";
             }
 
         }

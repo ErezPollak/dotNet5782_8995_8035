@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace IBAL
+﻿namespace IBAL
 {
     namespace BO
     {
@@ -16,8 +10,8 @@ namespace IBAL
             public override string ToString()
             {
                 return
-                   $"longitude: {(int)(this.Longitude)}° {(int)((this.Longitude - (int)(this.Longitude)) * 60)}' {((this.Longitude - (int)(this.Longitude)) * 60 - (int)((this.Longitude - (int)(this.Longitude)) * 60)) * 60}'' S ," +
-                   $" lattitude: {(int)(this.Latitude)}° {(int)((this.Latitude - (int)(this.Latitude)) * 60)}' {((this.Latitude - (int)(this.Latitude)) * 60 - (int)((this.Latitude - (int)(this.Latitude)) * 60)) * 60}'' H ,";
+                   $"longitude: {(int)(Longitude)}° {(int)((Longitude - (int)(Longitude)) * 60)}' {((Longitude - (int)(Longitude)) * 60 - (int)((Longitude - (int)(Longitude)) * 60)) * 60}'' S ," +
+                   $" lattitude: {(int)(Latitude)}° {(int)((Latitude - (int)(Latitude)) * 60)}' {((Latitude - (int)(Latitude)) * 60 - (int)((Latitude - (int)(Latitude)) * 60)) * 60}'' H ,";
             }
         }
     }

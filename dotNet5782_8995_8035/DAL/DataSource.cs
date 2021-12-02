@@ -14,9 +14,6 @@
 using IDAL.DO;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 namespace DalObject
@@ -24,13 +21,13 @@ namespace DalObject
 
     internal class DataSource
     {
-        internal static List<IDAL.DO.Drone> drones = new List<IDAL.DO.Drone>();
-        internal static List<IDAL.DO.BaseStation> baseStations = new List<IDAL.DO.BaseStation>();
-        internal static List<IDAL.DO.Customer> customers = new List<IDAL.DO.Customer>();
-        internal static List<IDAL.DO.Parcel> parcels = new List<IDAL.DO.Parcel>();
+        internal static List<Drone> drones = new List<Drone>();
+        internal static List<BaseStation> baseStations = new List<BaseStation>();
+        internal static List<Customer> customers = new List<Customer>();
+        internal static List<Parcel> parcels = new List<Parcel>();
 
         //an data structure to contain all the charging of the drones.
-        internal static List<IDAL.DO.DroneCharge> droneCharges = new List<IDAL.DO.DroneCharge>();
+        internal static List<DroneCharge> droneCharges = new List<DroneCharge>();
 
 
         private static Random r = new Random();     // a static value for 
@@ -72,7 +69,7 @@ namespace DalObject
             //randomal values for base stations.
             for (int i = 0; i < 2; i++)
             {
-                IDAL.DO.BaseStation baseStation = new IDAL.DO.BaseStation()
+                BaseStation baseStation = new BaseStation()
                 {
                     Id = i,
                     Name = i.ToString(),
@@ -91,7 +88,7 @@ namespace DalObject
             //randomal values for drones.
             for (int i = 0; i < 5; i++)
             {
-                IDAL.DO.Drone drone = new IDAL.DO.Drone()
+                Drone drone = new Drone()
                 {
                     Id = i,
                     Model = (char)(r.Next() % 26 + 65) + "" + (char)(r.Next() % 26 + 65) + (r.Next() % 100000).ToString(),
@@ -105,7 +102,7 @@ namespace DalObject
             //randomal values for customers.
             for (int i = 0; i < 10; i++)
             {
-                IDAL.DO.Customer customer = new IDAL.DO.Customer()
+                Customer customer = new Customer()
                 {
                     Id = i,
                     Name = (char)(r.Next() % 26 + 65) + " , " + (char)(r.Next() % 26 + 65),
@@ -125,7 +122,7 @@ namespace DalObject
             //randomal values for parcels.
             for (int i = 0; i < 10; i++)
             {
-                IDAL.DO.Parcel parcel = new IDAL.DO.Parcel()
+                Parcel parcel = new Parcel()
                 {
                     Id = i,
                     SenderId = customers[r.Next() % (customers.Count)].Id, // random values from the avalible customers.
@@ -143,11 +140,11 @@ namespace DalObject
             }
 
             //initilazing the "scaduald" date to be after the "reqested" date. by the function below.
-            for (int index = 0; index < DataSource.parcels.Count; index++)
+            for (int index = 0; index < parcels.Count; index++)
             {
-                IDAL.DO.Parcel p = DataSource.parcels[index];
+                Parcel p = parcels[index];
                 p.DeliveryTime = pickingBiggerDate(p.RequestedTime);
-                DataSource.parcels[index] = p;
+                parcels[index] = p;
                 ++index;
             }
         }

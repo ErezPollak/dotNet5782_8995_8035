@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IDAL
 {
@@ -16,7 +12,7 @@ namespace IDAL
         public class IdAlreadyExistsException : Exception
         {
            
-            public IdAlreadyExistsException() : base() 
+            public IdAlreadyExistsException()
             {
             }
             
@@ -49,7 +45,7 @@ namespace IDAL
         public class IdDontExistsException : Exception
         {
          
-            public IdDontExistsException() : base()
+            public IdDontExistsException()
             {
             }
 

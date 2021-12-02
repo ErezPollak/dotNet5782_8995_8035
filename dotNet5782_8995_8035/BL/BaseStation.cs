@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace IBAL
 {
@@ -12,9 +8,9 @@ namespace IBAL
         {
             public int Id { get; set; }
             public string Name { get; set; }
-            public IBAL.BO.Location Location { get; set; }
+            public Location Location { get; set; }
             public int ChargeSlots { get; set; }
-            public List<IBAL.BO.DroneInCharge> ChargingDrones { get; set; }
+            public List<DroneInCharge> ChargingDrones { get; set; }
 
             /// <summary>
             /// the function prints all the props of the struct.
@@ -23,12 +19,12 @@ namespace IBAL
             public override string ToString()
             {
                 string str = $"Base Station: " +
-                    $"ID: {this.Id}. \n" +
-                    $"Name: {this.Name}. \n" +
-                    $"Location: {this.Location}. \n" +
-                    $"ChargeSlots: {this.ChargeSlots}. \n" +
+                    $"ID: {Id}. \n" +
+                    $"Name: {Name}. \n" +
+                    $"Location: {Location}. \n" +
+                    $"ChargeSlots: {ChargeSlots}. \n" +
                     $"drones: {ChargingDrones.Count} \n";
-                    this.ChargingDrones.ForEach(cd => str += cd.ToString());
+                    ChargingDrones.ForEach(cd => str += cd.ToString());
 
                 return str;
             

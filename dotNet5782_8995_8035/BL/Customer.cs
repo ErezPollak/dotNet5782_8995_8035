@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace IBAL
 {
@@ -13,9 +9,9 @@ namespace IBAL
             public int Id { get; set; }
             public string Name { get; set; }
             public string Phone { get; set; }
-            public IBAL.BO.Location Location { get; set; }
-            public List<IBAL.BO.ParcelByCustomer> fromCustomer  { get; set; }
-            public List<IBAL.BO.ParcelByCustomer> ToCustomer { get; set; }
+            public Location Location { get; set; }
+            private List<ParcelByCustomer> FromCustomer  { get; set; }
+            private List<ParcelByCustomer> ToCustomer { get; set; }
 
 
             /// <summary>
@@ -28,10 +24,10 @@ namespace IBAL
                 return $"Customer: " +
                     $"id: {Id} , " +
                     $"name: {Name} , " +
-                    $"phone : {Phone } , " +
-                    $"location: {Location.ToString()} \n" +
-                    $"the paecels that this customer got: {this.fromCustomer} \n" +
-                    $"the parcels that this customer sent: {this.ToCustomer}" +
+                    $"phone : {Phone} , " +
+                    $"location: {Location} \n" +
+                    $"the parcels that this customer got: {FromCustomer} \n" +
+                    $"the parcels that this customer sent: {ToCustomer}" +
                     $"";
 
             }
