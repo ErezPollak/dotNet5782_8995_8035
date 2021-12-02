@@ -9,7 +9,7 @@
             Enums.Priorities Priority = default,
             Enums.WeightCategories Weight = default,
             CoustomerForParcel Sender = default,
-            CoustomerForParcel Reciver = default,
+            CoustomerForParcel Receiver = default,
             Location PickupLocation = default,
             Location DeliveringLocation = default,
             double Distance = default
@@ -21,7 +21,7 @@
                 $"Priority: {Priority} " +
                 $"Weight: {Weight} " +
                 $"Sender: {Sender} " +
-                $"Receiver: {Reciver} " +
+                $"Receiver: {Receiver} " +
                 $"PickupLocation: {PickupLocation} " +
                 $"Distance: {Distance} " +
                 $"";
