@@ -77,7 +77,7 @@ namespace PL
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            AddDroneWindow addDroneWindow = new AddDroneWindow(bl);
+            AddDroneWindow addDroneWindow = new AddDroneWindow(bl , this);
             addDroneWindow.Show();
         }
     }
