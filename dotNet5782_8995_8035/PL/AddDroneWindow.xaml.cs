@@ -49,16 +49,19 @@ namespace PL
             {
                 if (droneBL.AddDrone(newDrone))
                 {
-
                     MessageBox.Show("drone added seccussfully");
 
                     string whight = null , status = null;
 
-                    if (listOfDronesViewWindow.WeightSelecter.SelectedItem != null) whight = listOfDronesViewWindow.WeightSelecter.SelectedItem.ToString();
+                    if (listOfDronesViewWindow.WeightSelecter.SelectedItem != null) 
+                        whight = listOfDronesViewWindow.WeightSelecter.SelectedItem.ToString();
 
-                    if (listOfDronesViewWindow.StatusSelector.SelectedItem != null) status = listOfDronesViewWindow.StatusSelector.SelectedItem.ToString();
+                    if (listOfDronesViewWindow.StatusSelector.SelectedItem != null) 
+                        status = listOfDronesViewWindow.StatusSelector.SelectedItem.ToString();
                     
-                    listOfDronesViewWindow.ListOfDronesView.ItemsSource = droneBL.GetDrones(d => (d.Weight.ToString() == whight || whight == "Show all" || whight == null) && (d.Status.ToString() == status || status == "Show all" || status == null));
+                    listOfDronesViewWindow.ListOfDronesView.ItemsSource = droneBL.GetDrones(d =>
+                    (d.Weight.ToString() == whight || whight == "Show all" || whight == null) && 
+                    (d.Status.ToString() == status || status == "Show all" || status == null));
                 
                     Close();
 
