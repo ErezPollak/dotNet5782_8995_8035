@@ -51,7 +51,7 @@ namespace PL
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            AddDroneWindow addDroneWindow = new AddDroneWindow(bl , this);
+            DroneWindow addDroneWindow = new DroneWindow(bl , this);
             addDroneWindow.Show();
         }
 
@@ -69,6 +69,14 @@ namespace PL
             ListOfDronesView.ItemsSource = bl.GetDrones(d =>
                     (d.Weight.ToString() == whight || whight == "Show All" || whight == null) &&
                     (d.Status.ToString() == status || status == "Show All" || status == null));
+
+        }
+
+        private void ClickedItem(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            MessageBox.Show(ListOfDronesView.SelectedItem.ToString());
+
+            DroneWindow droneWindow = new DroneWindow(bl, this, (IBAL.BO.Drone)ListOfDronesView.SelectedItem);
 
         }
     }

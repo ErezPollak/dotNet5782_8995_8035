@@ -5,16 +5,16 @@ using System.Windows.Media;
 namespace PL
 {
     /// <summary>
-    /// Interaction logic for AddDroneWindow.xaml
+    /// Interaction logic for DroneWindow.xaml
     /// </summary>
-    public partial class AddDroneWindow : Window
+    public partial class DroneWindow : Window
     {
         Random r;
         IBL.IBL droneBL;
 
         ListOfDronesViewWindow listOfDronesViewWindow;
 
-        public AddDroneWindow(IBL.IBL bl , ListOfDronesViewWindow listOfDronesViewWindow)
+        public DroneWindow(IBL.IBL bl , ListOfDronesViewWindow listOfDronesViewWindow)
         {
             r = new Random();
 
@@ -25,6 +25,16 @@ namespace PL
             droneBL = bl;
 
             Weight.ItemsSource = Enum.GetValues(typeof(IBAL.BO.Enums.WeightCategories));
+
+        }
+
+        public DroneWindow(IBL.IBL bl, ListOfDronesViewWindow listOfDronesViewWindow , IBAL.BO.Drone drone)
+        {
+            InitializeComponent();
+            droneBL = bl;
+
+            
+
 
         }
 

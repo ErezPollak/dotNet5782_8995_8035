@@ -33,7 +33,7 @@
                 </TransformGroup>
             </TextBox.RenderTransform>
         </TextBox>
-        <ListView x:Name="ListOfDronesView" Grid.Row="1" Margin="10,10,10,10" RenderTransformOrigin="0.831,0.089" Grid.ColumnSpan="4" >
+        <ListView x:Name="ListOfDronesView" Grid.Row="1" Margin="10,10,10,10" RenderTransformOrigin="0.831,0.089" Grid.ColumnSpan="4" MouseDoubleClick="ClickedItem" >
             <ListView.View>
                 <GridView>
                     <GridViewColumn/>
