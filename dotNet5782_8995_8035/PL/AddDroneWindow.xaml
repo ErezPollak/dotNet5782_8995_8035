@@ -28,9 +28,9 @@
         <Label Content="weight Category" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="3" Margin="0,11,0,0" VerticalAlignment="Top" Width="108" Height="29"/>
         <!--<Label Content="base station" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="4" Margin="0,11,0,0" VerticalAlignment="Top" Width="108" Height="29"/>-->
 
-        <TextBox Name="droneId" Grid.Column="2" HorizontalAlignment="Center" Grid.Row="1" Text="Id" TextWrapping="Wrap" VerticalAlignment="Center" Width="120"/>
-        <TextBox Name="model" Grid.Column="2" HorizontalAlignment="Center" Grid.Row="2" Text="model" TextWrapping="Wrap" VerticalAlignment="Center" Width="120"/>
-        <ComboBox Name="Weight" Grid.Column="2" HorizontalAlignment="Center" Grid.Row="3" Text="weight category" VerticalAlignment="Center" Width="120"/>
+        <TextBox Name="droneId" Grid.Column="2" HorizontalAlignment="Center" Grid.Row="1" Text="Id" TextWrapping="Wrap" VerticalAlignment="Center" Width="120" FontWeight="Bold" TextChanged="TextChanged"  />
+        <TextBox Name="model" Grid.Column="2" HorizontalAlignment="Center" Grid.Row="2" Text="model" TextWrapping="Wrap" VerticalAlignment="Center" Width="120" FontWeight="Bold"/>
+        <ComboBox Name="Weight" Grid.Column="2" HorizontalAlignment="Center" Grid.Row="3" Text="weight category" VerticalAlignment="Center" Width="120" Background="Black" />
         <!--<ComboBox Name="BaseStation" Grid.Column="2" HorizontalAlignment="Center" Margin="0,15,0,0" Grid.Row="4" VerticalAlignment="Top" Width="120"/>-->
 
         <Button Content="Add New Drone" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="5" VerticalAlignment="Center" Height="62" Width="400" Grid.ColumnSpan="2" Click="Button_Click"/>

@@ -16,69 +16,60 @@ namespace PL
         public ListOfDronesViewWindow(IBL.IBL bl)
         {
             InitializeComponent();
+            
             this.bl = bl;
             
             ListOfDronesView.ItemsSource = bl.GetDrones(_ => true);
 
+            //making list of values for the status selector.
+
             List<string> statusesSelector = Enum.GetNames(typeof(IBAL.BO.Enums.DroneStatuses)).Cast<string>().ToList();
 
-            statusesSelector.Add("Show all");
+            statusesSelector.Add("Show All");
 
-            StatusSelector.ItemsSource = statusesSelector;//.GetValues(typeof(IBAL.BO.Enums.DroneStatuses));
+            StatusSelector.ItemsSource = statusesSelector;
 
-            WeightSelecter.ItemsSource = Enum.GetValues(typeof(IBAL.BO.Enums.WeightCategories));
+            //making the list for the whight selector.
+
+            List<string> whightSelectorlist = Enum.GetNames(typeof(IBAL.BO.Enums.WeightCategories)).Cast<string>().ToList();
+
+            whightSelectorlist.Add("Show All");
+
+            WeightSelecter.ItemsSource = whightSelectorlist;
 
         }
 
         private void StatusChoose(object sender, SelectionChangedEventArgs e)
         {
-            if (StatusSelector.SelectedItem.ToString() == "Show all")
-            {
-                //ListOfDronesView.ItemsSource = bl.GetDrones(t => true);
-
-                if (WeightSelecter.SelectedItem != null)
-                {
-                    ListOfDronesView.ItemsSource = bl.GetDrones(t => t.Weight.ToString() == WeightSelecter.SelectedItem.ToString());
-                }
-                else
-                {
-                    ListOfDronesView.ItemsSource = bl.GetDrones(_ => true);
-                }
-            }
-            else
-            {
-
-                // && t.Weight.ToString() == this.WeightSelecter.SelectedItem.ToString()
-
-                if (WeightSelecter.SelectedItem != null)
-                {
-                    ListOfDronesView.ItemsSource = bl.GetDrones(t => t.Status.ToString() == StatusSelector.SelectedItem.ToString() && t.Weight.ToString() == WeightSelecter.SelectedItem.ToString());
-                }
-                else
-                {
-                    ListOfDronesView.ItemsSource = bl.GetDrones(t => t.Status.ToString() == StatusSelector.SelectedItem.ToString());
-                }
-            }
+            UpdateList();
         }
 
         private void WeightChoose(object sender, SelectionChangedEventArgs e)
         {
-            
-            if (StatusSelector.SelectedItem != null)
-            {
-                ListOfDronesView.ItemsSource = bl.GetDrones(t => t.Weight.ToString() == WeightSelecter.SelectedItem.ToString() && (t.Status.ToString() == StatusSelector.SelectedItem.ToString() || StatusSelector.SelectedItem.ToString() == "Show all"));
-            }
-            else
-            {
-                ListOfDronesView.ItemsSource = bl.GetDrones(t => t.Weight.ToString() == WeightSelecter.SelectedItem.ToString());
-            }
-
+            UpdateList();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             AddDroneWindow addDroneWindow = new AddDroneWindow(bl , this);
             addDroneWindow.Show();
+        }
+
+        public void UpdateList()
+        {
+            string whight = null, status = null;
+
+            if (WeightSelecter.SelectedItem != null)
+                whight = WeightSelecter.SelectedItem.ToString();
+
+            if (StatusSelector.SelectedItem != null)
+                status = StatusSelector.SelectedItem.ToString();
+
+
+            ListOfDronesView.ItemsSource = bl.GetDrones(d =>
+                    (d.Weight.ToString() == whight || whight == "Show All" || whight == null) &&
+                    (d.Status.ToString() == status || status == "Show All" || status == null));
+
         }
     }
 }
