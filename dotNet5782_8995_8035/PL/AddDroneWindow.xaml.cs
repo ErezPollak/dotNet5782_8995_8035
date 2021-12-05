@@ -81,10 +81,8 @@ namespace PL
         private string showException(Exception e , string s)
         {
             if (e == null) return s;
-            
-            s += e.Message + "\n";
 
-            return showException(e.InnerException, s);
+            return showException(e.InnerException, s + e.Message + "\n");
         }
 
         private void TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
