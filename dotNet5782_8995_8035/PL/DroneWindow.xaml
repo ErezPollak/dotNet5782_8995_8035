@@ -31,7 +31,7 @@
 
 
         <TextBox Name="DroneID" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="1" Text="Id" TextWrapping="Wrap" VerticalAlignment="Top" Width="180" FontWeight="Bold" TextChanged="TextChanged" Margin="0,29,0,0" Height="23"  />
-        <TextBox Name="Model" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="2" Text="model" TextWrapping="Wrap" VerticalAlignment="Top" Width="180" FontWeight="Bold" RenderTransformOrigin="0.596,0.084" Margin="110,31,0,0" Height="23" Grid.ColumnSpan="2"/>
+        <TextBox Name="Model" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="2" Text="model" TextWrapping="Wrap" VerticalAlignment="Top" Width="180" FontWeight="Bold" RenderTransformOrigin="0.596,0.084" Margin="0,29,0,0" Height="23" TextChanged="ModelUpdated" Grid.ColumnSpan="2"/>
         <ComboBox Name="Weight" Grid.Column="2" HorizontalAlignment="Center" Grid.Row="1" Text="weight category" VerticalAlignment="Top" Width="180" Background="Black" Margin="0,30,0,0" />
         <!--<ComboBox Name="BaseStation" Grid.Column="2" HorizontalAlignment="Center" Margin="0,15,0,0" Grid.Row="4" VerticalAlignment="Top" Width="120"/>-->
 
@@ -48,6 +48,10 @@
         <Label Name="LocationText" Content="Location" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="5" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="132"/>
         <Label Name="LongtudeText" Content="Label" Grid.Column="1" HorizontalAlignment="Center" Margin="0,31,0,0" Grid.Row="5" VerticalAlignment="Top" Width="180" Background="#FFD1D1D1"/>
         <Label Name="LattitudeText" Content="Label" Grid.Column="2" HorizontalAlignment="Center" Margin="0,31,0,0" Grid.Row="5" VerticalAlignment="Top" Background="#FFD1D1D1" RenderTransformOrigin="0.024,-0.193" Width="180"/>
+        <Button Name="updateModel" Content="update model" HorizontalAlignment="Center" Grid.Row="2" VerticalAlignment="Center" Height="42" Width="180" Click="updateModel_Click"  />
+        <Button Name="goToCharge" Content="go to charge" HorizontalAlignment="Center" Grid.Row="3" VerticalAlignment="Center" Height="42" Width="180" Click="goToCharge_Click"/>
+        <Button Name="reliceDroneFromCharge" Content="relice drone from charge" HorizontalAlignment="Center" Grid.Row="4" VerticalAlignment="Center" Height="42" Width="180"/>
+        <Button Name="sendingDroneToDelivery" Content="sending drone to delivery" HorizontalAlignment="Center" Grid.Row="5" VerticalAlignment="Center" Height="42" Width="180"/>
 
 
 

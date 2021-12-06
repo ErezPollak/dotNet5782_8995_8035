@@ -333,7 +333,10 @@ namespace IBL
         /// <returns> true if the updaue complited successfully </returns>
         public bool UpdateNameForADrone(int droneId, string model)
         {
-            GetDrone(droneId).Model = model;
+            int index = drones.FindIndex(d => d.Id == droneId);
+
+            if(index != -1)
+                 drones[index].Model = model;
 
             try
             {
@@ -344,7 +347,6 @@ namespace IBL
                 throw new IBAL.BO.IdDontExistsException(droneId, "drone", e);
             }
         }
-
 
         /// <summary>
         /// calling the function from the dal that changesd the name and number of slots of the base sation.

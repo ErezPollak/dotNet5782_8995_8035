@@ -69,7 +69,6 @@ namespace PL
             ListOfDronesView.ItemsSource = bl.GetDrones(d =>
                     (d.Weight.ToString() == whight || whight == "Show All" || whight == null) &&
                     (d.Status.ToString() == status || status == "Show All" || status == null));
-
         }
 
         private void ClickedItem(object sender, System.Windows.Input.MouseButtonEventArgs e)

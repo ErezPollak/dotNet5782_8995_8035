@@ -11,7 +11,7 @@ namespace PL
     {
         Random r;
         IBL.IBL droneBL;
-
+        IBAL.BO.Drone drone;
         ListOfDronesViewWindow listOfDronesViewWindow;
 
         /// <summary>
@@ -40,6 +40,11 @@ namespace PL
             LocationText.Visibility = Visibility.Hidden;
             LongtudeText.Visibility = Visibility.Hidden;
             LattitudeText.Visibility = Visibility.Hidden;
+            updateModel.Visibility = Visibility.Hidden;
+            goToCharge.Visibility = Visibility.Hidden;
+            reliceDroneFromCharge.Visibility = Visibility.Hidden;
+            sendingDroneToDelivery.Visibility = Visibility.Hidden;
+
         }
 
         /// <summary>
@@ -55,6 +60,7 @@ namespace PL
             InitializeComponent();
             droneBL = bl;
             this.listOfDronesViewWindow = listOfDronesViewWindow;
+            this.drone = drone;
 
             WindowTitle.Content = "Operations On Drone";
 
@@ -67,10 +73,19 @@ namespace PL
 
             AddingButton.Visibility = Visibility.Hidden;
 
+
+            Model.Text = drone.Model;
             BatteryLabel.Content = drone.Battery;
             StatusLabel.Content = drone.Status.ToString();
             LongtudeText.Content = drone.Location.Longitude;
             LattitudeText.Content = drone.Location.Latitude;
+
+            updateModel.IsEnabled = false;
+
+            if (drone.Status != IBAL.BO.Enums.DroneStatuses.FREE)
+            {
+                goToCharge.IsEnabled = false;
+            }
 
             if(drone.ParcelInDelivery != null)
             {
@@ -119,7 +134,7 @@ namespace PL
                     DroneID.Foreground = Brushes.Red;
                 }
 
-                MessageBox.Show(showException(ex , ""));
+                MessageBox.Show(showException(ex));
 
                 
             }
@@ -131,16 +146,70 @@ namespace PL
             MessageBox.Show("operation caceled");
         }
 
-        private string showException(Exception e , string s)
+        
+
+        private void TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            DroneID.Foreground = Brushes.Black;
+        }
+
+        private void ModelUpdated(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            if (updateModel != null)
+            {
+                updateModel.IsEnabled = true;
+                updateModel.Background = Brushes.Orange;
+            }
+        }
+
+        private void updateModel_Click(object sender, RoutedEventArgs e)
+        {
+            updateModel.Background = Brushes.Gray;
+
+            try
+            {
+                droneBL.UpdateNameForADrone(drone.Id, Model.Text);
+                listOfDronesViewWindow.UpdateList();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(showException(ex));
+            }
+            
+        }
+
+
+        private void goToCharge_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                droneBL.ChargeDrone(drone.Id);
+                listOfDronesViewWindow.UpdateList();
+
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(showException(ex));
+            }
+
+
+        }
+
+
+
+
+        private string showException(Exception e) {return showException(e, ""); }
+
+        private string showException(Exception e, string s)
         {
             if (e == null) return s;
 
             return showException(e.InnerException, s + e.Message + "\n");
         }
 
-        private void TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
-        {
-            DroneID.Foreground = Brushes.Black;
-        }
+
+
     }
 }
