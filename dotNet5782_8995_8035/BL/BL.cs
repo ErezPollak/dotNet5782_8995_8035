@@ -56,6 +56,8 @@ namespace IBL
                 });
             }
 
+            //dalObject.GetParcels(parcel => parcel.DroneId != -1 && parcel.AcceptedTime == null).ToList().ForEach(c => Console.WriteLine(c.Id));
+
             //going through all the parcels that have a drone, and was not delivered.
             foreach (IDAL.DO.Parcel parcel in dalObject.GetParcels(parcel =>
                 parcel.DroneId != -1 && parcel.AcceptedTime == null))

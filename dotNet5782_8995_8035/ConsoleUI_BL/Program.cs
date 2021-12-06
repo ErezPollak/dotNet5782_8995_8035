@@ -455,7 +455,7 @@ namespace ConsoleUI_BL
                                     if (bl.AssignParcelToADrone(droneId))
                                     {
                                         Console.WriteLine(
-                                            $"\nthe drone {droneId} assign to the persel {bl.GetDrone(droneId).ParcelId} successfully.");
+                                            $"\nthe drone {droneId} assign to the persel {bl.GetDrone(droneId).ParcelInDelivery.Id} successfully.");
                                     }
                                 }
                                 catch (Exception e)
@@ -476,7 +476,7 @@ namespace ConsoleUI_BL
                                     if (bl.DeliveringParcelFromADrone(droneID))
                                     {
                                         Console.WriteLine(
-                                            $"\nthe parcel {bl.GetDrone(droneID).ParcelId} delivered successfully.");
+                                            $"\nthe parcel {bl.GetDrone(droneID).ParcelInDelivery.Id} delivered successfully.");
                                     }
                                 }
                                 catch (Exception e)

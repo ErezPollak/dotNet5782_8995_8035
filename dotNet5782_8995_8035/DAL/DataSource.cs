@@ -129,7 +129,7 @@ namespace DalObject
                     TargetId = customers[Random.Next() % customers.Count].Id, // random values from the avalible customers.
                     Weight = (WeightCategories)(Random.Next() % 3),
                     Priority = (Priorities)(Random.Next() % 3),
-                    DroneId = 0,                                   //initileized to not have any drone, the drone number will be updated in the dalobject class.
+                    DroneId = Random.Next() % 6 - 1,                                   //initileized to not have any drone, the drone number will be updated in the dalobject class.
                     RequestedTime = PickingBiggerDate(DateTime.Now),  // initilesed to be the time of the initialization.
                     PickedUpTime = null,                        //initilesed for now, will change in  DalObject class, when order is updated to be picked up.
                     AcceptedTime = null
