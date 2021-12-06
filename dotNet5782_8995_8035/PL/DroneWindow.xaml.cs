@@ -14,6 +14,11 @@ namespace PL
 
         ListOfDronesViewWindow listOfDronesViewWindow;
 
+        /// <summary>
+        /// ctor for adding a drone.
+        /// </summary>
+        /// <param name="bl"></param>
+        /// <param name="listOfDronesViewWindow"></param>
         public DroneWindow(IBL.IBL bl , ListOfDronesViewWindow listOfDronesViewWindow)
         {
             r = new Random();
@@ -37,6 +42,12 @@ namespace PL
             LattitudeText.Visibility = Visibility.Hidden;
         }
 
+        /// <summary>
+        /// ctor for showing and updating a drone. 
+        /// </summary>
+        /// <param name="bl"></param>
+        /// <param name="listOfDronesViewWindow"></param>
+        /// <param name="drone"></param>
         public DroneWindow(IBL.IBL bl, ListOfDronesViewWindow listOfDronesViewWindow , IBAL.BO.Drone drone)
         {
             r = new Random();
