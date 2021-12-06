@@ -75,7 +75,7 @@ namespace DalObject
                     Name = i.ToString(),
                     Location = new Location
                     {
-                        Lattitude = Random.NextDouble() * 360 - 180,   // randomal values from -180 to 180 in order to represent a real coordinated location.
+                        Latitude = Random.NextDouble() * 360 - 180,   // randomal values from -180 to 180 in order to represent a real coordinated location.
                         Longitude = Random.NextDouble() * 180 - 90,   // randomal values from -90 to 90 in order to represent a real coordinated location.
                     },
 
@@ -110,7 +110,7 @@ namespace DalObject
 
                     Location = new Location
                     {
-                        Lattitude = Random.NextDouble() * 360 - 180,   // randomal values from -180 to 180 in order to represent a real coordinated location.
+                        Latitude = Random.NextDouble() * 360 - 180,   // randomal values from -180 to 180 in order to represent a real coordinated location.
                         Longitude = Random.NextDouble() * 180 - 90,   // randomal values from -90 to 90 in order to represent a real coordinated location.
                     },
                 };
@@ -118,6 +118,15 @@ namespace DalObject
                 customers.Add(customer);
 
             }
+
+            int[] dronesForParcels = DroneForParcel();
+
+            for (int i = 0; i < 10; i++)
+            {
+                Console.WriteLine(dronesForParcels[i]);
+            }
+
+            
 
             //randomal values for parcels.
             for (int i = 0; i < 10; i++)
@@ -129,7 +138,7 @@ namespace DalObject
                     TargetId = customers[Random.Next() % customers.Count].Id, // random values from the avalible customers.
                     Weight = (WeightCategories)(Random.Next() % 3),
                     Priority = (Priorities)(Random.Next() % 3),
-                    DroneId = Random.Next() % 6 - 1,                                   //initileized to not have any drone, the drone number will be updated in the dalobject class.
+                    DroneId = dronesForParcels[i],                                   //initileized to not have any drone, the drone number will be updated in the dalobject class.
                     RequestedTime = PickingBiggerDate(DateTime.Now),  // initilesed to be the time of the initialization.
                     PickedUpTime = null,                        //initilesed for now, will change in  DalObject class, when order is updated to be picked up.
                     AcceptedTime = null
@@ -162,5 +171,22 @@ namespace DalObject
             return newD;
 
         }
+
+        /// <summary>
+        /// initilze the number of parceles of every drone.
+        /// </summary>
+        /// <returns></returns>
+        private static int[] DroneForParcel()
+        {
+            int[] nums = new int[10];
+            for (int i = 0; i < 10; i++)
+                nums[i] = -1;
+
+            for (int i = 0; i < 3; i++)
+                nums[Random.Next() % 10] = i;
+
+            return nums;
+        }
+
     }
 }

@@ -74,26 +74,29 @@ namespace IBL
 
                 double minimumValue;
 
+                int index = drones.FindIndex(d => d.Id == parcel.DroneId);
+
                 //updates the status of the drone to be delivery. 
-                GetDrone(parcel.DroneId).Status = Enums.DroneStatuses.DELIVERY;
-                //updates the parcel number to be delivery.
-                GetDrone(parcel.DroneId).ParcelInDelivery = new ParcelInDelivery() { 
-                    Id = parcel.Id,
-                    Priority = GetParcel(parcel.Id).Priority,
-                    Sender = GetParcel(parcel.Id).Sender,
-                    Receiver = GetParcel(parcel.Id).Reciver,
-                    DeliveringLocation = GetCustomer(GetParcel(parcel.Id).Reciver.Id).Location,
-                    PickupLocation = GetCustomer(GetParcel(parcel.Id).Sender.Id).Location,
-                    Status = IBAL.BO.Enums.ParcelStatus.ASSIGNED,
-                    Weight = GetParcel(parcel.Id).Weight,
-                    Distance = Distance(GetCustomer(GetParcel(parcel.Id).Reciver.Id).Location , GetCustomer(GetParcel(parcel.Id).Sender.Id).Location)
-                };
+                drones[index].Status = Enums.DroneStatuses.DELIVERY;
+                //updates the parcel number to be the delivering parcel.
+                drones[index].ParcelId = parcel.Id;
+                //    .ParcelInDelivery = new ParcelInDelivery() { 
+                //    Id = parcel.Id,
+                //    Priority = GetParcel(parcel.Id).Priority,
+                //    Sender = GetParcel(parcel.Id).Sender,
+                //    Receiver = GetParcel(parcel.Id).Reciver,
+                //    DeliveringLocation = GetCustomer(GetParcel(parcel.Id).Reciver.Id).Location,
+                //    PickupLocation = GetCustomer(GetParcel(parcel.Id).Sender.Id).Location,
+                //    Status = IBAL.BO.Enums.ParcelStatus.ASSIGNED,
+                //    Weight = GetParcel(parcel.Id).Weight,
+                //    Distance = Distance(GetCustomer(GetParcel(parcel.Id).Reciver.Id).Location , GetCustomer(GetParcel(parcel.Id).Sender.Id).Location)
+                //};
 
                 //if the parcel wasnt picked up.
                 if (parcel.PickedUpTime == null)
                 {
                     //seting the location of the drone to be in the clothest station to the sender.
-                    GetDrone(parcel.DroneId).Location = LocationTranslate(dalObject
+                    drones[index].Location = LocationTranslate(dalObject
                         .GetBaseStation(dalObject.GetClosestStation(parcel.SenderId)).Location);
 
                     // caculating the distance between the base station to the sender.
@@ -109,7 +112,7 @@ namespace IBL
                 else // if the parcel was picked up.
                 {
                     //seting the location of the drone to be the location of the sender.
-                    GetDrone(parcel.DroneId).Location =
+                    drones[index].Location =
                         LocationTranslate(dalObject.GetCustomer(parcel.SenderId).Location);
 
                     // caculating the minimum precentage of batteary the drone needs in order to deliver the parcel and go to charge afterwards.
@@ -118,7 +121,7 @@ namespace IBL
                 }
 
                 //if the precentage is ok, the value of the battry is being randomiseied between the minimum value to one handred.
-                GetDrone(parcel.DroneId).Battery = minimumValue + Random.Next() % (100 - minimumValue);
+                drones[index].Battery = minimumValue + Random.Next() % (100 - minimumValue);
             }
 
             //needed for the iteration.
@@ -321,9 +324,7 @@ namespace IBL
             }
         }
 
-
         ////**** update options ****////
-
 
         /// <summary>
         /// calling the function from the dal that changesd the name of the drone
@@ -386,7 +387,6 @@ namespace IBL
             }
         }
 
-
         /// <summary>
         /// finding the best parcel and assining it to the given drone.
         /// </summary>
@@ -442,7 +442,6 @@ namespace IBL
             }
         }
 
-
         /// <summary>
         /// the function is deliveriong the parcel that the drone is delivering 
         /// and updating the properties according to the distance of the delivery.
@@ -461,15 +460,17 @@ namespace IBL
                 GetLocationOfCustomer(droneId, Enums.CustomerEnum.SENDER),
                 GetLocationOfCustomer(droneId, Enums.CustomerEnum.TARGET));
 
+            int index = drones.FindIndex(d => d.Id == droneId);
+
             //battary update
-            GetDrone(droneId).Battery -=
+            drones[index].Battery -=
                 deliveryDistance / dalObject.ElectricityUse()[(int) GetDrone(droneId).MaxWeight + 1];
 
             // location update
-            GetDrone(droneId).Location = GetLocationOfCustomer(droneId, Enums.CustomerEnum.TARGET);
+            drones[index].Location = GetLocationOfCustomer(droneId, Enums.CustomerEnum.TARGET);
 
             //status update
-            GetDrone(droneId).Status = Enums.DroneStatuses.FREE;
+            drones[index].Status = Enums.DroneStatuses.FREE;
 
             //update the parcel from the dal.
             return dalObject.DeliveringParcel(GetDrone(droneId).ParcelInDelivery.Id);
@@ -778,7 +779,7 @@ namespace IBL
                 ParcelId = d.ParcelId
             }));
 
-            return balDrones; //return dalObject.GetDrones(f);   //this.drones.FindAll(f);
+            return balDrones; 
         }
 
         /// <summary>
@@ -865,7 +866,7 @@ namespace IBL
         /// <returns></returns>
         private static IBAL.BO.Location LocationTranslate(IDAL.DO.Location location)
         {
-            return new IBAL.BO.Location() {Longitude = location.Longitude, Latitude = location.Longitude};
+            return new IBAL.BO.Location() {Longitude = location.Longitude, Latitude = location.Latitude};
         }
 
         /// <summary>
@@ -875,7 +876,7 @@ namespace IBL
         /// <returns></returns>
         private static IDAL.DO.Location LocationTranslate(IBAL.BO.Location location)
         {
-            return new IDAL.DO.Location() {Longitude = location.Longitude, Lattitude = location.Longitude};
+            return new IDAL.DO.Location() {Longitude = location.Longitude, Latitude = location.Latitude};
         }
 
 

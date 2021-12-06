@@ -66,7 +66,7 @@ namespace ConsoleUI
                                         int.TryParse(Console.ReadLine(), out chargeslots);
 
 
-                                        dalObject.AddBaseStation(number, name, new IDAL.DO.Location() { Longitude = longtude, Lattitude = lattitude }, chargeslots);
+                                        dalObject.AddBaseStation(number, name, new IDAL.DO.Location() { Longitude = longtude, Latitude = lattitude }, chargeslots);
 
                                         Console.WriteLine();
                                     }
@@ -125,7 +125,7 @@ namespace ConsoleUI
                                         double lattitude;
                                         double.TryParse(Console.ReadLine(), out lattitude);
 
-                                        dalObject.AddCustumer(number, name, phone, new IDAL.DO.Location() { Longitude = longtude, Lattitude = lattitude });
+                                        dalObject.AddCustumer(number, name, phone, new IDAL.DO.Location() { Longitude = longtude, Latitude = lattitude });
                                         Console.WriteLine();
                                     }
                                     break;

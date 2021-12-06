@@ -40,10 +40,10 @@ namespace PL
             LocationText.Visibility = Visibility.Hidden;
             LongtudeText.Visibility = Visibility.Hidden;
             LattitudeText.Visibility = Visibility.Hidden;
-            updateModel.Visibility = Visibility.Hidden;
-            goToCharge.Visibility = Visibility.Hidden;
-            reliceDroneFromCharge.Visibility = Visibility.Hidden;
-            sendingDroneToDelivery.Visibility = Visibility.Hidden;
+            UpdateModel.Visibility = Visibility.Hidden;
+            GoToCharge.Visibility = Visibility.Hidden;
+            ReliceDroneFromCharge.Visibility = Visibility.Hidden;
+            SendingDroneToDelivery.Visibility = Visibility.Hidden;
 
         }
 
@@ -80,11 +80,11 @@ namespace PL
             LongtudeText.Content = drone.Location.Longitude;
             LattitudeText.Content = drone.Location.Latitude;
 
-            updateModel.IsEnabled = false;
+            UpdateModel.IsEnabled = false;
 
             if (drone.Status != IBAL.BO.Enums.DroneStatuses.FREE)
             {
-                goToCharge.IsEnabled = false;
+                GoToCharge.IsEnabled = false;
             }
 
             if(drone.ParcelInDelivery != null)
@@ -143,7 +143,6 @@ namespace PL
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             Close();
-            MessageBox.Show("operation caceled");
         }
 
         
@@ -155,16 +154,16 @@ namespace PL
 
         private void ModelUpdated(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
-            if (updateModel != null)
+            if (UpdateModel != null)
             {
-                updateModel.IsEnabled = true;
-                updateModel.Background = Brushes.Orange;
+                UpdateModel.IsEnabled = true;
+                UpdateModel.Background = Brushes.Orange;
             }
         }
 
         private void updateModel_Click(object sender, RoutedEventArgs e)
         {
-            updateModel.Background = Brushes.Gray;
+            UpdateModel.Background = Brushes.Gray;
 
             try
             {

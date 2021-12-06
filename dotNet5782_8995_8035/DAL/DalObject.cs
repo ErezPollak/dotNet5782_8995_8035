@@ -422,7 +422,7 @@ namespace DalObject
             Customer customer = GetCustomers(c => c.Id == customerId).First();
             foreach (BaseStation baseStation in DataSource.baseStations)
             {
-                distanseSqered = Math.Pow(baseStation.Location.Lattitude - customer.Location.Lattitude, 2) +
+                distanseSqered = Math.Pow(baseStation.Location.Latitude - customer.Location.Latitude, 2) +
                                  Math.Pow(baseStation.Location.Longitude - customer.Location.Longitude, 2);
                 if (distanseSqered < minDistanceSqered)
                 {
