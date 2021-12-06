@@ -14,6 +14,7 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions >
-        <Button Content="Button" Grid.Column="1" HorizontalAlignment="Center" Margin="0,144,0,0" VerticalAlignment="Top" Height="48" Width="96" Click="Button_Click"/>
+        <Button Name="start_button" Content="click to start" Grid.Column="1" HorizontalAlignment="Left" Margin="130,169,0,0" VerticalAlignment="Top" Height="48" Width="96" Click="Button_Click" Grid.ColumnSpan="2" FontFamily="TopType Soncino" Background="#FF2D68B3"/>
+        <TextBox Name="welcome" HorizontalAlignment="Center" Margin="0,50,0,0" Text="Welcome" TextWrapping="Wrap" VerticalAlignment="Top" Width="268" Grid.ColumnSpan="4" Height="94" FontWeight="Bold" FontFamily="Blade Runner Movie Font" FontSize="48"/>
     </Grid>
 </Window>
