@@ -74,9 +74,10 @@ namespace PL
 
         private void ClickedItem(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            MessageBox.Show(ListOfDronesView.SelectedItem.ToString());
+            ///MessageBox.Show(ListOfDronesView.SelectedItem.ToString());
 
-            DroneWindow droneWindow = new DroneWindow(bl, this, (IBAL.BO.Drone)ListOfDronesView.SelectedItem);
+            DroneWindow droneWindow = new DroneWindow(bl, this, bl.GetDrone(((IBAL.BO.DroneForList)ListOfDronesView.SelectedItem).Id));
+            droneWindow.Show();
 
         }
     }

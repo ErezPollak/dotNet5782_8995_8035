@@ -26,7 +26,7 @@ namespace IBL
         ////***show options***/////
 
         public IBAL.BO.BaseStation GetBaseStation(int baseStationId);
-        public IBAL.BO.DroneForList GetDrone(int droneId);
+        public IBAL.BO.Drone GetDrone(int droneId);
         public IBAL.BO.Customer GetCustomer(int customerId);
         public IBAL.BO.Parcel GetParcel(int parcelId);
 

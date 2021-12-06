@@ -75,7 +75,17 @@ namespace IBL
                 //updates the status of the drone to be delivery. 
                 GetDrone(parcel.DroneId).Status = Enums.DroneStatuses.DELIVERY;
                 //updates the parcel number to be delivery.
-                GetDrone(parcel.DroneId).ParcelId = parcel.Id;
+                GetDrone(parcel.DroneId).ParcelInDelivery = new ParcelInDelivery() { 
+                    Id = parcel.Id,
+                    Priority = GetParcel(parcel.Id).Priority,
+                    Sender = GetParcel(parcel.Id).Sender,
+                    Receiver = GetParcel(parcel.Id).Reciver,
+                    DeliveringLocation = GetCustomer(GetParcel(parcel.Id).Reciver.Id).Location,
+                    PickupLocation = GetCustomer(GetParcel(parcel.Id).Sender.Id).Location,
+                    Status = IBAL.BO.Enums.ParcelStatus.ASSIGNED,
+                    Weight = GetParcel(parcel.Id).Weight,
+                    Distance = Distance(GetCustomer(GetParcel(parcel.Id).Reciver.Id).Location , GetCustomer(GetParcel(parcel.Id).Sender.Id).Location)
+                };
 
                 //if the parcel wasnt picked up.
                 if (parcel.PickedUpTime == null)
@@ -92,7 +102,7 @@ namespace IBL
 
                     // caculating the minimum precentage of batteary the drone needs in order to deliver the parcel and go to charge afterwards.
                     minimumValue = deliveryDistance /
-                                   (int) (dalObject.ElectricityUse()[(int) GetDrone(parcel.DroneId).Weight + 1]);
+                                   (int) (dalObject.ElectricityUse()[(int) GetDrone(parcel.DroneId).MaxWeight + 1]);
                 }
                 else // if the parcel was picked up.
                 {
@@ -102,7 +112,7 @@ namespace IBL
 
                     // caculating the minimum precentage of batteary the drone needs in order to deliver the parcel and go to charge afterwards.
                     minimumValue = deliveryDistance /
-                                   (int) (dalObject.ElectricityUse()[(int) GetDrone(parcel.DroneId).Weight + 1]);
+                                   (int) (dalObject.ElectricityUse()[(int) GetDrone(parcel.DroneId).MaxWeight + 1]);
                 }
 
                 //if the precentage is ok, the value of the battry is being randomiseied between the minimum value to one handred.
@@ -203,6 +213,7 @@ namespace IBL
             }
 
             int parcelId;
+            
             if (newDrone.ParcelInDelivery == null)
             {
                 parcelId = -1;
@@ -448,7 +459,7 @@ namespace IBL
 
             //battary update
             GetDrone(droneId).Battery -=
-                deliveryDistance / dalObject.ElectricityUse()[(int) GetDrone(droneId).Weight + 1];
+                deliveryDistance / dalObject.ElectricityUse()[(int) GetDrone(droneId).MaxWeight + 1];
 
             // location update
             GetDrone(droneId).Location = GetLocationOfCustomer(droneId, Enums.CustomerEnum.TARGET);
@@ -457,7 +468,7 @@ namespace IBL
             GetDrone(droneId).Status = Enums.DroneStatuses.FREE;
 
             //update the parcel from the dal.
-            return dalObject.DeliveringParcel(GetDrone(droneId).ParcelId);
+            return dalObject.DeliveringParcel(GetDrone(droneId).ParcelInDelivery.Id);
         }
 
         private IBAL.BO.Location GetLocationOfCustomer(int droneId, Enums.CustomerEnum typeOfCustomer)
@@ -466,10 +477,10 @@ namespace IBL
             {
                 case Enums.CustomerEnum.SENDER:
                     return LocationTranslate(dalObject
-                        .GetCustomer(dalObject.GetParcel(GetDrone(droneId).ParcelId).SenderId).Location);
+                        .GetCustomer(dalObject.GetParcel(GetDrone(droneId).ParcelInDelivery.Id).SenderId).Location);
                 case Enums.CustomerEnum.TARGET:
                     return LocationTranslate(dalObject
-                        .GetCustomer(dalObject.GetParcel(GetDrone(droneId).ParcelId).TargetId).Location);
+                        .GetCustomer(dalObject.GetParcel(GetDrone(droneId).ParcelInDelivery.Id).TargetId).Location);
                 default:
                     throw new Exception("type of cusomer is not CustomerEnum");
             }
@@ -586,6 +597,11 @@ namespace IBL
             };
         }
 
+        /// <summary>
+        /// returns a list with all the drone charges converted to drons in charge
+        /// </summary>
+        /// <param name="droneCharges"></param>
+        /// <returns></returns>
         private List<DroneInCharge> ChargeDroneToDroneInCharge(List<DroneCharge> droneCharges)
         {
             return droneCharges.ConvertAll(dc => new DroneInCharge()
@@ -600,7 +616,7 @@ namespace IBL
         /// </summary>
         /// <param name="droneId"></param>
         /// <returns></returns>
-        public DroneForList GetDrone(int droneId)
+        public IBAL.BO.Drone GetDrone(int droneId)
         {
             int index = drones.FindIndex(d => d.Id == droneId);
 
@@ -608,7 +624,40 @@ namespace IBL
                 throw new IBAL.BO.IdDontExistsException(droneId, "drone",
                     new IDAL.DO.IdDontExistsException(droneId, "drone"));
 
-            return drones[index];
+            IBAL.BO.ParcelInDelivery parcelInDelivery;
+
+            if (drones[index].ParcelId != -1)
+            {
+                IBAL.BO.Parcel parcel = GetParcel(drones[index].ParcelId);
+
+                 parcelInDelivery = new ParcelInDelivery()
+                {
+                    Id = parcel.Id,
+                    Priority = GetParcel(parcel.Id).Priority,
+                    Sender = GetParcel(parcel.Id).Sender,
+                    Receiver = GetParcel(parcel.Id).Reciver,
+                    DeliveringLocation = GetCustomer(GetParcel(parcel.Id).Reciver.Id).Location,
+                    PickupLocation = GetCustomer(GetParcel(parcel.Id).Sender.Id).Location,
+                    Status = IBAL.BO.Enums.ParcelStatus.ASSIGNED,
+                    Weight = GetParcel(parcel.Id).Weight,
+                    Distance = Distance(GetCustomer(GetParcel(parcel.Id).Reciver.Id).Location, GetCustomer(GetParcel(parcel.Id).Sender.Id).Location)
+                };
+            }
+            else
+            {
+                parcelInDelivery = null;
+            }
+
+            return new IBAL.BO.Drone()
+            {
+                Id = drones[index].Id,
+                Model = drones[index].Model,
+                Location = drones[index].Location,
+                Status = drones[index].Status,
+                Battery = drones[index].Battery,
+                MaxWeight = drones[index].Weight,
+                ParcelInDelivery = parcelInDelivery
+            };
         }
 
         /// <summary>
