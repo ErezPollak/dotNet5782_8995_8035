@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Interop;
 
 namespace PL
 {
@@ -67,8 +69,8 @@ namespace PL
 
 
             ListOfDronesView.ItemsSource = bl.GetDrones(d =>
-                    (d.Weight.ToString() == whight || whight == "Show All" || whight == null) &&
-                    (d.Status.ToString() == status || status == "Show All" || status == null));
+                    (d.Weight.ToString() == whight || whight == "Show All") &&
+                    (d.Status.ToString() == status || status == "Show All"));
         }
 
         private void ClickedItem(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -78,6 +80,31 @@ namespace PL
             DroneWindow droneWindow = new DroneWindow(bl, this, bl.GetDrone(((IBAL.BO.DroneForList)ListOfDronesView.SelectedItem).Id));
             droneWindow.Show();
 
+        }
+
+        private void XButton(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+
+
+
+
+        /// <summary>
+        /// hiding the x button of the window
+        /// </summary>
+        private const int GWL_STYLE = -16;
+        private const int WS_SYSMENU = 0x80000;
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+        [DllImport("user32.dll")]
+        private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+
+        private void Loded(object sender, RoutedEventArgs e)
+        {
+            var hwnd = new WindowInteropHelper(this).Handle;
+            SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) & ~WS_SYSMENU);
         }
     }
 }

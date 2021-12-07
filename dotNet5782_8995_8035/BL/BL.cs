@@ -407,18 +407,20 @@ namespace IBL
                 throw new UnableToAssignParcelToTheDroneException(droneId, " the drone is not free");
 
             //importing all the parcels and sorting them aaccording to their praiority.
-            List<IDAL.DO.Parcel> parcels = dalObject.GetParcels(p =>
-                    ((int) p.Weight <= (int) drones[droneIndex].Weight)
-                    && (Distance(drones[droneIndex].Location,
-                            LocationTranslate(dalObject
-                                .GetCustomer(p.SenderId)
-                                .Location)) /*adding the distance between the reciver to the base station*/
-                        >= drones[droneIndex].Battery *
-                        dalObject.ElectricityUse()[
-                            (int) drones[droneIndex].Weight + 1]))
+            List<IDAL.DO.Parcel> parcels = dalObject.GetParcels(p => 
+                ((int)p.Weight <= (int)drones[droneIndex].Weight) && 
+                ( 
+                              
+                   Distance(drones[droneIndex].Location, LocationTranslate(dalObject.GetCustomer(p.SenderId).Location)) +
+                   Distance(LocationTranslate(dalObject.GetCustomer(p.SenderId).Location), LocationTranslate(dalObject.GetCustomer(p.TargetId).Location))+
+                   Distance(LocationTranslate(dalObject.GetCustomer(p.TargetId).Location), GetBaseStation(dalObject.GetClosestStation(p.TargetId)).Location)
+
+                )
+                <= drones[droneIndex].Battery * dalObject.ElectricityUse()[(int)drones[droneIndex].Weight + 1])      
+                
                 .OrderByDescending(p => (int) p.Priority)
-                .ThenBy(p => Distance(drones[droneIndex].Location,
-                    LocationTranslate(dalObject.GetCustomer(p.SenderId).Location))).ToList();
+                
+                .ThenBy(p => Distance(drones[droneIndex].Location, LocationTranslate(dalObject.GetCustomer(p.SenderId).Location))).ToList();
 
             //if no parcel left in the list after the removings it means that no parcel can be sent be thi drone, so exception will be thrown.
             if (parcels.Count == 0)
@@ -496,6 +498,8 @@ namespace IBL
             //status update
             drones[index].Status = Enums.DroneStatuses.FREE;
 
+            int saveParcelId = drones[index].ParcelId;
+
             //parcel id update.
             drones[index].ParcelId = -1;
                 
@@ -503,7 +507,8 @@ namespace IBL
             
             try
             {
-                return dalObject.DeliveringParcel(GetDrone(droneId).ParcelInDelivery.Id);
+                //return dalObject.DeliveringParcel(GetDrone(droneId).ParcelInDelivery.Id);
+                return dalObject.DeliveringParcel(saveParcelId);
             }
             catch (Exception e)
             {

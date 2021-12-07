@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Interop;
 using System.Windows.Media;
 
 namespace PL
@@ -330,7 +332,7 @@ namespace PL
                 this.drone = droneBL.GetDrone(drone.Id);
 
                 StatusLabel.Content = drone.Status;
-                ParcelLabel.Content = drone.ParcelInDelivery.Id;
+                ParcelLabel.Content = "no parcel";
                 BatteryLabel.Content = drone.Battery;
                 LongtudeText.Content = drone.Location.Longitude;
                 LatitudeText.Content = drone.Location.Latitude;
@@ -348,9 +350,6 @@ namespace PL
 
 
 
-
-
-
         private void DroneIdTextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
             DroneID.Foreground = Brushes.Black;
@@ -363,11 +362,6 @@ namespace PL
             ReliceDroneFromCharge.Content = "Update Drone Battary";
             ReliceDroneFromCharge.Background = Brushes.Orange;
         }
-
-
-
-
-
 
 
 
@@ -396,6 +390,26 @@ namespace PL
                 GoToCharge.Content = "Go To Charge";
                 BatteryLabel.Foreground = Brushes.Black;
             }
+        }
+
+        
+
+        
+
+        /// <summary>
+        /// hiding the x button of the window
+        /// </summary>
+        private const int GWL_STYLE = -16;
+        private const int WS_SYSMENU = 0x80000;
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+        [DllImport("user32.dll")]
+        private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+
+        private void Loded(object sender, RoutedEventArgs e)
+        {
+            var hwnd = new WindowInteropHelper(this).Handle;
+            SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) & ~WS_SYSMENU);
         }
 
         

@@ -5,7 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800"
+    >
+
+    <Window.Background>
+        <ImageBrush ImageSource = "/images/8.jpg" Stretch="UniformToFill"/>
+    </Window.Background>
 
     <Grid Name="UpGrid" HorizontalAlignment="Stretch" Height="auto" Grid.Row="0" VerticalAlignment="Stretch" Width="auto">
         <Grid.ColumnDefinitions>
@@ -14,7 +19,7 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions >
-        <Button Name="start_button" Content="click to start" Grid.Column="1" HorizontalAlignment="Left" Margin="130,169,0,0" VerticalAlignment="Top" Height="48" Width="96" Click="Button_Click" Grid.ColumnSpan="2" FontFamily="TopType Soncino" Background="#FF2D68B3"/>
-        <TextBox Name="welcome" HorizontalAlignment="Center" Margin="0,50,0,0" Text="Welcome" TextWrapping="Wrap" VerticalAlignment="Top" Width="268" Grid.ColumnSpan="4" Height="94" FontWeight="Bold" FontFamily="Blade Runner Movie Font" FontSize="48"/>
+        <Button Name="start_button" Content="To Drone List" HorizontalAlignment="Left" Margin="154,189,0,0" VerticalAlignment="Top" Height="48" Width="96" Click="Button_Click" Grid.ColumnSpan="2" FontFamily="TopType Soncino" Background="{x:Null}"/>
+        <Label x:Name="Welcome" Content="Welcome" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="81" Margin="111,84,0,0" VerticalAlignment="Top" Width="289" Foreground="#FF2C52A2" FontSize="48"/>
     </Grid>
 </Window>
