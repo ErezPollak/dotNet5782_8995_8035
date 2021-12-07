@@ -26,15 +26,15 @@
         <Label Content="Drone ID" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Top" Width="108" Height="29"/>
         <Label Content="Model" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Top" Width="108" Height="29" Grid.ColumnSpan="2" Margin="146,0,0,0"/>
         <Label Content="weight Category" Grid.Column="2" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Top" Width="108" Height="29"/>
-         <Label Name="WindowTitle" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.ColumnSpan="2" Height="42" Width="380" RenderTransformOrigin="0.5,0.5" FontWeight="Bold" FontSize="30" AllowDrop="True" FontFamily="Arial Black" FontStyle="Normal"/>
+        <Label Name="WindowTitle" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.ColumnSpan="2" Height="42" Width="278" RenderTransformOrigin="0.5,0.5" FontWeight="Bold" FontSize="24" AllowDrop="True" FontFamily="Ink Free" FontStyle="Normal" Margin="0,15,0,0" Background="White" Foreground="Blue"/>
 
 
-        <TextBox Name="DroneID" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="1" Text="Id" TextWrapping="Wrap" VerticalAlignment="Top" Width="180" FontWeight="Bold" TextChanged="TextChanged" Margin="0,29,0,0" Height="23"  />
-        <TextBox Name="Model" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="2" Text="model" TextWrapping="Wrap" VerticalAlignment="Top" Width="180" FontWeight="Bold" RenderTransformOrigin="0.596,0.084" Margin="0,29,0,0" Height="23" TextChanged="ModelUpdated" Grid.ColumnSpan="2"/>
-        <ComboBox Name="Weight" Grid.Column="2" HorizontalAlignment="Center" Grid.Row="1" Text="weight category" VerticalAlignment="Top" Width="180" Background="Black" Margin="0,30,0,0" />
-        
-        <Button Name="AddingButton" Content="Add New Drone" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="5" VerticalAlignment="Center" Height="62" Width="400" Grid.ColumnSpan="2" Click="Button_Click"/>
-        <Button Content="X" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="-1.136,-0.1" Height="32" Width="32" Click="Button_Click_1" Grid.Column="3" Background="#FFF90B0B" FontWeight="Bold" FontSize="20"/>
+        <TextBox Name="DroneID" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="1" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="180" FontWeight="Bold" TextChanged="DroneIdTextChanged" Margin="0,29,0,0" Height="23"  />
+        <TextBox Name="Model" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="2" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="180" FontWeight="Bold" RenderTransformOrigin="0.596,0.084" Margin="0,29,0,0" Height="23" TextChanged="ModelUpdatedButtonClick" Grid.ColumnSpan="2"/>
+        <ComboBox Name="Weight" Grid.Column="2" HorizontalAlignment="Center" Grid.Row="1" Text="" VerticalAlignment="Top" Width="180" Background="Black" Margin="0,30,0,0" />
+
+        <Button Name="AddingButton" Content="Add New Drone" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="5" VerticalAlignment="Center" Height="62" Width="400" Grid.ColumnSpan="2" Click="AddDroneButton"/>
+        <Button Content="X" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="-1.136,-0.1" Height="32" Width="32" Click="XButton" Grid.Column="3" Background="#FFF90B0B" FontWeight="Bold" FontSize="20"/>
 
 
         <Label Name="BatteryText" Content="Battery" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="3" VerticalAlignment="Top" RenderTransformOrigin="0.22,-0.281" Height="31" Width="108"/>
@@ -45,13 +45,19 @@
         <Label Name="ParcelLabel" Content="Label" Grid.Column="1" HorizontalAlignment="Left" Margin="110,36,0,0" Grid.Row="4" VerticalAlignment="Top" Width="180" Background="#FFD1D1D1" Grid.ColumnSpan="2"/>
         <Label Name="LocationText" Content="Location" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="5" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="132"/>
         <Label Name="LongtudeText" Content="Label" Grid.Column="1" HorizontalAlignment="Center" Margin="0,31,0,0" Grid.Row="5" VerticalAlignment="Top" Width="180" Background="#FFD1D1D1"/>
-        <Label Name="LattitudeText" Content="Label" Grid.Column="2" HorizontalAlignment="Center" Margin="0,31,0,0" Grid.Row="5" VerticalAlignment="Top" Background="#FFD1D1D1" RenderTransformOrigin="0.024,-0.193" Width="180"/>
-        
-        
-        <Button Name="UpdateModel" Content="update model" HorizontalAlignment="Center" Grid.Row="2" VerticalAlignment="Center" Height="42" Width="180" Click="updateModel_Click"  />
-        <Button Name="GoToCharge" Content="go to charge" HorizontalAlignment="Center" Grid.Row="3" VerticalAlignment="Center" Height="42" Width="180" Click="goToCharge_Click"/>
-        <Button Name="ReliceDroneFromCharge" Content="relice drone from charge" HorizontalAlignment="Center" Grid.Row="4" VerticalAlignment="Center" Height="42" Width="180"/>
-        <Button Name="SendingDroneToDelivery" Content="sending drone to delivery" HorizontalAlignment="Center" Grid.Row="5" VerticalAlignment="Center" Height="42" Width="180"/>
+        <Label Name="LatitudeText" Content="Label" Grid.Column="2" HorizontalAlignment="Center" Margin="0,31,0,0" Grid.Row="5" VerticalAlignment="Top" Background="#FFD1D1D1" RenderTransformOrigin="0.024,-0.193" Width="180"/>
+
+
+        <Button Name="UpdateModel" Content="update model" HorizontalAlignment="Center" Grid.Row="2" VerticalAlignment="Center" Height="42" Width="180" Click="UpdateModel_Click"  />
+        <Button Name="GoToCharge" Content="go to charge" HorizontalAlignment="Center" Grid.Row="3" VerticalAlignment="Center" Height="42" Width="180" Click="GoToCharge_Click"/>
+        <Button Name="ReliceDroneFromCharge" Content="Uncharge Drone" HorizontalAlignment="Left" Grid.Row="4" VerticalAlignment="Center" Height="42" Width="98" Click="ReliceDroneFromCharge_Click" Margin="10,0,0,0"/>
+       
+        <TextBox Name="MinutesInput" HorizontalAlignment="Left" Margin="113,32,0,0" Grid.Row="4" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="82" TextChanged="MinutesInputChanged" FontSize="10" Height="20"/>
+        <Label Name="LabelMinutsInCharge" Content="Insert Minutes:" HorizontalAlignment="Left" Grid.Row="4" VerticalAlignment="Top" Height="22" Width="82" FontSize="8" Margin="113,7,0,0"/>
+
+        <Button Name="AssiningParcelToDrone" Content="Assining Parcel To Drone" HorizontalAlignment="Center" Grid.Row="2" VerticalAlignment="Center" Height="42" Width="180" Click="AssiningParcelToDrone_Click" Grid.Column="3"/>
+        <Button Name="PickingUpAParcel" Content="Picking Up A Parcel" Grid.Column="3" HorizontalAlignment="Center" Margin="0,6,0,0" Grid.Row="3" VerticalAlignment="Top" Height="46" Width="180" Click="PickingUpAParcel_Click"/>
+        <Button Name="DliveringParcel" Content="Delivering Parcel" Grid.Column="3" HorizontalAlignment="Center" Grid.Row="4" VerticalAlignment="Center" RenderTransformOrigin="-1.666,-0.183" Height="41" Width="180" Click="DliveringParcel_Click"/>
 
 
 

@@ -64,7 +64,7 @@ namespace DalObject
             Config.Light = Config.Free - Random.NextDouble() * 30;
             Config.Middel = Config.Light - Random.NextDouble() * 30;
             Config.Heavy = Config.Middel - Random.NextDouble() * 30;
-            Config.ChargingSpeed = Random.NextDouble() * 100 + 50;
+            Config.ChargingSpeed = Random.NextDouble() * 10;
 
             //randomal values for base stations.
             for (int i = 0; i < 2; i++)

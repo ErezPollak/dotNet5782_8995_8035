@@ -400,8 +400,7 @@ namespace IBL
             //if the index is -1 it means that no such is id in the database so an exception will be thrown.
             if (droneIndex == -1)
                 throw new UnableToAssignParcelToTheDroneException(droneId, " drone is not in the database.",
-                    new IBAL.BO.IdDontExistsException(droneId,
-                        "drone")); //IBAL.BO.IdDontExistsException(droneId, "drone");
+                    new IBAL.BO.IdDontExistsException(droneId, "drone")); 
 
             //chacks if the drone is free, and if not exception will be thrown.
             if (drones[droneIndex].Status != Enums.DroneStatuses.FREE)
@@ -431,14 +430,39 @@ namespace IBL
 
             drones[droneIndex].ParcelId = parcels.First().Id;
 
-            //calling to the function from the dal to make the changes in the data level.
+            return true;
+        }
+
+        public bool PickingUpParcelToDrone(int droneId)
+        {
+            //if the drone is not in thr database, an exception will be thrown.
+            if (GetDrone(droneId).Status != Enums.DroneStatuses.DELIVERY)
+                throw new UnableToDeliverParcelFromTheDroneException(droneId,
+                    "the drone is not delivering any parcel.");
+
+            //caculating the distance of the delivery.
+            double distance = Distance(
+                GetDrone(droneId).Location,
+                GetLocationOfCustomer(droneId, Enums.CustomerEnum.SENDER));
+
+            int index = drones.FindIndex(d => d.Id == droneId);
+
+            //battary update
+            drones[index].Battery -=
+                distance / dalObject.ElectricityUse()[(int)GetDrone(droneId).MaxWeight + 1];
+
+            // location update
+            drones[index].Location = GetLocationOfCustomer(droneId, Enums.CustomerEnum.SENDER);
+
+            //update the parcel from the dal.
+
             try
             {
-                return dalObject.PickingUpParcel(parcels.First().Id, droneId);
+                return dalObject.DeliveringParcel(GetDrone(droneId).ParcelInDelivery.Id);
             }
             catch (Exception e)
             {
-                throw new UnableToAssignParcelToTheDroneException(droneId, "parcel or drone is not exist", e);
+                throw new UnableToDeliverParcelFromTheDroneException(droneId, "parcel or drone is not exist", e);
             }
         }
 
@@ -472,8 +496,19 @@ namespace IBL
             //status update
             drones[index].Status = Enums.DroneStatuses.FREE;
 
+            //parcel id update.
+            drones[index].ParcelId = -1;
+                
             //update the parcel from the dal.
-            return dalObject.DeliveringParcel(GetDrone(droneId).ParcelInDelivery.Id);
+            
+            try
+            {
+                return dalObject.DeliveringParcel(GetDrone(droneId).ParcelInDelivery.Id);
+            }
+            catch (Exception e)
+            {
+                throw new UnableToDeliverParcelFromTheDroneException(droneId, "parcel or drone is not exist", e);
+            }
         }
 
         private IBAL.BO.Location GetLocationOfCustomer(int droneId, Enums.CustomerEnum typeOfCustomer)
@@ -550,7 +585,8 @@ namespace IBL
         public bool UnChargeDrone(int droneId, int minutes)
         {
             int droneIndex = drones.FindIndex(d => d.Id == droneId);
-            if (droneIndex == -1) throw new IBAL.BO.IdDontExistsException(droneId, "drone");
+            if (droneIndex == -1) 
+                throw new IBAL.BO.IdDontExistsException(droneId, "drone");
 
             //chacks if the drone is free, and if not exception will be thrown.
             if (drones[droneIndex].Status != Enums.DroneStatuses.MAINTENANCE)

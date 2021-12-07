@@ -39,11 +39,18 @@ namespace PL
             ParcelLabel.Visibility = Visibility.Hidden;
             LocationText.Visibility = Visibility.Hidden;
             LongtudeText.Visibility = Visibility.Hidden;
-            LattitudeText.Visibility = Visibility.Hidden;
+            LatitudeText.Visibility = Visibility.Hidden;
             UpdateModel.Visibility = Visibility.Hidden;
             GoToCharge.Visibility = Visibility.Hidden;
             ReliceDroneFromCharge.Visibility = Visibility.Hidden;
-            SendingDroneToDelivery.Visibility = Visibility.Hidden;
+            
+            MinutesInput.Visibility = Visibility.Hidden;
+            LabelMinutsInCharge.Visibility = Visibility.Hidden;
+
+            AssiningParcelToDrone.Visibility = Visibility.Hidden;
+            PickingUpAParcel.Visibility = Visibility.Hidden;
+            DliveringParcel.Visibility = Visibility.Hidden;
+
 
         }
 
@@ -78,27 +85,61 @@ namespace PL
             BatteryLabel.Content = drone.Battery;
             StatusLabel.Content = drone.Status.ToString();
             LongtudeText.Content = drone.Location.Longitude;
-            LattitudeText.Content = drone.Location.Latitude;
+            LatitudeText.Content = drone.Location.Latitude;
 
             UpdateModel.IsEnabled = false;
+
 
             if (drone.Status != IBAL.BO.Enums.DroneStatuses.FREE)
             {
                 GoToCharge.IsEnabled = false;
+                AssiningParcelToDrone.IsEnabled = false;
+            }
+
+            ReliceDroneFromCharge.IsEnabled = false;
+            if (drone.Status != IBAL.BO.Enums.DroneStatuses.MAINTENANCE)
+            {
+                MinutesInput.IsEnabled = false;
+            }
+            else
+            {
+                if (drone.Battery < 20)
+                {
+                    BatteryLabel.Foreground = Brushes.Orange;
+                }
+            }
+
+            if (drone.Status != IBAL.BO.Enums.DroneStatuses.DELIVERY)
+            {
+                PickingUpAParcel.IsEnabled = false;
+                DliveringParcel.IsEnabled = false;
             }
 
             if(drone.ParcelInDelivery != null)
             {
+
                 ParcelLabel.Content = drone.ParcelInDelivery.Id;
+
+                if(droneBL.GetParcel(bl.GetDrone(drone.Id).ParcelInDelivery.Id).PickupTime != null)
+                {
+                    PickingUpAParcel.IsEnabled = false;
+                }
+                else
+                {
+                    DliveringParcel.IsEnabled = false;
+                }
             }
             else
             {
                 ParcelLabel.Content = "no parcel";
+                PickingUpAParcel.IsEnabled = false;
+                DliveringParcel.IsEnabled = false;
             }
 
+            RecommandingCharge((int)drone.Battery);
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void AddDroneButton(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -134,25 +175,18 @@ namespace PL
                     DroneID.Foreground = Brushes.Red;
                 }
 
-                MessageBox.Show(showException(ex));
+                MessageBox.Show(ShowException(ex));
 
                 
             }
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void XButton(object sender, RoutedEventArgs e)
         {
             Close();
         }
 
-        
-
-        private void TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
-        {
-            DroneID.Foreground = Brushes.Black;
-        }
-
-        private void ModelUpdated(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        private void ModelUpdatedButtonClick(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
             if (UpdateModel != null)
             {
@@ -161,9 +195,9 @@ namespace PL
             }
         }
 
-        private void updateModel_Click(object sender, RoutedEventArgs e)
+        private void UpdateModel_Click(object sender, RoutedEventArgs e)
         {
-            UpdateModel.Background = Brushes.Gray;
+            UpdateModel.Background = Brushes.LightGray;
 
             try
             {
@@ -173,42 +207,197 @@ namespace PL
             catch (Exception ex)
             {
 
-                MessageBox.Show(showException(ex));
+                MessageBox.Show(ShowException(ex));
             }
             
         }
 
-
-        private void goToCharge_Click(object sender, RoutedEventArgs e)
+        private void GoToCharge_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 droneBL.ChargeDrone(drone.Id);
                 listOfDronesViewWindow.UpdateList();
+                //if the drone is in charge we can open the option to un charge it.
+                MinutesInput.IsEnabled = true;
+                GoToCharge.IsEnabled = false;
+                AssiningParcelToDrone.IsEnabled = false;
+
+                drone = droneBL.GetDrone(drone.Id);
+
+                StatusLabel.Content = drone.Status.ToString();
+                LongtudeText.Content = drone.Location.Longitude;
+                LatitudeText.Content = drone.Location.Latitude;
+                
+                RecommandingCharge(100);
 
             }
             catch (Exception ex)
             {
 
-                MessageBox.Show(showException(ex));
+                MessageBox.Show(ShowException(ex));
             }
 
+        }
 
+        private void ReliceDroneFromCharge_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                int minutes = int.Parse(MinutesInput.Text);
+                
+                droneBL.UnChargeDrone(drone.Id, minutes);
+
+                listOfDronesViewWindow.UpdateList();
+                ReliceDroneFromCharge.Background = Brushes.LightGray;
+                ReliceDroneFromCharge.IsEnabled = false;
+                MinutesInput.IsEnabled = false;
+                AssiningParcelToDrone.IsEnabled = true;
+
+                //after updating was seccussful we can update the drone we got from the user to be the new drone.
+                drone = droneBL.GetDrone(drone.Id);
+
+                BatteryLabel.Content = drone.Battery;
+                if(drone.Battery != 100)
+                {
+                    GoToCharge.IsEnabled = true;
+                }
+                StatusLabel.Content = drone.Status;
+                
+                RecommandingCharge((int)drone.Battery);
+                
+
+            }
+            catch (Exception ex)
+            {
+                MinutesInput.Foreground = Brushes.Red;
+                ReliceDroneFromCharge.Background = Brushes.Orange;
+                MessageBox.Show(ShowException(ex));
+            }
+        }
+       
+        private void AssiningParcelToDrone_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                droneBL.AssignParcelToADrone(drone.Id);
+
+                this.drone = droneBL.GetDrone(drone.Id);
+
+                StatusLabel.Content = drone.Status;
+                ParcelLabel.Content = drone.ParcelInDelivery.Id;
+
+                AssiningParcelToDrone.IsEnabled = false;
+                GoToCharge.IsEnabled = false;
+                PickingUpAParcel.IsEnabled = true;
+
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ShowException(ex));
+            }
+        }
+
+        private void PickingUpAParcel_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                droneBL.PickingUpParcelToDrone(drone.Id);
+
+                this.drone = droneBL.GetDrone(drone.Id);
+
+                BatteryLabel.Content = drone.Battery;
+                LongtudeText.Content = drone.Location.Longitude;
+                LatitudeText.Content = drone.Location.Latitude;
+
+                PickingUpAParcel.IsEnabled = false;
+                DliveringParcel.IsEnabled = true;
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ShowException(ex));
+            }
+        }
+
+        private void DliveringParcel_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                droneBL.DeliveringParcelFromADrone(drone.Id);
+
+                this.drone = droneBL.GetDrone(drone.Id);
+
+                StatusLabel.Content = drone.Status;
+                ParcelLabel.Content = drone.ParcelInDelivery.Id;
+                BatteryLabel.Content = drone.Battery;
+                LongtudeText.Content = drone.Location.Longitude;
+                LatitudeText.Content = drone.Location.Latitude;
+
+                AssiningParcelToDrone.IsEnabled = true;
+                DliveringParcel.IsEnabled = false;
+                GoToCharge.IsEnabled = true;
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ShowException(ex));
+            }
         }
 
 
 
 
-        private string showException(Exception e) {return showException(e, ""); }
 
-        private string showException(Exception e, string s)
+
+        private void DroneIdTextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            DroneID.Foreground = Brushes.Black;
+        }
+
+        private void MinutesInputChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            MinutesInput.Foreground = Brushes.Black;
+            ReliceDroneFromCharge.IsEnabled = true;
+            ReliceDroneFromCharge.Content = "Update Drone Battary";
+            ReliceDroneFromCharge.Background = Brushes.Orange;
+        }
+
+
+
+
+
+
+
+
+        private string ShowException(Exception e) 
+        {
+            return ShowException(e, ""); 
+        }
+
+        private string ShowException(Exception e, string s)
         {
             if (e == null) return s;
 
-            return showException(e.InnerException, s + e.Message + "\n");
+            return ShowException(e.InnerException, s + e.Message + "\n");
         }
 
+        private void RecommandingCharge(int battryLevel)
+        {
+            if (battryLevel < 20)
+            {
+                GoToCharge.Background = Brushes.Orange;
+                GoToCharge.Content = "Rcomanding Charge";
+                BatteryLabel.Foreground = Brushes.Orange;
+            }
+            else{
+                GoToCharge.Background = Brushes.LightGray;
+                GoToCharge.Content = "Go To Charge";
+                BatteryLabel.Foreground = Brushes.Black;
+            }
+        }
 
-
+        
     }
 }

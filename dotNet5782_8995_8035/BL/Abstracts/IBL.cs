@@ -20,6 +20,7 @@ namespace IBL
         public bool UpdateCustomer(int customerId, string name, string phone);
         public bool AssignParcelToADrone(int droneId);
         public bool DeliveringParcelFromADrone(int droneId);
+        public bool PickingUpParcelToDrone(int droneId);
         public bool ChargeDrone(int droneId);
         public bool UnChargeDrone(int droneId, int minutes);
 

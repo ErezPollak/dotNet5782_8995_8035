@@ -123,7 +123,7 @@ namespace IBAL
             {
             }
 
-            public UnableToDeliverParcelFromTheDroneException(string message, Exception innerException) : base(message, innerException)
+            public UnableToDeliverParcelFromTheDroneException(int droneId, string message, Exception innerException) : base($"BL_Exception: not able to deliver the parcel from the drone {droneId} due to: " + message, innerException)
             {
             }
 
