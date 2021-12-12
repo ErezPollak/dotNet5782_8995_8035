@@ -8,25 +8,23 @@
 //the program contains the properties and a tostring function.
 
 
-namespace IDAL
+namespace DO
 {
-    namespace DO
+    public struct DroneCharge
     {
-        public struct DroneCharge
+        public int DroneId { get; set; }
+
+        public int StationId { get; set; }
+
+        /// <summary>
+        /// the function prints all the props of the struct.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
         {
-            public int DroneId { get; set; }
-            public int StationId { get; set; }
+            //the function returns the current place of the item's properties.///
 
-            /// <summary>
-            /// the function prints all the props of the struct.
-            /// </summary>
-            /// <returns></returns>
-            public override string ToString()
-            {
-                //the function returns the current place of the item's properties.///
-
-                return $"DroneCharge: droneld: {DroneId} , stationled {StationId}\n";
-            }
+            return $"DroneCharge: droneld: {DroneId} , stationled {StationId}\n";
         }
     }
 }

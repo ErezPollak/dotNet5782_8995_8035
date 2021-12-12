@@ -1,7 +1,6 @@
 ﻿using System;
 
-namespace IBAL
-{
+
     namespace BO
     {
         public class Parcel
@@ -34,4 +33,3 @@ namespace IBAL
             }
         }
     }
-}

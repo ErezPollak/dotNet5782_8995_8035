@@ -8,8 +8,6 @@
 //the program contains a struct class that represents a drone.
 //the program contains the properties and a tostring function.
 
-namespace IDAL
-{
     namespace DO
     {
         public struct Drone
@@ -32,4 +30,3 @@ namespace IDAL
 
         }
     }
-}

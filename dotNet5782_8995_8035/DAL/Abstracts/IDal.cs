@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace IDAL
+namespace DalApi
 {
     public interface IDal
     {
@@ -42,15 +42,15 @@ namespace IDAL
         public IEnumerable<DO.Drone> GetDrones(Predicate<DO.Drone> f);
         public IEnumerable<DO.Customer> GetCustomers(Predicate<DO.Customer> f);
         public IEnumerable<DO.Parcel> GetParcels(Predicate<DO.Parcel> f);
-        //public IEnumerable<IDAL.DO.Parcel> GetParcelToDrone();
-        //public IEnumerable<IDAL.DO.BaseStation> GetFreeStations();
+        //public IEnumerable<DalApi.DO.Parcel> GetParcelToDrone();
+        //public IEnumerable<DalApi.DO.BaseStation> GetFreeStations();
         public IEnumerable<DO.DroneCharge> GetChargeDrones(Predicate<DO.DroneCharge> f);
 
 
         public double[] ElectricityUse();
         public int GetClosestStation(int id);
         public int GetBaseStationId(int index);
-        //public IEnumerable<IDAL.DO.Parcel> GetProvidedParcels();
+        //public IEnumerable<DalApi.DO.Parcel> GetProvidedParcels();
 
         //functions for BL
 

@@ -1,5 +1,4 @@
-﻿namespace IBAL
-{
+﻿
     namespace BO
     {
         public record CoustomerForParcel
@@ -14,4 +13,3 @@
                 $"";
         }
     }
-}

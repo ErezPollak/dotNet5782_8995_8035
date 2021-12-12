@@ -13,9 +13,9 @@ namespace PL
     /// </summary>
     public partial class ListOfDronesViewWindow : Window
     {
-        private IBL.IBL bl;
+        private BlApi.IBL bl;
 
-        public ListOfDronesViewWindow(IBL.IBL bl)
+        public ListOfDronesViewWindow(BlApi.IBL bl)
         {
             InitializeComponent();
             
@@ -25,7 +25,7 @@ namespace PL
 
             //making list of values for the status selector.
 
-            List<string> statusesSelector = Enum.GetNames(typeof(IBAL.BO.Enums.DroneStatuses)).Cast<string>().ToList();
+            List<string> statusesSelector = Enum.GetNames(typeof(BO.Enums.DroneStatuses)).Cast<string>().ToList();
 
             statusesSelector.Add("Show All");
 
@@ -33,7 +33,7 @@ namespace PL
 
             //making the list for the whight selector.
 
-            List<string> whightSelectorlist = Enum.GetNames(typeof(IBAL.BO.Enums.WeightCategories)).Cast<string>().ToList();
+            List<string> whightSelectorlist = Enum.GetNames(typeof(BO.Enums.WeightCategories)).Cast<string>().ToList();
 
             whightSelectorlist.Add("Show All");
 
@@ -77,7 +77,7 @@ namespace PL
         {
             ///MessageBox.Show(ListOfDronesView.SelectedItem.ToString());
 
-            DroneWindow droneWindow = new DroneWindow(bl, this, bl.GetDrone(((IBAL.BO.DroneForList)ListOfDronesView.SelectedItem).Id));
+            DroneWindow droneWindow = new DroneWindow(bl, this, bl.GetDrone(((BO.DroneForList)ListOfDronesView.SelectedItem).Id));
             droneWindow.Show();
 
         }

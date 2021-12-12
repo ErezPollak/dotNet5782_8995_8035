@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 
-namespace IBAL
-{
     namespace BO
     {
         public record BaseStation
@@ -28,4 +26,3 @@ namespace IBAL
             }
         }
     }
-}

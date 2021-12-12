@@ -1,5 +1,4 @@
-﻿namespace IBAL
-{
+﻿
     namespace BO
     {
         public class Enums
@@ -11,4 +10,3 @@
             public enum CustomerEnum {SENDER, TARGET };
         }
     }
-}

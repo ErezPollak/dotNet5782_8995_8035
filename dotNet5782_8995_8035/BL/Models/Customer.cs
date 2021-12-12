@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 
-namespace IBAL
-{
     namespace BO
     {
         public record Customer
@@ -25,4 +23,3 @@ namespace IBAL
                 $"";
         }
     }
-}

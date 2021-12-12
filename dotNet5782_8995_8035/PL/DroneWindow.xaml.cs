@@ -12,8 +12,8 @@ namespace PL
     public partial class DroneWindow : Window
     {
         Random r;
-        IBL.IBL droneBL;
-        IBAL.BO.Drone drone;
+        BlApi.IBL droneBL;
+        BO.Drone drone;
         ListOfDronesViewWindow listOfDronesViewWindow;
 
         /// <summary>
@@ -21,7 +21,7 @@ namespace PL
         /// </summary>
         /// <param name="bl"></param>
         /// <param name="listOfDronesViewWindow"></param>
-        public DroneWindow(IBL.IBL bl , ListOfDronesViewWindow listOfDronesViewWindow)
+        public DroneWindow(BlApi.IBL bl , ListOfDronesViewWindow listOfDronesViewWindow)
         {
             r = new Random();
 
@@ -31,7 +31,7 @@ namespace PL
 
             WindowTitle.Content = "Adding A Drone";
 
-            Weight.ItemsSource = Enum.GetValues(typeof(IBAL.BO.Enums.WeightCategories));
+            Weight.ItemsSource = Enum.GetValues(typeof(BO.Enums.WeightCategories));
 
             BatteryText.Visibility = Visibility.Hidden;
             BatteryLabel.Visibility = Visibility.Hidden;
@@ -62,7 +62,7 @@ namespace PL
         /// <param name="bl"></param>
         /// <param name="listOfDronesViewWindow"></param>
         /// <param name="drone"></param>
-        public DroneWindow(IBL.IBL bl, ListOfDronesViewWindow listOfDronesViewWindow , IBAL.BO.Drone drone)
+        public DroneWindow(BlApi.IBL bl, ListOfDronesViewWindow listOfDronesViewWindow , BO.Drone drone)
         {
             r = new Random();
 
@@ -76,7 +76,7 @@ namespace PL
             DroneID.Text = drone.Id + "";
             DroneID.IsEnabled = false;
 
-            Weight.ItemsSource = Enum.GetValues(typeof(IBAL.BO.Enums.WeightCategories));
+            Weight.ItemsSource = Enum.GetValues(typeof(BO.Enums.WeightCategories));
             Weight.SelectedIndex = (int)drone.MaxWeight;
             Weight.IsEnabled = false;
 
@@ -92,14 +92,14 @@ namespace PL
             UpdateModel.IsEnabled = false;
 
 
-            if (drone.Status != IBAL.BO.Enums.DroneStatuses.FREE)
+            if (drone.Status != BO.Enums.DroneStatuses.FREE)
             {
                 GoToCharge.IsEnabled = false;
                 AssiningParcelToDrone.IsEnabled = false;
             }
 
             ReliceDroneFromCharge.IsEnabled = false;
-            if (drone.Status != IBAL.BO.Enums.DroneStatuses.MAINTENANCE)
+            if (drone.Status != BO.Enums.DroneStatuses.MAINTENANCE)
             {
                 MinutesInput.IsEnabled = false;
             }
@@ -111,7 +111,7 @@ namespace PL
                 }
             }
 
-            if (drone.Status != IBAL.BO.Enums.DroneStatuses.DELIVERY)
+            if (drone.Status != BO.Enums.DroneStatuses.DELIVERY)
             {
                 PickingUpAParcel.IsEnabled = false;
                 DliveringParcel.IsEnabled = false;
@@ -149,12 +149,12 @@ namespace PL
 
                 int weight = Weight.SelectedIndex;
 
-                IBAL.BO.Drone newDrone = new IBAL.BO.Drone()
+                BO.Drone newDrone = new BO.Drone()
                 {
                     Id = id,
                     Model = Model.Text,
-                    MaxWeight = (IBAL.BO.Enums.WeightCategories)weight,
-                    Status = IBAL.BO.Enums.DroneStatuses.FREE,
+                    MaxWeight = (BO.Enums.WeightCategories)weight,
+                    Status = BO.Enums.DroneStatuses.FREE,
                     ParcelInDelivery = null,
                     Battery = r.Next() % 20,
                     Location = null
@@ -172,7 +172,7 @@ namespace PL
 
             }catch(Exception ex)
             {
-                if (ex is IBAL.BO.IdAlreadyExistsException || ex is FormatException)
+                if (ex is BO.IdAlreadyExistsException || ex is FormatException)
                 {
                     DroneID.Foreground = Brushes.Red;
                 }

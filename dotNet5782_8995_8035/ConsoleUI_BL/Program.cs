@@ -1,4 +1,4 @@
-﻿using IBL;
+﻿using BlApi;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,13 +7,14 @@ namespace ConsoleUI_BL
 {
     class Program
     {
+
         private static Random r = new Random(); // a static value for 
 
         public static void Main(string[] args)
         {
             Console.WriteLine("Welcome to the ConsoleUI_BL program.\n");
 
-            IBL.IBL bl = new BL();
+            BlApi.IBL bl = new BL();
 
             int choice = InputChoice();
 

@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace IBL
+namespace BlApi
 {
     public interface IBL
     {
 
         ////***add options***/////
 
-        public bool AddBaseStation(IBAL.BO.BaseStation baesStation);
-        public bool AddDrone(IBAL.BO.Drone newDrone);
-        public bool AddCustumer(IBAL.BO.Customer customer);
-        public bool AddParcel(IBAL.BO.Parcel newPparcel);
+        public bool AddBaseStation(BO.BaseStation baesStation);
+        public bool AddDrone(BO.Drone newDrone);
+        public bool AddCustumer(BO.Customer customer);
+        public bool AddParcel(BO.Parcel newPparcel);
 
         ////***update options***/////
 
@@ -26,17 +26,17 @@ namespace IBL
 
         ////***show options***/////
 
-        public IBAL.BO.BaseStation GetBaseStation(int baseStationId);
-        public IBAL.BO.Drone GetDrone(int droneId);
-        public IBAL.BO.Customer GetCustomer(int customerId);
-        public IBAL.BO.Parcel GetParcel(int parcelId);
+        public BO.BaseStation GetBaseStation(int baseStationId);
+        public BO.Drone GetDrone(int droneId);
+        public BO.Customer GetCustomer(int customerId);
+        public BO.Parcel GetParcel(int parcelId);
 
         ////***get Lists***////
 
-        public IEnumerable<IBAL.BO.BaseStationForList> GetBaseStations(Predicate<IBAL.BO.BaseStationForList> f);
-        public IEnumerable<IBAL.BO.DroneForList> GetDrones(Predicate<IBAL.BO.DroneForList> f);
-        public IEnumerable<IBAL.BO.CustomerForList> GetCustomers(Predicate<IBAL.BO.CustomerForList> f);
-        public IEnumerable<IBAL.BO.ParcelForList> GetPacels(Predicate<IBAL.BO.ParcelForList> f);
+        public IEnumerable<BO.BaseStationForList> GetBaseStations(Predicate<BO.BaseStationForList> f);
+        public IEnumerable<BO.DroneForList> GetDrones(Predicate<BO.DroneForList> f);
+        public IEnumerable<BO.CustomerForList> GetCustomers(Predicate<BO.CustomerForList> f);
+        public IEnumerable<BO.ParcelForList> GetPacels(Predicate<BO.ParcelForList> f);
         //public IEnumerable<IBAL.BO.Parcel> GetParcelToDrone();
 
 

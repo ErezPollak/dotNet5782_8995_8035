@@ -1,8 +1,6 @@
-﻿namespace IDAL
+﻿
+namespace DO
 {
-    namespace DO
-    {
-        public enum WeightCategories {LIGHT, MIDIUM, HEAVY};
-        public enum Priorities {REGULAR , FAST , EMERGENCY};
-    }
+    public enum WeightCategories { LIGHT, MIDIUM, HEAVY };
+    public enum Priorities { REGULAR, FAST, EMERGENCY };
 }

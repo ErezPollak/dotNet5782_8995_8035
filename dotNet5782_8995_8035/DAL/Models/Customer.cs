@@ -8,8 +8,6 @@
 //the program contains a struct that represents a customer.
 //the program contains the properties and a tostring function.
 
-namespace IDAL
-{
     namespace DO
     {
         public struct Customer
@@ -36,4 +34,3 @@ namespace IDAL
 
         }
     }
-}

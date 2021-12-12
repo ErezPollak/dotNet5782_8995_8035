@@ -7,20 +7,52 @@
 //the program is a public class for the namespace "DalObjects", that contains all the basic functions that can be done with the data structures.
 
 
-using IDAL.DO;
+using DO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DalObject
+namespace Dal
 {
-    public class DalObject : IDAL.IDal
+    internal class DalObject : DalApi.IDal
     {
-        //ctor
 
-        public DalObject()
+
+        /// <summary>
+        /// private constructor for the dal class, for the singalton.
+        /// </summary>
+        private DalObject()
         {
             DataSource.Initialize();
+        }
+
+        /// <summary>
+        /// dal field intended to keep the insstance of the bl that was created.
+        /// </summary>
+        private static DalObject instance = null;
+
+        /// <summary>
+        /// an object intanded to lock the code of creating the new DAL so it does not happen twice.
+        /// </summary>
+        private static readonly object _lock = new object();
+
+        // <summary>
+        /// the function the creates new instance of DAL only if it doesn't exists already.
+        /// </summary>
+        /// <returns></returns>
+        public static DalObject GetInstance()
+        {
+            if(instance == null)
+            {
+                lock (_lock)
+                {
+                    if (instance == null)
+                    {
+                        instance = new DalObject();
+                    }
+                }
+            }
+            return instance;
         }
 
         //////***add options***/////
@@ -251,7 +283,7 @@ namespace DalObject
             DataSource.baseStations[baseStationIndex] = newBaseStation;
 
             //creating the charge drone ans adding it to the list of charges.
-            DroneCharge droneCharge = new DroneCharge() {DroneId = droneId, StationId = baseStationId};
+            DroneCharge droneCharge = new DroneCharge() { DroneId = droneId, StationId = baseStationId };
             DataSource.droneCharges.Add(droneCharge);
 
             return true;

@@ -1,5 +1,4 @@
-﻿namespace IBAL
-{
+﻿
     namespace BO
     {
         public class Drone
@@ -29,4 +28,3 @@
             }
         }
     }
-}

@@ -1,5 +1,4 @@
-﻿namespace IBAL
-{
+﻿
     namespace BO
     {
         public record ParcelInDelivery
@@ -27,4 +26,3 @@
                 $"";
         }
     }
-}

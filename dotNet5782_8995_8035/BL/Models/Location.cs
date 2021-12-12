@@ -1,5 +1,4 @@
-﻿namespace IBAL
-{
+﻿
     namespace BO
     {
         public record Location
@@ -13,4 +12,3 @@
                 $" lattitude: {(int) (Latitude)}° {(int) ((Latitude - (int) (Latitude)) * 60)}' {((Latitude - (int) (Latitude)) * 60 - (int) ((Latitude - (int) (Latitude)) * 60)) * 60}'' H ,";
         }
     }
-}

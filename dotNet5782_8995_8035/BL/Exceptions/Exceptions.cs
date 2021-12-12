@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace IBAL
-{
     namespace BO
     {
 
@@ -225,4 +223,3 @@ namespace IBAL
 
 
     }
-}

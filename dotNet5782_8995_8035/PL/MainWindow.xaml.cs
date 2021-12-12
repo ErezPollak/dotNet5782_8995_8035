@@ -1,4 +1,4 @@
-﻿using IBL;
+﻿using BlApi;
 using System.Windows;
 
 namespace PL
@@ -9,12 +9,14 @@ namespace PL
     public partial class MainWindow : Window
     {
 
-        private IBL.IBL bl;
+        private BlApi.IBL bl;
 
         public MainWindow()
         {
             InitializeComponent();
-            bl = new BL();
+
+            bl = BlApi.BL.GetInstance();
+        
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

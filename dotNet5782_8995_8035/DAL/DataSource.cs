@@ -11,12 +11,12 @@
 //the program contains the properties and an initilasetion function that supose to give the initial values to the structeres.
 
 
-using IDAL.DO;
+using DO;
 using System;
 using System.Collections.Generic;
 
 
-namespace DalObject
+namespace Dal
 {
 
     internal class DataSource
@@ -140,7 +140,7 @@ namespace DalObject
                     Priority = (Priorities)(Random.Next() % 3),
                     DroneId = dronesForParcels[i],                                   //initileized to not have any drone, the drone number will be updated in the dalobject class.
                     RequestedTime = PickingBiggerDate(DateTime.Now),  // initilesed to be the time of the initialization.
-                    PickedUpTime = null,                        //initilesed for now, will change in  DalObject class, when order is updated to be picked up.
+                    PickedUpTime = null,                        //initilesed for now, will change in  Dal class, when order is updated to be picked up.
                     AcceptedTime = null
                 };
 

@@ -10,36 +10,33 @@
 
 using System;
 
-namespace IDAL
+namespace DO
 {
-    namespace DO
+    public struct Parcel
     {
-        public struct Parcel
+        public int Id { get; set; }
+        public int SenderId { get; set; }
+        public int TargetId { get; set; }
+        public WeightCategories Weight { get; set; }
+        public Priorities Priority { get; set; }
+        public int DroneId { get; set; }
+        public DateTime? RequestedTime { get; set; }
+        public DateTime? DeliveryTime { get; set; }
+        public DateTime? PickedUpTime { get; set; }
+        public DateTime? AcceptedTime { get; set; }
+
+        /// <summary>
+        /// the function prints all the props of the struct.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
         {
-            public int Id { get; set; }
-            public int SenderId { get; set; }
-            public int TargetId { get; set; }
-            public WeightCategories Weight { get; set; }
-            public Priorities Priority { get; set; }
-            public int DroneId { get; set; }
-            public DateTime? RequestedTime { get; set; }
-            public DateTime? DeliveryTime { get; set; }
-            public DateTime? PickedUpTime { get; set; }
-            public DateTime? AcceptedTime { get; set; }
+            //the function returns the current place of the item's properties.///
 
-            /// <summary>
-            /// the function prints all the props of the struct.
-            /// </summary>
-            /// <returns></returns>
-            public override string ToString()
-            {
-                //the function returns the current place of the item's properties.///
-
-                return $"Parcel: id: {Id} , senderld: {SenderId} , targetld : {TargetId} " +
-                       $", weight: {Weight}, priority: {Priority},  droneld: {DroneId}, " +
-                       $"requested: {RequestedTime}, scheduled: {DeliveryTime},delivered: {AcceptedTime},  " +
-                       $"pickedUp: {PickedUpTime}\n";
-            }
+            return $"Parcel: id: {Id} , senderld: {SenderId} , targetld : {TargetId} " +
+                   $", weight: {Weight}, priority: {Priority},  droneld: {DroneId}, " +
+                   $"requested: {RequestedTime}, scheduled: {DeliveryTime},delivered: {AcceptedTime},  " +
+                   $"pickedUp: {PickedUpTime}\n";
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿namespace IBAL
-{
+﻿
     namespace BO
     {
         public class DroneForList
@@ -26,4 +25,3 @@
 
         }
     }
-}

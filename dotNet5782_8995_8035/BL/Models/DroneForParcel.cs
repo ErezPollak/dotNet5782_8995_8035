@@ -1,5 +1,4 @@
-﻿namespace IBAL
-{
+﻿
     namespace BO
     {
         public record DroneForParcel
@@ -16,4 +15,3 @@
                 $"";
         }
     }
-}

@@ -8,8 +8,6 @@
 //the program contains a struct that represents a base station.
 //the program contains the properties and a tostring function.
 
-namespace IDAL
-{
     namespace DO
     {
         public struct BaseStation
@@ -38,4 +36,3 @@ namespace IDAL
 
         }
     }
-}
