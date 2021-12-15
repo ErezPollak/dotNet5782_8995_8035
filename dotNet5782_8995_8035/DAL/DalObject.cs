@@ -17,6 +17,7 @@ namespace Dal
     internal class DalObject : DalApi.IDal
     {
 
+        #region Singalton
 
         /// <summary>
         /// private constructor for the dal class, for the singalton.
@@ -55,7 +56,9 @@ namespace Dal
             return instance;
         }
 
-        //////***add options***/////
+        #endregion
+
+        # region add options
 
         /// <summary>
         /// the function creates new base station acording to given specs, and adding it to the array. 
@@ -122,7 +125,9 @@ namespace Dal
             return true;
         }
 
-        ////***update options***/////
+        #endregion
+
+        #region update options
 
 
         public bool UpdateNameForADrone(int droneId, string model)
@@ -326,7 +331,9 @@ namespace Dal
             return true;
         }
 
-        ////***show options***/////
+        #endregion
+
+        #region show oobject options
 
         /// <summary>
         /// the function recives an ID number of  a base station and returns the relevent station.
@@ -384,7 +391,9 @@ namespace Dal
             return DataSource.parcels[parcelId];
         }
 
-        ////***get Lists***////
+        #endregion
+
+        # region get lists option
 
         /// <summary>
         /// returns the array of the base stations.
@@ -426,6 +435,10 @@ namespace Dal
         {
             return DataSource.droneCharges.Where(dc => f(dc));
         }
+
+        #endregion
+
+        #region operational functions
 
         /// <summary>
         /// returns an array with the information of charging drones.
@@ -480,5 +493,7 @@ namespace Dal
         {
             return ++DataSource.Config.SerialNumber;
         }
+
+        #endregion
     }
 }

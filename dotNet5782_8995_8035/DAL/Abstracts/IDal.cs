@@ -6,16 +6,16 @@ namespace DalApi
     public interface IDal
     {
 
-        ////***adding options***/////
+        # region add options
 
         public bool AddBaseStation(DO.BaseStation baseStation);
         public bool AddDrone(DO.Drone drone);
         public bool AddCustumer(DO.Customer customer);
         public bool AddParcel(DO.Parcel parcel);
 
+        #endregion
 
-
-        ////***update options***/////
+        #region update options
 
         public bool UpdateNameForADrone(int droneId, string model);
         public bool UpdateBaseStation(int basStationID, string name, int slots);
@@ -26,37 +26,34 @@ namespace DalApi
         public bool ChargeDrone(int baseStationId, int droneId);
         public bool UnChargeDrone(int droneId);
 
-        ////***show options***/////
+        #endregion
 
+        #region show oobject options
 
         public DO.BaseStation GetBaseStation(int baseStationId);
         public DO.Drone GetDrone(int droneId);
         public DO.Customer GetCustomer(int customerId);
         public DO.Parcel GetParcel(int parcelId);
 
+        #endregion
 
-
-        ////***get Lists***////
+        # region get lists option
 
         public IEnumerable<DO.BaseStation> GetBaseStations(Predicate<DO.BaseStation> f);
         public IEnumerable<DO.Drone> GetDrones(Predicate<DO.Drone> f);
         public IEnumerable<DO.Customer> GetCustomers(Predicate<DO.Customer> f);
         public IEnumerable<DO.Parcel> GetParcels(Predicate<DO.Parcel> f);
-        //public IEnumerable<DalApi.DO.Parcel> GetParcelToDrone();
-        //public IEnumerable<DalApi.DO.BaseStation> GetFreeStations();
         public IEnumerable<DO.DroneCharge> GetChargeDrones(Predicate<DO.DroneCharge> f);
 
+        #endregion
 
+        #region operational functions
         public double[] ElectricityUse();
         public int GetClosestStation(int id);
         public int GetBaseStationId(int index);
-        //public IEnumerable<DalApi.DO.Parcel> GetProvidedParcels();
-
-        //functions for BL
-
-
         public int GetSerialNumber();
-        //void SetNameForADrone(int droneId, string model);
-        //void UpdateBaseStation(int basStationID, string name, int slots);
+
+        #endregion
+
     }
 }

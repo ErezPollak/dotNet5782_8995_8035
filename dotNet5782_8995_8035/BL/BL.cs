@@ -8,6 +8,7 @@ namespace BlApi
 {
     public class BL : IBL
     {
+        #region private fields
 
         private readonly DalApi.IDal dal = DalApi.DalFactory.GetDal("dalObject");
 
@@ -31,8 +32,9 @@ namespace BlApi
 
         private static readonly Random Random = new();
 
+        #endregion
 
-        /////singulatory sequence//////
+        #region Singalton
 
 
         /// <summary>
@@ -198,9 +200,9 @@ namespace BlApi
             return instance;
         }
 
+        #endregion
 
-
-        ////**** adding option ****////
+        #region adding option 
 
 
         /// <summary>
@@ -348,7 +350,10 @@ namespace BlApi
             }
         }
 
-        ////**** update options ****////
+
+        #endregion
+
+        #region update options 
 
         /// <summary>
         /// calling the function from the dal that changesd the name of the drone
@@ -634,8 +639,9 @@ namespace BlApi
             return dal.UnChargeDrone(droneId);
         }
 
+        #endregion
 
-        ////**** show options ****////
+        #region show options 
 
         /// <summary>
         /// returns a base sattion according to its id number.
@@ -897,8 +903,9 @@ namespace BlApi
                 .Where(dp => f(dp));
         }
 
+        #endregion
 
-        //operation functions.
+        #region operation functions
 
         /// <summary>
         /// function that gets
@@ -953,5 +960,8 @@ namespace BlApi
         {
             return dal.GetSerialNumber();
         }
+
+        #endregion
+
     } //END BL class
 } //end IBAL
