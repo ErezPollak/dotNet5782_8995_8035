@@ -71,7 +71,7 @@ namespace Dal
             {
                 BaseStation baseStation = new BaseStation()
                 {
-                    Id = i,
+                    Id = i * 12 + 12345,
                     Name = i.ToString(),
                     Location = new Location
                     {
@@ -90,7 +90,7 @@ namespace Dal
             {
                 Drone drone = new Drone()
                 {
-                    Id = i,
+                    Id = i * 34 + 254254,
                     Model = (char)(Random.Next() % 26 + 65) + "" + (char)(Random.Next() % 26 + 65) + Random.Next() % 100000,
                     MaxWeight = (WeightCategories)(Random.Next() % 3),
                     
@@ -104,7 +104,7 @@ namespace Dal
             {
                 Customer customer = new Customer()
                 {
-                    Id = i,
+                    Id = i * 22 + 234242,
                     Name = (char)(Random.Next() % 26 + 65) + " , " + (char)(Random.Next() % 26 + 65),
                     Phone = "05" + Random.Next() % 10 + "-" + Random.Next() % 1000000,
 
@@ -133,7 +133,7 @@ namespace Dal
             {
                 Parcel parcel = new Parcel()
                 {
-                    Id = i,
+                    Id = i * 32 + 232345,
                     SenderId = customers[Random.Next() % customers.Count].Id, // random values from the avalible customers.
                     TargetId = customers[Random.Next() % customers.Count].Id, // random values from the avalible customers.
                     Weight = (WeightCategories)(Random.Next() % 3),
@@ -183,7 +183,7 @@ namespace Dal
                 nums[i] = -1;
 
             for (int i = 0; i < 3; i++)
-                nums[Random.Next() % 10] = i;
+                nums[Random.Next() % 10] = drones[i].Id;
 
             return nums;
         }

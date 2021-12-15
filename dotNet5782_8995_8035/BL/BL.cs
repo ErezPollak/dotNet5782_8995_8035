@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace BlApi
 {
-    public class BL : IBL
+    internal class BL : IBL
     {
         #region private fields
 
@@ -157,16 +157,16 @@ namespace BlApi
                         dal.GetBaseStations(b => b.ChargeSlots > 0).ToList();
 
                     //random number of a station.
-                    int stationNumber = Random.Next() % avalibleBaseStations.Count;
+                    int stationIndex = Random.Next() % avalibleBaseStations.Count;
 
                     //setting the location of the drone to be the location of the randomaised station.
-                    drone.Location = LocationTranslate(avalibleBaseStations[stationNumber].Location);
+                    drone.Location = LocationTranslate(avalibleBaseStations[stationIndex].Location);
 
                     // updating the battary to be a random value from 0 to 20.
                     drone.Battery = Random.Next() % 20;
 
                     //sending the drone to charge.
-                    dal.ChargeDrone(stationNumber, drone.Id);
+                    dal.ChargeDrone(avalibleBaseStations[stationIndex].Id, drone.Id);
                 }
             }
         } //end BL ctor
@@ -445,7 +445,9 @@ namespace BlApi
                    Distance(LocationTranslate(dal.GetCustomer(p.TargetId).Location), GetBaseStation(dal.GetClosestStation(p.TargetId)).Location)
 
                 )
-                <= drones[droneIndex].Battery * dal.ElectricityUse()[(int)drones[droneIndex].Weight + 1])      
+                <= drones[droneIndex].Battery * dal.ElectricityUse()[(int)drones[droneIndex].Weight + 1] && 
+
+                 p.DeliveryTime == null)      
                 
                 .OrderByDescending(p => (int) p.Priority)
                 
@@ -489,7 +491,7 @@ namespace BlApi
 
             try
             {
-                return dal.DeliveringParcel(GetDrone(droneId).ParcelInDelivery.Id);
+                return dal.PickingUpParcel(GetDrone(droneId).ParcelInDelivery.Id, droneId); //dal.DeliveringParcel(GetDrone(droneId).ParcelInDelivery.Id);
             }
             catch (Exception e)
             {

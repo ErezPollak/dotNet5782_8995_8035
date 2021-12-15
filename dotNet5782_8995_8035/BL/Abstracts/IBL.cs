@@ -5,7 +5,6 @@ namespace BlApi
 {
     public interface IBL
     {
-
         #region adding option 
 
         public bool AddBaseStation(BO.BaseStation baesStation);
@@ -13,9 +12,7 @@ namespace BlApi
         public bool AddCustumer(BO.Customer customer);
         public bool AddParcel(BO.Parcel newPparcel);
 
-
         #endregion
-
 
         #region update options 
 
@@ -30,7 +27,6 @@ namespace BlApi
 
         #endregion
 
-
         #region show options 
 
         public BO.BaseStation GetBaseStation(int baseStationId);
@@ -44,8 +40,6 @@ namespace BlApi
         public IEnumerable<BO.ParcelForList> GetPacels(Predicate<BO.ParcelForList> f);
 
         #endregion
-
-
 
         #region operation functions
 

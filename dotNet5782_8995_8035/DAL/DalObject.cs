@@ -388,7 +388,7 @@ namespace Dal
 
             if (parcelIndex == -1) throw new IdDontExistsException(parcelId, "parcel");
 
-            return DataSource.parcels[parcelId];
+            return DataSource.parcels[parcelIndex];
         }
 
         #endregion
