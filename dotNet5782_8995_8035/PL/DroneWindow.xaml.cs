@@ -82,7 +82,6 @@ namespace PL
 
             AddingButton.Visibility = Visibility.Hidden;
 
-
             Model.Text = drone.Model;
             BatteryLabel.Content = drone.Battery;
             StatusLabel.Content = drone.Status.ToString();
@@ -90,7 +89,6 @@ namespace PL
             LatitudeText.Content = drone.Location.Latitude;
 
             UpdateModel.IsEnabled = false;
-
 
             if (drone.Status != BO.Enums.DroneStatuses.FREE)
             {
@@ -119,7 +117,6 @@ namespace PL
 
             if(drone.ParcelInDelivery != null)
             {
-
                 ParcelLabel.Content = drone.ParcelInDelivery.Id;
 
                 if(droneBL.GetParcel(bl.GetDrone(drone.Id).ParcelInDelivery.Id).PickupTime != null)

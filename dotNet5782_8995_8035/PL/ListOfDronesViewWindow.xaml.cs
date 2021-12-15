@@ -75,11 +75,11 @@ namespace PL
 
         private void ClickedItem(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            ///MessageBox.Show(ListOfDronesView.SelectedItem.ToString());
-
-            DroneWindow droneWindow = new DroneWindow(bl, this, bl.GetDrone(((BO.DroneForList)ListOfDronesView.SelectedItem).Id));
-            droneWindow.Show();
-
+            //if ((BO.DroneForList)sender != null)
+            //{
+                DroneWindow droneWindow = new DroneWindow(bl, this, bl.GetDrone(((BO.DroneForList)ListOfDronesView.SelectedItem).Id));
+                droneWindow.Show();
+            //}
         }
 
         private void XButton(object sender, RoutedEventArgs e)

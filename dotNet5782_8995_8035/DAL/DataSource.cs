@@ -79,14 +79,14 @@ namespace Dal
                         Longitude = Random.NextDouble() * 180 - 90,   // randomal values from -90 to 90 in order to represent a real coordinated location.
                     },
 
-                    ChargeSlots = Random.Next() % 5 + 2
+                    ChargeSlots = Random.Next() % 10 + 2
                 };
                 //adding the base station to the list.
                 baseStations.Add(baseStation);
             }
 
             //randomal values for drones.
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 20; i++)
             {
                 Drone drone = new Drone()
                 {
@@ -105,7 +105,7 @@ namespace Dal
                 Customer customer = new Customer()
                 {
                     Id = i * 22 + 234242,
-                    Name = (char)(Random.Next() % 26 + 65) + " , " + (char)(Random.Next() % 26 + 65),
+                    //Name = //GetRAndomName(),
                     Phone = "05" + Random.Next() % 10 + "-" + Random.Next() % 1000000,
 
                     Location = new Location
@@ -157,6 +157,17 @@ namespace Dal
                 ++index;
             }
         }
+
+        //private static string GetRAndomName()
+        //{
+        //    string name;
+
+        //    string[] maleNames = new string[1000] { "aaron", "abdul", "abe", "abel", "abraham", "adam", "adan", "adolfo", "adolph", "adrian" ,
+        //                                            , "abby", "abigail", "adele", "adrian" };
+        //    string[] lastNames = new string[1000] { "abbott", "acosta", "adams", "adkins", "aguilar" };
+
+            
+        //}
 
         //the function recives a date, and randing another while making sure that the randomal date is after the given one.
         private static DateTime PickingBiggerDate(DateTime? d)

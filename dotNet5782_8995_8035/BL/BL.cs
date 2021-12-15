@@ -51,7 +51,7 @@ namespace BlApi
             ChargingSpeed = electricityUse[4];
 
             //translates all the drones from the data level to 
-            foreach (DO.Drone dalDrone in dal.GetDrones(_ => true).ToList())
+            foreach (DO.Drone dalDrone in dal.GetDrones(_ => true))
             {
                 drones.Add(new DroneForList()
                 {
@@ -112,8 +112,7 @@ namespace BlApi
                         LocationTranslate(dal.GetCustomer(parcel.SenderId).Location);
 
                     // caculating the minimum precentage of batteary the drone needs in order to deliver the parcel and go to charge afterwards.
-                    minimumValue = deliveryDistance /
-                                   (int) (dal.ElectricityUse()[(int) GetDrone(parcel.DroneId).MaxWeight + 1]);
+                    minimumValue = deliveryDistance / (int) (dal.ElectricityUse()[(int) GetDrone(parcel.DroneId).MaxWeight + 1]);
                 }
 
                 //if the precentage is ok, the value of the battry is being randomiseied between the minimum value to one handred.
@@ -438,25 +437,26 @@ namespace BlApi
             //importing all the parcels and sorting them aaccording to their praiority.
             List<DO.Parcel> parcels = dal.GetParcels(p => 
                 ((int)p.Weight <= (int)drones[droneIndex].Weight) && 
-                ( 
-                              
+                (    
                    Distance(drones[droneIndex].Location, LocationTranslate(dal.GetCustomer(p.SenderId).Location)) +
                    Distance(LocationTranslate(dal.GetCustomer(p.SenderId).Location), LocationTranslate(dal.GetCustomer(p.TargetId).Location))+
                    Distance(LocationTranslate(dal.GetCustomer(p.TargetId).Location), GetBaseStation(dal.GetClosestStation(p.TargetId)).Location)
-
                 )
                 <= drones[droneIndex].Battery * dal.ElectricityUse()[(int)drones[droneIndex].Weight + 1] && 
 
                  p.DeliveryTime == null)      
                 
-                .OrderByDescending(p => (int) p.Priority)
+                .OrderByDescending(p => (int)p.Priority)
                 
                 .ThenBy(p => Distance(drones[droneIndex].Location, LocationTranslate(dal.GetCustomer(p.SenderId).Location))).ToList();
 
             //if no parcel left in the list after the removings it means that no parcel can be sent be thi drone, so exception will be thrown.
             if (parcels.Count == 0)
                 throw new UnableToAssignParcelToTheDroneException(droneId,
-                    " there is no parcel that can be sent by this drone due to: all the parcels are too heavy or too long distanses.");
+                    " No parcel can be sent by this drone due to one of the folloing resons:\n" +
+                    " 1) all the parcels are too heavy. \n" +
+                    " 2) too long distanses.\n" +
+                    " 3) there is no parcel that is waiting for delivery");
 
             //if there is a parcel that matches the needings of the drone the rewwuaiered will happen.
             drones[droneIndex].Status = Enums.DroneStatuses.DELIVERY;
@@ -532,7 +532,7 @@ namespace BlApi
             int saveParcelId = drones[index].ParcelId;
 
             //parcel id update.
-            drones[index].ParcelId = -1;
+            drones[index].ParcelId = 0;
                 
             //update the parcel from the dal.
             
@@ -704,21 +704,23 @@ namespace BlApi
 
             BO.ParcelInDelivery parcelInDelivery;
 
-            if (drones[index].ParcelId != -1)
+            if (drones[index].ParcelId != 0)
             {
                 BO.Parcel parcel = GetParcel(drones[index].ParcelId);
+                BO.Customer sender = GetCustomer(parcel.Sender.Id);
+                BO.Customer reciver = GetCustomer(parcel.Reciver.Id);
 
-                 parcelInDelivery = new ParcelInDelivery()
+                parcelInDelivery = new ParcelInDelivery()
                 {
                     Id = parcel.Id,
-                    Priority = GetParcel(parcel.Id).Priority,
-                    Sender = GetParcel(parcel.Id).Sender,
-                    Receiver = GetParcel(parcel.Id).Reciver,
-                    DeliveringLocation = GetCustomer(GetParcel(parcel.Id).Reciver.Id).Location,
-                    PickupLocation = GetCustomer(GetParcel(parcel.Id).Sender.Id).Location,
+                    Priority = parcel.Priority,//  GetParcel(parcel.Id).Priority,
+                    Sender = parcel.Sender,// GetParcel(parcel.Id).Sender,
+                    Receiver = parcel.Reciver, // GetParcel(parcel.Id).Reciver,
+                    DeliveringLocation = sender.Location,
+                    PickupLocation = reciver.Location,
                     Status = Enums.ParcelStatus.ASSIGNED,
-                    Weight = GetParcel(parcel.Id).Weight,
-                    Distance = Distance(GetCustomer(GetParcel(parcel.Id).Reciver.Id).Location, GetCustomer(GetParcel(parcel.Id).Sender.Id).Location)
+                    Weight = parcel.Weight, // GetParcel(parcel.Id).Weight,
+                    Distance = Distance(sender.Location, reciver.Location)
                 };
             }
             else
@@ -774,7 +776,8 @@ namespace BlApi
         {
             try
             {
-               DO.Parcel dalParcel = dal.GetParcel(parcelId);
+                DO.Parcel dalParcel = dal.GetParcel(parcelId);
+                
                 CoustomerForParcel sender = new CoustomerForParcel()
                 {
                     Id = dalParcel.SenderId,

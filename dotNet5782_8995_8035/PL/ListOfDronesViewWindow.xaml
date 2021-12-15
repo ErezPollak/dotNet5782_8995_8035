@@ -9,9 +9,13 @@
         mc:Ignorable="d"
         Title="ListOfDronesViewWindow" Height="543" Width="800" Loaded="Loded">
 
-    <Window.Background>
+    <Window.Resources>
+        <!--<local:DoubleToInt x:Key="converters"/>-->
+    </Window.Resources>
+    
+    <!--<Window.Background>
         <ImageBrush ImageSource = "/images/1.jpg" Stretch="UniformToFill"/>
-    </Window.Background>
+    </Window.Background>-->
 
 
     <Grid x:Name="MainGrid">
@@ -30,10 +34,16 @@
         <ComboBox x:Name="StatusSelector" Margin="27,24,27,5" Grid.Column="1" SelectedIndex="3" SelectionChanged ="StatusChoose" FontSize="15" FontWeight="Normal" Background="{x:Null}"/>
 
         <ComboBox x:Name="WeightSelecter" Margin="27,24,27,5" Grid.Column="2" SelectedIndex="3" SelectionChanged ="WeightChoose" FontSize="15" FontWeight="Normal" Background="{x:Null}"/>
-        <ListView x:Name="ListOfDronesView" Grid.Row="1" Margin="10,10,2,10" RenderTransformOrigin="0.831,0.089" Grid.ColumnSpan="4" MouseDoubleClick="ClickedItem" Background="{x:Null}" Foreground="#FF610101" FontWeight="Bold" >
+        <ListView x:Name="ListOfDronesView" Grid.Row="1" Margin="10,10,2,10" RenderTransformOrigin="0.831,0.089" Grid.ColumnSpan="4" MouseDoubleClick="ClickedItem" Background="{x:Null}" Foreground="#FF610101" FontWeight="Bold" Grid.RowSpan="12" MinHeight="5" >
             <ListView.View>
                 <GridView>
-                    <GridViewColumn/>
+                    <GridViewColumn Header = "ID" DisplayMemberBinding="{Binding Path = Id}" />
+                    <GridViewColumn Header = "Model" DisplayMemberBinding="{Binding Path = Model}" />
+                    <GridViewColumn Header = "Weight" DisplayMemberBinding="{Binding Path = Weight}" />
+                    <GridViewColumn Header = "Battery" DisplayMemberBinding="{Binding Path = Battery , Converter={StaticResource converters}}" />
+                    <GridViewColumn Header = "Status" DisplayMemberBinding="{Binding Path = Status}" />
+                    <GridViewColumn Header = "location" DisplayMemberBinding="{Binding Path = Location}" />
+                    <GridViewColumn Header = "ParcelId" DisplayMemberBinding="{Binding Path = ParcelId}" />
                 </GridView>
             </ListView.View>
         </ListView>
