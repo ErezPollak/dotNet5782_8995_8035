@@ -105,13 +105,13 @@ namespace Dal
                 Customer customer = new Customer()
                 {
                     Id = i * 22 + 234242,
-                    //Name = //GetRAndomName(),
+                    Name = GetRAndomName(),
                     Phone = "05" + Random.Next() % 10 + "-" + Random.Next() % 1000000,
 
                     Location = new Location
                     {
-                        Latitude = Random.NextDouble() * 360 - 180,   // randomal values from -180 to 180 in order to represent a real coordinated location.
-                        Longitude = Random.NextDouble() * 180 - 90,   // randomal values from -90 to 90 in order to represent a real coordinated location.
+                        Latitude = Random.NextDouble() * 360 - 180, // randomal values from -180 to 180 in order to represent a real coordinated location.
+                        Longitude = Random.NextDouble() * 180 - 90, // randomal values from -90 to 90 in order to represent a real coordinated location.
                     },
                 };
 
@@ -158,16 +158,16 @@ namespace Dal
             }
         }
 
-        //private static string GetRAndomName()
-        //{
-        //    string name;
+        private static string GetRAndomName()
+        {
+         
+            string[] firstNames = new string[] { "aaron", "abdul", "abe", "abel", "abraham", "adam", "adan", "adolfo", "adolph", "adrian" , "abby", "abigail", "adele", "adrian" };
+            string[] lastNames = new string[] { "abbott", "acosta", "adams", "adkins", "aguilar" };
 
-        //    string[] maleNames = new string[1000] { "aaron", "abdul", "abe", "abel", "abraham", "adam", "adan", "adolfo", "adolph", "adrian" ,
-        //                                            , "abby", "abigail", "adele", "adrian" };
-        //    string[] lastNames = new string[1000] { "abbott", "acosta", "adams", "adkins", "aguilar" };
 
-            
-        //}
+            return firstNames[Random.Next(firstNames.Length)] + " " + lastNames[Random.Next(lastNames.Length)];
+
+        }
 
         //the function recives a date, and randing another while making sure that the randomal date is after the given one.
         private static DateTime PickingBiggerDate(DateTime? d)

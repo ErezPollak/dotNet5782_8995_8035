@@ -217,7 +217,9 @@ namespace PL
             try
             {
                 droneBL.ChargeDrone(drone.Id);
+
                 listOfDronesViewWindow.UpdateList();
+
                 //if the drone is in charge we can open the option to un charge it.
                 MinutesInput.IsEnabled = true;
                 GoToCharge.IsEnabled = false;
@@ -282,6 +284,8 @@ namespace PL
             {
                 droneBL.AssignParcelToADrone(drone.Id);
 
+                listOfDronesViewWindow.UpdateList();
+
                 this.drone = droneBL.GetDrone(drone.Id);
 
                 StatusLabel.Content = drone.Status;
@@ -305,6 +309,8 @@ namespace PL
             {
                 droneBL.PickingUpParcelToDrone(drone.Id);
 
+                listOfDronesViewWindow.UpdateList();
+
                 this.drone = droneBL.GetDrone(drone.Id);
 
                 BatteryLabel.Content = drone.Battery;
@@ -326,6 +332,8 @@ namespace PL
             try
             {
                 droneBL.DeliveringParcelFromADrone(drone.Id);
+
+                listOfDronesViewWindow.UpdateList();
 
                 this.drone = droneBL.GetDrone(drone.Id);
 

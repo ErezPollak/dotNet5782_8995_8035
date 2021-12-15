@@ -918,23 +918,50 @@ namespace BlApi
         /// <param name="l1"></param>
         /// <param name="l2"></param>
         /// <returns></returns>
-        private static double Distance(BO.Location l1, BO.Location l2)
+        private double Distance(BO.Location l1, BO.Location l2)
         {
-            var baseRad = Math.PI * l1.Latitude / 180;
-            var targetRad = Math.PI * l2.Latitude / 180;
-            var theta = l1.Longitude - l2.Longitude;
-            var thetaRad = Math.PI * theta / 180;
+            int R = 6371;
 
-            double dist =
-                Math.Sin(baseRad) * Math.Sin(targetRad) + Math.Cos(baseRad) *
-                Math.Cos(targetRad) * Math.Cos(thetaRad);
-            dist = Math.Acos(dist);
+            double f1 = ConvertToRadians(l1.Latitude);
+            double f2 = ConvertToRadians(l2.Latitude);
 
-            dist = dist * 180 / Math.PI;
-            dist = dist * 9 * 1.1515; // the size in not the original size of earth.
+            double df = ConvertToRadians(l1.Latitude - l2.Latitude);
+            double dl = ConvertToRadians(l1.Longitude - l2.Longitude);
 
-            return dist;
+            double a = Math.Sin(df / 2) * Math.Sin(df / 2) +
+            Math.Cos(f1) * Math.Cos(f2) *
+            Math.Sin(dl / 2) * Math.Sin(dl / 2);
+
+            double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+
+            // Calculate the distance.
+            double d = R * c;
+
+            return d;
+
+
+
+            //var baseRad = Math.PI * l1.Latitude / 180;
+            //var targetRad = Math.PI * l2.Latitude / 180;
+            //var theta = l1.Longitude - l2.Longitude;
+            //var thetaRad = Math.PI * theta / 180;
+
+            //double dist =
+            //    Math.Sin(baseRad) * Math.Sin(targetRad) + Math.Cos(baseRad) *
+            //    Math.Cos(targetRad) * Math.Cos(thetaRad);
+            //dist = Math.Acos(dist);
+
+            //dist = dist * 180 / Math.PI;
+            //dist = dist * 9 * 1.1515; // the size in not the original size of earth.
+
+            //return dist;
         }
+
+        private double ConvertToRadians(double angle)
+        {
+            return (Math.PI / 180) * angle;
+        }
+
 
         /// <summary>
         /// the function gets idal locatin and transforms it into bal location by coping the values.
