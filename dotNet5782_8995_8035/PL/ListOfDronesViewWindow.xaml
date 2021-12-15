@@ -7,15 +7,16 @@
         xmlns:local="clr-namespace:PL"
         xmlns:BO="clr-namespace:IBAL.BO;assembly=BL" x:Class="PL.ListOfDronesViewWindow"
         mc:Ignorable="d"
-        Title="ListOfDronesViewWindow" Height="543" Width="800" Loaded="Loded">
+        Title="ListOfDronesViewWindow" Height="550" Width="1225" Loaded="Loded"
+        ResizeMode="NoResize">
 
     <Window.Resources>
         <!--<local:DoubleToInt x:Key="converters"/>-->
     </Window.Resources>
-    
-    <!--<Window.Background>
-        <ImageBrush ImageSource = "/images/1.jpg" Stretch="UniformToFill"/>
-    </Window.Background>-->
+
+    <Window.Background>
+        <ImageBrush ImageSource = "/images/5.jpg" Stretch="UniformToFill" />
+    </Window.Background>
 
 
     <Grid x:Name="MainGrid">
@@ -31,10 +32,13 @@
             <RowDefinition Height="400*"/>
         </Grid.RowDefinitions>
 
-        <ComboBox x:Name="StatusSelector" Margin="27,24,27,5" Grid.Column="1" SelectedIndex="3" SelectionChanged ="StatusChoose" FontSize="15" FontWeight="Normal" Background="{x:Null}"/>
+        <ComboBox x:Name="StatusSelector" Margin="27,24,27,5" Grid.Column="1" SelectedIndex="3" SelectionChanged ="StatusChoose" FontFamily="Segoe Print"/>
 
-        <ComboBox x:Name="WeightSelecter" Margin="27,24,27,5" Grid.Column="2" SelectedIndex="3" SelectionChanged ="WeightChoose" FontSize="15" FontWeight="Normal" Background="{x:Null}"/>
-        <ListView x:Name="ListOfDronesView" Grid.Row="1" Margin="10,10,2,10" RenderTransformOrigin="0.831,0.089" Grid.ColumnSpan="4" MouseDoubleClick="ClickedItem" Background="{x:Null}" Foreground="#FF610101" FontWeight="Bold" Grid.RowSpan="12" MinHeight="5" >
+        <ComboBox x:Name="WeightSelecter" Margin="27,24,27,5" Grid.Column="2" SelectedIndex="3" SelectionChanged ="WeightChoose" FontFamily="Segoe Print"/>
+        <ListView x:Name="ListOfDronesView" Grid.Row="1" Margin="10,10,6,201" RenderTransformOrigin="0.831,0.089" Grid.ColumnSpan="5" MouseDoubleClick="ClickedItem" MinHeight="5" >
+            <ListView.Background>
+                <ImageBrush Opacity="10" ImageSource="/images/5.jpg"/>
+            </ListView.Background>
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header = "ID" DisplayMemberBinding="{Binding Path = Id}" />
@@ -47,10 +51,18 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button Content="add drone" Margin="0,10,0,10" Click="Button_Click" HorizontalAlignment="Center" Width="180" Background="{x:Null}"  />
-        <Label Content="Status selector" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Width="144" Height="24" FontWeight="Bold"/>
-        <Label Content="weight selector" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Top" Width="144" Height="24" FontWeight="Bold"/>
-        <Button Content="X" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="-1.136,-0.1" Height="32" Width="28" Click="XButton" Background="#FFF90B0B" FontWeight="Bold" FontSize="20" Grid.Column="3" Margin="172,0,0,0" Grid.ColumnSpan="2"/>
+        <Button Content="add drone" Margin="0,10,0,10" Click="Button_Click" HorizontalAlignment="Center" Width="180"  />
+        <Label Content="Status selector" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Width="156" Height="39" ScrollViewer.HorizontalScrollBarVisibility="Visible" FontFamily="Forte" FontSize="20" Background="Transparent" Foreground="#DDC3B63C" Margin="81,-7,0,0">
+            <Label.Effect>
+                <DropShadowEffect/>
+            </Label.Effect>
+        </Label>
+        <Label Content="weight selector" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Top" Width="156" Height="39" ScrollViewer.HorizontalScrollBarVisibility="Visible" FontFamily="Forte" FontSize="20" Background="Transparent" Foreground="#DDC3B63C" Margin="81,-7,0,0">
+            <Label.Effect>
+                <DropShadowEffect/>
+            </Label.Effect>
+        </Label>
+        <Button Content="X" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="-1.136,-0.1" Height="39" Width="52" Click="XButton" Background="#FFF90B0B" FontWeight="Bold" FontSize="20" Grid.Column="3" Margin="254,0,0,0" Grid.ColumnSpan="2"/>
 
     </Grid>
 </Window>
