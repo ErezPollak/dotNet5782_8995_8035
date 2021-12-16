@@ -35,7 +35,7 @@
         <ComboBox x:Name="StatusSelector" Margin="27,24,27,5" Grid.Column="1" SelectedIndex="3" SelectionChanged ="StatusChoose" FontFamily="Segoe Print"/>
 
         <ComboBox x:Name="WeightSelecter" Margin="27,24,27,5" Grid.Column="2" SelectedIndex="3" SelectionChanged ="WeightChoose" FontFamily="Segoe Print"/>
-        <ListView x:Name="ListOfDronesView" Grid.Row="1" Margin="10,10,6,201" RenderTransformOrigin="0.831,0.089" Grid.ColumnSpan="5" MouseDoubleClick="ClickedItem" MinHeight="5" >
+        <ListView x:Name="ListOfDronesView" Grid.Row="1" Margin="10,10,6,10" RenderTransformOrigin="0.831,0.089" Grid.ColumnSpan="5" MouseDoubleClick="ClickedItem" MinHeight="5" >
             <ListView.Background>
                 <ImageBrush Opacity="10" ImageSource="/images/5.jpg"/>
             </ListView.Background>
