@@ -246,7 +246,7 @@ namespace BlApi
             
             if (newDrone.ParcelInDelivery == null)
             {
-                parcelId = -1;
+                parcelId = 0;
             }
             else
             {
@@ -763,7 +763,10 @@ namespace BlApi
                 Id = dalCustomer.Id,
                 Name = dalCustomer.Name,
                 Phone = dalCustomer.Phone,
-                Location = LocationTranslate(dalCustomer.Location)
+                Location = LocationTranslate(dalCustomer.Location),
+                FromCustomer = ParcelTOParcelByCustumerList(GetPacels(p => p.SenderName == dalCustomer.Name)),
+                ToCustomer = ParcelTOParcelByCustumerList(GetPacels(p => p.ReceiverName == dalCustomer.Name))
+               
             };
         }
 
@@ -992,6 +995,18 @@ namespace BlApi
         {
             return dal.GetSerialNumber();
         }
+
+        public List<ParcelByCustomer> ParcelTOParcelByCustumerList(IEnumerable<BO.ParcelForList> parcels)
+        {
+            return parcels.Select(p => new ParcelByCustomer()
+            {
+                Id = p.Id,
+                Priority = p.Priority,
+                Status = p.Status,
+                Weight = p.Weight
+            }).ToList();
+        }
+
 
         #endregion
 

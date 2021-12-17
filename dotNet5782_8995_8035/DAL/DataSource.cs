@@ -30,7 +30,7 @@ namespace Dal
         internal static List<DroneCharge> droneCharges = new();
 
 
-        private static readonly Random Random = new(); 
+        private static readonly Random rnd = new(); 
 
         /// <summary>
         /// the function contains the information about the electricity use 
@@ -60,11 +60,11 @@ namespace Dal
         {
 
             //initilize values of the config function.
-            Config.Free = Random.NextDouble() * 100 + 50;
-            Config.Light = Config.Free - Random.NextDouble() * 30;
-            Config.Middel = Config.Light - Random.NextDouble() * 30;
-            Config.Heavy = Config.Middel - Random.NextDouble() * 30;
-            Config.ChargingSpeed = Random.NextDouble() * 10;
+            Config.Free = rnd.NextDouble() * 100 + 50;
+            Config.Light = Config.Free - rnd.NextDouble() * 30;
+            Config.Middel = Config.Light - rnd.NextDouble() * 30;
+            Config.Heavy = Config.Middel - rnd.NextDouble() * 30;
+            Config.ChargingSpeed = rnd.NextDouble() * 10;
 
             //randomal values for base stations.
             for (int i = 0; i < 2; i++)
@@ -75,11 +75,10 @@ namespace Dal
                     Name = i.ToString(),
                     Location = new Location
                     {
-                        Latitude = Random.NextDouble() * 360 - 180,   // randomal values from -180 to 180 in order to represent a real coordinated location.
-                        Longitude = Random.NextDouble() * 180 - 90,   // randomal values from -90 to 90 in order to represent a real coordinated location.
+                        Latitude = RandLatitude(),
+                        Longitude = RandLongtude()            
                     },
-
-                    ChargeSlots = Random.Next() % 10 + 2
+                    ChargeSlots = rnd.Next() % 10 + 2
                 };
                 //adding the base station to the list.
                 baseStations.Add(baseStation);
@@ -91,8 +90,8 @@ namespace Dal
                 Drone drone = new Drone()
                 {
                     Id = i * 34 + 254254,
-                    Model = (char)(Random.Next() % 26 + 65) + "" + (char)(Random.Next() % 26 + 65) + Random.Next() % 100000,
-                    MaxWeight = (WeightCategories)(Random.Next() % 3),
+                    Model = (char)(rnd.Next() % 26 + 65) + "" + (char)(rnd.Next() % 26 + 65) + rnd.Next() % 100000,
+                    MaxWeight = (WeightCategories)(rnd.Next() % 3),
                     
                 };
                 drones.Add(drone);
@@ -106,12 +105,12 @@ namespace Dal
                 {
                     Id = i * 22 + 234242,
                     Name = GetRAndomName(),
-                    Phone = "05" + Random.Next() % 10 + "-" + Random.Next() % 1000000,
+                    Phone = "05" + rnd.Next() % 10 + "-" + rnd.Next() % 1000000,
 
                     Location = new Location
                     {
-                        Latitude = Random.NextDouble() * 360 - 180, // randomal values from -180 to 180 in order to represent a real coordinated location.
-                        Longitude = Random.NextDouble() * 180 - 90, // randomal values from -90 to 90 in order to represent a real coordinated location.
+                        Latitude = RandLatitude(),
+                        Longitude = RandLongtude()
                     },
                 };
 
@@ -134,10 +133,10 @@ namespace Dal
                 Parcel parcel = new Parcel()
                 {
                     Id = i * 32 + 232345,
-                    SenderId = customers[Random.Next() % customers.Count].Id, // random values from the avalible customers.
-                    TargetId = customers[Random.Next() % customers.Count].Id, // random values from the avalible customers.
-                    Weight = (WeightCategories)(Random.Next() % 3),
-                    Priority = (Priorities)(Random.Next() % 3),
+                    SenderId = customers[rnd.Next() % customers.Count].Id, // random values from the avalible customers.
+                    TargetId = customers[rnd.Next() % customers.Count].Id, // random values from the avalible customers.
+                    Weight = (WeightCategories)(rnd.Next() % 3),
+                    Priority = (Priorities)(rnd.Next() % 3),
                     DroneId = dronesForParcels[i],                                   //initileized to not have any drone, the drone number will be updated in the dalobject class.
                     RequestedTime = PickingBiggerDate(DateTime.Now),  // initilesed to be the time of the initialization.
                     PickedUpTime = null,                        //initilesed for now, will change in  Dal class, when order is updated to be picked up.
@@ -165,7 +164,7 @@ namespace Dal
             string[] lastNames = new string[] { "abbott", "acosta", "adams", "adkins", "aguilar" };
 
 
-            return firstNames[Random.Next(firstNames.Length)] + " " + lastNames[Random.Next(lastNames.Length)];
+            return firstNames[rnd.Next(firstNames.Length)] + " " + lastNames[rnd.Next(lastNames.Length)];
 
         }
 
@@ -176,7 +175,7 @@ namespace Dal
 
             do
             {
-                newD = new DateTime(Random.Next() % 4 + 2020, Random.Next() % 5 + 1, Random.Next() % 5 + 1, Random.Next() % 24, Random.Next() % 60, Random.Next() % 60);
+                newD = new DateTime(rnd.Next() % 4 + 2020, rnd.Next() % 5 + 1, rnd.Next() % 5 + 1, rnd.Next() % 24, rnd.Next() % 60, rnd.Next() % 60);
             } while (newD < d);
 
             return newD;
@@ -194,10 +193,45 @@ namespace Dal
                 nums[i] = -1;
 
             for (int i = 0; i < 3; i++)
-                nums[Random.Next() % 10] = drones[i].Id;
+                nums[rnd.Next() % 10] = drones[i].Id;
 
             return nums;
         }
 
+
+
+        private static double RandLongtude()
+        {
+            return rnd.NextDouble()*(35.254321 - 35.153024) + 35.153024;
+        }   
+
+        private static double RandLatitude()
+        {
+            return rnd.NextDouble() * (31.878338 - 31.745826) + 31.745826;
+        }
+
     }
+
+    
+
+
 }
+
+
+
+//31.878338, 35.153024 LU                                  31.806531, 35.254321 RU
+
+
+
+
+
+
+
+
+
+
+//31.745826, 35.140715 LD
+
+
+
+

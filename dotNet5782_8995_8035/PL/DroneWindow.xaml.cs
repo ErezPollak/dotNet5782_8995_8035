@@ -6,6 +6,9 @@ using System.Windows.Media;
 
 namespace PL
 {
+
+    public enum PARCEL_STATE{ASSIGN , PICKUP , DELIVER}
+
     /// <summary>
     /// Interaction logic for DroneWindow.xaml
     /// </summary>
@@ -15,6 +18,8 @@ namespace PL
         BlApi.IBL droneBL;
         BO.Drone drone;
         ListOfDronesViewWindow listOfDronesViewWindow;
+
+        PARCEL_STATE parcelState;
 
         /// <summary>
         /// ctor for adding a drone.
@@ -29,6 +34,7 @@ namespace PL
             droneBL = bl;
             this.listOfDronesViewWindow = listOfDronesViewWindow;
 
+            this.Title = "Adding A Drone";
             WindowTitle.Content = "Adding A Drone";
 
             Weight.ItemsSource = Enum.GetValues(typeof(BO.Enums.WeightCategories));
@@ -49,9 +55,9 @@ namespace PL
             MinutesInput.Visibility = Visibility.Hidden;
             LabelMinutsInCharge.Visibility = Visibility.Hidden;
 
-            AssiningParcelToDrone.Visibility = Visibility.Hidden;
-            PickingUpAParcel.Visibility = Visibility.Hidden;
-            DliveringParcel.Visibility = Visibility.Hidden;
+            //AssiningParcelToDrone.Visibility = Visibility.Hidden;
+            //PickingUpAParcel.Visibility = Visibility.Hidden;
+            //DliveringParcel.Visibility = Visibility.Hidden;
 
 
         }
@@ -71,6 +77,7 @@ namespace PL
             this.listOfDronesViewWindow = listOfDronesViewWindow;
             this.drone = drone;
 
+            this.Title = "Operations On Drone";
             WindowTitle.Content = "Operations On Drone";
 
             DroneID.Text = drone.Id + "";
@@ -93,7 +100,7 @@ namespace PL
             if (drone.Status != BO.Enums.DroneStatuses.FREE)
             {
                 GoToCharge.IsEnabled = false;
-                AssiningParcelToDrone.IsEnabled = false;
+                //AssiningParcelToDrone.IsEnabled = false;
             }
 
             ReliceDroneFromCharge.IsEnabled = false;
@@ -111,8 +118,14 @@ namespace PL
 
             if (drone.Status != BO.Enums.DroneStatuses.DELIVERY)
             {
-                PickingUpAParcel.IsEnabled = false;
-                DliveringParcel.IsEnabled = false;
+                //assign need to be turns on
+                ParcelLabel.Content = "no parcel";
+                //PickingUpAParcel.IsEnabled = false;
+                //DliveringParcel.IsEnabled = false;
+
+                parcelState = PARCEL_STATE.ASSIGN;
+                DeliveringOption.Content = "Assining Parcel To Drone";
+
             }
 
             if(drone.ParcelInDelivery != null)
@@ -121,19 +134,32 @@ namespace PL
 
                 if(droneBL.GetParcel(bl.GetDrone(drone.Id).ParcelInDelivery.Id).PickupTime != null)
                 {
-                    PickingUpAParcel.IsEnabled = false;
+                    //delivery needs to be turned on
+                    //PickingUpAParcel.IsEnabled = false;
+
+                    parcelState = PARCEL_STATE.DELIVER;
+                    DeliveringOption.Content = "Dlivering Parcel";
+
                 }
                 else
                 {
-                    DliveringParcel.IsEnabled = false;
+                    //pickup needs to be turned on
+                    //DliveringParcel.IsEnabled = false;
+
+                    parcelState = PARCEL_STATE.PICKUP;
+                    DeliveringOption.Content = "Pick Up A Parcel";
                 }
             }
-            else
-            {
-                ParcelLabel.Content = "no parcel";
-                PickingUpAParcel.IsEnabled = false;
-                DliveringParcel.IsEnabled = false;
-            }
+            //else
+            //{
+            //    //assign need to be turns on
+            //    ParcelLabel.Content = "no parcel";
+            //    PickingUpAParcel.IsEnabled = false;
+            //    DliveringParcel.IsEnabled = false;
+
+            //    parcelState = PARCEL_STATE.ASSIGN;
+
+            //}
 
             RecommandingCharge((int)drone.Battery);
         }
@@ -223,7 +249,7 @@ namespace PL
                 //if the drone is in charge we can open the option to un charge it.
                 MinutesInput.IsEnabled = true;
                 GoToCharge.IsEnabled = false;
-                AssiningParcelToDrone.IsEnabled = false;
+                //AssiningParcelToDrone.IsEnabled = false;
 
                 drone = droneBL.GetDrone(drone.Id);
 
@@ -254,7 +280,7 @@ namespace PL
                 ReliceDroneFromCharge.Background = Brushes.LightGray;
                 ReliceDroneFromCharge.IsEnabled = false;
                 MinutesInput.IsEnabled = false;
-                AssiningParcelToDrone.IsEnabled = true;
+                //AssiningParcelToDrone.IsEnabled = true;
 
                 //after updating was seccussful we can update the drone we got from the user to be the new drone.
                 drone = droneBL.GetDrone(drone.Id);
@@ -278,81 +304,90 @@ namespace PL
             }
         }
        
-        private void AssiningParcelToDrone_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                droneBL.AssignParcelToADrone(drone.Id);
-
-                listOfDronesViewWindow.UpdateList();
-
-                this.drone = droneBL.GetDrone(drone.Id);
-
-                StatusLabel.Content = drone.Status;
-                ParcelLabel.Content = drone.ParcelInDelivery.Id;
-
-                AssiningParcelToDrone.IsEnabled = false;
-                GoToCharge.IsEnabled = false;
-                PickingUpAParcel.IsEnabled = true;
 
 
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ShowException(ex));
-            }
-        }
 
-        private void PickingUpAParcel_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                droneBL.PickingUpParcelToDrone(drone.Id);
 
-                listOfDronesViewWindow.UpdateList();
 
-                this.drone = droneBL.GetDrone(drone.Id);
 
-                BatteryLabel.Content = drone.Battery;
-                LongtudeText.Content = drone.Location.Longitude;
-                LatitudeText.Content = drone.Location.Latitude;
+        //private void AssiningParcelToDrone_Click(object sender, RoutedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        droneBL.AssignParcelToADrone(drone.Id);
 
-                PickingUpAParcel.IsEnabled = false;
-                DliveringParcel.IsEnabled = true;
+        //        listOfDronesViewWindow.UpdateList();
 
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ShowException(ex));
-            }
-        }
+        //        this.drone = droneBL.GetDrone(drone.Id);
 
-        private void DliveringParcel_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                droneBL.DeliveringParcelFromADrone(drone.Id);
+        //        StatusLabel.Content = drone.Status;
+        //        ParcelLabel.Content = drone.ParcelInDelivery.Id;
 
-                listOfDronesViewWindow.UpdateList();
+        //        AssiningParcelToDrone.IsEnabled = false;
+        //        GoToCharge.IsEnabled = false;
+        //        PickingUpAParcel.IsEnabled = true;
 
-                this.drone = droneBL.GetDrone(drone.Id);
 
-                StatusLabel.Content = drone.Status;
-                ParcelLabel.Content = "no parcel";
-                BatteryLabel.Content = drone.Battery;
-                LongtudeText.Content = drone.Location.Longitude;
-                LatitudeText.Content = drone.Location.Latitude;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show(ShowException(ex));
+        //    }
+        //}
 
-                AssiningParcelToDrone.IsEnabled = true;
-                DliveringParcel.IsEnabled = false;
-                GoToCharge.IsEnabled = true;
+        //private void PickingUpAParcel_Click(object sender, RoutedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        droneBL.PickingUpParcelToDrone(drone.Id);
 
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ShowException(ex));
-            }
-        }
+        //        listOfDronesViewWindow.UpdateList();
+
+        //        this.drone = droneBL.GetDrone(drone.Id);
+
+        //        BatteryLabel.Content = drone.Battery;
+        //        LongtudeText.Content = drone.Location.Longitude;
+        //        LatitudeText.Content = drone.Location.Latitude;
+
+        //        PickingUpAParcel.IsEnabled = false;
+        //        DliveringParcel.IsEnabled = true;
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show(ShowException(ex));
+        //    }
+        //}
+
+        //private void DliveringParcel_Click(object sender, RoutedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        droneBL.DeliveringParcelFromADrone(drone.Id);
+
+        //        listOfDronesViewWindow.UpdateList();
+
+        //        this.drone = droneBL.GetDrone(drone.Id);
+
+        //        StatusLabel.Content = drone.Status;
+        //        ParcelLabel.Content = "no parcel";
+        //        BatteryLabel.Content = drone.Battery;
+        //        LongtudeText.Content = drone.Location.Longitude;
+        //        LatitudeText.Content = drone.Location.Latitude;
+
+        //        AssiningParcelToDrone.IsEnabled = true;
+        //        DliveringParcel.IsEnabled = false;
+        //        GoToCharge.IsEnabled = true;
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show(ShowException(ex));
+        //    }
+        //}
+
+
+
 
 
 
@@ -418,6 +453,99 @@ namespace PL
             SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) & ~WS_SYSMENU);
         }
 
-        
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            switch (parcelState)
+            {
+                case PARCEL_STATE.ASSIGN:
+                    {
+                        try
+                        {
+                            droneBL.AssignParcelToADrone(drone.Id);
+
+                            listOfDronesViewWindow.UpdateList();
+
+                            DeliveringOption.Content = "Picking UP The Parcel";
+                            parcelState = PARCEL_STATE.PICKUP;
+
+                            this.drone = droneBL.GetDrone(drone.Id);
+
+                            StatusLabel.Content = drone.Status;
+                            ParcelLabel.Content = drone.ParcelInDelivery.Id;
+
+                            //AssiningParcelToDrone.IsEnabled = false;
+                            GoToCharge.IsEnabled = false;
+                            //PickingUpAParcel.IsEnabled = true;
+
+
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ShowException(ex));
+                        }
+                    }
+                    break;
+                case PARCEL_STATE.PICKUP:
+                    {
+                        try
+                        {
+                            droneBL.PickingUpParcelToDrone(drone.Id);
+
+                            listOfDronesViewWindow.UpdateList();
+
+                            DeliveringOption.Content = "Delivering Parcel";
+                            parcelState = PARCEL_STATE.DELIVER;
+
+                            this.drone = droneBL.GetDrone(drone.Id);
+
+                            BatteryLabel.Content = drone.Battery;
+                            LongtudeText.Content = drone.Location.Longitude;
+                            LatitudeText.Content = drone.Location.Latitude;
+
+                            //PickingUpAParcel.IsEnabled = false;
+                            //DliveringParcel.IsEnabled = true;
+
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ShowException(ex));
+                        }
+                    }
+                    break;
+                case PARCEL_STATE.DELIVER:
+                    {
+                        try
+                        {
+                            droneBL.DeliveringParcelFromADrone(drone.Id);
+
+                            listOfDronesViewWindow.UpdateList();
+
+                            DeliveringOption.Content = "Assign Parcel To Drone";
+                            parcelState = PARCEL_STATE.ASSIGN;
+
+
+                            this.drone = droneBL.GetDrone(drone.Id);
+
+                            StatusLabel.Content = drone.Status;
+                            ParcelLabel.Content = "no parcel";
+                            BatteryLabel.Content = drone.Battery;
+                            LongtudeText.Content = drone.Location.Longitude;
+                            LatitudeText.Content = drone.Location.Latitude;
+
+                            //AssiningParcelToDrone.IsEnabled = true;
+                            //DliveringParcel.IsEnabled = false;
+                            GoToCharge.IsEnabled = true;
+
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ShowException(ex));
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }
