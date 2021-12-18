@@ -7,7 +7,7 @@ using System.Windows.Media;
 namespace PL
 {
 
-    public enum PARCEL_STATE{ASSIGN , PICKUP , DELIVER}
+    public enum PARCEL_STATE { ASSIGN, PICKUP, DELIVER }
 
     /// <summary>
     /// Interaction logic for DroneWindow.xaml
@@ -26,7 +26,7 @@ namespace PL
         /// </summary>
         /// <param name="bl"></param>
         /// <param name="listOfDronesViewWindow"></param>
-        public DroneWindow(BlApi.IBL bl , ListOfDronesViewWindow listOfDronesViewWindow)
+        public DroneWindow(BlApi.IBL bl, ListOfDronesViewWindow listOfDronesViewWindow)
         {
             r = new Random();
 
@@ -43,22 +43,18 @@ namespace PL
             BatteryLabel.Visibility = Visibility.Hidden;
             StatusText.Visibility = Visibility.Hidden;
             StatusLabel.Visibility = Visibility.Hidden;
-            ParcelText.Visibility = Visibility.Hidden;
-            ParcelLabel.Visibility = Visibility.Hidden;
+             ParcelLabel.Visibility = Visibility.Hidden;
             LocationText.Visibility = Visibility.Hidden;
             LongtudeText.Visibility = Visibility.Hidden;
             LatitudeText.Visibility = Visibility.Hidden;
             UpdateModel.Visibility = Visibility.Hidden;
             GoToCharge.Visibility = Visibility.Hidden;
             ReliceDroneFromCharge.Visibility = Visibility.Hidden;
-            
             MinutesInput.Visibility = Visibility.Hidden;
             LabelMinutsInCharge.Visibility = Visibility.Hidden;
+            DeliveringOption.Visibility = Visibility.Hidden;
 
-            //AssiningParcelToDrone.Visibility = Visibility.Hidden;
-            //PickingUpAParcel.Visibility = Visibility.Hidden;
-            //DliveringParcel.Visibility = Visibility.Hidden;
-
+            //StationSeletor.DataContext = droneBL.GetBaseStations(b => b.FreeChargingSlots > 0);
 
         }
 
@@ -68,7 +64,7 @@ namespace PL
         /// <param name="bl"></param>
         /// <param name="listOfDronesViewWindow"></param>
         /// <param name="drone"></param>
-        public DroneWindow(BlApi.IBL bl, ListOfDronesViewWindow listOfDronesViewWindow , BO.Drone drone)
+        public DroneWindow(BlApi.IBL bl, ListOfDronesViewWindow listOfDronesViewWindow, BO.Drone drone)
         {
             r = new Random();
 
@@ -100,7 +96,6 @@ namespace PL
             if (drone.Status != BO.Enums.DroneStatuses.FREE)
             {
                 GoToCharge.IsEnabled = false;
-                //AssiningParcelToDrone.IsEnabled = false;
             }
 
             ReliceDroneFromCharge.IsEnabled = false;
@@ -120,34 +115,27 @@ namespace PL
             {
                 //assign need to be turns on
                 ParcelLabel.Content = "no parcel";
-                //PickingUpAParcel.IsEnabled = false;
-                //DliveringParcel.IsEnabled = false;
-
                 parcelState = PARCEL_STATE.ASSIGN;
-                DeliveringOption.Content = "Assining Parcel To Drone";
+                //DeliveringOption.Content = "Assining Parcel To Drone";
 
             }
 
-            if(drone.ParcelInDelivery != null)
+            if (drone.ParcelInDelivery != null)
             {
                 ParcelLabel.Content = drone.ParcelInDelivery.Id;
 
-                if(droneBL.GetParcel(bl.GetDrone(drone.Id).ParcelInDelivery.Id).PickupTime != null)
+                if (droneBL.GetParcel(bl.GetDrone(drone.Id).ParcelInDelivery.Id).PickupTime != null)
                 {
-                    //delivery needs to be turned on
-                    //PickingUpAParcel.IsEnabled = false;
-
                     parcelState = PARCEL_STATE.DELIVER;
-                    DeliveringOption.Content = "Dlivering Parcel";
+                    //DeliveringOption.Content = "Dlivering Parcel";
 
                 }
                 else
                 {
                     //pickup needs to be turned on
-                    //DliveringParcel.IsEnabled = false;
 
                     parcelState = PARCEL_STATE.PICKUP;
-                    DeliveringOption.Content = "Pick Up A Parcel";
+                    //DeliveringOption.Content = "Pick Up A Parcel";
                 }
             }
             //else
@@ -183,7 +171,7 @@ namespace PL
                     Location = null
                 };
 
-           
+
                 if (droneBL.AddDrone(newDrone))
                 {
                     MessageBox.Show("drone added seccussfully");
@@ -193,7 +181,8 @@ namespace PL
                     Close();
                 }
 
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 if (ex is BO.IdAlreadyExistsException || ex is FormatException)
                 {
@@ -202,7 +191,7 @@ namespace PL
 
                 MessageBox.Show(ShowException(ex));
 
-                
+
             }
         }
 
@@ -222,9 +211,7 @@ namespace PL
 
         private void UpdateModel_Click(object sender, RoutedEventArgs e)
         {
-            
-            UpdateModel.Background = Brushes.LightGray;
-
+            UpdateModel.Background = Brushes.Blue;
             try
             {
                 droneBL.UpdateNameForADrone(drone.Id, Model.Text);
@@ -232,10 +219,10 @@ namespace PL
             }
             catch (Exception ex)
             {
-
                 MessageBox.Show(ShowException(ex));
+                Model.Text = droneBL.GetDrone(drone.Id).Model;
             }
-            
+
         }
 
         private void GoToCharge_Click(object sender, RoutedEventArgs e)
@@ -256,7 +243,7 @@ namespace PL
                 StatusLabel.Content = drone.Status.ToString();
                 LongtudeText.Content = drone.Location.Longitude;
                 LatitudeText.Content = drone.Location.Latitude;
-                
+
                 RecommandingCharge(100);
 
             }
@@ -273,7 +260,7 @@ namespace PL
             try
             {
                 int minutes = int.Parse(MinutesInput.Text);
-                
+
                 droneBL.UnChargeDrone(drone.Id, minutes);
 
                 listOfDronesViewWindow.UpdateList();
@@ -286,14 +273,14 @@ namespace PL
                 drone = droneBL.GetDrone(drone.Id);
 
                 BatteryLabel.Content = drone.Battery;
-                if(drone.Battery != 100)
+                if (drone.Battery != 100)
                 {
                     GoToCharge.IsEnabled = true;
                 }
                 StatusLabel.Content = drone.Status;
-                
+
                 RecommandingCharge((int)drone.Battery);
-                
+
 
             }
             catch (Exception ex)
@@ -303,11 +290,6 @@ namespace PL
                 MessageBox.Show(ShowException(ex));
             }
         }
-       
-
-
-
-
 
 
         //private void AssiningParcelToDrone_Click(object sender, RoutedEventArgs e)
@@ -388,9 +370,6 @@ namespace PL
 
 
 
-
-
-
         private void DroneIdTextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
             DroneID.Foreground = Brushes.Black;
@@ -406,9 +385,9 @@ namespace PL
 
 
 
-        private string ShowException(Exception e) 
+        private string ShowException(Exception e)
         {
-            return ShowException(e, ""); 
+            return ShowException(e, "");
         }
 
         private string ShowException(Exception e, string s)
@@ -426,16 +405,17 @@ namespace PL
                 GoToCharge.Content = "Rcomanding Charge";
                 BatteryLabel.Foreground = Brushes.Orange;
             }
-            else{
+            else
+            {
                 GoToCharge.Background = Brushes.LightGray;
                 GoToCharge.Content = "Go To Charge";
                 BatteryLabel.Foreground = Brushes.Black;
             }
         }
 
-        
 
-        
+
+
 
         /// <summary>
         /// hiding the x button of the window
@@ -465,7 +445,7 @@ namespace PL
 
                             listOfDronesViewWindow.UpdateList();
 
-                            DeliveringOption.Content = "Picking UP The Parcel";
+                            //DeliveringOption.Content = "Picking UP The Parcel";
                             parcelState = PARCEL_STATE.PICKUP;
 
                             this.drone = droneBL.GetDrone(drone.Id);
@@ -493,7 +473,7 @@ namespace PL
 
                             listOfDronesViewWindow.UpdateList();
 
-                            DeliveringOption.Content = "Delivering Parcel";
+                            //DeliveringOption.Content = "Delivering Parcel";
                             parcelState = PARCEL_STATE.DELIVER;
 
                             this.drone = droneBL.GetDrone(drone.Id);
@@ -520,7 +500,7 @@ namespace PL
 
                             listOfDronesViewWindow.UpdateList();
 
-                            DeliveringOption.Content = "Assign Parcel To Drone";
+                            //DeliveringOption.Content = "Assign Parcel To Drone";
                             parcelState = PARCEL_STATE.ASSIGN;
 
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DO;
 using BO;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace BlApi
 {
@@ -62,8 +63,6 @@ namespace BlApi
                 });
             }
 
-            //dalObject.GetParcels(parcel => parcel.DroneId != -1 && parcel.AcceptedTime == null).ToList().ForEach(c => Console.WriteLine(c.Id));
-
             //going through all the parcels that have a drone, and was not delivered.
             foreach (DO.Parcel parcel in dal.GetParcels(parcel =>
                 parcel.DroneId != -1 && parcel.AcceptedTime == null))
@@ -120,7 +119,7 @@ namespace BlApi
             }
 
             //needed for the iteration.
-            List<DO.Parcel> parcels = dal.GetParcels(_ => true).ToList();
+            IEnumerable<DO.Parcel> parcels = dal.GetParcels(_ => true);
 
             //going through all the drones.
             foreach (DroneForList drone in drones)
@@ -129,17 +128,17 @@ namespace BlApi
                 if (drone.Status == Enums.DroneStatuses.FREE)
                 {
                     //getting random value from the list.
-                    int index = Random.Next() % (parcels.Count);
+                    int index = Random.Next() % (parcels.Count());
 
                     //seting the drones location the drone to be in a target location of the randomisied parcel.
-                    drone.Location = LocationTranslate(dal.GetCustomer(parcels[index].TargetId).Location);
+                    drone.Location = LocationTranslate(dal.GetCustomer(parcels.ElementAt(index).TargetId).Location);
 
                     //caculating the distance to the clothest station.
                     double deliveryDistance =
                         Distance(
                             LocationTranslate(dal
-                                .GetBaseStation(dal.GetClosestStation(parcels[index].TargetId)).Location),
-                            LocationTranslate(dal.GetCustomer(parcels[index].TargetId).Location));
+                                .GetBaseStation(dal.GetClosestStation(parcels.ElementAt(index).TargetId)).Location),
+                            LocationTranslate(dal.GetCustomer(parcels.ElementAt(index).TargetId).Location));
 
                     //caculating the battary consamption.
                     double battayConcamption = deliveryDistance / dal.ElectricityUse()[(int) drone.Weight + 1];
@@ -152,20 +151,19 @@ namespace BlApi
                 }
                 else if (drone.Status == Enums.DroneStatuses.MAINTENANCE)
                 {
-                    List<DO.BaseStation> avalibleBaseStations =
-                        dal.GetBaseStations(b => b.ChargeSlots > 0).ToList();
+                    IEnumerable<DO.BaseStation> avalibleBaseStations = dal.GetBaseStations(b => b.ChargeSlots > 0);
 
                     //random number of a station.
-                    int stationIndex = Random.Next() % avalibleBaseStations.Count;
+                    int stationIndex = Random.Next() % avalibleBaseStations.Count();
 
                     //setting the location of the drone to be the location of the randomaised station.
-                    drone.Location = LocationTranslate(avalibleBaseStations[stationIndex].Location);
+                    drone.Location = LocationTranslate(avalibleBaseStations.ElementAt(stationIndex).Location);
 
                     // updating the battary to be a random value from 0 to 20.
                     drone.Battery = Random.Next() % 20;
 
                     //sending the drone to charge.
-                    dal.ChargeDrone(avalibleBaseStations[stationIndex].Id, drone.Id);
+                    dal.ChargeDrone(avalibleBaseStations.ElementAt(stationIndex).Id, drone.Id);
                 }
             }
         } //end BL ctor
@@ -242,25 +240,26 @@ namespace BlApi
                 throw new BO.IdAlreadyExistsException(newDrone.Id, "droen");
             }
 
-            int parcelId;
+            int parcelId = newDrone.ParcelInDelivery == null ? 0 : newDrone.ParcelInDelivery.Id;
             
-            if (newDrone.ParcelInDelivery == null)
-            {
-                parcelId = 0;
-            }
-            else
-            {
-                parcelId = newDrone.ParcelInDelivery.Id;
-            }
+            //if (newDrone.ParcelInDelivery == null)
+            //{
+            //    parcelId = 0;
+            //}
+            //else
+            //{
+            //    parcelId = newDrone.ParcelInDelivery.Id;
+            //}
 
             if (newDrone.Location == null)
             {
-                List<BaseStationForList> avalibaleBaseStations =
-                    GetBaseStations(b => b.FreeChargingSlots > 0).ToList();
-                if (avalibaleBaseStations.Count == 0)
+                IEnumerable<BaseStationForList> avalibaleBaseStations = GetBaseStations(b => b.FreeChargingSlots > 0);
+                
+                if (avalibaleBaseStations.Count() == 0)
                     throw new UnableToAddDroneException("No BaseStation Avalible");
-                newDrone.Location = GetBaseStation(avalibaleBaseStations[Random.Next(avalibaleBaseStations.Count)].Id)
-                    .Location;
+                
+                newDrone.Location = GetBaseStation(avalibaleBaseStations.ElementAt(Random.Next(avalibaleBaseStations.Count())).Id).Location;
+
             }
 
             DroneForList balDrone = new DroneForList()
@@ -362,6 +361,10 @@ namespace BlApi
         /// <returns> true if the updaue complited successfully </returns>
         public bool UpdateNameForADrone(int droneId, string model)
         {
+
+            if (model == "")
+                throw new ModelEmptyException();
+
             int index = drones.FindIndex(d => d.Id == droneId);
 
             if(index != -1)
@@ -435,7 +438,7 @@ namespace BlApi
                 throw new UnableToAssignParcelToTheDroneException(droneId, " the drone is not free");
 
             //importing all the parcels and sorting them aaccording to their praiority.
-            List<DO.Parcel> parcels = dal.GetParcels(p => 
+            IEnumerable<DO.Parcel> parcels = dal.GetParcels(p => 
                 ((int)p.Weight <= (int)drones[droneIndex].Weight) && 
                 (    
                    Distance(drones[droneIndex].Location, LocationTranslate(dal.GetCustomer(p.SenderId).Location)) +
@@ -448,10 +451,10 @@ namespace BlApi
                 
                 .OrderByDescending(p => (int)p.Priority)
                 
-                .ThenBy(p => Distance(drones[droneIndex].Location, LocationTranslate(dal.GetCustomer(p.SenderId).Location))).ToList();
+                .ThenBy(p => Distance(drones[droneIndex].Location, LocationTranslate(dal.GetCustomer(p.SenderId).Location)));
 
             //if no parcel left in the list after the removings it means that no parcel can be sent be thi drone, so exception will be thrown.
-            if (parcels.Count == 0)
+            if (parcels.Count() == 0)
                 throw new UnableToAssignParcelToTheDroneException(droneId,
                     " No parcel can be sent by this drone due to one of the folloing resons:\n" +
                     " 1) all the parcels are too heavy. \n" +
@@ -583,13 +586,13 @@ namespace BlApi
                                  dal.ElectricityUse()[(int) drones[droneIndex].Weight + 1];
 
             //returns all the stations that the drone has enough fuel to get to, ordered by the closest base station.
-            List<DO.BaseStation> baseStations = dal.GetBaseStations(b =>
+            IEnumerable<DO.BaseStation> baseStations = dal.GetBaseStations(b =>
                     (Distance(LocationTranslate(b.Location), GetDrone(droneId).Location) <= maxDistance) &&
                     (b.ChargeSlots > 0))
-                .OrderBy(b => Distance(LocationTranslate(b.Location), GetDrone(droneId).Location)).ToList();
+                .OrderBy(b => Distance(LocationTranslate(b.Location), GetDrone(droneId).Location));
 
             //if there is no suitable station an exception will be thrown.
-            if (baseStations.Count == 0)
+            if (baseStations.Count() == 0)
                 throw new UnAbleToSendDroneToChargeException(
                     " there is no station that matches the needs of this drone");
 
@@ -662,8 +665,7 @@ namespace BlApi
                 throw new BO.IdDontExistsException(baseStationId, "base station", e);
             }
 
-            List<DroneInCharge> charges =
-                ChargeDroneToDroneInCharge(dal.GetChargeDrones(d => d.StationId == dalBaseStation.Id).ToList());
+            IEnumerable<DroneInCharge> charges = ChargeDroneToDroneInCharge(dal.GetChargeDrones(d => d.StationId == dalBaseStation.Id));
 
             return new BO.BaseStation()
             {
@@ -671,7 +673,7 @@ namespace BlApi
                 Name = dalBaseStation.Name,
                 ChargeSlots = dalBaseStation.ChargeSlots,
                 Location = LocationTranslate(dalBaseStation.Location),
-                ChargingDrones = charges
+                ChargingDrones = charges.ToList()
             };
         }
 
@@ -680,9 +682,9 @@ namespace BlApi
         /// </summary>
         /// <param name="droneCharges"></param>
         /// <returns></returns>
-        private List<DroneInCharge> ChargeDroneToDroneInCharge(List<DroneCharge> droneCharges)
+        private IEnumerable<DroneInCharge> ChargeDroneToDroneInCharge(IEnumerable<DroneCharge> droneCharges)
         {
-            return droneCharges.ConvertAll(dc => new DroneInCharge()
+            return droneCharges.Select(dc => new DroneInCharge()
             {
                 Id = dc.DroneId,
                 Battery = GetDrone(dc.DroneId).Battery
@@ -764,8 +766,8 @@ namespace BlApi
                 Name = dalCustomer.Name,
                 Phone = dalCustomer.Phone,
                 Location = LocationTranslate(dalCustomer.Location),
-                FromCustomer = ParcelTOParcelByCustumerList(GetPacels(p => p.SenderName == dalCustomer.Name)),
-                ToCustomer = ParcelTOParcelByCustumerList(GetPacels(p => p.ReceiverName == dalCustomer.Name))
+                FromCustomer = ParcelTOParcelByCustumerList(GetPacels(p => p.SenderName == dalCustomer.Name)).ToList(),
+                ToCustomer = ParcelTOParcelByCustumerList(GetPacels(p => p.ReceiverName == dalCustomer.Name)).ToList()
                
             };
         }
@@ -996,7 +998,7 @@ namespace BlApi
             return dal.GetSerialNumber();
         }
 
-        public List<ParcelByCustomer> ParcelTOParcelByCustumerList(IEnumerable<BO.ParcelForList> parcels)
+        public IEnumerable<ParcelByCustomer> ParcelTOParcelByCustumerList(IEnumerable<BO.ParcelForList> parcels)
         {
             return parcels.Select(p => new ParcelByCustomer()
             {
@@ -1004,11 +1006,12 @@ namespace BlApi
                 Priority = p.Priority,
                 Status = p.Status,
                 Weight = p.Weight
-            }).ToList();
+            });
         }
 
 
         #endregion
 
     } //END BL class
+
 } //end IBAL
