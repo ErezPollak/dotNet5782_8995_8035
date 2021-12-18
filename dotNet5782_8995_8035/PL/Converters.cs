@@ -27,19 +27,16 @@ namespace PL
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            PARCEL_STATE parcelState = (PARCEL_STATE)value;
+            return value is PARCEL_STATE state
+                ? state switch
+                {
+                    PARCEL_STATE.ASSIGN => "Assign Parcel To Drone",
+                    PARCEL_STATE.PICKUP => "Pick Up THe Parcel",
+                    PARCEL_STATE.DELIVER => "Deliver The Parcel",
+                    _ => "",
+                }
+            : "";
 
-            switch (parcelState)
-            {
-                case PARCEL_STATE.ASSIGN:
-                    return "Assign Parcel To Drone";
-                case PARCEL_STATE.PICKUP:
-                    return "Pick Up THe Parcel";
-                case PARCEL_STATE.DELIVER:
-                    return "Deliver The Parcel";
-                default:
-                    return "";
-            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -58,7 +55,7 @@ namespace PL
             if (isOperation) 
                 return Visibility.Visible;
             else 
-                return Visibility.Hidden;
+                return Visibility.Collapsed;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -37,11 +37,29 @@ namespace PL
             this.listOfDronesViewWindow = listOfDronesViewWindow;
 
             this.Title = "Adding A Drone";
-            WindowTitle.Content = "Adding A Drone";
 
             Weight.ItemsSource = Enum.GetValues(typeof(BO.Enums.WeightCategories));
 
-            isOperation = false;
+            BatteryText.Visibility = Visibility.Collapsed;
+            BatteryLabel.Visibility = Visibility.Collapsed;
+            StatusText.Visibility = Visibility.Collapsed;
+            StatusLabel.Visibility = Visibility.Collapsed;
+            ParcelText.Visibility = Visibility.Collapsed;
+            ParcelLabel.Visibility = Visibility.Collapsed;
+            LocationText.Visibility = Visibility.Collapsed;
+            LongtudeText.Visibility = Visibility.Collapsed;
+            LatitudeText.Visibility = Visibility.Collapsed;
+            UpdateModel.Visibility = Visibility.Collapsed;
+            GoToCharge.Visibility = Visibility.Collapsed;
+            ReliceDroneFromCharge.Visibility = Visibility.Collapsed;
+            ProgresDelivery.Visibility = Visibility.Collapsed;
+
+
+            MinutesInput.Visibility = Visibility.Collapsed;
+            LabelMinutsInCharge.Visibility = Visibility.Collapsed;
+
+            DeliveringOption.Visibility = Visibility.Collapsed;
+            
 
             BatteryText.DataContext = isOperation;//.Visibility = Visibility.Hidden;
             BatteryLabel.DataContext = isOperation;//.Visibility = Visibility.Hidden;
@@ -83,12 +101,11 @@ namespace PL
             isOperation = true;
 
             this.Title = "Operations On Drone";
-            WindowTitle.Content = "Operations On Drone";
 
             DroneID.Text = drone.Id + "";
             DroneID.IsEnabled = false;
 
-            Weight.ItemsSource = Enum.GetValues(typeof(BO.Enums.WeightCategories));
+            Weight.ItemsSource = Enum.GetValues<BO.Enums.WeightCategories>();
             Weight.SelectedIndex = (int)drone.MaxWeight;
             Weight.IsEnabled = false;
 
@@ -490,7 +507,7 @@ namespace PL
                             GoToCharge.IsEnabled = false;
                             //PickingUpAParcel.IsEnabled = true;
 
-
+                            ProgresDelivery.Value = 66;
                         }
                         catch (Exception ex)
                         {
