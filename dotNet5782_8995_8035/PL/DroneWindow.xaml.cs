@@ -21,6 +21,8 @@ namespace PL
 
         PARCEL_STATE parcelState;
 
+        bool isOperation;
+
         /// <summary>
         /// ctor for adding a drone.
         /// </summary>
@@ -39,21 +41,26 @@ namespace PL
 
             Weight.ItemsSource = Enum.GetValues(typeof(BO.Enums.WeightCategories));
 
-            BatteryText.Visibility = Visibility.Hidden;
-            BatteryLabel.Visibility = Visibility.Hidden;
-            StatusText.Visibility = Visibility.Hidden;
-            StatusLabel.Visibility = Visibility.Hidden;
-             ParcelLabel.Visibility = Visibility.Hidden;
-            LocationText.Visibility = Visibility.Hidden;
-            LongtudeText.Visibility = Visibility.Hidden;
-            LatitudeText.Visibility = Visibility.Hidden;
-            UpdateModel.Visibility = Visibility.Hidden;
-            GoToCharge.Visibility = Visibility.Hidden;
-            ReliceDroneFromCharge.Visibility = Visibility.Hidden;
-            MinutesInput.Visibility = Visibility.Hidden;
-            LabelMinutsInCharge.Visibility = Visibility.Hidden;
-            DeliveringOption.Visibility = Visibility.Hidden;
+            isOperation = false;
 
+            BatteryText.DataContext = isOperation;//.Visibility = Visibility.Hidden;
+            BatteryLabel.DataContext = isOperation;//.Visibility = Visibility.Hidden;
+            StatusText.DataContext = isOperation;//.Visibility = Visibility.Hidden;
+            StatusLabel.DataContext = isOperation;//.Visibility = Visibility.Hidden;
+            ParcelLabel.DataContext = isOperation;//.Visibility = Visibility.Hidden;
+            ParcelText.DataContext = isOperation;
+            LocationText.DataContext = isOperation;//.Visibility = Visibility.Hidden;
+            LongtudeText.DataContext = isOperation;//.Visibility = Visibility.Hidden;
+            LatitudeText.DataContext = isOperation;//.Visibility = Visibility.Hidden;
+            
+            UpdateModel.DataContext = isOperation;//.Visibility = Visibility.Hidden;
+            GoToCharge.DataContext = isOperation;//.Visibility = Visibility.Hidden;
+            ReliceDroneFromCharge.DataContext = isOperation;//.Visibility = Visibility.Hidden;
+            MinutesInput.DataContext = isOperation;//.Visibility = Visibility.Hidden;
+            LabelMinutsInCharge.DataContext = isOperation;//.Visibility = Visibility.Hidden;
+            DeliveringOption.DataContext = isOperation;//.Visibility = Visibility.Hidden;
+
+            DeliveringOption.DataContext = parcelState;
             //StationSeletor.DataContext = droneBL.GetBaseStations(b => b.FreeChargingSlots > 0);
 
         }
@@ -72,6 +79,8 @@ namespace PL
             droneBL = bl;
             this.listOfDronesViewWindow = listOfDronesViewWindow;
             this.drone = drone;
+
+            isOperation = true;
 
             this.Title = "Operations On Drone";
             WindowTitle.Content = "Operations On Drone";
@@ -148,8 +157,32 @@ namespace PL
             //    parcelState = PARCEL_STATE.ASSIGN;
 
             //}
-
+            DeliveringOption.DataContext = parcelState;
             RecommandingCharge((int)drone.Battery);
+
+
+
+
+
+            BatteryText.DataContext = isOperation;//.Visibility = Visibility.Hidden;
+            BatteryLabel.DataContext = isOperation;//.Visibility = Visibility.Hidden;
+            StatusText.DataContext = isOperation;//.Visibility = Visibility.Hidden;
+            StatusLabel.DataContext = isOperation;//.Visibility = Visibility.Hidden;
+            ParcelLabel.DataContext = isOperation;//.Visibility = Visibility.Hidden;
+            ParcelText.DataContext = isOperation;
+            LocationText.DataContext = isOperation;//.Visibility = Visibility.Hidden;
+            LongtudeText.DataContext = isOperation;//.Visibility = Visibility.Hidden;
+            LatitudeText.DataContext = isOperation;//.Visibility = Visibility.Hidden;
+
+            UpdateModel.DataContext = isOperation;//.Visibility = Visibility.Hidden;
+            GoToCharge.DataContext = isOperation;//.Visibility = Visibility.Hidden;
+            ReliceDroneFromCharge.DataContext = isOperation;//.Visibility = Visibility.Hidden;
+            MinutesInput.DataContext = isOperation;//.Visibility = Visibility.Hidden;
+            LabelMinutsInCharge.DataContext = isOperation;//.Visibility = Visibility.Hidden;
+            //DeliveringOption.DataContext = isOperation;//.Visibility = Visibility.Hidden;
+
+
+
         }
 
         private void AddDroneButton(object sender, RoutedEventArgs e)
@@ -445,8 +478,8 @@ namespace PL
 
                             listOfDronesViewWindow.UpdateList();
 
-                            //DeliveringOption.Content = "Picking UP The Parcel";
                             parcelState = PARCEL_STATE.PICKUP;
+                            DeliveringOption.DataContext = parcelState;
 
                             this.drone = droneBL.GetDrone(drone.Id);
 
@@ -473,8 +506,8 @@ namespace PL
 
                             listOfDronesViewWindow.UpdateList();
 
-                            //DeliveringOption.Content = "Delivering Parcel";
                             parcelState = PARCEL_STATE.DELIVER;
+                            DeliveringOption.DataContext = parcelState;
 
                             this.drone = droneBL.GetDrone(drone.Id);
 
@@ -502,7 +535,7 @@ namespace PL
 
                             //DeliveringOption.Content = "Assign Parcel To Drone";
                             parcelState = PARCEL_STATE.ASSIGN;
-
+                            DeliveringOption.DataContext = parcelState;
 
                             this.drone = droneBL.GetDrone(drone.Id);
 
