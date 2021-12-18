@@ -57,7 +57,7 @@
         <Button x:Name="ReliceDroneFromCharge" Margin="3" Content="Uncharge Drone" Width="180" Click="ReliceDroneFromCharge_Click"/>
         <StackPanel Margin="3" Orientation="Horizontal" HorizontalAlignment="Center" >
             <Label x:Name="LabelMinutsInCharge" Content="Insert Minutes:"  VerticalAlignment="Center"/>
-            <TextBox x:Name="MinutesInput" Text="" materialDesign:HintAssist.Hint="Minutes in charge" TextWrapping="Wrap" Width="100" RenderTransformOrigin="0.596,0.084" TextChanged="ModelUpdatedButtonClick" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+            <TextBox x:Name="MinutesInput" Text="" materialDesign:HintAssist.Hint="Minutes in charge" TextWrapping="Wrap" Width="100" RenderTransformOrigin="0.596,0.084" TextChanged="MinutesInputChanged" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
         </StackPanel>
 
         <Button x:Name="DeliveringOption" Margin="3" Content="{Binding Converter={StaticResource stateToText} , UpdateSourceTrigger=PropertyChanged}"  Width="174" Click="Button_Click"  />
