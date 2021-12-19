@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" x:Class="PL.DroneWindow"
-        xmlns:Maps="using:Windows.UI.Xaml.Controls.Maps"
         mc:Ignorable="d"
         Title="" 
         Height="600"
@@ -14,10 +13,11 @@
     <!--xmlns:controls="clr-namespace:Microsoft.Toolkit.Wpf.UI.Controls;assembly=Microsoft.Toolkit.Wpf.UI.Controls"-->
     <Window.Resources>
         <local:StateToText x:Key="stateToText"/>
+        <local:BoolToVisability x:Key="boolToVisability"/>
     </Window.Resources>
 
-    <StackPanel Margin="5" Width="400" HorizontalAlignment="Left">
-        <Button Content="X" RenderTransformOrigin="-1.136,-0.1" Height="42" Width="48" Click="XButton" Background="#FFF90B0B" FontWeight="Bold" FontSize="20" HorizontalAlignment="Right"/>
+    <StackPanel x:Name="MainStack" Margin="5" Width="400" HorizontalAlignment="Left">
+        <Button Content="X" RenderTransformOrigin="-1.136,-0.1" Height="42" Width="49" Click="XButton" Background="#FFF90B0B" FontWeight="Bold" FontSize="20" HorizontalAlignment="Right"/>
         <StackPanel Margin="3" Orientation="Horizontal">
             <Label Content="Drone ID" Width="108" />
             <TextBox x:Name="DroneID" Text="" materialDesign:HintAssist.Hint="Drone ID"  Width="180" TextChanged="DroneIdTextChanged" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
@@ -28,53 +28,51 @@
         </StackPanel>
         <StackPanel Margin="3" Orientation="Horizontal">
             <Label Content="Model" Width="108" />
-            <TextBox x:Name="Model" Text="" materialDesign:HintAssist.Hint="Model" TextWrapping="Wrap" Width="180" RenderTransformOrigin="0.596,0.084" TextChanged="ModelUpdatedButtonClick" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+            <TextBox x:Name="Model" Text="" materialDesign:HintAssist.Hint="Model" TextWrapping="Wrap" Width="180" RenderTransformOrigin="0.596,0.084" TextChanged="ModelUpdatedChanged" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+            <Button x:Name="UpdateModel"
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    materialDesign:ButtonProgressAssist.Value="-1"
+                    materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
+                    materialDesign:ButtonProgressAssist.IsIndeterminate="True"
+                    Content="Update"
+                    Margin="2,0"
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Width="78" Height="29" 
+                    Visibility="{Binding}" Click="UpdateModel_Click"/>
         </StackPanel>
         <StackPanel Margin="3" Orientation="Horizontal">
-            <Label x:Name="BatteryText" Content="Battery" RenderTransformOrigin="0.22,-0.281" Width="108"  />
-            <Label x:Name="BatteryLabel" Content=""  Width="180" />
+            <Label x:Name="BatteryText" Content="Battery" Visibility="{Binding}" RenderTransformOrigin="0.22,-0.281" Width="108"  />
+            <Label x:Name="BatteryLabel" Content="" Visibility="{Binding}"  Width="180" />
         </StackPanel>
         <StackPanel Margin="3" Orientation="Horizontal">
-            <Label x:Name="StatusText" Content="Status" Width="108" />
-            <Label x:Name="StatusLabel" Content=""  RenderTransformOrigin="0.57,0.52" Width="180" />
+            <Label x:Name="StatusText" Content="Status" Visibility="{Binding}" Width="108" />
+            <Label x:Name="StatusLabel" Content="" Visibility="{Binding}" RenderTransformOrigin="0.57,0.52" Width="180" />
         </StackPanel>
         <StackPanel Margin="3" Orientation="Horizontal">
-            <Label x:Name="ParcelText" Content="parcelId" RenderTransformOrigin="0.22,-0.281" Width="108" />
-            <Label x:Name="ParcelLabel" Content="" Width="180" />
+            <Label x:Name="ParcelText" Content="parcelId" Visibility="{Binding}" RenderTransformOrigin="0.22,-0.281" Width="108" />
+            <Label x:Name="ParcelLabel" Content="" Visibility="{Binding}" Width="180" />
         </StackPanel>
         <StackPanel Margin="3" Orientation="Horizontal">
-            <Label x:Name="LocationText" Content="Location" Width="108" />
+            <Label x:Name="LocationText" Content="Location" Visibility="{Binding}" Width="108" />
             <StackPanel>
-                <Label x:Name="LongtudeText" Content="" Width="180" />
-                <Label x:Name="LatitudeText" Content="" RenderTransformOrigin="0.024,-0.193" Width="180"/>
+                <Label x:Name="LongtudeText" Content="" Visibility="{Binding}" Width="180" />
+                <Label x:Name="LatitudeText" Content="" Visibility="{Binding}" RenderTransformOrigin="0.024,-0.193" Width="180"/>
             </StackPanel>
         </StackPanel>
 
         <Button x:Name="AddingButton" Margin="3" Content="Add New Drone" Width="180" Click="AddDroneButton" />
-        <Button x:Name="UpdateModel" Margin="3" Content="update model" Width="180" Click="UpdateModel_Click"  />
-        <Button x:Name="GoToCharge" Margin="3" Content="go to charge" Width="180" Click="GoToCharge_Click" />
+        
+        <Button x:Name="GoToCharge" Margin="3" Content="go to charge" Visibility="{Binding}" Width="180" Click="GoToCharge_Click" />
 
-        <Button x:Name="ReliceDroneFromCharge" Margin="3" Content="Uncharge Drone" Width="180" Click="ReliceDroneFromCharge_Click"/>
+        <Button x:Name="ReliceDroneFromCharge" Margin="3" Content="Uncharge Drone" Visibility="{Binding}" Width="180" Click="ReliceDroneFromCharge_Click"/>
         <StackPanel Margin="3" Orientation="Horizontal" HorizontalAlignment="Center" >
-            <Label x:Name="LabelMinutsInCharge" Content="Insert Minutes:"  VerticalAlignment="Center"/>
-            <TextBox x:Name="MinutesInput" Text="" materialDesign:HintAssist.Hint="Minutes in charge" TextWrapping="Wrap" Width="100" RenderTransformOrigin="0.596,0.084" TextChanged="MinutesInputChanged" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+            <Label x:Name="LabelMinutsInCharge" Content="Insert Minutes:" Visibility="{Binding}"  VerticalAlignment="Center"/>
+            <TextBox x:Name="MinutesInput" Text="" Visibility="{Binding}" materialDesign:HintAssist.Hint="Minutes in charge" TextWrapping="Wrap" Width="99" RenderTransformOrigin="0.596,0.084" TextChanged="MinutesInputChanged" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+            <materialDesign:PackIcon Kind="BatteryCharging30" Visibility="{Binding}" RenderTransformOrigin="0.557,1.734" Height="36" />
         </StackPanel>
 
-        <Button x:Name="DeliveringOption" Margin="3" Content="{Binding Converter={StaticResource stateToText} , UpdateSourceTrigger=PropertyChanged}"  Width="174" Click="Button_Click"  />
-        <ProgressBar x:Name="ProgresDelivery" Value="33" Height="10" />
-        <!--<Button x:Name="AssiningParcelToDrone" Content="Assining ParcFel To Drone" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Center" Height="42" Width="180" Click="AssiningParcelToDrone_Click"/>
-
-        <Button x:Name="PickingUpAParcel" Content="Picking Up A Parcel" HorizontalAlignment="Center" Grid.Row="2" VerticalAlignment="Center" Height="46" Width="180" Click="PickingUpAParcel_Click"/>
-
-        <Button x:Name="DliveringParcel" Content="Delivering Parcel" HorizontalAlignment="Center" Grid.Row="3" VerticalAlignment="Top" RenderTransformOrigin="-1.666,-0.183" Height="41" Width="180" Click="DliveringParcel_Click" Margin="0,12,0,0"/>-->
-
-        <!--<MediaElement Height="49" Width="103"  />-->
-      
-
-        
-
-        <!--<MediaElement Source="file:images/ajax-loader.gif" LoadedBehavior="Play" Visibility="Visible" />-->
- 
+        <Button x:Name="DeliveringOption" Margin="3" Visibility="{Binding}" Content="{Binding ElementName=StatusText , Path=Content, UpdateSourceTrigger=PropertyChanged}"  Width="174" Click="Button_Click"  />
+        <ProgressBar x:Name="ProgresDelivery" Visibility="{Binding}" Value="33" Height="10" />
+       
     </StackPanel>
 
 </Window>

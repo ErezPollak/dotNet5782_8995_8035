@@ -27,12 +27,13 @@ namespace PL
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value is PARCEL_STATE state
+            
+            return value is string state
                 ? state switch
                 {
-                    PARCEL_STATE.ASSIGN => "Assign Parcel To Drone",
-                    PARCEL_STATE.PICKUP => "Pick Up THe Parcel",
-                    PARCEL_STATE.DELIVER => "Deliver The Parcel",
+                    "ASSIGN" => "Assign Parcel To Drone",
+                    "PICKUP" => "Pick Up THe Parcel",
+                    "DELIVER" => "Deliver The Parcel",
                     _ => "",
                 }
             : "";

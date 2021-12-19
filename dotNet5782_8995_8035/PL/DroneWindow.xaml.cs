@@ -21,7 +21,7 @@ namespace PL
 
         PARCEL_STATE parcelState;
 
-        bool isOperation;
+        Visibility isVisieble;
 
         /// <summary>
         /// ctor for adding a drone.
@@ -38,48 +38,10 @@ namespace PL
 
             this.Title = "Adding A Drone";
 
-            Weight.ItemsSource = Enum.GetValues(typeof(BO.Enums.WeightCategories));
+            Weight.ItemsSource = Enum.GetValues<BO.Enums.WeightCategories>();
 
-            BatteryText.Visibility = Visibility.Collapsed;
-            BatteryLabel.Visibility = Visibility.Collapsed;
-            StatusText.Visibility = Visibility.Collapsed;
-            StatusLabel.Visibility = Visibility.Collapsed;
-            ParcelText.Visibility = Visibility.Collapsed;
-            ParcelLabel.Visibility = Visibility.Collapsed;
-            LocationText.Visibility = Visibility.Collapsed;
-            LongtudeText.Visibility = Visibility.Collapsed;
-            LatitudeText.Visibility = Visibility.Collapsed;
-            UpdateModel.Visibility = Visibility.Collapsed;
-            GoToCharge.Visibility = Visibility.Collapsed;
-            ReliceDroneFromCharge.Visibility = Visibility.Collapsed;
-            ProgresDelivery.Visibility = Visibility.Collapsed;
-
-
-            MinutesInput.Visibility = Visibility.Collapsed;
-            LabelMinutsInCharge.Visibility = Visibility.Collapsed;
-
-            DeliveringOption.Visibility = Visibility.Collapsed;
-            
-
-            BatteryText.DataContext = isOperation;//.Visibility = Visibility.Hidden;
-            BatteryLabel.DataContext = isOperation;//.Visibility = Visibility.Hidden;
-            StatusText.DataContext = isOperation;//.Visibility = Visibility.Hidden;
-            StatusLabel.DataContext = isOperation;//.Visibility = Visibility.Hidden;
-            ParcelLabel.DataContext = isOperation;//.Visibility = Visibility.Hidden;
-            ParcelText.DataContext = isOperation;
-            LocationText.DataContext = isOperation;//.Visibility = Visibility.Hidden;
-            LongtudeText.DataContext = isOperation;//.Visibility = Visibility.Hidden;
-            LatitudeText.DataContext = isOperation;//.Visibility = Visibility.Hidden;
-            
-            UpdateModel.DataContext = isOperation;//.Visibility = Visibility.Hidden;
-            GoToCharge.DataContext = isOperation;//.Visibility = Visibility.Hidden;
-            ReliceDroneFromCharge.DataContext = isOperation;//.Visibility = Visibility.Hidden;
-            MinutesInput.DataContext = isOperation;//.Visibility = Visibility.Hidden;
-            LabelMinutsInCharge.DataContext = isOperation;//.Visibility = Visibility.Hidden;
-            DeliveringOption.DataContext = isOperation;//.Visibility = Visibility.Hidden;
-
-            DeliveringOption.DataContext = parcelState;
-            //StationSeletor.DataContext = droneBL.GetBaseStations(b => b.FreeChargingSlots > 0);
+            isVisieble = Visibility.Collapsed;
+            MainStack.DataContext = isVisieble;
 
         }
 
@@ -98,7 +60,8 @@ namespace PL
             this.listOfDronesViewWindow = listOfDronesViewWindow;
             this.drone = drone;
 
-            isOperation = true;
+            isVisieble = Visibility.Visible;
+            MainStack.DataContext = isVisieble;
 
             this.Title = "Operations On Drone";
 
@@ -116,8 +79,6 @@ namespace PL
             StatusLabel.Content = drone.Status.ToString();
             LongtudeText.Content = drone.Location.Longitude;
             LatitudeText.Content = drone.Location.Latitude;
-
-            UpdateModel.IsEnabled = false;
 
             if (drone.Status != BO.Enums.DroneStatuses.FREE)
             {
@@ -164,41 +125,8 @@ namespace PL
                     //DeliveringOption.Content = "Pick Up A Parcel";
                 }
             }
-            //else
-            //{
-            //    //assign need to be turns on
-            //    ParcelLabel.Content = "no parcel";
-            //    PickingUpAParcel.IsEnabled = false;
-            //    DliveringParcel.IsEnabled = false;
-
-            //    parcelState = PARCEL_STATE.ASSIGN;
-
-            //}
             DeliveringOption.DataContext = parcelState;
             RecommandingCharge((int)drone.Battery);
-
-
-
-
-
-            BatteryText.DataContext = isOperation;//.Visibility = Visibility.Hidden;
-            BatteryLabel.DataContext = isOperation;//.Visibility = Visibility.Hidden;
-            StatusText.DataContext = isOperation;//.Visibility = Visibility.Hidden;
-            StatusLabel.DataContext = isOperation;//.Visibility = Visibility.Hidden;
-            ParcelLabel.DataContext = isOperation;//.Visibility = Visibility.Hidden;
-            ParcelText.DataContext = isOperation;
-            LocationText.DataContext = isOperation;//.Visibility = Visibility.Hidden;
-            LongtudeText.DataContext = isOperation;//.Visibility = Visibility.Hidden;
-            LatitudeText.DataContext = isOperation;//.Visibility = Visibility.Hidden;
-
-            UpdateModel.DataContext = isOperation;//.Visibility = Visibility.Hidden;
-            GoToCharge.DataContext = isOperation;//.Visibility = Visibility.Hidden;
-            ReliceDroneFromCharge.DataContext = isOperation;//.Visibility = Visibility.Hidden;
-            MinutesInput.DataContext = isOperation;//.Visibility = Visibility.Hidden;
-            LabelMinutsInCharge.DataContext = isOperation;//.Visibility = Visibility.Hidden;
-            //DeliveringOption.DataContext = isOperation;//.Visibility = Visibility.Hidden;
-
-
 
         }
 
@@ -250,22 +178,22 @@ namespace PL
             Close();
         }
 
-        private void ModelUpdatedButtonClick(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        private void ModelUpdatedChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
             if (UpdateModel != null)
             {
                 UpdateModel.IsEnabled = true;
-                UpdateModel.Background = Brushes.Orange;
+                UpdateModel.Visibility = Visibility.Visible;
             }
         }
 
         private void UpdateModel_Click(object sender, RoutedEventArgs e)
         {
-            UpdateModel.Background = Brushes.Blue;
             try
             {
                 droneBL.UpdateNameForADrone(drone.Id, Model.Text);
                 listOfDronesViewWindow.UpdateList();
+                UpdateModel.Visibility = Visibility.Collapsed;
             }
             catch (Exception ex)
             {
@@ -286,7 +214,6 @@ namespace PL
                 //if the drone is in charge we can open the option to un charge it.
                 MinutesInput.IsEnabled = true;
                 GoToCharge.IsEnabled = false;
-                //AssiningParcelToDrone.IsEnabled = false;
 
                 drone = droneBL.GetDrone(drone.Id);
 
@@ -314,10 +241,8 @@ namespace PL
                 droneBL.UnChargeDrone(drone.Id, minutes);
 
                 listOfDronesViewWindow.UpdateList();
-                ReliceDroneFromCharge.Background = Brushes.LightGray;
                 ReliceDroneFromCharge.IsEnabled = false;
                 MinutesInput.IsEnabled = false;
-                //AssiningParcelToDrone.IsEnabled = true;
 
                 //after updating was seccussful we can update the drone we got from the user to be the new drone.
                 drone = droneBL.GetDrone(drone.Id);
@@ -336,89 +261,9 @@ namespace PL
             catch (Exception ex)
             {
                 MinutesInput.Foreground = Brushes.Red;
-                ReliceDroneFromCharge.Background = Brushes.Orange;
                 MessageBox.Show(ShowException(ex));
             }
         }
-
-
-        //private void AssiningParcelToDrone_Click(object sender, RoutedEventArgs e)
-        //{
-        //    try
-        //    {
-        //        droneBL.AssignParcelToADrone(drone.Id);
-
-        //        listOfDronesViewWindow.UpdateList();
-
-        //        this.drone = droneBL.GetDrone(drone.Id);
-
-        //        StatusLabel.Content = drone.Status;
-        //        ParcelLabel.Content = drone.ParcelInDelivery.Id;
-
-        //        AssiningParcelToDrone.IsEnabled = false;
-        //        GoToCharge.IsEnabled = false;
-        //        PickingUpAParcel.IsEnabled = true;
-
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show(ShowException(ex));
-        //    }
-        //}
-
-        //private void PickingUpAParcel_Click(object sender, RoutedEventArgs e)
-        //{
-        //    try
-        //    {
-        //        droneBL.PickingUpParcelToDrone(drone.Id);
-
-        //        listOfDronesViewWindow.UpdateList();
-
-        //        this.drone = droneBL.GetDrone(drone.Id);
-
-        //        BatteryLabel.Content = drone.Battery;
-        //        LongtudeText.Content = drone.Location.Longitude;
-        //        LatitudeText.Content = drone.Location.Latitude;
-
-        //        PickingUpAParcel.IsEnabled = false;
-        //        DliveringParcel.IsEnabled = true;
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show(ShowException(ex));
-        //    }
-        //}
-
-        //private void DliveringParcel_Click(object sender, RoutedEventArgs e)
-        //{
-        //    try
-        //    {
-        //        droneBL.DeliveringParcelFromADrone(drone.Id);
-
-        //        listOfDronesViewWindow.UpdateList();
-
-        //        this.drone = droneBL.GetDrone(drone.Id);
-
-        //        StatusLabel.Content = drone.Status;
-        //        ParcelLabel.Content = "no parcel";
-        //        BatteryLabel.Content = drone.Battery;
-        //        LongtudeText.Content = drone.Location.Longitude;
-        //        LatitudeText.Content = drone.Location.Latitude;
-
-        //        AssiningParcelToDrone.IsEnabled = true;
-        //        DliveringParcel.IsEnabled = false;
-        //        GoToCharge.IsEnabled = true;
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show(ShowException(ex));
-        //    }
-        //}
-
-
 
         private void DroneIdTextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
@@ -430,10 +275,7 @@ namespace PL
             MinutesInput.Foreground = Brushes.Black;
             ReliceDroneFromCharge.IsEnabled = true;
             ReliceDroneFromCharge.Content = "Update Drone Battary";
-            ReliceDroneFromCharge.Background = Brushes.Orange;
         }
-
-
 
         private string ShowException(Exception e)
         {
@@ -451,36 +293,14 @@ namespace PL
         {
             if (battryLevel < 20)
             {
-                GoToCharge.Background = Brushes.Orange;
                 GoToCharge.Content = "Rcomanding Charge";
                 BatteryLabel.Foreground = Brushes.Orange;
             }
             else
             {
-                GoToCharge.Background = Brushes.LightGray;
                 GoToCharge.Content = "Go To Charge";
                 BatteryLabel.Foreground = Brushes.Black;
             }
-        }
-
-
-
-
-
-        /// <summary>
-        /// hiding the x button of the window
-        /// </summary>
-        private const int GWL_STYLE = -16;
-        private const int WS_SYSMENU = 0x80000;
-        [DllImport("user32.dll", SetLastError = true)]
-        private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
-        [DllImport("user32.dll")]
-        private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
-
-        private void Loded(object sender, RoutedEventArgs e)
-        {
-            var hwnd = new WindowInteropHelper(this).Handle;
-            SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) & ~WS_SYSMENU);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -577,5 +397,24 @@ namespace PL
                     break;
             }
         }
+
+        /// <summary>
+        /// hiding the x button of the window
+        /// </summary>
+        private const int GWL_STYLE = -16;
+        private const int WS_SYSMENU = 0x80000;
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+        [DllImport("user32.dll")]
+        private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+
+        private void Loded(object sender, RoutedEventArgs e)
+        {
+            var hwnd = new WindowInteropHelper(this).Handle;
+            SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) & ~WS_SYSMENU);
+        }
+
+
+
     }
 }
