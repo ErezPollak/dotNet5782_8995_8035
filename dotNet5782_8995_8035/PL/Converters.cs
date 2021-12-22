@@ -23,21 +23,19 @@ namespace PL
         }
     }
 
-    class StateToText : IValueConverter
+    class StateToChargeState : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            
-            return value is string state
-                ? state switch
-                {
-                    "ASSIGN" => "Assign Parcel To Drone",
-                    "PICKUP" => "Pick Up THe Parcel",
-                    "DELIVER" => "Deliver The Parcel",
-                    _ => "",
-                }
-            : "";
-
+            BO.Enums.DroneStatuses isInCharge = (BO.Enums.DroneStatuses)value;
+            if(isInCharge == BO.Enums.DroneStatuses.MAINTENANCE)
+            {
+                return "Uncharge";
+            }
+            else
+            {
+                return "Charge";
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -46,17 +44,40 @@ namespace PL
         }
     }
 
-
-    class BoolToVisability : IValueConverter
+    class ParcelNumberToParcelState : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            bool isOperation = (bool)value;
+            int parcelNumber = (int)value;
+            if (parcelNumber == 0)
+            {
+                return "no parcel in assigned";
+            }
+            else
+            {
+                return parcelNumber + "";
+            }
+        }
 
-            if (isOperation) 
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    class StatusToParcelVisability : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            BO.Enums.DroneStatuses isInDlivery = (BO.Enums.DroneStatuses)value;
+            if (isInDlivery == BO.Enums.DroneStatuses.DELIVERY)
+            {
                 return Visibility.Visible;
-            else 
+            }
+            else
+            {
                 return Visibility.Collapsed;
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -64,6 +85,5 @@ namespace PL
             throw new NotImplementedException();
         }
     }
-
 
 }

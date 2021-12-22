@@ -23,7 +23,7 @@
         <Grid.Background>
             <ImageBrush/>
         </Grid.Background>
-        <Button Name="start_button" Content="To Drone List"  HorizontalAlignment="Left" Margin="154,189,0,0" VerticalAlignment="Top" Height="66" Width="176" Click="Button_Click" />
+        <Button Name="start_button" Content="Start"  HorizontalAlignment="Left" Margin="154,189,0,0" VerticalAlignment="Top" Height="66" Width="176" Click="Button_Click" />
         <Label x:Name="Welcome" Content="Welcome" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="81" Margin="111,84,0,0" VerticalAlignment="Top" Width="289" Foreground="#FF2C52A2" FontSize="55" FontFamily="MV Boli"/>
     </Grid>
 </Window>
