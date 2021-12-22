@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
@@ -11,7 +13,7 @@ namespace PL
     /// <summary>
     /// Interaction logic for ListOfDronesViewWindow.xaml
     /// </summary>
-    public partial class ListOfDronesViewWindow : Window
+    public partial class ListOfDronesViewWindow : Window//  , INotifyPropertyChanged
     {
         private BlApi.IBL bl;
 
@@ -29,7 +31,7 @@ namespace PL
 
             statusesSelector.Add("Show All");
 
-            StatusSelector.ItemsSource = statusesSelector;
+            StatusSelector.DataContext = statusesSelector;
 
             //making the list for the whight selector.
 
@@ -37,7 +39,9 @@ namespace PL
 
             whightSelectorlist.Add("Show All");
 
-            WeightSelecter.ItemsSource = whightSelectorlist;
+            WeightSelecter.DataContext = whightSelectorlist;
+
+            this.DataContext = this;
 
         }
 
@@ -54,7 +58,7 @@ namespace PL
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             DroneWindow addDroneWindow = new DroneWindow(bl , this);
-            addDroneWindow.Show();
+            addDroneWindow.ShowDialog();
         }
 
         public void UpdateList()
@@ -67,10 +71,11 @@ namespace PL
             if (StatusSelector.SelectedItem != null)
                 status = StatusSelector.SelectedItem.ToString();
 
-
             ListOfDronesView.ItemsSource = bl.GetDrones(d =>
                     (d.Weight.ToString() == whight || whight == "Show All") &&
                     (d.Status.ToString() == status || status == "Show All"));
+
+
         }
 
         private void ClickedItem(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -78,7 +83,7 @@ namespace PL
             //if ((BO.DroneForList)sender != null)
             //{
                 DroneWindow droneWindow = new DroneWindow(bl, this, bl.GetDrone(((BO.DroneForList)ListOfDronesView.SelectedItem).Id));
-                droneWindow.Show();
+                droneWindow.ShowDialog();
             //}
         }
 
@@ -88,7 +93,11 @@ namespace PL
         }
 
 
-
+        private ObservableCollection<BO.DroneForList> IEnumarebleToObservable(IEnumerable<BO.DroneForList> droneList){
+            ObservableCollection<BO.DroneForList> observList = new();
+            droneList.ToList().ForEach(d => observList.Add(d));
+            return observList;
+        }
 
 
         /// <summary>
@@ -96,6 +105,7 @@ namespace PL
         /// </summary>
         private const int GWL_STYLE = -16;
         private const int WS_SYSMENU = 0x80000;
+
         [DllImport("user32.dll", SetLastError = true)]
         private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
         [DllImport("user32.dll")]

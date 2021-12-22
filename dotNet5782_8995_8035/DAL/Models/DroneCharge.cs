@@ -8,6 +8,8 @@
 //the program contains the properties and a tostring function.
 
 
+using System;
+
 namespace DO
 {
     public struct DroneCharge
@@ -16,6 +18,8 @@ namespace DO
 
         public int StationId { get; set; }
 
+        public DateTime? EntryIntoCharge{ get; set; }
+        
         /// <summary>
         /// the function prints all the props of the struct.
         /// </summary>

@@ -21,8 +21,6 @@ namespace PL
 
         PARCEL_STATE parcelState;
 
-        Visibility isVisieble;
-
         /// <summary>
         /// ctor for adding a drone.
         /// </summary>
@@ -30,19 +28,17 @@ namespace PL
         /// <param name="listOfDronesViewWindow"></param>
         public DroneWindow(BlApi.IBL bl, ListOfDronesViewWindow listOfDronesViewWindow)
         {
+            drone = new();
             r = new Random();
-
             InitializeComponent();
+            AddingStack.Visibility = Visibility.Visible;
+
             droneBL = bl;
             this.listOfDronesViewWindow = listOfDronesViewWindow;
 
-            this.Title = "Adding A Drone";
+            //Weight.ItemsSource = Enum.GetValues<BO.Enums.WeightCategories>();
 
-            Weight.ItemsSource = Enum.GetValues<BO.Enums.WeightCategories>();
-
-            isVisieble = Visibility.Collapsed;
-            MainStack.DataContext = isVisieble;
-
+            AddingStack.DataContext = drone;
         }
 
         /// <summary>
@@ -56,29 +52,25 @@ namespace PL
             r = new Random();
 
             InitializeComponent();
+            OptionStack.Visibility = Visibility.Visible;
             droneBL = bl;
             this.listOfDronesViewWindow = listOfDronesViewWindow;
             this.drone = drone;
 
-            isVisieble = Visibility.Visible;
-            MainStack.DataContext = isVisieble;
-
-            this.Title = "Operations On Drone";
+            OptionStack.DataContext = this.drone;
 
             DroneID.Text = drone.Id + "";
             DroneID.IsEnabled = false;
 
-            Weight.ItemsSource = Enum.GetValues<BO.Enums.WeightCategories>();
-            Weight.SelectedIndex = (int)drone.MaxWeight;
-            Weight.IsEnabled = false;
-
-            AddingButton.Visibility = Visibility.Hidden;
-
-            Model.Text = drone.Model;
-            BatteryLabel.Content = drone.Battery;
-            StatusLabel.Content = drone.Status.ToString();
-            LongtudeText.Content = drone.Location.Longitude;
-            LatitudeText.Content = drone.Location.Latitude;
+            //Weight.ItemsSource = Enum.GetValues<BO.Enums.WeightCategories>();
+            //Weight.SelectedIndex = (int)drone.MaxWeight;
+            //Weight.IsEnabled = false;
+           
+            //Model.Text = drone.Model;
+            //BatteryLabel.Content = drone.Battery;
+            //StatusLabel.Content = drone.Status.ToString();
+            //LongtudeText.Content = drone.Location.Longitude;
+            //LatitudeText.Content = drone.Location.Latitude;
 
             if (drone.Status != BO.Enums.DroneStatuses.FREE)
             {
@@ -101,20 +93,20 @@ namespace PL
             if (drone.Status != BO.Enums.DroneStatuses.DELIVERY)
             {
                 //assign need to be turns on
-                ParcelLabel.Content = "no parcel";
+                //ParcelLabel.Content = "no parcel";
                 parcelState = PARCEL_STATE.ASSIGN;
-                //DeliveringOption.Content = "Assining Parcel To Drone";
+                DeliveringOption.Content = "Assining Parcel To Drone";
 
             }
 
             if (drone.ParcelInDelivery != null)
             {
-                ParcelLabel.Content = drone.ParcelInDelivery.Id;
+                //ParcelLabel.Content = drone.ParcelInDelivery.Id;
 
                 if (droneBL.GetParcel(bl.GetDrone(drone.Id).ParcelInDelivery.Id).PickupTime != null)
                 {
                     parcelState = PARCEL_STATE.DELIVER;
-                    //DeliveringOption.Content = "Dlivering Parcel";
+                    DeliveringOption.Content = "Dlivering Parcel";
 
                 }
                 else
@@ -122,7 +114,7 @@ namespace PL
                     //pickup needs to be turned on
 
                     parcelState = PARCEL_STATE.PICKUP;
-                    //DeliveringOption.Content = "Pick Up A Parcel";
+                    DeliveringOption.Content = "Pick Up A Parcel";
                 }
             }
             DeliveringOption.DataContext = parcelState;
@@ -134,23 +126,13 @@ namespace PL
         {
             try
             {
-                int id = int.Parse(DroneID.Text);
+               
+                drone.Status = BO.Enums.DroneStatuses.FREE;
+                drone.ParcelInDelivery = null;
+                drone.Battery = r.Next() % 20;
+                drone.Location = null;
 
-                int weight = Weight.SelectedIndex;
-
-                BO.Drone newDrone = new BO.Drone()
-                {
-                    Id = id,
-                    Model = Model.Text,
-                    MaxWeight = (BO.Enums.WeightCategories)weight,
-                    Status = BO.Enums.DroneStatuses.FREE,
-                    ParcelInDelivery = null,
-                    Battery = r.Next() % 20,
-                    Location = null
-                };
-
-
-                if (droneBL.AddDrone(newDrone))
+                if (droneBL.AddDrone(drone))
                 {
                     MessageBox.Show("drone added seccussfully");
 
@@ -180,7 +162,7 @@ namespace PL
 
         private void ModelUpdatedChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
-            if (UpdateModel != null)
+            if (UpdateModel != null && drone != null)
             {
                 UpdateModel.IsEnabled = true;
                 UpdateModel.Visibility = Visibility.Visible;
@@ -194,6 +176,7 @@ namespace PL
                 droneBL.UpdateNameForADrone(drone.Id, Model.Text);
                 listOfDronesViewWindow.UpdateList();
                 UpdateModel.Visibility = Visibility.Collapsed;
+                OptionStack.DataContext = this.drone;
             }
             catch (Exception ex)
             {
@@ -217,9 +200,11 @@ namespace PL
 
                 drone = droneBL.GetDrone(drone.Id);
 
-                StatusLabel.Content = drone.Status.ToString();
-                LongtudeText.Content = drone.Location.Longitude;
-                LatitudeText.Content = drone.Location.Latitude;
+                //StatusLabel.Content = drone.Status.ToString();
+                //LongtudeText.Content = drone.Location.Longitude;
+                //LatitudeText.Content = drone.Location.Latitude;
+
+                OptionStack.DataContext = this.drone;
 
                 RecommandingCharge(100);
 
@@ -247,15 +232,16 @@ namespace PL
                 //after updating was seccussful we can update the drone we got from the user to be the new drone.
                 drone = droneBL.GetDrone(drone.Id);
 
-                BatteryLabel.Content = drone.Battery;
+                //BatteryLabel.Content = drone.Battery;
                 if (drone.Battery != 100)
                 {
                     GoToCharge.IsEnabled = true;
                 }
-                StatusLabel.Content = drone.Status;
+                //StatusLabel.Content = drone.Status;
 
                 RecommandingCharge((int)drone.Battery);
 
+                OptionStack.DataContext = this.drone;
 
             }
             catch (Exception ex)
@@ -320,8 +306,8 @@ namespace PL
 
                             this.drone = droneBL.GetDrone(drone.Id);
 
-                            StatusLabel.Content = drone.Status;
-                            ParcelLabel.Content = drone.ParcelInDelivery.Id;
+                            //StatusLabel.Content = drone.Status;
+                            //ParcelLabel.Content = drone.ParcelInDelivery.Id;
 
                             //AssiningParcelToDrone.IsEnabled = false;
                             GoToCharge.IsEnabled = false;
@@ -348,9 +334,9 @@ namespace PL
 
                             this.drone = droneBL.GetDrone(drone.Id);
 
-                            BatteryLabel.Content = drone.Battery;
-                            LongtudeText.Content = drone.Location.Longitude;
-                            LatitudeText.Content = drone.Location.Latitude;
+                            //BatteryLabel.Content = drone.Battery;
+                            //LongtudeText.Content = drone.Location.Longitude;
+                            //LatitudeText.Content = drone.Location.Latitude;
 
                             //PickingUpAParcel.IsEnabled = false;
                             //DliveringParcel.IsEnabled = true;
@@ -370,17 +356,17 @@ namespace PL
 
                             listOfDronesViewWindow.UpdateList();
 
-                            //DeliveringOption.Content = "Assign Parcel To Drone";
+                            DeliveringOption.Content = "Assign Parcel To Drone";
                             parcelState = PARCEL_STATE.ASSIGN;
                             DeliveringOption.DataContext = parcelState;
 
                             this.drone = droneBL.GetDrone(drone.Id);
 
-                            StatusLabel.Content = drone.Status;
-                            ParcelLabel.Content = "no parcel";
-                            BatteryLabel.Content = drone.Battery;
-                            LongtudeText.Content = drone.Location.Longitude;
-                            LatitudeText.Content = drone.Location.Latitude;
+                            //StatusLabel.Content = drone.Status;
+                           // ParcelLabel.Content = "no parcel";
+                            //BatteryLabel.Content = drone.Battery;
+                            //LongtudeText.Content = drone.Location.Longitude;
+                            //LatitudeText.Content = drone.Location.Latitude;
 
                             //AssiningParcelToDrone.IsEnabled = true;
                             //DliveringParcel.IsEnabled = false;
@@ -414,7 +400,17 @@ namespace PL
             SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) & ~WS_SYSMENU);
         }
 
+        private void Open_Prcel_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                BO.Parcel parcel = droneBL.GetParcel(drone.ParcelInDelivery.Id);
 
+            }
+            catch(Exception ex)
+            {
 
+            }
+        }
     }
 }
