@@ -5,75 +5,81 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="ParcelWindow" Height="450" Width="800" Loaded="Loded">
+        Title="ParcelWindow" Height="450" Width="440" Loaded="Loded">
     <Grid>
 
         <StackPanel x:Name="Mainstack">
 
             <Button Content="X" RenderTransformOrigin="-1.136,-0.1" Height="42" Width="49" Click="XButton" Background="#FFF90B0B" FontWeight="Bold" FontSize="20" HorizontalAlignment="Right"/>
 
-            <StackPanel Orientation="Horizontal" Height="50" HorizontalAlignment="Center">
-                <Label Content="Parcel Id: " Width="181"/>
-                <TextBox Text="{Binding Id, Mode=TwoWay,  NotifyOnValidationError=True, ValidatesOnExceptions=True}" TextWrapping="Wrap" Width="133"/>
+            <StackPanel Orientation="Horizontal" Height="50" Margin="5,0,0,0" Width="414" >
+                <Label Content="Parcel Id: " Width="140" FontWeight="Bold" Height="40" FontSize="20"/>
+                <TextBox Text="{Binding Id, Mode=TwoWay,  NotifyOnValidationError=True, ValidatesOnExceptions=True}" TextWrapping="Wrap" Width="140" Height="40" FontWeight="Normal" FontSize="20"/>
             </StackPanel>
+            <StackPanel Height="30">  </StackPanel>
 
-            <StackPanel Height="250" Orientation="Horizontal">
-                <StackPanel Width="400" Orientation="Vertical" VerticalAlignment="Stretch">
-                    <StackPanel>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <TextBlock Text="Sender Id:"  />
+            <StackPanel Height="60" Orientation="Horizontal">
+                <StackPanel Width="200" Orientation="Vertical" VerticalAlignment="Stretch">
+                    <StackPanel Orientation="Horizontal" Margin="3">
+                            <TextBlock Text="Sender Id:" HorizontalAlignment="Left" />
                             <TextBox  Text="{Binding Sender.Id , Mode=TwoWay,  NotifyOnValidationError=True, ValidatesOnExceptions=True}"/>
                         </StackPanel >
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <TextBlock Text="Sender Name:"  />
-                            <TextBox  Text="{Binding Sender.CustomerName , Mode=TwoWay,  NotifyOnValidationError=True, ValidatesOnExceptions=True}"/>
-                        </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="3" >
+                        <TextBlock Text="Sender Name:" />
+                        <TextBox  Text="{Binding Sender.CustomerName , Mode=TwoWay,  NotifyOnValidationError=True, ValidatesOnExceptions=True}"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <TextBlock Text="Weight: "  />
-                        <TextBox  Text="{Binding Weight , Mode=TwoWay,  NotifyOnValidationError=True, ValidatesOnExceptions=True}"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <TextBlock Text="Praiority: "  />
-                        <TextBox  Text="{Binding Priority , Mode=TwoWay,  NotifyOnValidationError=True, ValidatesOnExceptions=True}"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <TextBlock Text="Drone Id"  />
-                        <TextBox  Text="{Binding Drone.Id , Mode=TwoWay,  NotifyOnValidationError=True, ValidatesOnExceptions=True}"/>
-                    </StackPanel>
-
                 </StackPanel>
-                <StackPanel Width="400" Orientation="Vertical">
-                    <StackPanel>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <StackPanel Width="200" Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal" Margin="3">
                             <TextBlock Text="Reciver Id:"  />
                             <TextBox  Text="{Binding Reciver.Id , Mode=TwoWay,  NotifyOnValidationError=True, ValidatesOnExceptions=True}"/>
                         </StackPanel >
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <TextBlock Text="Reciver Name:"  />
-                            <TextBox  Text="{Binding Reciver.CustomerName , Mode=TwoWay,  NotifyOnValidationError=True, ValidatesOnExceptions=True}"/>
-                        </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="3">
+                        <TextBlock Text="Reciver Name:"  />
+                        <TextBox  Text="{Binding Reciver.CustomerName , Mode=TwoWay,  NotifyOnValidationError=True, ValidatesOnExceptions=True}"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <TextBlock Text="Requested Time : "  />
-                        <TextBox  Text="{Binding RequestedTime, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <TextBlock Text="Accepted Time: "  />
-                        <TextBox  Text="{Binding AcceptedTime, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <TextBlock Text="Pickup Time: "  />
-                        <TextBox  Text="{Binding PickupTime, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Height="20"></StackPanel>
+            <StackPanel Height="100">
+                <StackPanel Orientation="Horizontal" Margin="3">
+                    <TextBlock Text="Weight: "  />
+                    <TextBox  Text="{Binding Weight , Mode=TwoWay,  NotifyOnValidationError=True, ValidatesOnExceptions=True}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="3">
+                    <TextBlock Text="Praiority: "  />
+                    <TextBox  Text="{Binding Priority , Mode=TwoWay,  NotifyOnValidationError=True, ValidatesOnExceptions=True}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="3">
+                    <TextBlock Text="Drone Id"  />
+                    <TextBox  Text="{Binding Drone.Id , Mode=TwoWay,  NotifyOnValidationError=True, ValidatesOnExceptions=True}"/>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Height="20"></StackPanel>
+            <StackPanel Orientation="Vertical" Height="70">
+            <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Vertical" Margin="3">
+                    <TextBlock Text="Requested Time : "  />
+                    <TextBox  Text="{Binding RequestedTime, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Margin="3">
+                    <TextBlock Text="Accepted Time: "  />
+                    <TextBox  Text="{Binding AcceptedTime, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Margin="3">
+                    <TextBlock Text="Pickup Time: "  />
+                    <TextBox  Text="{Binding PickupTime, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}"/>
+                </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="3">
                         <TextBlock Text="Delivering Time:"  />
                         <TextBox  Text="{Binding DeliveringTime, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}"/>
                     </StackPanel>
                 </StackPanel>
-            </StackPanel>
+                <ProgressBar Height="10" IsIndeterminate="True" Margin="3" HorizontalAlignment="Left" Width="345"/>
 
+            </StackPanel>
             <StackPanel  Orientation="Horizontal">
+                
                 
             </StackPanel>
                 
