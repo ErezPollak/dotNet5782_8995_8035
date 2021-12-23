@@ -91,21 +91,28 @@ namespace PL
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            PARCEL_STATE parcelState = (PARCEL_STATE)value;
-            switch (parcelState)
+            if (value != null)
             {
-                case PARCEL_STATE.ASSIGN:
-                    return "Assign Parcel To Drone";
-                    break;
-                case PARCEL_STATE.PICKUP:
-                    return "Pick Up A Parcel";
-                    break;
-                case PARCEL_STATE.DELIVER:
-                    return "Dlivering Parcel";
-                    break;
-                default:
-                    return "";
-                    break;
+                PARCEL_STATE parcelState = (PARCEL_STATE)value;
+                switch (parcelState)
+                {
+                    case PARCEL_STATE.ASSIGN:
+                        return "Assign Parcel To Drone";
+                        break;
+                    case PARCEL_STATE.PICKUP:
+                        return "Pick Up A Parcel";
+                        break;
+                    case PARCEL_STATE.DELIVER:
+                        return "Dlivering Parcel";
+                        break;
+                    default:
+                        return "";
+                        break;
+                }
+            }
+            else
+            {
+                return "";
             }
         }
 
@@ -122,7 +129,7 @@ namespace PL
         {
             BO.Drone drone = (BO.Drone)value;
 
-            if (drone.Battery == 100 || drone.Status == BO.Enums.DroneStatuses.DELIVERY)
+            if (drone != null &&( drone.Battery == 100 || drone.Status == BO.Enums.DroneStatuses.DELIVERY))
                 return Visibility.Collapsed;
             else
                 return Visibility.Visible;

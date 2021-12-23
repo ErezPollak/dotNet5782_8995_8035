@@ -25,7 +25,7 @@ namespace PL
             //ListOfDronesViewWindow listOfDronesViewWindow = new ListOfDronesViewWindow(bl) ;
             //listOfDronesViewWindow.Show();//.Activate();
 
-            new ListOfDronesViewWindow(bl).ShowDialog();
+            new ListsViewWindow(bl).ShowDialog();
 
         }
     }

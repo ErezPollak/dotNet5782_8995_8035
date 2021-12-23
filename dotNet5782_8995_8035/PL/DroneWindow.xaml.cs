@@ -17,7 +17,7 @@ namespace PL
         Random r;
         BlApi.IBL bl;
         BO.Drone drone;
-        ListOfDronesViewWindow listOfDronesViewWindow;
+        ListsViewWindow listOfDronesViewWindow;
 
         PARCEL_STATE parcelState;
 
@@ -26,7 +26,7 @@ namespace PL
         /// </summary>
         /// <param name="bl"></param>
         /// <param name="listOfDronesViewWindow"></param>
-        public DroneWindow(BlApi.IBL bl, ListOfDronesViewWindow listOfDronesViewWindow)
+        public DroneWindow(BlApi.IBL bl, ListsViewWindow listOfDronesViewWindow)
         {
             drone = new();
             r = new Random();
@@ -39,6 +39,9 @@ namespace PL
             //Weight.ItemsSource = Enum.GetValues<BO.Enums.WeightCategories>();
 
             AddingStack.DataContext = drone;
+
+            WeightInput.DataContext = Enum.GetValues<BO.Enums.WeightCategories>();
+
         }
 
         /// <summary>
@@ -47,7 +50,7 @@ namespace PL
         /// <param name="bl"></param>
         /// <param name="listOfDronesViewWindow"></param>
         /// <param name="drone"></param>
-        public DroneWindow(BlApi.IBL bl, ListOfDronesViewWindow listOfDronesViewWindow, BO.Drone drone)
+        public DroneWindow(BlApi.IBL bl, ListsViewWindow listOfDronesViewWindow, BO.Drone drone)
         {
             r = new Random();
 
@@ -78,27 +81,22 @@ namespace PL
             if (drone.Status != BO.Enums.DroneStatuses.DELIVERY)
             {
                 //assign need to be turns on
-                //ParcelLabel.Content = "no parcel";
                 parcelState = PARCEL_STATE.ASSIGN;
-                //DeliveringOption.Content = "Assining Parcel To Drone";
 
             }
 
             if (drone.ParcelInDelivery != null)
             {
-                //ParcelLabel.Content = drone.ParcelInDelivery.Id;
 
                 if (this.bl.GetParcel(bl.GetDrone(drone.Id).ParcelInDelivery.Id).PickupTime != null)
                 {
                     parcelState = PARCEL_STATE.DELIVER;
-                    //DeliveringOption.Content = "Dlivering Parcel";
 
                 }
                 else
                 {
                     //pickup needs to be turned on
                     parcelState = PARCEL_STATE.PICKUP;
-                    //DeliveringOption.Content = "Pick Up A Parcel";
                 }
             }
             DeliveringOption.DataContext = parcelState;
@@ -119,7 +117,7 @@ namespace PL
                 {
                     MessageBox.Show("drone added seccussfully");
 
-                    listOfDronesViewWindow.UpdateList();
+                    listOfDronesViewWindow.UpdateDroneList();
 
                     Close();
                 }
@@ -157,7 +155,7 @@ namespace PL
             try
             {
                 bl.UpdateNameForADrone(drone.Id, Model.Text);
-                listOfDronesViewWindow.UpdateList();
+                listOfDronesViewWindow.UpdateDroneList();
                 UpdateModel.Visibility = Visibility.Collapsed;
                 OptionStack.DataContext = this.drone;
             }
@@ -178,7 +176,7 @@ namespace PL
                 {
                     bl.UnChargeDrone(drone.Id);
 
-                    listOfDronesViewWindow.UpdateList();
+                    listOfDronesViewWindow.UpdateDroneList();
                     //after updating was seccussful we can update the drone we got from the user to be the new drone.
                     drone = bl.GetDrone(drone.Id);
 
@@ -199,7 +197,7 @@ namespace PL
                 {
                     bl.ChargeDrone(drone.Id);
 
-                    listOfDronesViewWindow.UpdateList();
+                    listOfDronesViewWindow.UpdateDroneList();
 
                     drone = bl.GetDrone(drone.Id);
 
@@ -259,7 +257,7 @@ namespace PL
                         {
                             bl.AssignParcelToADrone(drone.Id);
 
-                            listOfDronesViewWindow.UpdateList();
+                            listOfDronesViewWindow.UpdateDroneList();
 
                             this.drone = bl.GetDrone(drone.Id);
 
@@ -283,7 +281,7 @@ namespace PL
                         {
                             bl.PickingUpParcelToDrone(drone.Id);
 
-                            listOfDronesViewWindow.UpdateList();
+                            listOfDronesViewWindow.UpdateDroneList();
 
                             this.drone = bl.GetDrone(drone.Id);
 
@@ -305,7 +303,7 @@ namespace PL
                         {
                             bl.DeliveringParcelFromADrone(drone.Id);
 
-                            listOfDronesViewWindow.UpdateList();
+                            listOfDronesViewWindow.UpdateDroneList();
 
                             this.drone = bl.GetDrone(drone.Id);
 

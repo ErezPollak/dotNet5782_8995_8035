@@ -32,7 +32,7 @@
             </StackPanel>
             <StackPanel Margin="3" Orientation="Horizontal">
                 <Label Content="weight Category"  Width="108"  />
-                <ComboBox x:Name="WeightInput" Text="{Binding MaxWeight, Mode=TwoWay,  NotifyOnValidationError=True, ValidatesOnExceptions=True}" Width="180" materialDesign:HintAssist.Hint="weight Category" />
+                <ComboBox x:Name="WeightInput" ItemsSource="{Binding}"  Width="180" materialDesign:HintAssist.Hint="weight Category" />
             </StackPanel>
             <StackPanel Margin="3" Orientation="Horizontal">
                 <Label Content="Model" Width="108" />
@@ -47,7 +47,12 @@
 
         </StackPanel>
 
-        <StackPanel x:Name="OptionStack" Margin="5" Visibility="Visible" HorizontalAlignment="Stretch">
+        <StackPanel x:Name="OptionStack" Margin="5" Visibility="Collapsed" HorizontalAlignment="Stretch">
+            
+            
+            
+            
+            
             <Button Content="X" RenderTransformOrigin="-1.136,-0.1" Height="40" Width="45" Click="XButton" Background="#FFF90B0B" FontWeight="Bold" FontSize="20" HorizontalAlignment="Right"/>
             <StackPanel Height="50" Margin="3" Orientation="Horizontal">
                 <Label Content="Drone ID" Width="108" />
