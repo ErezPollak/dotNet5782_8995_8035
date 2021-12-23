@@ -288,7 +288,7 @@ namespace Dal
             DataSource.baseStations[baseStationIndex] = newBaseStation;
 
             //creating the charge drone ans adding it to the list of charges.
-            DroneCharge droneCharge = new DroneCharge() { DroneId = droneId, StationId = baseStationId };
+            DroneCharge droneCharge = new DroneCharge() { DroneId = droneId, StationId = baseStationId, EntryIntoCharge = DateTime.Now.AddHours(-1) };
             DataSource.droneCharges.Add(droneCharge);
 
             return true;
@@ -298,7 +298,7 @@ namespace Dal
         ///deleting the droneCharge from the list. 
         /// </summary>
         /// <param name="droneId"></param>
-        public bool UnChargeDrone(int droneId)
+        public double UnChargeDrone(int droneId)
         {
             if (!DataSource.drones.Exists(d => d.Id == droneId))
             {
@@ -321,6 +321,9 @@ namespace Dal
                 throw new IdDontExistsException(DataSource.droneCharges[chargeIndex].StationId, "baseStations");
             }
 
+            TimeSpan ts = DateTime.Now.Subtract((DateTime)DataSource.droneCharges[chargeIndex].EntryIntoCharge);
+            double mintesInCharge = ts.Hours * 60 + ts.Minutes + (double)ts.Seconds / 60;
+
             BaseStation newBaseStation = DataSource.baseStations[baseStationsIndex];
             newBaseStation.ChargeSlots++;
             DataSource.baseStations[baseStationsIndex] = newBaseStation;
@@ -328,7 +331,7 @@ namespace Dal
             //removing the cahrge from the list.
             DataSource.droneCharges.Remove(DataSource.droneCharges[chargeIndex]);
 
-            return true;
+            return mintesInCharge;
         }
 
         #endregion

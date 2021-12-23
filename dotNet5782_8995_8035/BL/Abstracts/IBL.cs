@@ -23,7 +23,7 @@ namespace BlApi
         public bool DeliveringParcelFromADrone(int droneId);
         public bool PickingUpParcelToDrone(int droneId);
         public bool ChargeDrone(int droneId);
-        public bool UnChargeDrone(int droneId, int minutes);
+        public bool UnChargeDrone(int droneId);
 
         #endregion
 

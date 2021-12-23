@@ -201,7 +201,6 @@ namespace BlApi
 
         #region adding option 
 
-
         /// <summary>
         /// the function gets a logical base station, converting it to a dal basestation and adding it to the database. 
         /// </summary>
@@ -226,7 +225,6 @@ namespace BlApi
                 throw new BO.IdAlreadyExistsException(newBaseStation.Id, "base station", e);
             }
         }
-
 
         /// <summary>
         /// the function gets a logical drone, converting it to a dal drone and adding it to the database. 
@@ -290,7 +288,6 @@ namespace BlApi
             return b;
         }
 
-
         /// <summary>
         /// the function gets a logical customer, converting it to a dal custamer and adding it to the database. 
         /// </summary>
@@ -315,7 +312,6 @@ namespace BlApi
                 throw new BO.IdAlreadyExistsException(newCustomer.Id, "customer", e);
             }
         }
-
 
         /// <summary>
         /// the function gets a logical parcel, converting it to a dal parcel and adding it to the database. 
@@ -347,7 +343,6 @@ namespace BlApi
                 throw new BO.IdAlreadyExistsException(newParcel.Id, "parcel", e);
             }
         }
-
 
         #endregion
 
@@ -621,7 +616,7 @@ namespace BlApi
         /// <param name="droneId"></param>
         /// <param name="minutes"></param>
         /// <returns></returns>
-        public bool UnChargeDrone(int droneId, int minutes)
+        public bool UnChargeDrone(int droneId)
         {
             int droneIndex = drones.FindIndex(d => d.Id == droneId);
             if (droneIndex == -1) 
@@ -630,6 +625,9 @@ namespace BlApi
             //chacks if the drone is free, and if not exception will be thrown.
             if (drones[droneIndex].Status != Enums.DroneStatuses.MAINTENANCE)
                 throw new UnAbleToReleaseDroneFromChargeException(droneId, "the drone is not in maintanance");
+
+            //returning from the dal the value of the time that the drone was in charge
+            double minutes = dal.UnChargeDrone(droneId);
 
             //update the battary status.
             drones[droneIndex].Battery += minutes * dal.ElectricityUse()[4];
@@ -641,7 +639,7 @@ namespace BlApi
             //updating the status of the drone.
             drones[droneIndex].Status = Enums.DroneStatuses.FREE;
 
-            return dal.UnChargeDrone(droneId);
+            return true;
         }
 
         #endregion

@@ -17,28 +17,24 @@ namespace PL
     {
         private BlApi.IBL bl;
 
+        private IEnumerable<BO.DroneForList> droneList;
+
         public ListOfDronesViewWindow(BlApi.IBL bl)
         {
             InitializeComponent();
             
             this.bl = bl;
-            
-            ListOfDronesView.ItemsSource = bl.GetDrones(_ => true);
+
+            ListOfDronesView.DataContext = droneList;
 
             //making list of values for the status selector.
-
             List<string> statusesSelector = Enum.GetNames(typeof(BO.Enums.DroneStatuses)).Cast<string>().ToList();
-
             statusesSelector.Add("Show All");
-
             StatusSelector.DataContext = statusesSelector;
 
             //making the list for the whight selector.
-
             List<string> whightSelectorlist = Enum.GetNames(typeof(BO.Enums.WeightCategories)).Cast<string>().ToList();
-
             whightSelectorlist.Add("Show All");
-
             WeightSelecter.DataContext = whightSelectorlist;
 
             this.DataContext = this;
@@ -71,9 +67,11 @@ namespace PL
             if (StatusSelector.SelectedItem != null)
                 status = StatusSelector.SelectedItem.ToString();
 
-            ListOfDronesView.ItemsSource = bl.GetDrones(d =>
+            this.droneList = bl.GetDrones(d =>
                     (d.Weight.ToString() == whight || whight == "Show All") &&
                     (d.Status.ToString() == status || status == "Show All"));
+
+            ListOfDronesView.DataContext = droneList;
 
 
         }

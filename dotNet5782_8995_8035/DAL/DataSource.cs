@@ -78,7 +78,7 @@ namespace Dal
                         Latitude = RandLatitude(),
                         Longitude = RandLongtude()            
                     },
-                    ChargeSlots = rnd.Next() % 10 + 2
+                    ChargeSlots = 10
                 };
                 //adding the base station to the list.
                 baseStations.Add(baseStation);

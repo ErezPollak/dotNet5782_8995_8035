@@ -24,7 +24,7 @@ namespace DalApi
         public bool PickingUpParcel(int parcelId, int droneId);
         public bool DeliveringParcel(int parcelId);
         public bool ChargeDrone(int baseStationId, int droneId);
-        public bool UnChargeDrone(int droneId);
+        public double UnChargeDrone(int droneId);
 
         #endregion
 

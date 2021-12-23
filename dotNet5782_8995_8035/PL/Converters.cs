@@ -86,4 +86,53 @@ namespace PL
         }
     }
 
+
+    class ParcelStausToDeliveringOptionText : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            PARCEL_STATE parcelState = (PARCEL_STATE)value;
+            switch (parcelState)
+            {
+                case PARCEL_STATE.ASSIGN:
+                    return "Assign Parcel To Drone";
+                    break;
+                case PARCEL_STATE.PICKUP:
+                    return "Pick Up A Parcel";
+                    break;
+                case PARCEL_STATE.DELIVER:
+                    return "Dlivering Parcel";
+                    break;
+                default:
+                    return "";
+                    break;
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+
+    class DroneBattryToChargeVisability : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            BO.Drone drone = (BO.Drone)value;
+
+            if (drone.Battery == 100 || drone.Status == BO.Enums.DroneStatuses.DELIVERY)
+                return Visibility.Collapsed;
+            else
+                return Visibility.Visible;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+
 }
