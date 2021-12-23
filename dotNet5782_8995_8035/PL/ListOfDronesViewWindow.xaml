@@ -84,6 +84,14 @@
                     <RowDefinition Height="400*"/>
                 </Grid.RowDefinitions>
 
+                <Label Content="Status selector" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Width="156" Height="39" ScrollViewer.HorizontalScrollBarVisibility="Visible" FontFamily="Forte" FontSize="20" Background="Transparent" Foreground="#DDC3B63C" Margin="81,-7,0,0">
+                    <Label.Effect>
+                        <DropShadowEffect/>
+                    </Label.Effect>
+                </Label>
+                <ComboBox x:Name="ParcelStatusSelector" ItemsSource="{Binding}" Margin="27,24,27,5" Grid.Column="1" SelectedIndex="3" SelectionChanged ="ParcelStatusChoose" FontFamily="Segoe Print"/>
+
+
                 <!--<Label Content="Status selector" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Width="156" Height="39" ScrollViewer.HorizontalScrollBarVisibility="Visible" FontFamily="Forte" FontSize="20" Background="Transparent" Foreground="#DDC3B63C" Margin="81,-7,0,0">
                     <Label.Effect>
                         <DropShadowEffect/>
@@ -138,14 +146,8 @@
                     <RowDefinition Height="400*"/>
                 </Grid.RowDefinitions>
 
-                <!--<Label Content="Status selector" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Width="156" Height="39" ScrollViewer.HorizontalScrollBarVisibility="Visible" FontFamily="Forte" FontSize="20" Background="Transparent" Foreground="#DDC3B63C" Margin="81,-7,0,0">
-                    <Label.Effect>
-                        <DropShadowEffect/>
-                    </Label.Effect>
-                </Label>
-                <ComboBox x:Name="Selector" ItemsSource="{Binding}" Margin="27,24,27,5" Grid.Column="1" SelectedIndex="3" SelectionChanged ="StatusChoose" FontFamily="Segoe Print"/>
-
-                <Label Content="weight selector" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Top" Width="156" Height="39" ScrollViewer.HorizontalScrollBarVisibility="Visible" FontFamily="Forte" FontSize="20" Background="Transparent" Foreground="#DDC3B63C" Margin="81,-7,0,0">
+                
+                <!--<Label Content="weight selector" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Top" Width="156" Height="39" ScrollViewer.HorizontalScrollBarVisibility="Visible" FontFamily="Forte" FontSize="20" Background="Transparent" Foreground="#DDC3B63C" Margin="81,-7,0,0">
                     <Label.Effect>
                         <DropShadowEffect/>
                     </Label.Effect>
@@ -170,7 +172,9 @@
 
 
                 <Button Content="X" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="-1.136,-0.1" Height="39" Width="52" Click="XButton" Background="#FFF90B0B" FontWeight="Bold" FontSize="20" Grid.Column="3" Margin="254,0,0,0" Grid.ColumnSpan="2"/>
+                
                 <ComboBox x:Name="NumberOfSlotsSelector" ItemsSource="{Binding}" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="215" Height="32" SelectionChanged="BaseStationGuopingSelected"/>
+                <Label Content="Label" Grid.Column="1" HorizontalAlignment="Left" Margin="189,7,0,0" VerticalAlignment="Top"/>
 
             </Grid>
 

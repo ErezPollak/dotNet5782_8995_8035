@@ -54,9 +54,12 @@ namespace PL
             List<string> selectingOptions = new();
             selectingOptions.Add("Show All");
             selectingOptions.Add("Has Open Charging Slots");
-            selectingOptions.Add("Group by numbers");
             NumberOfSlotsSelector.DataContext = selectingOptions;
 
+            //make lst for the parcel status selector
+            List<string> parcelStatusSelector = Enum.GetNames(typeof(BO.Enums.ParcelStatus)).Cast<string>().ToList();
+            parcelStatusSelector.Add("Show All");
+            ParcelStatusSelector.DataContext = parcelStatusSelector;
             //this.DataContext = this;
         }
 
@@ -113,6 +116,11 @@ namespace PL
 
         #region ParcelList
 
+        private void ParcelStatusChoose(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateParcelList();
+        }
+
         private void AddParcel_Click(object sender, RoutedEventArgs e)
         {
             //Open Parcel for add
@@ -127,19 +135,16 @@ namespace PL
 
         public void UpdateParcelList()
         {
-            //string whight = null, status = null;
+            string status = null;
 
-            //if (WeightSelecter.SelectedItem != null)
-            //    whight = WeightSelecter.SelectedItem.ToString();
+            if (ParcelStatusSelector.SelectedItem != null)
+                status = ParcelStatusSelector.SelectedItem.ToString();
 
-            //if (StatusSelector.SelectedItem != null)
-            //    status = StatusSelector.SelectedItem.ToString();
+            this.parcelList = bl.GetPacels(p =>
+                    //(p.Weight.ToString() == whight || whight == "Show All") &&
+                    (p.Status.ToString() == status || status == "Show All"));
 
-            //this.droneList = bl.GetDrones(d =>
-            //        (d.Weight.ToString() == whight || whight == "Show All") &&
-            //        (d.Status.ToString() == status || status == "Show All"));
-
-            //DroneList.DataContext = droneList;
+            ParcelList.DataContext = this.parcelList;
 
         }
 
@@ -178,25 +183,7 @@ namespace PL
                     this.baseStatoinList = bl.GetBaseStations(b => b.FreeChargingSlots > 0);
 
                     break;
-                case "Group by numbers":
-
-                    var group = bl.GetBaseStations(_ => true).GroupBy(b => b.FreeChargingSlots);
-
-                    List<BO.BaseStationForList> newList = new();
-
-                    foreach(var g in group)
-                    {
-                        foreach(var g1 in g)
-                        {
-                            newList.Add(g1);
-                        }
-                    }
-
-                    this.baseStatoinList = newList;
-
-                    
-
-                    break;
+               
                 default:
                     break;
             }
@@ -267,6 +254,6 @@ namespace PL
             SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) & ~WS_SYSMENU);
         }
 
-
+       
     }
 }

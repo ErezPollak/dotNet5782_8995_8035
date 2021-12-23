@@ -67,7 +67,7 @@ namespace Dal
             Config.ChargingSpeed = rnd.NextDouble() * 10;
 
             //randomal values for base stations.
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 5; i++)
             {
                 BaseStation baseStation = new BaseStation()
                 {
@@ -76,9 +76,9 @@ namespace Dal
                     Location = new Location
                     {
                         Latitude = RandLatitude(),
-                        Longitude = RandLongtude()            
+                        Longitude = RandLongtude()
                     },
-                    ChargeSlots = 10
+                    ChargeSlots = (int)(i / 2) + 10
                 };
                 //adding the base station to the list.
                 baseStations.Add(baseStation);
