@@ -15,11 +15,7 @@
         >
     
     <Window.Resources>
-        <local:StateToChargeState x:Key="stateToCharge"/>
-        <local:ParcelNumberToParcelState x:Key="ParcelNumberToState"/>
-        <local:StatusToParcelVisability x:Key="StatusToParcelVisability"/>
-        <local:ParcelStausToDeliveringOptionText x:Key="parcelStausToDeliveringOptionText"/>
-        <local:DroneBattryToChargeVisability x:Key="DroneBattryToChargeVisability"/>
+        
     </Window.Resources>
     
     <Grid>
