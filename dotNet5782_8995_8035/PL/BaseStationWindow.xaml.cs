@@ -120,7 +120,7 @@ namespace PL
 
         private void FloatNumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
-            e.Handled = new Regex(@"[^0-9]+\.?[^0-9]+").IsMatch(e.Text);
+            e.Handled = new Regex("[^0-9.]+").IsMatch(e.Text);
         }
 
         /// <summary>
