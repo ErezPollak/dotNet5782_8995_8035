@@ -42,16 +42,19 @@ namespace PL
 
             this.bl = bl;
             this.listsViewWindow = listsViewWindow;
-            baseStation = new(
-                Location: new Location(Random.NextDouble(31, 35), Random.NextDouble(31, 35)),
-                ChargingDrones: new()
-                );
+            baseStation = new(Location: new(), ChargingDrones: new());
             AddingStack.DataContext = baseStation;
             AddingStack.Visibility = Visibility.Visible;
 
 
         }
 
+        /// <summary>
+        /// Update base station
+        /// </summary>
+        /// <param name="bl"></param>
+        /// <param name="listsViewWindow"></param>
+        /// <param name="baseStation"></param>
         public BaseStationWindow(BlApi.IBL bl, ListsViewWindow listsViewWindow, BaseStation baseStation)
         {
             InitializeComponent();
@@ -64,7 +67,7 @@ namespace PL
         }
 
 
-            private void XButton(object sender, RoutedEventArgs e)
+        private void XButton(object sender, RoutedEventArgs e)
         {
             Close();
         }
@@ -114,6 +117,12 @@ namespace PL
             e.Handled = new Regex("[^0-9]+").IsMatch(e.Text);
         }
 
+
+        private void FloatNumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = new Regex(@"[^0-9]+\.?[^0-9]+").IsMatch(e.Text);
+        }
+
         /// <summary>
         /// hiding the x button of the window
         /// </summary>
@@ -131,6 +140,6 @@ namespace PL
             SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) & ~WS_SYSMENU);
         }
 
-       
+
     }
 }

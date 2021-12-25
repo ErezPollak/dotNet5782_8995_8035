@@ -37,7 +37,13 @@
                 <Label Content="Charge Slots"  Width="108"  />
                 <TextBox Text="{Binding ChargeSlots, Mode=TwoWay,  NotifyOnValidationError=True, ValidatesOnExceptions=True}" materialDesign:HintAssist.Hint="Free Charging Slots"  Width="180" Style="{StaticResource MaterialDesignFloatingHintTextBox}" PreviewTextInput="NumberValidationTextBox"/>
             </StackPanel>
-
+            <StackPanel Height="50" Margin="3" Orientation="Horizontal">
+                <Label  Content="Location" Width="108" />
+                <StackPanel>
+                    <TextBox  Text="{Binding Location.Longitude, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnExceptions=True}" Width="180" PreviewTextInput="FloatNumberValidationTextBox" />
+                    <TextBox  Text="{Binding Location.Latitude, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnExceptions=True}" Width="180" PreviewTextInput="FloatNumberValidationTextBox"/>
+                </StackPanel>
+            </StackPanel>
             <StackPanel Height="20">
 
             </StackPanel>
@@ -59,6 +65,13 @@
             <StackPanel Margin="3" Orientation="Horizontal">
                 <Label Content="Charge Slots"  Width="108"  />
                 <TextBox Text="{Binding ChargeSlots, Mode=TwoWay,  NotifyOnValidationError=True, ValidatesOnExceptions=True}" materialDesign:HintAssist.Hint="Free Charging Slots"  Width="180" Style="{StaticResource MaterialDesignFloatingHintTextBox}" PreviewTextInput="NumberValidationTextBox"/>
+            </StackPanel>
+            <StackPanel Height="50" Margin="3" Orientation="Horizontal">
+                <Label  Content="Location" Width="108" />
+                <StackPanel>
+                    <TextBox  Text="{Binding Location.Longitude, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnExceptions=True}" Width="180" PreviewTextInput="FloatNumberValidationTextBox" />
+                    <TextBox  Text="{Binding Location.Latitude, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnExceptions=True}" Width="180" PreviewTextInput="FloatNumberValidationTextBox"/>
+                </StackPanel>
             </StackPanel>
 
             <StackPanel Height="20">

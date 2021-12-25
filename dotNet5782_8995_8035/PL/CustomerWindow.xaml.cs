@@ -30,27 +30,43 @@ namespace PL
         private readonly ListsViewWindow listsViewWindow;
         private Customer customer;
 
-
+        /// <summary>
+        /// ctor add customer
+        /// </summary>
+        /// <param name="bl"></param>
+        /// <param name="listsViewWindow"></param>
         public CustomerWindow(BlApi.IBL bl, ListsViewWindow listsViewWindow)
         {
             InitializeComponent();
 
             this.bl = bl;
             this.listsViewWindow = listsViewWindow;
-            customer = new(
-                Location: new Location(Random.NextDouble(31, 35), Random.NextDouble(31, 35)),
-                FromCustomer: new(),
-                ToCustomer: new()
-                );
+            customer = new(Location: new Location(), FromCustomer: new(),ToCustomer: new());
             AddingStack.DataContext = customer;
             AddingStack.Visibility = Visibility.Visible;
         }
+        /// <summary>
+        /// Update customer
+        /// </summary>
+        /// <param name="bl"></param>
+        /// <param name="listsViewWindow"></param>
+        /// <param name="customer"></param>
+        public CustomerWindow(BlApi.IBL bl, ListsViewWindow listsViewWindow, Customer customer)
+        {
+            InitializeComponent();
+
+            this.bl = bl;
+            this.listsViewWindow = listsViewWindow;
+            this.customer = customer;
+            OptionStack.DataContext = customer;
+            OptionStack.Visibility = Visibility.Visible;
+        }
+
 
         private void XButton(object sender, RoutedEventArgs e)
         {
             Close();
         }
-
 
         private void OnClickAddCustomerButton(object sender, RoutedEventArgs e)
         {
@@ -72,9 +88,33 @@ namespace PL
             }
         }
 
+        private void OnClickUpdateCustomerButton(object sender, RoutedEventArgs e)
+        {
+
+            try
+            {
+                if (bl.UpdateCustomer(customer.Id, customer.Name, customer.Phone))
+                {
+                    MessageBox.Show("customer updated seccussfully");
+                    // listsViewWindow.UpdateBaseStationList(); TODO: fix nullptr exception
+                    Close();
+                }
+
+            }
+            catch (Exception ex) when (ex is BO.IdAlreadyExistsException or FormatException)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             e.Handled = new Regex("[^0-9]+").IsMatch(e.Text);
+        }
+
+        private void FloatNumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = new Regex(@"[^0-9]+\.?[^0-9]+").IsMatch(e.Text);
         }
 
         /// <summary>

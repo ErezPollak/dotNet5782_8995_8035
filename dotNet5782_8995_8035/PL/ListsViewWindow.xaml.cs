@@ -208,7 +208,7 @@ namespace PL
 
         private void ClickedCustomerInList(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-
+            new CustomerWindow(bl, this, bl.GetCustomer(((BO.CustomerForList)ListOfCustomersView.SelectedItem).Id)).ShowDialog();
         }
 
         public void UpdateCustomerList()

@@ -382,7 +382,7 @@ namespace BlApi
         /// <param name="name"></param>
         /// <param name="slots"></param>
         /// <returns> true if the updaue complited successfully </returns>
-        public bool UpdateBaseStation(int basStationId, string name, int slots)
+        public bool UpdateBaseStation(int basStationId, string name, int slots) 
         {
             try
             {
