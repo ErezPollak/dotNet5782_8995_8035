@@ -160,6 +160,7 @@ namespace PL
 
         private void AddBaseStationButton_Click(object sender, RoutedEventArgs e)
         {
+            new BaseStationWindow(bl, this).ShowDialog();
 
         }
 
@@ -170,7 +171,7 @@ namespace PL
 
         public void UpdateBaseStationList()
         {
-            switch (NumberOfSlotsSelector.SelectedItem.ToString())
+            switch (NumberOfSlotsSelector?.SelectedItem?.ToString())
             {
 
                 case "Show All":
@@ -183,7 +184,7 @@ namespace PL
                     this.baseStatoinList = bl.GetBaseStations(b => b.FreeChargingSlots > 0);
 
                     break;
-               
+
                 default:
                     break;
             }
@@ -202,7 +203,7 @@ namespace PL
 
         private void AddCustomer_Click(object sender, RoutedEventArgs e)
         {
-
+            new CustomerWindow(bl, this).ShowDialog();
         }
 
         private void ClickedCustomerInList(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -254,6 +255,6 @@ namespace PL
             SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) & ~WS_SYSMENU);
         }
 
-       
+
     }
 }
