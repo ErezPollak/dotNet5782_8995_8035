@@ -166,7 +166,7 @@ namespace PL
 
         private void ClickedBaseStationInList(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-
+            new BaseStationWindow(bl, this, bl.GetBaseStation(((BO.BaseStationForList)ListOfBaseStationsView.SelectedItem).Id)).ShowDialog();
         }
 
         public void UpdateBaseStationList()

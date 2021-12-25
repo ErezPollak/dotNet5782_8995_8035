@@ -31,6 +31,11 @@ namespace PL
         private readonly ListsViewWindow listsViewWindow;
         private BaseStation baseStation;
 
+        /// <summary>
+        /// ctor for adding
+        /// </summary>
+        /// <param name="bl"></param>
+        /// <param name="listsViewWindow"></param>
         public BaseStationWindow(BlApi.IBL bl, ListsViewWindow listsViewWindow)
         {
             InitializeComponent();
@@ -47,7 +52,19 @@ namespace PL
 
         }
 
-        private void XButton(object sender, RoutedEventArgs e)
+        public BaseStationWindow(BlApi.IBL bl, ListsViewWindow listsViewWindow, BaseStation baseStation)
+        {
+            InitializeComponent();
+
+            this.bl = bl;
+            this.listsViewWindow = listsViewWindow;
+            this.baseStation = baseStation;
+            OptionStack.DataContext = baseStation;
+            OptionStack.Visibility = Visibility.Visible;
+        }
+
+
+            private void XButton(object sender, RoutedEventArgs e)
         {
             Close();
         }
@@ -69,6 +86,25 @@ namespace PL
             catch (Exception ex) when (ex is BO.IdAlreadyExistsException or FormatException)
             {
                 BaseStationID.Foreground = Brushes.Red;
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void OnClickUpdateBaseStationButton(object sender, RoutedEventArgs e)
+        {
+
+            try
+            {
+                if (bl.UpdateBaseStation(baseStation.Id, baseStation.Name, baseStation.ChargeSlots))
+                {
+                    MessageBox.Show("baseStation updated seccussfully");
+                    // listsViewWindow.UpdateBaseStationList(); TODO: fix nullptr exception
+                    Close();
+                }
+
+            }
+            catch (Exception ex) when (ex is BO.IdAlreadyExistsException or FormatException)
+            {
                 MessageBox.Show(ex.Message);
             }
         }
@@ -95,5 +131,6 @@ namespace PL
             SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) & ~WS_SYSMENU);
         }
 
+       
     }
 }
