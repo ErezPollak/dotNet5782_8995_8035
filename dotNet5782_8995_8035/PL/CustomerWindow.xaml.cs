@@ -75,7 +75,7 @@ namespace PL
             {
                 if (bl.AddCustumer(customer))
                 {
-                    MessageBox.Show("baseStation added seccussfully");
+                    MessageBox.Show("customer added seccussfully");
                     // listsViewWindow.UpdateBaseStationList(); TODO: fix nullptr exception
                     Close();
                 }
