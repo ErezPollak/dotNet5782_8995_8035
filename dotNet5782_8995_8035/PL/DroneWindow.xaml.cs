@@ -117,7 +117,9 @@ namespace PL
                 {
                     MessageBox.Show("drone added seccussfully");
 
-                    listsViewWindow.UpdateDroneList();
+                    //listsViewWindow.UpdateDroneList();
+
+                    listsViewWindow.AddDrone(drone);
 
                     Close();
                 }

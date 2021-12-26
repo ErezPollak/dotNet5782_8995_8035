@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace BlApi
 {
@@ -35,7 +36,7 @@ namespace BlApi
         public BO.Parcel GetParcel(int parcelId);
 
         public IEnumerable<BO.BaseStationForList> GetBaseStations(Predicate<BO.BaseStationForList> f);
-        public IEnumerable<BO.DroneForList> GetDrones(Predicate<BO.DroneForList> f);
+        public ObservableCollection<BO.DroneForList> GetDrones(Predicate<BO.DroneForList> f);
         public IEnumerable<BO.CustomerForList> GetCustomers(Predicate<BO.CustomerForList> f);
         public IEnumerable<BO.ParcelForList> GetPacels(Predicate<BO.ParcelForList> f);
 

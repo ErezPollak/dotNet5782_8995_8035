@@ -4,6 +4,7 @@ using DO;
 using BO;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Collections.ObjectModel;
 
 namespace BlApi
 {
@@ -843,9 +844,9 @@ namespace BlApi
         /// </summary>
         /// <param name="f"></param>
         /// <returns></returns>
-        public IEnumerable<DroneForList> GetDrones(Predicate<DroneForList> f)
+        public ObservableCollection<DroneForList> GetDrones(Predicate<DroneForList> f)
         {
-            List<DroneForList> balDrones = new List<DroneForList>();
+            ObservableCollection<DroneForList> balDrones = new ObservableCollection<DroneForList>();
 
             drones.FindAll(d => f(d)).ForEach(d => balDrones.Add(new DroneForList()
             {

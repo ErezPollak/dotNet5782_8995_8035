@@ -15,22 +15,21 @@ namespace PL
     /// </summary>
     public partial class ListsViewWindow : Window
     {
+        
         private BlApi.IBL bl;
-        private IEnumerable<BO.DroneForList> droneList;
+        public ObservableCollection<BO.DroneForList> droneList;
         private IEnumerable<BO.ParcelForList> parcelList;
         private IEnumerable<BO.BaseStationForList> baseStatoinList;
         private IEnumerable<BO.CustomerForList> costumerList;
 
-
-
         public ListsViewWindow(BlApi.IBL bl)
-        {
+        { 
 
             InitializeComponent();
 
             this.bl = bl;
 
-            this.droneList = bl.GetDrones(_ => true);
+            this.droneList =  bl.GetDrones(_ => true);
             this.parcelList = bl.GetPacels(_ => true);
             this.baseStatoinList = bl.GetBaseStations(_ => true);
             this.costumerList = bl.GetCustomers(_ => true);
@@ -61,6 +60,9 @@ namespace PL
             parcelStatusSelector.Add("Show All");
             ParcelStatusSelector.DataContext = parcelStatusSelector;
             //this.DataContext = this;
+
+
+
         }
 
         #region DroneList
@@ -91,6 +93,21 @@ namespace PL
             //}
         }
 
+        public void AddDrone(BO.Drone drone)
+        {
+            BO.DroneForList listDrone = new BO.DroneForList()
+            {
+                Id = drone.Id,
+                Battery = drone.Battery,
+                Location = drone.Location,
+                Model = drone.Model,
+                ParcelId = 0,
+                Status = drone.Status,
+                Weight = drone.MaxWeight
+            };
+            026751152
+            this.droneList.Add(listDrone);
+        }
 
         public void UpdateDroneList()
         {
@@ -107,8 +124,6 @@ namespace PL
                     (d.Status.ToString() == status || status == "Show All"));
 
             DroneList.DataContext = droneList;
-
-
         }
 
         #endregion
