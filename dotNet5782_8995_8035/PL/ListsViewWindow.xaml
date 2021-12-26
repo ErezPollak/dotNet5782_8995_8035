@@ -127,7 +127,7 @@
                     </Label>
                     <ComboBox x:Name="Selecter" ItemsSource="{Binding}" Margin="27,24,27,5" Grid.Column="2" SelectedIndex="3" SelectionChanged ="WeightChoose" FontFamily="Segoe Print"/>-->
 
-                    <ListView x:Name="ListOfParcelsView" ItemsSource="{Binding}" Margin="14,59,6,-354" RenderTransformOrigin="0.831,0.089" Grid.ColumnSpan="5" MouseDoubleClick="ClickedParcelInList" SelectionChanged="ListOfParcelsView_SelectionChanged" Grid.RowSpan="2" Height="320" >
+                    <ListView x:Name="ListOfParcelsView" ItemsSource="{Binding}" Margin="14,59,6,-354" RenderTransformOrigin="0.831,0.089" Grid.ColumnSpan="5" MouseDoubleClick="ClickedParcelInList" Grid.RowSpan="2" Height="320" >
                         <ListView.Background>
                             <ImageBrush Opacity="10"/>
                         </ListView.Background>
