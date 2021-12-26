@@ -105,7 +105,6 @@ namespace PL
                 Status = drone.Status,
                 Weight = drone.MaxWeight
             };
-            026751152
             this.droneList.Add(listDrone);
         }
 
