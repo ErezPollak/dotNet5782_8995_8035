@@ -64,6 +64,7 @@ namespace PL
             this.baseStation = baseStation;
             OptionStack.DataContext = baseStation;
             OptionStack.Visibility = Visibility.Visible;
+            listViewOfBaseStatin_ChargingDrones.DataContext = baseStation.ChargingDrones;
         }
 
 

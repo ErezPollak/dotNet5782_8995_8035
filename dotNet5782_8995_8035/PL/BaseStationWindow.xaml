@@ -15,7 +15,7 @@
         >
 
     <Window.Resources>
-       
+        <local:DroneBattryToChargeVisability x:Key="DroneBattryToChargeVisability"/>
     </Window.Resources>
     
     <Grid>
@@ -70,24 +70,19 @@
                 </StackPanel>
             </StackPanel>
 
-            <!--<StackPanel>    todo tomoroow
-                <ListView x:Name="DroneList" ItemsSource="{Binding}" >
+            <StackPanel>
+                <ListView x:Name="listViewOfBaseStatin_ChargingDrones" ItemsSource="{Binding}" >
                     <ListView.Background>
-                        <ImageBrush Opacity="10" ImageSource="/images/5.jpg"/>
+                        <ImageBrush Opacity="10"/>
                     </ListView.Background>
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header = "ID" DisplayMemberBinding="{Binding Path = Id}" />
-                            <GridViewColumn Header = "Model" DisplayMemberBinding="{Binding Path = Model}" />
-                            <GridViewColumn Header = "Weight" DisplayMemberBinding="{Binding Path = Weight}" />
                             <GridViewColumn Header = "Battery" DisplayMemberBinding="{Binding Path = Battery , Converter={StaticResource converters}}" />
-                            <GridViewColumn Header = "Status" DisplayMemberBinding="{Binding Path = Status}" />
-                            <GridViewColumn Header = "location" DisplayMemberBinding="{Binding Path = Location}" />
-                            <GridViewColumn Header = "ParcelId" DisplayMemberBinding="{Binding Path = ParcelId}" />
                         </GridView>
                     </ListView.View>
                 </ListView>
-            </StackPanel>-->
+            </StackPanel>
 
             <StackPanel Height="20">
 

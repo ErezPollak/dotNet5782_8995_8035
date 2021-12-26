@@ -31,7 +31,7 @@ namespace PL
         private Customer customer;
 
         /// <summary>
-        /// ctor add customer
+        /// ctor for add customer
         /// </summary>
         /// <param name="bl"></param>
         /// <param name="listsViewWindow"></param>
@@ -46,7 +46,7 @@ namespace PL
             AddingStack.Visibility = Visibility.Visible;
         }
         /// <summary>
-        /// Update customer
+        /// ctor for Update customer
         /// </summary>
         /// <param name="bl"></param>
         /// <param name="listsViewWindow"></param>
@@ -60,6 +60,9 @@ namespace PL
             this.customer = customer;
             OptionStack.DataContext = customer;
             OptionStack.Visibility = Visibility.Visible;
+            listViewOfBaseStatin_FromCustomer.DataContext = customer;
+            listViewOfBaseStatin_ToCustomer.DataContext = customer;
+
         }
 
 
