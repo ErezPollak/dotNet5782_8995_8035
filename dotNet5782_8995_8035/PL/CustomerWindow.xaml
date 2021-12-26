@@ -71,8 +71,8 @@
                 </StackPanel>
             </StackPanel>
 
-            <StackPanel>
-                <ListView x:Name="listViewOfBaseStatin_FromCustomer" ItemsSource="{Binding}" >
+            <StackPanel Height="100">
+                <ListView x:Name="listViewOfBaseStatin_FromCustomer" ItemsSource="{Binding}" Height="70" >
                     <ListView.Background>
                         <ImageBrush Opacity="10"/>
                     </ListView.Background>
@@ -87,8 +87,8 @@
                     </ListView.View>
                 </ListView>
             </StackPanel>
-            <StackPanel>
-                <ListView x:Name="listViewOfBaseStatin_ToCustomer" ItemsSource="{Binding}" >
+            <StackPanel Height="100">
+                <ListView x:Name="listViewOfBaseStatin_ToCustomer" ItemsSource="{Binding}" Height="70">
                     <ListView.Background>
                         <ImageBrush Opacity="10"/>
                     </ListView.Background>
