@@ -165,7 +165,7 @@
                       HorizontalAlignment="Center" />
                     </StackPanel>
                 </TabItem.Header>
-                <Grid Height="416" Margin="10,0,0,0" >
+                <Grid Height="416" Margin="10,0,0,0"  >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="305*"/>
                         <ColumnDefinition Width="305*"/>
@@ -193,8 +193,8 @@
                         </ListView.View>
                     </ListView>
 
-                    <ComboBox x:Name="NumberOfSlotsSelector" ItemsSource="{Binding}"  materialDesign:HintAssist.Hint="Number Of Slots Selector" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Width="215" Height="32" SelectionChanged="BaseStationGuopingSelected" FontFamily="Segoe Print" Margin="0,33,0,0"/>
-                    <Label Content="Number Of Slots Selector" Grid.Column="1" HorizontalAlignment="Center" FontSize="20" Width="253"/>
+                    <ComboBox x:Name="NumberOfSlotsSelector" ItemsSource="{Binding}"  IsEnabled="True" materialDesign:HintAssist.Hint="Number Of Slots Selector" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Width="215" Height="32" SelectionChanged="BaseStationGuopingSelected" FontFamily="Segoe Print" Margin="0,32,0,0"/>
+                    <Label Content="Number Of Slots Selector" Grid.Column="1" HorizontalAlignment="Center" FontSize="20" Width="252" Margin="0,-3,0,37"/>
                     <Button Content="Add Base Station" Margin="0,12,63,12" Click="AddBaseStationButton_Click" HorizontalAlignment="Right" Width="180"/>
                 </Grid>
 
