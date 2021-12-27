@@ -22,8 +22,12 @@ namespace PL
         private ObservableCollection<BO.BaseStationForList> baseStatoinList;
         private ObservableCollection<BO.CustomerForList> costumerList;
 
+        private AccssesAtholerazetion accssesAtholerazetion;
+
         public ListsViewWindow(BlApi.IBL bl , AccssesAtholerazetion accssesAtholerazetion)
-        { 
+        {
+
+            this.accssesAtholerazetion = accssesAtholerazetion;
 
             InitializeComponent();
 
@@ -59,7 +63,6 @@ namespace PL
             List<string> parcelStatusSelector = Enum.GetNames(typeof(BO.Enums.ParcelStatus)).Cast<string>().ToList();
             parcelStatusSelector.Add("Show All");
             ParcelStatusSelector.DataContext = parcelStatusSelector;
-            //this.DataContext = this;
 
 
 

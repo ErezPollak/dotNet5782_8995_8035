@@ -17,7 +17,7 @@
     >
 
     <Window.Resources>
-        <local:AccssesAtholerasationToVisability x:Key="accssesAtholerasationToVisability"/>
+        <!--<local:AccssesAtholerasationToVisability x:Key="aaaaa"/>-->
     </Window.Resources>
     
     <Window.Background>

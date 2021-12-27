@@ -4,7 +4,7 @@ using System.Windows;
 namespace PL
 {
 
-    public enum AccssesAtholerazetion { MANAGER , EMPLOYEE , CUSTOMER , GUEST }
+    public enum AccssesAtholerazetion {GUEST, CUSTOMER, EMPLOYEE, MANAGER}
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml

@@ -12,7 +12,9 @@
         ResizeMode="NoResize" >
 
     <Window.Resources>
-
+        <local:ManagerAccssesAtholerasationToVisability x:Key="managerAtholerazetion"/>
+        <local:EmployeeAccssesAtholerasationToVisability x:Key="employeeAtholerazetion"/>
+        <local:CostumerAccssesAtholerasationToVisability x:Key="customerAtholerazetion"/>
     </Window.Resources>
 
 

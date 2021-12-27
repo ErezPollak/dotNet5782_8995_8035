@@ -141,13 +141,67 @@ namespace PL
         }
     }
 
-    class AccssesAtholerasationToVisability : IValueConverter
+    //class AccssesAtholerasationToVisability : IValueConverter
+    //{
+    //    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    //    {
+    //        AccssesAtholerazetion atholerazetion = (AccssesAtholerazetion)value;
+
+    //        if (atholerazetion == AccssesAtholerazetion.GUEST)
+    //            return Visibility.Collapsed;
+    //        else
+    //            return Visibility.Visible;
+    //    }
+
+    //    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    //    {
+    //        throw new NotImplementedException();
+    //    }
+    //}
+
+    class ManagerAccssesAtholerasationToVisability : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            AccssesAtholerazetion atholerazetion = (AccssesAtholerazetion)value;
+            AccssesAtholerazetion accsses = (AccssesAtholerazetion)value;
 
-            if (atholerazetion == AccssesAtholerazetion.GUEST)
+            if ((int)accsses < (int)AccssesAtholerazetion.MANAGER)
+                return Visibility.Collapsed;
+            else
+                return Visibility.Visible;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    class EmployeeAccssesAtholerasationToVisability : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            AccssesAtholerazetion accsses = (AccssesAtholerazetion)value;
+
+            if ((int)accsses < (int)AccssesAtholerazetion.EMPLOYEE)
+                return Visibility.Collapsed;
+            else
+                return Visibility.Visible;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    class CostumerAccssesAtholerasationToVisability : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            AccssesAtholerazetion accsses = (AccssesAtholerazetion)value;
+
+            if ((int)accsses < (int)AccssesAtholerazetion.CUSTOMER)
                 return Visibility.Collapsed;
             else
                 return Visibility.Visible;
