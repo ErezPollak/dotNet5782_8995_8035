@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
+        Title="Main Window" Height="550" Width="1225"
+        ResizeMode="NoResize"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
@@ -25,5 +26,15 @@
         </Grid.Background>
         <Button Name="start_button" Content="Start"  HorizontalAlignment="Left" Margin="154,189,0,0" VerticalAlignment="Top" Height="66" Width="176" Click="Button_Click" />
         <Label x:Name="Welcome" Content="Welcome" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="81" Margin="111,84,0,0" VerticalAlignment="Top" Width="289" Foreground="#FF2C52A2" FontSize="55" FontFamily="MV Boli"/>
+
+        <StackPanel Orientation="Horizontal" Margin="34,227,31,93" RenderTransformOrigin="0.5,0.5">
+            <Button Content="Maneger"  Height="63" Width="185" Margin="50"/>
+            <Button Content="Employee"  Height="63" Width="185" Margin="50"/>
+            <Button Content="Customer"  Height="63" Width="185" Margin="50"/>
+            <Button Content="Guest"  Height="63" Width="185" Margin="50"/>
+        </StackPanel>
+        <Button Content="Sign Up" HorizontalAlignment="Left" Margin="18,463,0,0" VerticalAlignment="Top" Width="200" Height="30"/>
+        <Button Content="Contact Us" HorizontalAlignment="Left" Margin="992,462,0,0" VerticalAlignment="Top" Width="200" Height="30"/>
+
     </Grid>
 </Window>
