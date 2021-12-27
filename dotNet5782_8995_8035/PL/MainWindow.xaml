@@ -24,17 +24,26 @@
         <Grid.Background>
             <ImageBrush/>
         </Grid.Background>
-        <Button Name="start_button" Content="Start"  HorizontalAlignment="Left" Margin="154,189,0,0" VerticalAlignment="Top" Height="66" Width="176" Click="Button_Click" />
-        <Label x:Name="Welcome" Content="Welcome" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="81" Margin="111,84,0,0" VerticalAlignment="Top" Width="289" Foreground="#FF2C52A2" FontSize="55" FontFamily="MV Boli"/>
+        <Button Name="start_button" Content="Start"  HorizontalAlignment="Left" Margin="400,89,0,0" VerticalAlignment="Top" Height="66" Width="176" Click="Button_Click" />
+        <Label x:Name="Welcome" Content="Welcome" HorizontalAlignment="Left" Height="81" Margin="77,60,0,0" VerticalAlignment="Top" Width="289" Foreground="#FF2C52A2" FontSize="55" FontFamily="MV Boli"/>
 
-        <StackPanel Orientation="Horizontal" Margin="34,227,31,93" RenderTransformOrigin="0.5,0.5">
-            <Button Content="Maneger"  Height="63" Width="185" Margin="50"/>
-            <Button Content="Employee"  Height="63" Width="185" Margin="50"/>
-            <Button Content="Customer"  Height="63" Width="185" Margin="50"/>
-            <Button Content="Guest"  Height="63" Width="185" Margin="50"/>
+        <StackPanel Orientation="Vertical" Margin="48,146,887,38" RenderTransformOrigin="0.5,0.5">
+            <Button Content="Maneger"  Height="50" Width="150" Margin="10"/>
+            <Button Content="Employee"  Height="50" Width="150" Margin="10"/>
+            <Button Content="Customer"  Height="50" Width="150" Margin="10"/>
+            <Button Content="Guest"  Height="50" Width="150" Margin="10"/>
         </StackPanel>
-        <Button Content="Sign Up" HorizontalAlignment="Left" Margin="18,463,0,0" VerticalAlignment="Top" Width="200" Height="30"/>
-        <Button Content="Contact Us" HorizontalAlignment="Left" Margin="992,462,0,0" VerticalAlignment="Top" Width="200" Height="30"/>
+        <Button Content="Sign Up"
+                HorizontalAlignment="Left" 
+                Margin="115,466,0,0" 
+                VerticalAlignment="Top" 
+                Width="150" 
+                Height="30"
+                Style="{StaticResource MaterialDesignRaisedButton}"
+                    materialDesign:ButtonProgressAssist.Value="-1"
+                    materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
+                    materialDesign:ButtonProgressAssist.IsIndeterminate="True"/>
+        <Button Content="Contact Us" HorizontalAlignment="Left" Margin="992,462,0,0" VerticalAlignment="Top" Width="150" Height="30"/>
 
     </Grid>
 </Window>
