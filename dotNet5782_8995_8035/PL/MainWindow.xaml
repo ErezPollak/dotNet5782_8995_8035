@@ -16,6 +16,10 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
     >
 
+    <Window.Resources>
+        <local:AccssesAtholerasationToVisability x:Key="accssesAtholerasationToVisability"/>
+    </Window.Resources>
+    
     <Window.Background>
         <ImageBrush ImageSource = "/images/8.jpg" Stretch="UniformToFill"/>
     </Window.Background>
@@ -24,14 +28,14 @@
         <Grid.Background>
             <ImageBrush/>
         </Grid.Background>
-        <Button Name="start_button" Content="Start"  HorizontalAlignment="Left" Margin="400,89,0,0" VerticalAlignment="Top" Height="66" Width="176" Click="Button_Click" />
+        <Button Name="start_button" Content="Start"  HorizontalAlignment="Left" Margin="371,63,0,0" VerticalAlignment="Top" Height="66" Width="176" Click="Button_Click" />
         <Label x:Name="Welcome" Content="Welcome" HorizontalAlignment="Left" Height="81" Margin="77,60,0,0" VerticalAlignment="Top" Width="289" Foreground="#FF2C52A2" FontSize="55" FontFamily="MV Boli"/>
 
         <StackPanel Orientation="Vertical" Margin="48,146,887,38" RenderTransformOrigin="0.5,0.5">
-            <Button Content="Maneger"  Height="50" Width="150" Margin="10"/>
-            <Button Content="Employee"  Height="50" Width="150" Margin="10"/>
-            <Button Content="Customer"  Height="50" Width="150" Margin="10"/>
-            <Button Content="Guest"  Height="50" Width="150" Margin="10"/>
+            <Button Content="Manager"  Height="50" Width="150" Margin="10" Click="Manager_Click"/>
+            <Button Content="Employee"  Height="50" Width="150" Margin="10" Click="Employee_Click"/>
+            <Button Content="Customer"  Height="50" Width="150" Margin="10" Click="Customer_Click"/>
+            <Button Content="Guest"  Height="50" Width="150" Margin="10" Click="Guest_Click"/>
         </StackPanel>
         <Button Content="Sign Up"
                 HorizontalAlignment="Left" 
@@ -42,8 +46,9 @@
                 Style="{StaticResource MaterialDesignRaisedButton}"
                     materialDesign:ButtonProgressAssist.Value="-1"
                     materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
-                    materialDesign:ButtonProgressAssist.IsIndeterminate="True"/>
-        <Button Content="Contact Us" HorizontalAlignment="Left" Margin="992,462,0,0" VerticalAlignment="Top" Width="150" Height="30"/>
-
+                    materialDesign:ButtonProgressAssist.IsIndeterminate="True" Click="ContactUs_Click"/>
+        <Button Content="Contact Us" HorizontalAlignment="Left" Margin="992,462,0,0" VerticalAlignment="Top" Width="150" Height="30" Click="ContactUs_Click"/>
+        <StackPanel x:Name="LoginStack" Visibility="{Binding Converter= {StaticResource accssesAtholerasationToVisability}}" Margin="343,146,686,111"/>
+       
     </Grid>
 </Window>

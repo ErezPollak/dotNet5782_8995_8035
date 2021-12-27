@@ -22,7 +22,7 @@ namespace PL
         private ObservableCollection<BO.BaseStationForList> baseStatoinList;
         private ObservableCollection<BO.CustomerForList> costumerList;
 
-        public ListsViewWindow(BlApi.IBL bl)
+        public ListsViewWindow(BlApi.IBL bl , AccssesAtholerazetion accssesAtholerazetion)
         { 
 
             InitializeComponent();
