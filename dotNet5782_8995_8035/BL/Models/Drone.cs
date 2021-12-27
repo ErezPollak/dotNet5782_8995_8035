@@ -1,7 +1,7 @@
 ﻿
     namespace BO
     {
-        public class Drone
+        public record Drone
         {
             public int Id { get; set; }
             public string Model { get; set; }

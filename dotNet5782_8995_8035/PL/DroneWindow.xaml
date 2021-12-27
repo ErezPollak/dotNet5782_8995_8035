@@ -36,7 +36,7 @@
             </StackPanel>
             <StackPanel Margin="3" Orientation="Horizontal">
                 <Label Content="Model" Width="108" />
-                <TextBox x:Name="ModelInput" Text="{Binding Model, Mode=TwoWay,  NotifyOnValidationError=True, ValidatesOnExceptions=True}" materialDesign:HintAssist.Hint="Model" TextWrapping="Wrap" Width="180" RenderTransformOrigin="0.596,0.084" TextChanged="ModelUpdatedChanged" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                <TextBox x:Name="ModelInput" Text="{Binding Model, Mode=TwoWay,  NotifyOnValidationError=True, ValidatesOnExceptions=True}" materialDesign:HintAssist.Hint="Model" TextWrapping="Wrap" Width="180" RenderTransformOrigin="0.596,0.084" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
             </StackPanel>
 
             <StackPanel Height="20">
@@ -51,7 +51,7 @@
             <Button Content="X" RenderTransformOrigin="-1.136,-0.1" Height="40" Width="45" Click="XButton" Background="#FFF90B0B" FontWeight="Bold" FontSize="20" HorizontalAlignment="Right"/>
             <StackPanel Height="50" Margin="3" Orientation="Horizontal">
                 <Label Content="Drone ID" Width="108" />
-                <TextBox x:Name="Id" Text="{Binding Id, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnExceptions=True}" IsReadOnly="True" materialDesign:HintAssist.Hint="Drone ID"  Width="180" TextChanged="DroneIdTextChanged" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                <TextBox x:Name="Id" Text="{Binding Id, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnExceptions=True}" IsReadOnly="True" materialDesign:HintAssist.Hint="Drone ID"  Width="180" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
             </StackPanel>
             <StackPanel Height="50" Margin="3" Orientation="Horizontal">
                 <Label Content="weight StackPanelCategory"  Width="108"  />

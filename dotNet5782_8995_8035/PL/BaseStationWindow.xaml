@@ -65,8 +65,8 @@
             <StackPanel Height="50" Margin="3" Orientation="Horizontal">
                 <Label  Content="Location" Width="108" />
                 <StackPanel>
-                    <TextBox  Text="{Binding Location.Longitude, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnExceptions=True}" Width="180" PreviewTextInput="FloatNumberValidationTextBox" />
-                    <TextBox  Text="{Binding Location.Latitude, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnExceptions=True}" Width="180" PreviewTextInput="FloatNumberValidationTextBox"/>
+                    <TextBox  Text="{Binding Location.Longitude, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnExceptions=True}" IsReadOnly="true" Width="180" PreviewTextInput="FloatNumberValidationTextBox" />
+                    <TextBox  Text="{Binding Location.Latitude, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnExceptions=True}" IsReadOnly="True" Width="180" PreviewTextInput="FloatNumberValidationTextBox"/>
                 </StackPanel>
             </StackPanel>
             <StackPanel Height="10"></StackPanel>

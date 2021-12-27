@@ -82,7 +82,7 @@ namespace PL
                     listsViewWindow.AddBaseStation(baseStation);
 
                     MessageBox.Show("baseStation added seccussfully");
-                    // listsViewWindow.UpdateBaseStationList(); TODO: fix nullptr exception
+                    //listsViewWindow.UpdateBaseStationList();// TODO: fix nullptr exception
                     Close();
                 }
 
@@ -102,7 +102,7 @@ namespace PL
                 if (bl.UpdateBaseStation(baseStation.Id, baseStation.Name, baseStation.ChargeSlots))
                 {
                     MessageBox.Show("baseStation updated seccussfully");
-                    // listsViewWindow.UpdateBaseStationList(); TODO: fix nullptr exception
+                    //listsViewWindow.UpdateLists();// TODO: fix nullptr exception
                     Close();
                 }
 

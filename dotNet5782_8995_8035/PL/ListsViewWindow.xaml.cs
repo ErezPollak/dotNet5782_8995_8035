@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -206,7 +207,8 @@ namespace PL
 
         private void ClickedBaseStationInList(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            new BaseStationWindow(bl, this, bl.GetBaseStation(((BO.BaseStationForList)ListOfBaseStationsView.SelectedItem).Id)).ShowDialog();
+            if(ListOfBaseStationsView.SelectedItem != null)
+                new BaseStationWindow(bl, this, bl.GetBaseStation(((BO.BaseStationForList)ListOfBaseStationsView.SelectedItem).Id)).ShowDialog();
         }
 
         public void AddBaseStation(BO.BaseStation baseStation)
@@ -241,6 +243,16 @@ namespace PL
 
             ListOfBaseStationsView.DataContext = this.baseStatoinList;
 
+        }
+
+
+        private void GroupBaseStationByFreeSlots_Click(object sender, RoutedEventArgs e)
+        {
+            var group = from baseStation in this.baseStatoinList as IEnumerable<BO.BaseStationForList>
+                        group baseStation by baseStation.FreeChargingSlots;
+
+            this.baseStatoinList = GroupToObservable(group);
+            ListOfBaseStationsView.DataContext = this.baseStatoinList;
         }
 
         #endregion
@@ -311,6 +323,51 @@ namespace PL
         }
 
 
+        private void GroupBySender_Click(object sender, RoutedEventArgs e)
+        {
+            var group = from parcel in this.parcelList as IEnumerable<BO.ParcelForList>
+                        group parcel by parcel.SenderName;
+
+            this.parcelList = GroupToObservable(group);
+            ListOfParcelsView.DataContext = this.parcelList;
+        }
+
+
+        private void GroupByReciver_Click(object sender, RoutedEventArgs e)
+        {
+            var group = from parcel in this.parcelList as IEnumerable<BO.ParcelForList>
+                        group parcel by parcel.ReceiverName;
+
+            this.parcelList = GroupToObservable(group);
+            ListOfParcelsView.DataContext = this.parcelList;
+        }
+
+
+
+        /// <summary>
+        /// creats an obsevable collaction and puts in it all the grouped values from the grouped
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="K"></typeparam>
+        /// <param name="group"></param>
+        /// <returns></returns>
+        ObservableCollection<T> GroupToObservable<T, K>(IEnumerable<IGrouping<K, T>> group)
+        {
+            ObservableCollection<T> collection = new();
+            foreach (var numberGroup in group)
+            {
+                foreach (var element in numberGroup)
+                {
+                    collection.Add(element);
+                }
+            }
+
+            return collection;
+        }
+
+
+
+
         /// <summary>
         /// hiding the x button of the window
         /// </summary>
@@ -327,7 +384,6 @@ namespace PL
             var hwnd = new WindowInteropHelper(this).Handle;
             SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) & ~WS_SYSMENU);
         }
-
 
     }
 }

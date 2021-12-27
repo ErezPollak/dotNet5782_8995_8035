@@ -54,13 +54,13 @@
                     </Grid.RowDefinitions>
 
 
-                    <ListView x:Name="ListOfBaseStationsView" ItemsSource="{Binding}" SelectedIndex="0"  MouseDoubleClick="ClickedBaseStationInList" MinHeight="5" Grid.ColumnSpan="4" Margin="10,8,35,10" Grid.Row="1" >
+                    <ListView x:Name="ListOfBaseStationsView" ItemsSource="{Binding}" SelectedIndex="0"  MouseDoubleClick="ClickedBaseStationInList" MinHeight="5" Grid.ColumnSpan="4" Margin="10,8,35,10" Grid.Row="1">
                         <ListView.Background>
-                            <ImageBrush Opacity="10" ImageSource="/images/5.jpg"/>
+                            <ImageBrush Opacity="10"/>
                         </ListView.Background>
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header = "Id" DisplayMemberBinding="{Binding Path = Id}" />
+                                <GridViewColumn Header = "Id" DisplayMemberBinding="{Binding Path = Id}"/>
                                 <GridViewColumn Header = "Name" DisplayMemberBinding="{Binding Path = Name}" />
                                 <GridViewColumn Header = "FreeChargingSlots" DisplayMemberBinding="{Binding Path = FreeChargingSlots}" />
                                 <GridViewColumn Header = "TakenCharingSlots" DisplayMemberBinding="{Binding Path = TakenCharingSlots}" />
@@ -71,6 +71,8 @@
                     <ComboBox x:Name="NumberOfSlotsSelector" ItemsSource="{Binding}"  IsEnabled="True" materialDesign:HintAssist.Hint="Number Of Slots Selector" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Width="215" Height="32" SelectionChanged="BaseStationGuopingSelected" FontFamily="Segoe Print" Margin="0,32,0,0"/>
                     <Label Content="Number Of Slots Selector" Grid.Column="1" HorizontalAlignment="Center" FontSize="20" Width="252" Margin="0,-3,0,37"/>
                     <Button Content="Add Base Station" Margin="0,12,63,12" Click="AddBaseStationButton_Click" HorizontalAlignment="Right" Width="180" Visibility="{Binding Converter={StaticResource managerAtholerazetion}}"/>
+                    <Button Content="Group By Free Slots" Margin="0,12,63,12" Grid.Column="2" Click="GroupBaseStationByFreeSlots_Click" HorizontalAlignment="Right" Width="180" Visibility="{Binding Converter={StaticResource managerAtholerazetion}}"/>
+
                 </Grid>
 
             </TabItem>
@@ -110,7 +112,7 @@
 
                     <ListView x:Name="ListOfDronesView" ItemsSource="{Binding}" Grid.Row="1" Margin="8,10,12,0" RenderTransformOrigin="0.831,0.089" Grid.ColumnSpan="5" MouseDoubleClick="ClickedDroneInList" MinHeight="5" Height="340" VerticalAlignment="Top" >
                         <ListView.Background>
-                            <ImageBrush Opacity="10" ImageSource="/images/5.jpg"/>
+                            <ImageBrush Opacity="10" />
                         </ListView.Background>
                         <ListView.View>
                             <GridView>
@@ -180,6 +182,8 @@
                     </ListView>
 
                     <Button Content="Add Parcel" Margin="0,10,0,10" Click="AddParcel_Click" HorizontalAlignment="Center" Width="180" Visibility="{Binding Converter={StaticResource customerAtholerazetion}}" />
+                    <Button Content="Group Sender" Margin="0,10,0,10" Grid.Column="2" Click="GroupBySender_Click" HorizontalAlignment="Center" Width="180" Visibility="{Binding Converter={StaticResource customerAtholerazetion}}" />
+                    <Button Content="Group Reciver" Margin="0,10,0,10" Grid.Column="3" Click="GroupByReciver_Click" HorizontalAlignment="Center" Width="180" Visibility="{Binding Converter={StaticResource customerAtholerazetion}}" />
 
                 </Grid>
 
@@ -214,18 +218,9 @@
                         <RowDefinition Height="400*"/>
                     </Grid.RowDefinitions>
 
-                    <!--<Label Content="Status selector" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Width="156" Height="39" ScrollViewer.HorizontalScrollBarVisibility="Visible" FontFamily="Forte" FontSize="20" Background="Transparent" Foreground="#DDC3B63C" Margin="81,-7,0,0">
-                    </Label>
-                    <ComboBox x:Name="Selector" ItemsSource="{Binding}" Margin="27,24,27,5" Grid.Column="1" SelectedIndex="3" SelectionChanged ="StatusChoose" FontFamily="Segoe Print"/>
-
-                    <Label Content="weight selector" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Top" Width="156" Height="39" ScrollViewer.HorizontalScrollBarVisibility="Visible" FontFamily="Forte" FontSize="20" Background="Transparent" Foreground="#DDC3B63C" Margin="81,-7,0,0">
-                    </Label>
-                    <ComboBox x:Name="Selecter" ItemsSource="{Binding}" Margin="27,24,27,5" Grid.Column="2" SelectedIndex="3" SelectionChanged ="WeightChoose" FontFamily="Segoe Print"/>-->
-
+                    
                     <ListView x:Name="ListOfCustomersView" ItemsSource="{Binding}" Margin="8,10,12,10" RenderTransformOrigin="0.831,0.089" MouseDoubleClick="ClickedCustomerInList" MinHeight="5" Grid.ColumnSpan="5" Grid.Row="1" >
-                        <!--<ListView.Background>
-                            <ImageBrush Opacity="10" ImageSource="/images/5.jpg"/>
-                        </ListView.Background>-->
+                        
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header = "Id" DisplayMemberBinding="{Binding Path = Id}" />

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BO;
+using BlApi;
+using System;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
@@ -14,12 +16,12 @@ namespace PL
     /// </summary>
     public partial class DroneWindow : Window
     {
-        Random r;
-        BlApi.IBL bl;
-        BO.Drone drone;
-        ListsViewWindow listsViewWindow;
+        private Random r;
+        private IBL bl;
+        private Drone drone;
+        private ListsViewWindow listsViewWindow;
 
-        PARCEL_STATE parcelState;
+        private PARCEL_STATE parcelState;
 
         /// <summary>
         /// ctor for adding a drone.
@@ -29,6 +31,13 @@ namespace PL
         public DroneWindow(BlApi.IBL bl, ListsViewWindow listsViewWindow)
         {
             drone = new();
+
+            drone.Status = BO.Enums.DroneStatuses.FREE;
+            drone.ParcelInDelivery = null;
+            drone.Battery = r.Next() % 20;
+            drone.Location = null;
+
+
             r = new Random();
             InitializeComponent();
             AddingStack.Visibility = Visibility.Visible;
@@ -65,8 +74,8 @@ namespace PL
             DroneID.Text = drone.Id + "";
             DroneID.IsEnabled = false;
 
-           
-            
+
+
             if (drone.Status != BO.Enums.DroneStatuses.MAINTENANCE)
             {
             }
@@ -107,11 +116,7 @@ namespace PL
         {
             try
             {
-
-                drone.Status = BO.Enums.DroneStatuses.FREE;
-                drone.ParcelInDelivery = null;
-                drone.Battery = r.Next() % 20;
-                drone.Location = null;
+               
 
                 if (bl.AddDrone(drone))
                 {
@@ -132,8 +137,7 @@ namespace PL
                     DroneID.Foreground = Brushes.Red;
                 }
 
-                MessageBox.Show(ShowException(ex));
-
+                MessageBox.Show(ShowException(ex), "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
 
             }
         }
@@ -147,7 +151,6 @@ namespace PL
         {
             if (UpdateModel != null && drone != null)
             {
-                UpdateModel.IsEnabled = true;
                 UpdateModel.Visibility = Visibility.Visible;
             }
         }
@@ -163,7 +166,7 @@ namespace PL
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ShowException(ex));
+                MessageBox.Show(ShowException(ex), "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
                 Model.Text = bl.GetDrone(drone.Id).Model;
             }
 
@@ -189,7 +192,7 @@ namespace PL
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ShowException(ex));
+                    MessageBox.Show(ShowException(ex), "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             else
@@ -211,11 +214,11 @@ namespace PL
                 catch (Exception ex)
                 {
 
-                    MessageBox.Show(ShowException(ex));
+                    MessageBox.Show(ShowException(ex), "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
 
             }
-        
+
         }
 
 
@@ -274,7 +277,8 @@ namespace PL
                         }
                         catch (Exception ex)
                         {
-                            MessageBox.Show(ShowException(ex));
+                            MessageBox.Show(ShowException(ex), "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+
                         }
                     }
                     break;
@@ -297,7 +301,8 @@ namespace PL
                         }
                         catch (Exception ex)
                         {
-                            MessageBox.Show(ShowException(ex));
+                            MessageBox.Show(ShowException(ex), "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+
                         }
                     }
                     break;
@@ -321,7 +326,8 @@ namespace PL
                         }
                         catch (Exception ex)
                         {
-                            MessageBox.Show(ShowException(ex));
+                            MessageBox.Show(ShowException(ex), "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+
                         }
                     }
                     break;
@@ -339,7 +345,8 @@ namespace PL
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ShowException(ex), "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+
             }
         }
 
@@ -360,6 +367,6 @@ namespace PL
             SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) & ~WS_SYSMENU);
         }
 
-        
+
     }
 }
