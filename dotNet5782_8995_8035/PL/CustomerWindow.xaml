@@ -8,8 +8,8 @@
         xmlns:local="clr-namespace:PL"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Height="600"
-        Width="600"
+        Height="720"
+        Width="450"
         Loaded="Loded"
         Title="{Binding}"
         >
@@ -70,9 +70,10 @@
                     <TextBox  Text="{Binding Location.Latitude, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnExceptions=True}" Width="180" PreviewTextInput="FloatNumberValidationTextBox"/>
                 </StackPanel>
             </StackPanel>
-
-            <StackPanel Height="100">
-                <ListView x:Name="listViewOfBaseStatin_FromCustomer" ItemsSource="{Binding}" Height="70" >
+            <StackPanel Height="10"></StackPanel>
+            <StackPanel>
+                <Label Content="Parcels that the customer Sent"  Width="363"  HorizontalAlignment="Left" FontWeight="Bold"/>
+                <ListView x:Name="listViewOfBaseStatin_FromCustomer" ItemsSource="{Binding}" Height="150" >
                     <ListView.Background>
                         <ImageBrush Opacity="10"/>
                     </ListView.Background>
@@ -82,13 +83,14 @@
                             <GridViewColumn Header = "Weight" DisplayMemberBinding="{Binding Path = Weight}" />
                             <GridViewColumn Header = "Priority" DisplayMemberBinding="{Binding Path = Priority}" />
                             <GridViewColumn Header = "Status" DisplayMemberBinding="{Binding Path = Status}" />
-                            <GridViewColumn Header = "SenderOrReceiver" DisplayMemberBinding="{Binding Path = SenderOrReceiver}"/>
                         </GridView>
                     </ListView.View>
                 </ListView>
             </StackPanel>
-            <StackPanel Height="100">
-                <ListView x:Name="listViewOfBaseStatin_ToCustomer" ItemsSource="{Binding}" Height="70">
+            <StackPanel Height="10"></StackPanel>
+                <StackPanel>
+                <Label Content="Parcels that the customer resivig"  Width="363"  HorizontalAlignment="Left" FontWeight="Bold"/>
+                <ListView x:Name="listViewOfBaseStatin_ToCustomer" ItemsSource="{Binding}" Height="150">
                     <ListView.Background>
                         <ImageBrush Opacity="10"/>
                     </ListView.Background>
@@ -98,15 +100,12 @@
                             <GridViewColumn Header = "Weight" DisplayMemberBinding="{Binding Path = Weight}" />
                             <GridViewColumn Header = "Priority" DisplayMemberBinding="{Binding Path = Priority}" />
                             <GridViewColumn Header = "Status" DisplayMemberBinding="{Binding Path = Status}" />
-                            <GridViewColumn Header = "SenderOrReceiver" DisplayMemberBinding="{Binding Path = SenderOrReceiver}"/>
                         </GridView>
                     </ListView.View>
                 </ListView>
             </StackPanel>
 
-            <StackPanel Height="20">
-
-            </StackPanel>
+                <StackPanel Height="20"></StackPanel>
 
             <Button x:Name="UpdateButton" Margin="3" Content="Update Customer" Width="180" Click="OnClickUpdateCustomerButton" />
 
