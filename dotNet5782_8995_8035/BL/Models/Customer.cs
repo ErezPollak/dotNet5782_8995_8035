@@ -8,8 +8,8 @@
             string Name = default,
             string Phone = default,
             Location Location = default,
-            List<ParcelByCustomer> FromCustomer = default,
-            List<ParcelByCustomer> ToCustomer = default
+            IEnumerable<ParcelByCustomer> FromCustomer = default,
+            IEnumerable<ParcelByCustomer> ToCustomer = default
         )
         {
             public override string ToString() =>

@@ -17,10 +17,10 @@ namespace PL
     {
         
         private BlApi.IBL bl;
-        public ObservableCollection<BO.DroneForList> droneList;
-        private IEnumerable<BO.ParcelForList> parcelList;
-        private IEnumerable<BO.BaseStationForList> baseStatoinList;
-        private IEnumerable<BO.CustomerForList> costumerList;
+        private ObservableCollection<BO.DroneForList> droneList;
+        private ObservableCollection<BO.ParcelForList> parcelList;
+        private ObservableCollection<BO.BaseStationForList> baseStatoinList;
+        private ObservableCollection<BO.CustomerForList> costumerList;
 
         public ListsViewWindow(BlApi.IBL bl)
         { 
@@ -42,12 +42,12 @@ namespace PL
             //making list of values for the status selector.
             List<string> statusesSelector = Enum.GetNames(typeof(BO.Enums.DroneStatuses)).Cast<string>().ToList();
             statusesSelector.Add("Show All");
-            StatusSelector.DataContext = statusesSelector;
+            DroneStatusSelector.DataContext = statusesSelector;
 
             //making the list for the whight selector.
             List<string> whightSelectorlist = Enum.GetNames(typeof(BO.Enums.WeightCategories)).Cast<string>().ToList();
             whightSelectorlist.Add("Show All");
-            WeightSelecter.DataContext = whightSelectorlist;
+            DroneWeightSelecter.DataContext = whightSelectorlist;
 
             //making list for the number of slots selector
             List<string> selectingOptions = new();
@@ -83,7 +83,6 @@ namespace PL
             addDroneWindow.ShowDialog();
         }
 
-
         private void ClickedDroneInList(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             //if ((BO.DroneForList)sender != null)
@@ -105,24 +104,27 @@ namespace PL
                 Status = drone.Status,
                 Weight = drone.MaxWeight
             };
+
             this.droneList.Add(listDrone);
         }
 
-        public void UpdateDroneList()
-        {
-            string whight = null, status = null;
+        public void UpdateDroneList() {
 
-            if (WeightSelecter.SelectedItem != null)
-                whight = WeightSelecter.SelectedItem.ToString();
+            string whight = null;
+            string status = null;
 
-            if (StatusSelector.SelectedItem != null)
-                status = StatusSelector.SelectedItem.ToString();
+            if (DroneWeightSelecter.SelectedItem != null)
+                whight = DroneWeightSelecter.SelectedItem.ToString();
+
+            if (DroneStatusSelector.SelectedItem != null)
+                status = DroneStatusSelector.SelectedItem.ToString();
 
             this.droneList = bl.GetDrones(d =>
                     (d.Weight.ToString() == whight || whight == "Show All") &&
                     (d.Status.ToString() == status || status == "Show All"));
 
             DroneList.DataContext = droneList;
+
         }
 
         #endregion
@@ -140,23 +142,45 @@ namespace PL
             //Open Parcel for add
         }
 
-
         private void ClickedParcelInList(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             //open parcel for operations
         }
 
+        public void AddParcel(BO.Parcel parcel)
+        {
+            //BO.Enums.ParcelStatus status = BO.Enums.ParcelStatus.DEFINED;
+
+            //if (parcel.Drone != null) status = BO.Enums.ParcelStatus.ASSIGNED;
+            //
+           // if (parcel.PickupTime != null) status = BO.Enums.ParcelStatus.PICKEDUP;
+
+            //if (parcel.DeliveringTime != null) status = BO.Enums.ParcelStatus.DELIVERED;
+
+            BO.ParcelForList listParcel = new()
+            {
+                Id = parcel.Id,
+                Priority = parcel.Priority,
+
+                Weight = parcel.Weight,
+                SenderName = parcel.Sender.CustomerName,
+                ReceiverName = parcel.Reciver.CustomerName,
+                Status = BO.Enums.ParcelStatus.DEFINED
+            };
+
+            this.parcelList.Add(listParcel);
+        }
 
         public void UpdateParcelList()
         {
-            string status = null;
+            string parcelStaus = null;
 
             if (ParcelStatusSelector.SelectedItem != null)
-                status = ParcelStatusSelector.SelectedItem.ToString();
+                parcelStaus = ParcelStatusSelector.SelectedItem.ToString();
 
-            this.parcelList = bl.GetPacels(p =>
-                    //(p.Weight.ToString() == whight || whight == "Show All") &&
-                    (p.Status.ToString() == status || status == "Show All"));
+            this.parcelList = bl.GetPacels(b =>
+                (b.Status.ToString() == parcelStaus || parcelStaus == "Show All")
+            );
 
             ParcelList.DataContext = this.parcelList;
 
@@ -175,7 +199,6 @@ namespace PL
         private void AddBaseStationButton_Click(object sender, RoutedEventArgs e)
         {
             new BaseStationWindow(bl, this).ShowDialog();
-
         }
 
         private void ClickedBaseStationInList(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -183,32 +206,39 @@ namespace PL
             new BaseStationWindow(bl, this, bl.GetBaseStation(((BO.BaseStationForList)ListOfBaseStationsView.SelectedItem).Id)).ShowDialog();
         }
 
+        public void AddBaseStation(BO.BaseStation baseStation)
+        {
+            //int numberOfDrones = baseStation.ChargingDrones.Count();
+
+            BO.BaseStationForList listBaseStation = new()
+            {
+                Id = baseStation.Id,
+                Name = baseStation.Name,
+                FreeChargingSlots = baseStation.ChargeSlots,
+                TakenCharingSlots = 0
+
+                //FreeChargingSlots = baseStation.ChargeSlots - numberOfDrones,
+                //TakenCharingSlots = numberOfDrones
+            };
+
+            this.baseStatoinList.Add(listBaseStation);
+        }
+
         public void UpdateBaseStationList()
         {
-            switch (NumberOfSlotsSelector?.SelectedItem?.ToString())
-            {
 
-                case "Show All":
+            string openSlots = null;
 
-                    this.baseStatoinList = bl.GetBaseStations(_ => true);
+            if (NumberOfSlotsSelector.SelectedItem != null)
+                openSlots = NumberOfSlotsSelector.SelectedItem.ToString();
 
-                    break;
-                case "Has Open Charging Slots":
-
-                    this.baseStatoinList = bl.GetBaseStations(b => b.FreeChargingSlots > 0);
-
-                    break;
-
-                default:
-                    break;
-            }
+            this.baseStatoinList = bl.GetBaseStations(b =>
+                ((b.FreeChargingSlots > 0) && (openSlots == "Has Open Charging Slots")) || (openSlots == "Show All")
+            );
 
             BaseStationList.DataContext = this.baseStatoinList;
 
         }
-
-
-
 
         #endregion
 
@@ -225,25 +255,51 @@ namespace PL
             new CustomerWindow(bl, this, bl.GetCustomer(((BO.CustomerForList)ListOfCustomersView.SelectedItem).Id)).ShowDialog();
         }
 
+        public void AddCustomer(BO.Customer customer)
+        {
+            BO.CustomerForList listCustomer = new()
+            {
+                Id = customer.Id,
+                Name = customer.Name,
+                Phone = customer.Phone,
+                SentFromAndDeliverd = 0,
+                SentFromAndNotDeliverd = 0,
+                SentToAndDeliverd = 0,
+                SentToAnDNotDelivered = 0
+                //SentFromAndDeliverd = customer.FromCustomer.Count(p => bl.GetParcel(p.Id).DeliveringTime != null),
+                //SentFromAndNotDeliverd = customer.FromCustomer.Count(p => bl.GetParcel(p.Id).DeliveringTime == null),
+                //SentToAndDeliverd = customer.ToCustomer.Count(p => bl.GetParcel(p.Id).DeliveringTime != null),
+                //SentToAnDNotDelivered = customer.ToCustomer.Count(p => bl.GetParcel(p.Id).DeliveringTime == null),
+            };
+            this.costumerList.Add(listCustomer);
+        }
+
         public void UpdateCustomerList()
         {
-            //string whight = null, status = null;
+            this.costumerList = bl.GetCustomers(_ => true);
 
-            //if (WeightSelecter.SelectedItem != null)
-            //    whight = WeightSelecter.SelectedItem.ToString();
-
-            //if (StatusSelector.SelectedItem != null)
-            //    status = StatusSelector.SelectedItem.ToString();
-
-            //this.droneList = bl.GetDrones(d =>
-            //        (d.Weight.ToString() == whight || whight == "Show All") &&
-            //        (d.Status.ToString() == status || status == "Show All"));
-
-            CustomerList.DataContext = costumerList;
-
+            CustomerList.DataContext = this.CustomerList;
         }
 
         #endregion
+
+
+        public void UpdateLists()
+        {
+            //update drone list
+            UpdateDroneList();
+
+            //update the base station list.
+            UpdateBaseStationList();
+
+            //update parcel list
+            UpdateParcelList();
+
+            //update the customer list
+            UpdateCustomerList();
+
+        }
+
 
 
         private void XButton(object sender, RoutedEventArgs e)

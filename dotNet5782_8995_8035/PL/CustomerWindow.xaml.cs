@@ -41,7 +41,7 @@ namespace PL
 
             this.bl = bl;
             this.listsViewWindow = listsViewWindow;
-            customer = new(Location: new Location(), FromCustomer: new(),ToCustomer: new());
+            customer = new(Location: new Location(), FromCustomer: new List<BO.ParcelByCustomer>(),ToCustomer: new List<BO.ParcelByCustomer>());
             AddingStack.DataContext = customer;
             AddingStack.Visibility = Visibility.Visible;
         }
@@ -78,6 +78,9 @@ namespace PL
             {
                 if (bl.AddCustumer(customer))
                 {
+
+                    listsViewWindow.AddCustomer(customer);
+
                     MessageBox.Show("customer added seccussfully");
                     // listsViewWindow.UpdateBaseStationList(); TODO: fix nullptr exception
                     Close();

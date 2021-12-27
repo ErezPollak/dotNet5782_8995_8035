@@ -42,7 +42,7 @@ namespace PL
 
             this.bl = bl;
             this.listsViewWindow = listsViewWindow;
-            baseStation = new(Location: new(), ChargingDrones: new());
+            baseStation = new(Location: new(), ChargingDrones: new List<BO.DroneInCharge>());
             AddingStack.DataContext = baseStation;
             AddingStack.Visibility = Visibility.Visible;
 
@@ -67,12 +67,10 @@ namespace PL
             listViewOfBaseStatin_ChargingDrones.DataContext = baseStation.ChargingDrones;
         }
 
-
         private void XButton(object sender, RoutedEventArgs e)
         {
             Close();
         }
-
 
         private void OnClickAddBaseStationButton(object sender, RoutedEventArgs e)
         {
@@ -81,6 +79,8 @@ namespace PL
             {
                 if (bl.AddBaseStation(baseStation))
                 {
+                    listsViewWindow.AddBaseStation(baseStation);
+
                     MessageBox.Show("baseStation added seccussfully");
                     // listsViewWindow.UpdateBaseStationList(); TODO: fix nullptr exception
                     Close();
@@ -118,11 +118,14 @@ namespace PL
             e.Handled = new Regex("[^0-9]+").IsMatch(e.Text);
         }
 
-
         private void FloatNumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             e.Handled = new Regex("[^0-9.]+").IsMatch(e.Text);
         }
+
+
+
+
 
         /// <summary>
         /// hiding the x button of the window

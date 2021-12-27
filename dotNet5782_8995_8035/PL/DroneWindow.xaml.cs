@@ -157,7 +157,7 @@ namespace PL
             try
             {
                 bl.UpdateNameForADrone(drone.Id, Model.Text);
-                listsViewWindow.UpdateDroneList();
+                listsViewWindow.UpdateLists();
                 UpdateModel.Visibility = Visibility.Collapsed;
                 OptionStack.DataContext = this.drone;
             }
@@ -178,7 +178,7 @@ namespace PL
                 {
                     bl.UnChargeDrone(drone.Id);
 
-                    listsViewWindow.UpdateDroneList();
+                    listsViewWindow.UpdateLists();
                     //after updating was seccussful we can update the drone we got from the user to be the new drone.
                     drone = bl.GetDrone(drone.Id);
 
@@ -199,7 +199,7 @@ namespace PL
                 {
                     bl.ChargeDrone(drone.Id);
 
-                    listsViewWindow.UpdateDroneList();
+                    listsViewWindow.UpdateLists();
 
                     drone = bl.GetDrone(drone.Id);
 
@@ -259,7 +259,7 @@ namespace PL
                         {
                             bl.AssignParcelToADrone(drone.Id);
 
-                            listsViewWindow.UpdateDroneList();
+                            listsViewWindow.UpdateLists();
 
                             this.drone = bl.GetDrone(drone.Id);
 
@@ -284,7 +284,7 @@ namespace PL
                         {
                             bl.PickingUpParcelToDrone(drone.Id);
 
-                            listsViewWindow.UpdateDroneList();
+                            listsViewWindow.UpdateLists();
 
                             this.drone = bl.GetDrone(drone.Id);
 
@@ -307,7 +307,7 @@ namespace PL
                         {
                             bl.DeliveringParcelFromADrone(drone.Id);
 
-                            listsViewWindow.UpdateDroneList();
+                            listsViewWindow.UpdateLists();
 
                             this.drone = bl.GetDrone(drone.Id);
 

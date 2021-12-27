@@ -53,9 +53,9 @@
                         <RowDefinition Height="400*"/>
                     </Grid.RowDefinitions>
 
-                    <ComboBox x:Name="StatusSelector" ItemsSource="{Binding}" materialDesign:HintAssist.Hint="Status Selector" Margin="75,26,75,3" Grid.Column="1" SelectedIndex="3" SelectionChanged ="StatusChoose" FontFamily="Segoe Print"/>
+                    <ComboBox x:Name="DroneStatusSelector" ItemsSource="{Binding}" materialDesign:HintAssist.Hint="Status Selector" Margin="75,26,75,3" Grid.Column="1" SelectedIndex="3" SelectionChanged ="StatusChoose" FontFamily="Segoe Print"/>
 
-                    <ComboBox x:Name="WeightSelecter" ItemsSource="{Binding}" materialDesign:HintAssist.Hint="Weight Selecter" Margin="76,24,75,5" Grid.Column="2" SelectedIndex="3" SelectionChanged ="WeightChoose" FontFamily="Segoe Print"/>
+                    <ComboBox x:Name="DroneWeightSelecter" ItemsSource="{Binding}" materialDesign:HintAssist.Hint="Weight Selecter" Margin="76,24,75,5" Grid.Column="2" SelectedIndex="3" SelectionChanged ="WeightChoose" FontFamily="Segoe Print"/>
 
                     <ListView x:Name="DroneList" ItemsSource="{Binding}" Grid.Row="1" Margin="8,10,12,0" RenderTransformOrigin="0.831,0.089" Grid.ColumnSpan="5" MouseDoubleClick="ClickedDroneInList" MinHeight="5" Height="340" VerticalAlignment="Top" >
                         <ListView.Background>
@@ -110,23 +110,9 @@
                     </Grid.RowDefinitions>
 
                     <Label Content="Parcel Status Selector" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Width="202" Height="39" FontSize="20"/>
-                    <ComboBox x:Name="ParcelStatusSelector" ItemsSource="{Binding}"  materialDesign:HintAssist.Hint="Parcel Status Selector" Margin="27,24,27,5" Grid.Column="1" SelectedIndex="3" SelectionChanged ="ParcelStatusChoose" FontFamily="Segoe Print"/>
+                    <ComboBox x:Name="ParcelStatusSelector" ItemsSource="{Binding}"  materialDesign:HintAssist.Hint="Parcel Status Selector" Margin="27,24,27,5" Grid.Column="1" SelectedIndex="4" SelectionChanged ="ParcelStatusChoose" FontFamily="Segoe Print"/>
 
-
-                    <!--<Label Content="Status selector" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Width="156" Height="39" ScrollViewer.HorizontalScrollBarVisibility="Visible" FontFamily="Forte" FontSize="20" Background="Transparent" Foreground="#DDC3B63C" Margin="81,-7,0,0">
-                        <Label.Effect>
-                            <DropShadowEffect/>
-                        </Label.Effect>
-                    </Label>
-                    <ComboBox x:Name="Selector" ItemsSource="{Binding}" Margin="27,24,27,5" Grid.Column="1" SelectedIndex="3" SelectionChanged ="StatusChoose" FontFamily="Segoe Print"/>
-
-                    <Label Content="weight selector" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Top" Width="156" Height="39" ScrollViewer.HorizontalScrollBarVisibility="Visible" FontFamily="Forte" FontSize="20" Background="Transparent" Foreground="#DDC3B63C" Margin="81,-7,0,0">
-                        <Label.Effect>
-                            <DropShadowEffect/>
-                        </Label.Effect>
-                    </Label>
-                    <ComboBox x:Name="Selecter" ItemsSource="{Binding}" Margin="27,24,27,5" Grid.Column="2" SelectedIndex="3" SelectionChanged ="WeightChoose" FontFamily="Segoe Print"/>-->
-
+                    
                     <ListView x:Name="ListOfParcelsView" ItemsSource="{Binding}" Margin="14,59,6,-354" RenderTransformOrigin="0.831,0.089" Grid.ColumnSpan="5" MouseDoubleClick="ClickedParcelInList" Grid.RowSpan="2" Height="320" >
                         <ListView.Background>
                             <ImageBrush Opacity="10"/>

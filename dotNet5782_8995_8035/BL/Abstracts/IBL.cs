@@ -35,10 +35,10 @@ namespace BlApi
         public BO.Customer GetCustomer(int customerId);
         public BO.Parcel GetParcel(int parcelId);
 
-        public IEnumerable<BO.BaseStationForList> GetBaseStations(Predicate<BO.BaseStationForList> f);
+        public ObservableCollection<BO.BaseStationForList> GetBaseStations(Predicate<BO.BaseStationForList> f);
         public ObservableCollection<BO.DroneForList> GetDrones(Predicate<BO.DroneForList> f);
-        public IEnumerable<BO.CustomerForList> GetCustomers(Predicate<BO.CustomerForList> f);
-        public IEnumerable<BO.ParcelForList> GetPacels(Predicate<BO.ParcelForList> f);
+        public ObservableCollection<BO.CustomerForList> GetCustomers(Predicate<BO.CustomerForList> f);
+        public ObservableCollection<BO.ParcelForList> GetPacels(Predicate<BO.ParcelForList> f);
 
         #endregion
 

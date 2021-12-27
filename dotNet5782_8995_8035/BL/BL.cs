@@ -825,9 +825,9 @@ namespace BlApi
         /// </summary>
         /// <param name="f"></param>
         /// <returns></returns>
-        public IEnumerable<BaseStationForList> GetBaseStations(Predicate<BaseStationForList> f)
+        public ObservableCollection<BaseStationForList> GetBaseStations(Predicate<BaseStationForList> f)
         {
-            return dal.GetBaseStations(_ => true)
+            return new ObservableCollection<BaseStationForList>( dal.GetBaseStations(_ => true)
                 .Select(db =>
                     new BaseStationForList()
                     {
@@ -836,7 +836,7 @@ namespace BlApi
                         FreeChargingSlots = db.ChargeSlots,
                         TakenCharingSlots = dal.GetChargeDrones(cd => cd.StationId == db.Id).Count()
                     })
-                .Where(bs => f(bs));
+                .Where(bs => f(bs)));
         }
 
         /// <summary>
@@ -867,9 +867,9 @@ namespace BlApi
         /// </summary>
         /// <param name="f"></param>
         /// <returns></returns>
-        public IEnumerable<CustomerForList> GetCustomers(Predicate<CustomerForList> f)
+        public ObservableCollection<CustomerForList> GetCustomers(Predicate<CustomerForList> f)
         {
-            return dal.GetCustomers(_ => true)
+            return new ObservableCollection<CustomerForList>(dal.GetCustomers(_ => true)
                 .Select(c =>
                     new CustomerForList()
                     {
@@ -889,7 +889,7 @@ namespace BlApi
                         SentFromAndNotDeliverd = dal.GetParcels(p =>
                             p.SenderId == c.Id && p.PickedUpTime != null && p.DeliveryTime == null).Count(),
                     })
-                .Where(c => f(c));
+                .Where(c => f(c)));
         }
 
         /// <summary>
@@ -897,9 +897,9 @@ namespace BlApi
         /// </summary>
         /// <param name="f"></param>
         /// <returns></returns>
-        public IEnumerable<ParcelForList> GetPacels(Predicate<ParcelForList> f)
+        public ObservableCollection<ParcelForList> GetPacels(Predicate<ParcelForList> f)
         {
-            return dal.GetParcels(_ => true)
+            return new ObservableCollection<ParcelForList>(dal.GetParcels(_ => true)
                 .Select(dalParcel =>
                     new ParcelForList()
                     {
@@ -909,7 +909,7 @@ namespace BlApi
                         ReceiverName = dal.GetCustomer(dalParcel.TargetId).Name,
                         Weight = (Enums.WeightCategories) dalParcel.Weight
                     })
-                .Where(dp => f(dp));
+                .Where(dp => f(dp)));
         }
 
         #endregion

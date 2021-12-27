@@ -8,7 +8,7 @@
             string Name = default,
             Location Location = default,
             int ChargeSlots = default,
-            List<DroneInCharge> ChargingDrones = default
+            IEnumerable<DroneInCharge> ChargingDrones = default
         )
 
         {
@@ -19,8 +19,9 @@
                              $"Name: {Name}. \n" +
                              $"Location: {Location}. \n" +
                              $"ChargeSlots: {ChargeSlots}. \n" +
-                             $"drones: {ChargingDrones.Count} \n";
-                ChargingDrones.ForEach(cd => str += cd.ToString());
+                             $"drones: {ChargingDrones} \n";
+                
+            //ChargingDrones.ForEach(cd => str += cd.ToString());
 
                 return str;
             }
