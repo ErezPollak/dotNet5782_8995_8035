@@ -25,14 +25,6 @@ namespace PL
 
         }
 
-        //private void Button_Click(object sender, RoutedEventArgs e)
-        //{
-        //    //ListOfDronesViewWindow listOfDronesViewWindow = new ListOfDronesViewWindow(bl) ;
-        //    //listOfDronesViewWindow.Show();//.Activate();
-
-        //    new ListsViewWindow(bl , accssesAtholerazetion).ShowDialog();
-
-        //}
 
         private void Manager_Click(object sender, RoutedEventArgs e)
         {
@@ -67,12 +59,13 @@ namespace PL
 
         private void SignIn_CLick(object sender, RoutedEventArgs e)
         {
-
+            new SignUpWindow(bl).ShowDialog();
         }
 
         private void ContactUs_Click(object sender, RoutedEventArgs e)
         {
-
+            ContactUsWindow contactUsWindow = new();
+            contactUsWindow.ShowDialog();
         }
 
         private void Login_Click(object sender, RoutedEventArgs e)

@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="Main Window" Height="550" Width="1225"
+        Title="Main Window"
+        Height="550"
+        Width="1225"
         ResizeMode="NoResize"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -28,8 +30,7 @@
         <Grid.Background>
             <ImageBrush/>
         </Grid.Background>
-        <!--<Button Name="start_button" Content="Start"  HorizontalAlignment="Left" Margin="371,63,0,0" VerticalAlignment="Top" Height="66" Width="176" Click="Button_Click" />-->
-        <Label x:Name="Welcome" Content="Welcome" HorizontalAlignment="Left" Height="81" Margin="77,60,0,0" VerticalAlignment="Top" Width="289" Foreground="#FF2C52A2" FontSize="55" FontFamily="MV Boli"/>
+         <Label x:Name="Welcome" Content="Welcome" HorizontalAlignment="Left" Height="81" Margin="77,60,0,0" VerticalAlignment="Top" Width="289" Foreground="#FF2C52A2" FontSize="55" FontFamily="MV Boli"/>
 
         <StackPanel Orientation="Vertical" Margin="48,146,887,38" RenderTransformOrigin="0.5,0.5">
             <Button Content="Manager"  Height="50" Width="150" Margin="10" Click="Manager_Click"/>
@@ -50,7 +51,7 @@
                     materialDesign:ButtonProgressAssist.IsIndeterminate="True" 
                />
         <Button Content="Contact Us" HorizontalAlignment="Left" Margin="992,462,0,0" VerticalAlignment="Top" Width="150" Height="30" Click="ContactUs_Click"/>
-        <StackPanel x:Name="LoginStack" Margin="343,146,686,111" Visibility="{Binding Converter={StaticResource accssesAtholerasationToVisability}}" >
+        <StackPanel x:Name="LoginStack" Margin="343,146,686,111" Visibility= "{Binding Converter={StaticResource accssesAtholerasationToVisability}}" >
 
             <TextBox Name="UserName" TextWrapping="Wrap" Width="200" materialDesign:HintAssist.Hint="User Name" Style="{StaticResource MaterialDesignFilledTextBox}"/>
             
@@ -61,9 +62,10 @@
                 materialDesign:ButtonProgressAssist.Value="-1"
                 materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"   
                 materialDesign:ButtonProgressAssist.IsIndeterminate="True" 
-                    />
+            />
 
             <Label Name="MistakenPasswordOrName" Visibility="Collapsed" Content="User Name Or Password Is Incorrect" Foreground="Red" FontSize="10" HorizontalAlignment="Center"/>
+            
         </StackPanel>
         <!---->
     </Grid>
