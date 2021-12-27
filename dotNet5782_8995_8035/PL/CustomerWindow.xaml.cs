@@ -60,8 +60,8 @@ namespace PL
             this.customer = customer;
             OptionStack.DataContext = customer;
             OptionStack.Visibility = Visibility.Visible;
-            listViewOfBaseStatin_FromCustomer.DataContext = customer;
-            listViewOfBaseStatin_ToCustomer.DataContext = customer;
+            listViewOfBaseStatin_FromCustomer.DataContext = customer.FromCustomer;
+            listViewOfBaseStatin_ToCustomer.DataContext = customer.ToCustomer;
 
         }
 
