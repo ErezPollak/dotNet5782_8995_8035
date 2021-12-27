@@ -48,7 +48,11 @@
                     materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
                     materialDesign:ButtonProgressAssist.IsIndeterminate="True" Click="ContactUs_Click"/>
         <Button Content="Contact Us" HorizontalAlignment="Left" Margin="992,462,0,0" VerticalAlignment="Top" Width="150" Height="30" Click="ContactUs_Click"/>
-        <StackPanel x:Name="LoginStack" Visibility="{Binding Converter= {StaticResource accssesAtholerasationToVisability}}" Margin="343,146,686,111"/>
-       
+        <StackPanel x:Name="LoginStack" Visibility="Collapsed" Margin="343,146,686,111" >
+            <TextBox Text="TextBox" TextWrapping="Wrap" Width="120"/>
+            <TextBox Text="TextBox" TextWrapping="Wrap" Width="120"/>
+            <Button Content="Button" Click="Login_Click"/>
+        </StackPanel>
+        <!--Visibility="{Binding Mode=OneWay, Converter={StaticResource accssesAtholerasationToVisability}}"-->
     </Grid>
 </Window>

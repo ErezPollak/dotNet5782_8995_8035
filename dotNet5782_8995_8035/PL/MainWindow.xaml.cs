@@ -38,12 +38,14 @@ namespace PL
         {
             this.accssesAtholerazetion = AccssesAtholerazetion.MANAGER;
             LoginStack.DataContext = accssesAtholerazetion;
+            LoginStack.Visibility = Visibility.Visible;
         }
 
         private void Employee_Click(object sender, RoutedEventArgs e)
         {
             this.accssesAtholerazetion = AccssesAtholerazetion.EMPLOYEE;
             LoginStack.DataContext = accssesAtholerazetion;
+            LoginStack.Visibility = Visibility.Visible;
 
         }
 
@@ -51,13 +53,14 @@ namespace PL
         {
             this.accssesAtholerazetion = AccssesAtholerazetion.CUSTOMER;
             LoginStack.DataContext = accssesAtholerazetion;
+            LoginStack.Visibility = Visibility.Visible;
 
         }
 
         private void Guest_Click(object sender, RoutedEventArgs e)
         {
             this.accssesAtholerazetion = AccssesAtholerazetion.GUEST;
-            LoginStack.DataContext = accssesAtholerazetion;
+            new ListsViewWindow(bl, accssesAtholerazetion).ShowDialog();
 
         }
 
@@ -69,6 +72,12 @@ namespace PL
         private void ContactUs_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void Login_Click(object sender, RoutedEventArgs e)
+        {
+            LoginStack.Visibility = Visibility.Hidden;
+            new ListsViewWindow(bl, accssesAtholerazetion).ShowDialog();
         }
     }
 }
