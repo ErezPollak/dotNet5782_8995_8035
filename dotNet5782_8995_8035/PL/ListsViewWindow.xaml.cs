@@ -31,6 +31,8 @@ namespace PL
 
             InitializeComponent();
 
+            MainTabsStack.DataContext = accssesAtholerazetion;
+
             this.bl = bl;
 
             this.droneList =  bl.GetDrones(_ => true);
@@ -38,10 +40,10 @@ namespace PL
             this.baseStatoinList = bl.GetBaseStations(_ => true);
             this.costumerList = bl.GetCustomers(_ => true);
 
-            DroneList.DataContext = droneList;
-            ParcelList.DataContext = parcelList;
-            BaseStationList.DataContext = baseStatoinList;
-            CustomerList.DataContext = costumerList;
+            ListOfDronesView.DataContext = droneList;
+            ListOfParcelsView.DataContext = parcelList;
+            ListOfBaseStationsView.DataContext = baseStatoinList;
+            ListOfCustomersView.DataContext = costumerList;
 
             //making list of values for the status selector.
             List<string> statusesSelector = Enum.GetNames(typeof(BO.Enums.DroneStatuses)).Cast<string>().ToList();
@@ -63,8 +65,6 @@ namespace PL
             List<string> parcelStatusSelector = Enum.GetNames(typeof(BO.Enums.ParcelStatus)).Cast<string>().ToList();
             parcelStatusSelector.Add("Show All");
             ParcelStatusSelector.DataContext = parcelStatusSelector;
-
-
 
         }
 
@@ -90,7 +90,7 @@ namespace PL
         {
             //if ((BO.DroneForList)sender != null)
             //{
-            DroneWindow droneWindow = new DroneWindow(bl, this, bl.GetDrone(((BO.DroneForList)DroneList.SelectedItem).Id));
+            DroneWindow droneWindow = new DroneWindow(bl, this, bl.GetDrone(((BO.DroneForList)ListOfDronesView.SelectedItem).Id));
             droneWindow.ShowDialog();
             //}
         }
@@ -126,7 +126,7 @@ namespace PL
                     (d.Weight.ToString() == whight || whight == "Show All") &&
                     (d.Status.ToString() == status || status == "Show All"));
 
-            DroneList.DataContext = droneList;
+            ListOfDronesView.DataContext = droneList;
 
         }
 
@@ -185,7 +185,7 @@ namespace PL
                 (b.Status.ToString() == parcelStaus || parcelStaus == "Show All")
             );
 
-            ParcelList.DataContext = this.parcelList;
+            ListOfParcelsView.DataContext = this.parcelList;
 
         }
 
@@ -239,7 +239,7 @@ namespace PL
                 ((b.FreeChargingSlots > 0) && (openSlots == "Has Open Charging Slots")) || (openSlots == "Show All")
             );
 
-            BaseStationList.DataContext = this.baseStatoinList;
+            ListOfBaseStationsView.DataContext = this.baseStatoinList;
 
         }
 
@@ -281,7 +281,7 @@ namespace PL
         {
             this.costumerList = bl.GetCustomers(_ => true);
 
-            CustomerList.DataContext = this.CustomerList;
+            ListOfCustomersView.DataContext = this.CustomerList;
         }
 
         #endregion

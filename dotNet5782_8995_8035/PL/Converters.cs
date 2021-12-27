@@ -28,7 +28,7 @@ namespace PL
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             BO.Enums.DroneStatuses isInCharge = (BO.Enums.DroneStatuses)value;
-            if(isInCharge == BO.Enums.DroneStatuses.MAINTENANCE)
+            if (isInCharge == BO.Enums.DroneStatuses.MAINTENANCE)
             {
                 return "Uncharge";
             }
@@ -98,16 +98,12 @@ namespace PL
                 {
                     case PARCEL_STATE.ASSIGN:
                         return "Assign Parcel To Drone";
-                        break;
                     case PARCEL_STATE.PICKUP:
                         return "Pick Up A Parcel";
-                        break;
                     case PARCEL_STATE.DELIVER:
                         return "Dlivering Parcel";
-                        break;
                     default:
                         return "";
-                        break;
                 }
             }
             else
@@ -129,7 +125,7 @@ namespace PL
         {
             BO.Drone drone = (BO.Drone)value;
 
-            if (drone != null &&( drone.Battery == 100 || drone.Status == BO.Enums.DroneStatuses.DELIVERY))
+            if (drone != null && (drone.Battery == 100 || drone.Status == BO.Enums.DroneStatuses.DELIVERY))
                 return Visibility.Collapsed;
             else
                 return Visibility.Visible;
@@ -141,23 +137,23 @@ namespace PL
         }
     }
 
-    //class AccssesAtholerasationToVisability : IValueConverter
-    //{
-    //    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-    //    {
-    //        AccssesAtholerazetion atholerazetion = (AccssesAtholerazetion)value;
+    class AccssesAtholerasationToVisability : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            AccssesAtholerazetion atholerazetion = (AccssesAtholerazetion)value;
 
-    //        if (atholerazetion == AccssesAtholerazetion.GUEST)
-    //            return Visibility.Collapsed;
-    //        else
-    //            return Visibility.Visible;
-    //    }
+            if (atholerazetion == AccssesAtholerazetion.GUEST)
+                return Visibility.Collapsed;
+            else
+                return Visibility.Visible;
+        }
 
-    //    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    //    {
-    //        throw new NotImplementedException();
-    //    }
-    //}
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 
     class ManagerAccssesAtholerasationToVisability : IValueConverter
     {
@@ -187,6 +183,7 @@ namespace PL
                 return Visibility.Collapsed;
             else
                 return Visibility.Visible;
+
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

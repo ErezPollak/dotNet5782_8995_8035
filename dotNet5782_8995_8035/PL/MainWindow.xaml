@@ -17,7 +17,7 @@
     >
 
     <Window.Resources>
-        <!--<local:AccssesAtholerasationToVisability x:Key="aaaaa"/>-->
+        <local:AccssesAtholerasationToVisability x:Key="accssesAtholerasationToVisability"/>
     </Window.Resources>
     
     <Window.Background>
@@ -28,7 +28,7 @@
         <Grid.Background>
             <ImageBrush/>
         </Grid.Background>
-        <Button Name="start_button" Content="Start"  HorizontalAlignment="Left" Margin="371,63,0,0" VerticalAlignment="Top" Height="66" Width="176" Click="Button_Click" />
+        <!--<Button Name="start_button" Content="Start"  HorizontalAlignment="Left" Margin="371,63,0,0" VerticalAlignment="Top" Height="66" Width="176" Click="Button_Click" />-->
         <Label x:Name="Welcome" Content="Welcome" HorizontalAlignment="Left" Height="81" Margin="77,60,0,0" VerticalAlignment="Top" Width="289" Foreground="#FF2C52A2" FontSize="55" FontFamily="MV Boli"/>
 
         <StackPanel Orientation="Vertical" Margin="48,146,887,38" RenderTransformOrigin="0.5,0.5">
@@ -43,16 +43,28 @@
                 VerticalAlignment="Top" 
                 Width="150" 
                 Height="30"
+                 Click="SignIn_CLick"
                 Style="{StaticResource MaterialDesignRaisedButton}"
                     materialDesign:ButtonProgressAssist.Value="-1"
-                    materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
-                    materialDesign:ButtonProgressAssist.IsIndeterminate="True" Click="ContactUs_Click"/>
+                    materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"   
+                    materialDesign:ButtonProgressAssist.IsIndeterminate="True" 
+               />
         <Button Content="Contact Us" HorizontalAlignment="Left" Margin="992,462,0,0" VerticalAlignment="Top" Width="150" Height="30" Click="ContactUs_Click"/>
-        <StackPanel x:Name="LoginStack" Visibility="Collapsed" Margin="343,146,686,111" >
-            <TextBox Text="TextBox" TextWrapping="Wrap" Width="120"/>
-            <TextBox Text="TextBox" TextWrapping="Wrap" Width="120"/>
-            <Button Content="Button" Click="Login_Click"/>
+        <StackPanel x:Name="LoginStack" Margin="343,146,686,111" Visibility="{Binding Converter={StaticResource accssesAtholerasationToVisability}}" >
+
+            <TextBox Name="UserName" TextWrapping="Wrap" Width="200" materialDesign:HintAssist.Hint="User Name" Style="{StaticResource MaterialDesignFilledTextBox}"/>
+            
+            <PasswordBox x:Name="Password" materialDesign:HintAssist.Hint="Password" Style="{StaticResource MaterialDesignFilledPasswordBox}"/>
+
+            <Button Content="Log In" Click="Login_Click"
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                materialDesign:ButtonProgressAssist.Value="-1"
+                materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"   
+                materialDesign:ButtonProgressAssist.IsIndeterminate="True" 
+                    />
+
+            <Label Name="MistakenPasswordOrName" Visibility="Collapsed" Content="User Name Or Password Is Incorrect" Foreground="Red" FontSize="10" HorizontalAlignment="Center"/>
         </StackPanel>
-        <!--Visibility="{Binding Mode=OneWay, Converter={StaticResource accssesAtholerasationToVisability}}"-->
+        <!---->
     </Grid>
 </Window>
