@@ -72,6 +72,14 @@ namespace PL
             Close();
         }
 
+        private void Drag(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
+            {
+                DragMove();
+            }
+        }
+
         private void OnClickAddBaseStationButton(object sender, RoutedEventArgs e)
         {
 

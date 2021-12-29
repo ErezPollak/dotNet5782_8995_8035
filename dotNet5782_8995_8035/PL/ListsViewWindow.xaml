@@ -9,7 +9,12 @@
     x:Class="PL.ListsViewWindow"
         mc:Ignorable="d"
         Title="Lists View" Height="550" Width="1225" Loaded="Loded"
-        ResizeMode="NoResize" >
+        ResizeMode="NoResize" 
+        AllowsTransparency="True"
+        WindowStyle="None"
+        MouseDown="Drag"
+        Background="Transparent"
+    >
 
     <Window.Resources>
         <local:ManagerAccssesAtholerasationToVisability x:Key="managerAtholerazetion"/>
@@ -17,231 +22,233 @@
         <local:CostumerAccssesAtholerasationToVisability x:Key="customerAtholerazetion"/>
     </Window.Resources>
 
-
-    <StackPanel x:Name="MainTabsStack">
-        <Button Content="X" HorizontalAlignment="Right"  Height="39" Width="52" Click="XButton" Background="#FFF90B0B" FontWeight="Bold" FontSize="20" Grid.Column="5" Margin="254,0,0,0" Grid.ColumnSpan="2"/>
-
-        <TabControl
+    <Border BorderBrush="Purple" BorderThickness="10" CornerRadius="40" Background="White">
+        <StackPanel x:Name="MainTabsStack" Margin="0,0,0,35">
+            <Grid Height="60">
+                <Button Content="X"  Height="39" Width="52" Click="XButton" Background="#FFF90B0B" FontWeight="Bold" FontSize="20" Margin="1134,10,19,10" RenderTransformOrigin="-0.362,0.628"/>
+            </Grid>
+            <TabControl
             Style="{StaticResource MaterialDesignNavigatilRailTabControl}"
             TabStripPlacement="Top"
         >
-            <TabItem Name="BaseStationList" Width="200" Visibility="{Binding Converter={StaticResource employeeAtholerazetion}}">
-                <TabItem.Header>
-                    <StackPanel
+                <TabItem Name="BaseStationList" Width="200" Visibility="{Binding Converter={StaticResource employeeAtholerazetion}}">
+                    <TabItem.Header>
+                        <StackPanel
                     Height="auto"
                     Width="auto">
-                        <materialDesign:PackIcon
+                            <materialDesign:PackIcon
                       Kind="HomeLightningBoltOutline"
                       Width="24"
                       Height="24"
                       HorizontalAlignment="Center" />
-                        <TextBlock
+                            <TextBlock
                       Text="Base Station List"
                       HorizontalAlignment="Center" />
-                    </StackPanel>
-                </TabItem.Header>
-                <Grid Height="416" Margin="10,0,0,0"  >
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="305*"/>
-                        <ColumnDefinition Width="305*"/>
-                        <ColumnDefinition Width="305*"/>
-                        <ColumnDefinition Width="293*"/>
-                        <ColumnDefinition Width="12*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="80*"/>
-                        <RowDefinition Height="400*"/>
-                    </Grid.RowDefinitions>
+                        </StackPanel>
+                    </TabItem.Header>
+                    <Grid Height="416" Margin="10,0,0,0"  >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="305*"/>
+                            <ColumnDefinition Width="305*"/>
+                            <ColumnDefinition Width="305*"/>
+                            <ColumnDefinition Width="293*"/>
+                            <ColumnDefinition Width="12*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="80*"/>
+                            <RowDefinition Height="400*"/>
+                        </Grid.RowDefinitions>
 
 
-                    <ListView x:Name="ListOfBaseStationsView" ItemsSource="{Binding}" SelectedIndex="0"  MouseDoubleClick="ClickedBaseStationInList" MinHeight="5" Grid.ColumnSpan="4" Margin="10,8,35,10" Grid.Row="1">
-                        <ListView.Background>
-                            <ImageBrush Opacity="10"/>
-                        </ListView.Background>
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn Header = "Id" DisplayMemberBinding="{Binding Path = Id}"/>
-                                <GridViewColumn Header = "Name" DisplayMemberBinding="{Binding Path = Name}" />
-                                <GridViewColumn Header = "FreeChargingSlots" DisplayMemberBinding="{Binding Path = FreeChargingSlots}" />
-                                <GridViewColumn Header = "TakenCharingSlots" DisplayMemberBinding="{Binding Path = TakenCharingSlots}" />
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
+                        <ListView x:Name="ListOfBaseStationsView" ItemsSource="{Binding}" SelectedIndex="0"  MouseDoubleClick="ClickedBaseStationInList" MinHeight="5" Grid.ColumnSpan="4" Margin="10,8,35,10" Grid.Row="1">
+                            <ListView.Background>
+                                <ImageBrush Opacity="10"/>
+                            </ListView.Background>
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header = "Id" DisplayMemberBinding="{Binding Path = Id}"/>
+                                    <GridViewColumn Header = "Name" DisplayMemberBinding="{Binding Path = Name}" />
+                                    <GridViewColumn Header = "FreeChargingSlots" DisplayMemberBinding="{Binding Path = FreeChargingSlots}" />
+                                    <GridViewColumn Header = "TakenCharingSlots" DisplayMemberBinding="{Binding Path = TakenCharingSlots}" />
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
 
-                    <ComboBox x:Name="NumberOfSlotsSelector" ItemsSource="{Binding}"  IsEnabled="True" materialDesign:HintAssist.Hint="Number Of Slots Selector" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Width="215" Height="32" SelectionChanged="BaseStationGuopingSelected" FontFamily="Segoe Print" Margin="0,32,0,0"/>
-                    <Label Content="Number Of Slots Selector" Grid.Column="1" HorizontalAlignment="Center" FontSize="20" Width="252" Margin="0,-3,0,37"/>
-                    <Button Content="Add Base Station" Margin="0,12,63,12" Click="AddBaseStationButton_Click" HorizontalAlignment="Right" Width="180" Visibility="{Binding Converter={StaticResource managerAtholerazetion}}"/>
-                    <Button Content="Group By Free Slots" Margin="0,12,63,12" Grid.Column="2" Click="GroupBaseStationByFreeSlots_Click" HorizontalAlignment="Right" Width="180" Visibility="{Binding Converter={StaticResource managerAtholerazetion}}"/>
+                        <ComboBox x:Name="NumberOfSlotsSelector" ItemsSource="{Binding}"  IsEnabled="True" materialDesign:HintAssist.Hint="Number Of Slots Selector" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Width="215" Height="32" SelectionChanged="BaseStationGuopingSelected" FontFamily="Segoe Print" Margin="0,32,0,0"/>
+                        <Label Content="Number Of Slots Selector" Grid.Column="1" HorizontalAlignment="Center" FontSize="20" Width="252" Margin="0,-3,0,37"/>
+                        <Button Content="Add Base Station" Margin="0,12,63,12" Click="AddBaseStationButton_Click" HorizontalAlignment="Right" Width="180" Visibility="{Binding Converter={StaticResource managerAtholerazetion}}"/>
+                        <Button Content="Group By Free Slots" Margin="0,12,63,12" Grid.Column="2" Click="GroupBaseStationByFreeSlots_Click" HorizontalAlignment="Right" Width="180" Visibility="{Binding Converter={StaticResource managerAtholerazetion}}"/>
 
-                </Grid>
+                    </Grid>
 
-            </TabItem>
+                </TabItem>
 
-            <TabItem x:Name="DronesList" Width="200" Visibility="{Binding Converter={StaticResource employeeAtholerazetion}}">
-                <TabItem.Header>
-                    <StackPanel
+                <TabItem x:Name="DronesList" Width="200" Visibility="{Binding Converter={StaticResource employeeAtholerazetion}}">
+                    <TabItem.Header>
+                        <StackPanel
                     Height="auto"
                     Width="auto">
-                        <materialDesign:PackIcon
+                            <materialDesign:PackIcon
                       Kind="Airplane"
                       Width="24"
                       Height="24"
                       HorizontalAlignment="Center" />
-                        <TextBlock
+                            <TextBlock
                       Text="Drone List"
                       HorizontalAlignment="Center" />
-                    </StackPanel>
-                </TabItem.Header>
+                        </StackPanel>
+                    </TabItem.Header>
 
-                <Grid x:Name="MainGrid">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="305*"/>
-                        <ColumnDefinition Width="305*"/>
-                        <ColumnDefinition Width="305*"/>
-                        <ColumnDefinition Width="293*"/>
-                        <ColumnDefinition Width="12*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="50*"/>
-                        <RowDefinition Height="400*"/>
-                    </Grid.RowDefinitions>
+                    <Grid x:Name="MainGrid">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="305*"/>
+                            <ColumnDefinition Width="305*"/>
+                            <ColumnDefinition Width="305*"/>
+                            <ColumnDefinition Width="293*"/>
+                            <ColumnDefinition Width="12*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50*"/>
+                            <RowDefinition Height="400*"/>
+                        </Grid.RowDefinitions>
 
-                    <ComboBox x:Name="DroneStatusSelector" ItemsSource="{Binding}" materialDesign:HintAssist.Hint="Status Selector" Margin="75,26,75,3" Grid.Column="1" SelectedIndex="3" SelectionChanged ="StatusChoose" FontFamily="Segoe Print"/>
+                        <ComboBox x:Name="DroneStatusSelector" ItemsSource="{Binding}" materialDesign:HintAssist.Hint="Status Selector" Margin="75,26,75,3" Grid.Column="1" SelectedIndex="3" SelectionChanged ="StatusChoose" FontFamily="Segoe Print"/>
 
-                    <ComboBox x:Name="DroneWeightSelecter" ItemsSource="{Binding}" materialDesign:HintAssist.Hint="Weight Selecter" Margin="76,24,75,5" Grid.Column="2" SelectedIndex="3" SelectionChanged ="WeightChoose" FontFamily="Segoe Print"/>
+                        <ComboBox x:Name="DroneWeightSelecter" ItemsSource="{Binding}" materialDesign:HintAssist.Hint="Weight Selecter" Margin="76,24,75,5" Grid.Column="2" SelectedIndex="3" SelectionChanged ="WeightChoose" FontFamily="Segoe Print"/>
 
-                    <ListView x:Name="ListOfDronesView" ItemsSource="{Binding}" Grid.Row="1" Margin="8,10,12,0" RenderTransformOrigin="0.831,0.089" Grid.ColumnSpan="5" MouseDoubleClick="ClickedDroneInList" MinHeight="5" Height="340" VerticalAlignment="Top" >
-                        <ListView.Background>
-                            <ImageBrush Opacity="10" />
-                        </ListView.Background>
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn Header = "ID" DisplayMemberBinding="{Binding Path = Id}" />
-                                <GridViewColumn Header = "Model" DisplayMemberBinding="{Binding Path = Model}" />
-                                <GridViewColumn Header = "Weight" DisplayMemberBinding="{Binding Path = Weight}" />
-                                <GridViewColumn Header = "Battery" DisplayMemberBinding="{Binding Path = Battery , Converter={StaticResource converters}}" />
-                                <GridViewColumn Header = "Status" DisplayMemberBinding="{Binding Path = Status}" />
-                                <GridViewColumn Header = "location" DisplayMemberBinding="{Binding Path = Location}" />
-                                <GridViewColumn Header = "ParcelId" DisplayMemberBinding="{Binding Path = ParcelId}" />
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                    <Button Content="Add Drone" Margin="0,12,0,12" Click="AddDrone_Click" HorizontalAlignment="Center" Width="180" Grid.Column="0" Visibility="{Binding Converter={StaticResource managerAtholerazetion}}" />
-                    <Label Content="Status selector" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Width="156" Height="39" FontSize="20" />
-                    <Label Content="weight selector" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Top" Width="156" Height="39" FontSize="20"/>
+                        <ListView x:Name="ListOfDronesView" ItemsSource="{Binding}" Grid.Row="1" Margin="8,10,12,0" RenderTransformOrigin="0.831,0.089" Grid.ColumnSpan="5" MouseDoubleClick="ClickedDroneInList" MinHeight="5" Height="340" VerticalAlignment="Top" >
+                            <ListView.Background>
+                                <ImageBrush Opacity="10" />
+                            </ListView.Background>
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header = "ID" DisplayMemberBinding="{Binding Path = Id}" />
+                                    <GridViewColumn Header = "Model" DisplayMemberBinding="{Binding Path = Model}" />
+                                    <GridViewColumn Header = "Weight" DisplayMemberBinding="{Binding Path = Weight}" />
+                                    <GridViewColumn Header = "Battery" DisplayMemberBinding="{Binding Path = Battery , Converter={StaticResource converters}}" />
+                                    <GridViewColumn Header = "Status" DisplayMemberBinding="{Binding Path = Status}" />
+                                    <GridViewColumn Header = "location" DisplayMemberBinding="{Binding Path = Location}" />
+                                    <GridViewColumn Header = "ParcelId" DisplayMemberBinding="{Binding Path = ParcelId}" />
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                        <Button Content="Add Drone" Margin="0,12,0,12" Click="AddDrone_Click" HorizontalAlignment="Center" Width="180" Grid.Column="0" Visibility="{Binding Converter={StaticResource managerAtholerazetion}}" />
+                        <Label Content="Status selector" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Width="156" Height="39" FontSize="20" />
+                        <Label Content="weight selector" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Top" Width="156" Height="39" FontSize="20"/>
 
-                </Grid>
-            </TabItem>
+                    </Grid>
+                </TabItem>
 
-            <TabItem Name="ParcelList" Width="200">
-                <TabItem.Header>
-                    <StackPanel
+                <TabItem Name="ParcelList" Width="200">
+                    <TabItem.Header>
+                        <StackPanel
                     Height="auto"
                     Width="auto">
-                        <materialDesign:PackIcon
+                            <materialDesign:PackIcon
                       Kind="GiftOutline"
                       Width="24"
                       Height="24"
                       HorizontalAlignment="Center" />
-                        <TextBlock
+                            <TextBlock
                       Text="Parcel List"
                       HorizontalAlignment="Center" />
-                    </StackPanel>
-                </TabItem.Header>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="25*"/>
-                        <ColumnDefinition Width="25*"/>
-                        <ColumnDefinition Width="25*"/>
-                        <ColumnDefinition Width="24*"/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="50*"/>
-                        <RowDefinition Height="400*"/>
-                    </Grid.RowDefinitions>
+                        </StackPanel>
+                    </TabItem.Header>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="25*"/>
+                            <ColumnDefinition Width="25*"/>
+                            <ColumnDefinition Width="25*"/>
+                            <ColumnDefinition Width="24*"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50*"/>
+                            <RowDefinition Height="400*"/>
+                        </Grid.RowDefinitions>
 
-                    <Label Content="Parcel Status Selector" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Width="202" Height="39" FontSize="20"/>
-                    <ComboBox x:Name="ParcelStatusSelector" ItemsSource="{Binding}"  materialDesign:HintAssist.Hint="Parcel Status Selector" Margin="27,24,27,5" Grid.Column="1" SelectedIndex="4" SelectionChanged ="ParcelStatusChoose" FontFamily="Segoe Print"/>
+                        <Label Content="Parcel Status Selector" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Width="202" Height="39" FontSize="20"/>
+                        <ComboBox x:Name="ParcelStatusSelector" ItemsSource="{Binding}"  materialDesign:HintAssist.Hint="Parcel Status Selector" Margin="27,24,27,5" Grid.Column="1" SelectedIndex="4" SelectionChanged ="ParcelStatusChoose" FontFamily="Segoe Print"/>
 
-                    
-                    <ListView x:Name="ListOfParcelsView" ItemsSource="{Binding}" Margin="14,59,6,-354" RenderTransformOrigin="0.831,0.089" Grid.ColumnSpan="5" MouseDoubleClick="ClickedParcelInList" Grid.RowSpan="2" Height="320" >
-                        <ListView.Background>
-                            <ImageBrush Opacity="10"/>
-                        </ListView.Background>
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn Header = "Id" DisplayMemberBinding="{Binding Path = Id}" />
-                                <GridViewColumn Header = "SenderName" DisplayMemberBinding="{Binding Path = SenderName}" />
-                                <GridViewColumn Header = "ReceiverName" DisplayMemberBinding="{Binding Path = ReceiverName}" />
-                                <GridViewColumn Header = "Weight" DisplayMemberBinding="{Binding Path = Weight}" />
-                                <GridViewColumn Header = "Priority" DisplayMemberBinding="{Binding Path = Priority}" />
-                                <GridViewColumn Header = "Status" DisplayMemberBinding="{Binding Path = Status}" />
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
 
-                    <Button Content="Add Parcel" Margin="0,10,0,10" Click="AddParcel_Click" HorizontalAlignment="Center" Width="180" Visibility="{Binding Converter={StaticResource customerAtholerazetion}}" />
-                    <Button Content="Group Sender" Margin="0,10,0,10" Grid.Column="2" Click="GroupBySender_Click" HorizontalAlignment="Center" Width="180" Visibility="{Binding Converter={StaticResource customerAtholerazetion}}" />
-                    <Button Content="Group Reciver" Margin="0,10,0,10" Grid.Column="3" Click="GroupByReciver_Click" HorizontalAlignment="Center" Width="180" Visibility="{Binding Converter={StaticResource customerAtholerazetion}}" />
+                        <ListView x:Name="ListOfParcelsView" ItemsSource="{Binding}" Margin="14,59,6,-354" RenderTransformOrigin="0.831,0.089" Grid.ColumnSpan="5" MouseDoubleClick="ClickedParcelInList" Grid.RowSpan="2" Height="320" >
+                            <ListView.Background>
+                                <ImageBrush Opacity="10"/>
+                            </ListView.Background>
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header = "Id" DisplayMemberBinding="{Binding Path = Id}" />
+                                    <GridViewColumn Header = "SenderName" DisplayMemberBinding="{Binding Path = SenderName}" />
+                                    <GridViewColumn Header = "ReceiverName" DisplayMemberBinding="{Binding Path = ReceiverName}" />
+                                    <GridViewColumn Header = "Weight" DisplayMemberBinding="{Binding Path = Weight}" />
+                                    <GridViewColumn Header = "Priority" DisplayMemberBinding="{Binding Path = Priority}" />
+                                    <GridViewColumn Header = "Status" DisplayMemberBinding="{Binding Path = Status}" />
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
 
-                </Grid>
+                        <Button Content="Add Parcel" Margin="0,10,0,10" Click="AddParcel_Click" HorizontalAlignment="Center" Width="180" Visibility="{Binding Converter={StaticResource customerAtholerazetion}}" />
+                        <Button Content="Group Sender" Margin="0,10,0,10" Grid.Column="2" Click="GroupBySender_Click" HorizontalAlignment="Center" Width="180" Visibility="{Binding Converter={StaticResource customerAtholerazetion}}" />
+                        <Button Content="Group Reciver" Margin="0,10,0,10" Grid.Column="3" Click="GroupByReciver_Click" HorizontalAlignment="Center" Width="180" Visibility="{Binding Converter={StaticResource customerAtholerazetion}}" />
 
-            </TabItem>
+                    </Grid>
 
-            <TabItem Name="CustomerList" Width="100">
-                <TabItem.Header>
-                    <StackPanel
+                </TabItem>
+
+                <TabItem Name="CustomerList" Width="100">
+                    <TabItem.Header>
+                        <StackPanel
                     Height="auto"
                     Width="auto">
-                        <materialDesign:PackIcon
+                            <materialDesign:PackIcon
                       Kind="Account"
                       Width="24"
                       Height="24"
                       HorizontalAlignment="Center" />
-                        <TextBlock
+                            <TextBlock
                       Text="Customer List"
                       HorizontalAlignment="Center" />
-                    </StackPanel>
-                </TabItem.Header>
+                        </StackPanel>
+                    </TabItem.Header>
 
-                <Grid Height="410">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="25*"/>
-                        <ColumnDefinition Width="25*"/>
-                        <ColumnDefinition Width="25*"/>
-                        <ColumnDefinition Width="24*"/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="80*"/>
-                        <RowDefinition Height="400*"/>
-                    </Grid.RowDefinitions>
-
-                    
-                    <ListView x:Name="ListOfCustomersView" ItemsSource="{Binding}" Margin="8,10,12,10" RenderTransformOrigin="0.831,0.089" MouseDoubleClick="ClickedCustomerInList" MinHeight="5" Grid.ColumnSpan="5" Grid.Row="1" >
-                        
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn Header = "Id" DisplayMemberBinding="{Binding Path = Id}" />
-                                <GridViewColumn Header = "Phone" DisplayMemberBinding="{Binding Path = Phone}" />
-                                <GridViewColumn Header = "SentToAndDeliverd" DisplayMemberBinding="{Binding Path = SentToAndDeliverd}" />
-                                <GridViewColumn Header = "SentToAnDNotDelivered" DisplayMemberBinding="{Binding Path = SentToAnDNotDelivered}" />
-                                <GridViewColumn Header = "SentFromAndDeliverd" DisplayMemberBinding="{Binding Path = SentFromAndDeliverd}" />
-                                <GridViewColumn Header = "SentToAnDNotDelivered" DisplayMemberBinding="{Binding Path = SentFromAndNotDeliverd}" />
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-
-                    <Button Content="Add Customer" Margin="0,12,63,12" Click="AddCustomer_Click" HorizontalAlignment="Right" Width="180" Visibility="{Binding Converter={StaticResource employeeAtholerazetion}}"/>
-
-                </Grid>
-
-            </TabItem>
+                    <Grid Height="410">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="25*"/>
+                            <ColumnDefinition Width="25*"/>
+                            <ColumnDefinition Width="25*"/>
+                            <ColumnDefinition Width="24*"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="80*"/>
+                            <RowDefinition Height="400*"/>
+                        </Grid.RowDefinitions>
 
 
+                        <ListView x:Name="ListOfCustomersView" ItemsSource="{Binding}" Margin="8,10,12,10" RenderTransformOrigin="0.831,0.089" MouseDoubleClick="ClickedCustomerInList" MinHeight="5" Grid.ColumnSpan="5" Grid.Row="1" >
 
-        </TabControl>
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header = "Id" DisplayMemberBinding="{Binding Path = Id}" />
+                                    <GridViewColumn Header = "Phone" DisplayMemberBinding="{Binding Path = Phone}" />
+                                    <GridViewColumn Header = "SentToAndDeliverd" DisplayMemberBinding="{Binding Path = SentToAndDeliverd}" />
+                                    <GridViewColumn Header = "SentToAnDNotDelivered" DisplayMemberBinding="{Binding Path = SentToAnDNotDelivered}" />
+                                    <GridViewColumn Header = "SentFromAndDeliverd" DisplayMemberBinding="{Binding Path = SentFromAndDeliverd}" />
+                                    <GridViewColumn Header = "SentToAnDNotDelivered" DisplayMemberBinding="{Binding Path = SentFromAndNotDeliverd}" />
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
 
-    </StackPanel>
+                        <Button Content="Add Customer" Margin="0,12,63,12" Click="AddCustomer_Click" HorizontalAlignment="Right" Width="180" Visibility="{Binding Converter={StaticResource employeeAtholerazetion}}"/>
+
+                    </Grid>
+
+                </TabItem>
+
+
+
+            </TabControl>
+
+        </StackPanel>
+    </Border>
 </Window>

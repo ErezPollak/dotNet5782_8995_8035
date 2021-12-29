@@ -70,21 +70,39 @@ namespace PL
 
         private void Login_Click(object sender, RoutedEventArgs e)
         {
+            new ListsViewWindow(bl, accssesAtholerazetion).ShowDialog();
+            accssesAtholerazetion = AccssesAtholerazetion.GUEST;
+            LoginStack.DataContext = accssesAtholerazetion;
+            MistakenPasswordOrName.Visibility = Visibility.Collapsed;
 
-            if ((UserName.Text == "Mordechay" && Password.Password == "8035")|| (UserName.Text == "Erez" && Password.Password == "8995"))
-            {
-                new ListsViewWindow(bl, accssesAtholerazetion).ShowDialog();
-                accssesAtholerazetion = AccssesAtholerazetion.GUEST;
-                LoginStack.DataContext = accssesAtholerazetion;
-                MistakenPasswordOrName.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                MistakenPasswordOrName.Visibility = Visibility.Visible;
-            }
 
-            UserName.Clear();
-            Password.Clear();
+            //if ((UserName.Text == "Mordechay" && Password.Password == "8035")|| (UserName.Text == "Erez" && Password.Password == "8995"))
+            //{
+            //    new ListsViewWindow(bl, accssesAtholerazetion).ShowDialog();
+            //    accssesAtholerazetion = AccssesAtholerazetion.GUEST;
+            //    LoginStack.DataContext = accssesAtholerazetion;
+            //    MistakenPasswordOrName.Visibility = Visibility.Collapsed;
+            //}
+            //else
+            //{
+            //    MistakenPasswordOrName.Visibility = Visibility.Visible;
+            //}
+
+            //UserName.Clear();
+            //Password.Clear();
+        }
+
+        private void XButton(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void Drag(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
+            {
+                DragMove();
+            }
         }
     }
 }

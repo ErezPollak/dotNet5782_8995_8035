@@ -29,5 +29,23 @@ namespace PL
             Close();
             MessageBox.Show("Your Message was Resived succssesfully In The System \n Thank you for your cooperation");
         }
+
+        private void XButton(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void Drag(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
+            {
+                DragMove();
+            }
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
     }
 }

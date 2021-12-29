@@ -31,13 +31,6 @@ namespace PL
         public DroneWindow(BlApi.IBL bl, ListsViewWindow listsViewWindow)
         {
             drone = new();
-
-            drone.Status = BO.Enums.DroneStatuses.FREE;
-            drone.ParcelInDelivery = null;
-            drone.Battery = r.Next() % 20;
-            drone.Location = null;
-
-
             r = new Random();
             InitializeComponent();
             AddingStack.Visibility = Visibility.Visible;
@@ -116,7 +109,10 @@ namespace PL
         {
             try
             {
-               
+                drone.Status = BO.Enums.DroneStatuses.FREE;
+                drone.ParcelInDelivery = null;
+                drone.Battery = r.Next() % 20;
+                drone.Location = null;
 
                 if (bl.AddDrone(drone))
                 {
@@ -145,6 +141,14 @@ namespace PL
         private void XButton(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void Drag(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
+            {
+                DragMove();
+            }
         }
 
         private void ModelUpdatedChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
