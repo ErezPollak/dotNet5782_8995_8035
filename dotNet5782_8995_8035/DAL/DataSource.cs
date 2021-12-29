@@ -1,6 +1,6 @@
 ﻿
 //course: Mini Project in Windows Systems
-//lecturere: Eliezer Grintsborger
+//lecturere: Eliezer Gensburger
 //from the students: Erez Polak 322768995
 //                   Mordehay Cohen 206958035
 
