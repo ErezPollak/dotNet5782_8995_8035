@@ -10,7 +10,6 @@
         mc:Ignorable="d"
         Height="600"
         Width="440"
-        Loaded="Loded"
         Title="{Binding}"
         AllowsTransparency="True"
         WindowStyle="None"

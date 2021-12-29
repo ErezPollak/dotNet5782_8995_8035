@@ -1,13 +1,10 @@
-﻿using System;
+﻿using BlApi;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Interop;
 
 namespace PL
 {
@@ -17,7 +14,7 @@ namespace PL
     public partial class ListsViewWindow : Window
     {
         
-        private BlApi.IBL bl;
+        private BlApi.IBL bl = BlFactory.GetBl();
         private ObservableCollection<BO.DroneForList> droneList;
         private ObservableCollection<BO.ParcelForList> parcelList;
         private ObservableCollection<BO.BaseStationForList> baseStatoinList;
@@ -25,7 +22,7 @@ namespace PL
 
         private AccssesAtholerazetion accssesAtholerazetion;
 
-        public ListsViewWindow(BlApi.IBL bl , AccssesAtholerazetion accssesAtholerazetion)
+        public ListsViewWindow(AccssesAtholerazetion accssesAtholerazetion)
         {
 
             this.accssesAtholerazetion = accssesAtholerazetion;
@@ -33,8 +30,6 @@ namespace PL
             InitializeComponent();
 
             MainTabsStack.DataContext = accssesAtholerazetion;
-
-            this.bl = bl;
 
             this.droneList =  bl.GetDrones(_ => true);
             this.parcelList = bl.GetPacels(_ => true);
@@ -83,7 +78,7 @@ namespace PL
 
         private void AddDrone_Click(object sender, RoutedEventArgs e)
         {
-            DroneWindow addDroneWindow = new DroneWindow(bl, this);
+            DroneWindow addDroneWindow = new DroneWindow(this);
             addDroneWindow.ShowDialog();
         }
 
@@ -91,7 +86,7 @@ namespace PL
         {
             //if ((BO.DroneForList)sender != null)
             //{
-            DroneWindow droneWindow = new DroneWindow(bl, this, bl.GetDrone(((BO.DroneForList)ListOfDronesView.SelectedItem).Id));
+            DroneWindow droneWindow = new DroneWindow(this, bl.GetDrone(((BO.DroneForList)ListOfDronesView.SelectedItem).Id));
             droneWindow.ShowDialog();
             //}
         }
@@ -202,13 +197,13 @@ namespace PL
 
         private void AddBaseStationButton_Click(object sender, RoutedEventArgs e)
         {
-            new BaseStationWindow(bl, this).ShowDialog();
+            new BaseStationWindow(this).ShowDialog();
         }
 
         private void ClickedBaseStationInList(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             if(ListOfBaseStationsView.SelectedItem != null)
-                new BaseStationWindow(bl, this, bl.GetBaseStation(((BO.BaseStationForList)ListOfBaseStationsView.SelectedItem).Id)).ShowDialog();
+                new BaseStationWindow(this, bl.GetBaseStation(((BO.BaseStationForList)ListOfBaseStationsView.SelectedItem).Id)).ShowDialog();
         }
 
         public void AddBaseStation(BO.BaseStation baseStation)
@@ -262,7 +257,7 @@ namespace PL
 
         private void AddCustomer_Click(object sender, RoutedEventArgs e)
         {
-            new CustomerWindow(bl, this).ShowDialog();
+            new CustomerWindow(this).ShowDialog();
         }
 
         private void ClickedCustomerInList(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -374,23 +369,6 @@ namespace PL
 
 
 
-
-        /// <summary>
-        /// hiding the x button of the window
-        /// </summary>
-        private const int GWL_STYLE = -16;
-        private const int WS_SYSMENU = 0x80000;
-
-        [DllImport("user32.dll", SetLastError = true)]
-        private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
-        [DllImport("user32.dll")]
-        private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
-
-        private void Loded(object sender, RoutedEventArgs e)
-        {
-            var hwnd = new WindowInteropHelper(this).Handle;
-            SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) & ~WS_SYSMENU);
-        }
 
     }
 }

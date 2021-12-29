@@ -17,7 +17,7 @@ namespace PL
     public partial class DroneWindow : Window
     {
         private Random r;
-        private IBL bl;
+        private IBL bl = BlFactory.GetBl();
         private Drone drone;
         private ListsViewWindow listsViewWindow;
 
@@ -28,14 +28,13 @@ namespace PL
         /// </summary>
         /// <param name="bl"></param>
         /// <param name="listsViewWindow"></param>
-        public DroneWindow(BlApi.IBL bl, ListsViewWindow listsViewWindow)
+        public DroneWindow(ListsViewWindow listsViewWindow)
         {
             drone = new();
             r = new Random();
             InitializeComponent();
             AddingStack.Visibility = Visibility.Visible;
 
-            this.bl = bl;
             this.listsViewWindow = listsViewWindow;
 
             //Weight.ItemsSource = Enum.GetValues<BO.Enums.WeightCategories>();
@@ -52,13 +51,12 @@ namespace PL
         /// <param name="bl"></param>
         /// <param name="listOfDronesViewWindow"></param>
         /// <param name="drone"></param>
-        public DroneWindow(BlApi.IBL bl, ListsViewWindow listOfDronesViewWindow, BO.Drone drone)
+        public DroneWindow(ListsViewWindow listOfDronesViewWindow, BO.Drone drone)
         {
             r = new Random();
 
             InitializeComponent();
             OptionStack.Visibility = Visibility.Visible;
-            this.bl = bl;
             this.listsViewWindow = listOfDronesViewWindow;
             this.drone = drone;
 
@@ -276,7 +274,6 @@ namespace PL
 
                             parcelState = PARCEL_STATE.PICKUP;
                             DeliveringOption.DataContext = parcelState;
-                            listsViewWindow.UpdateParcelList();
 
                         }
                         catch (Exception ex)
@@ -345,30 +342,13 @@ namespace PL
             try
             {
                 BO.Parcel parcel = bl.GetParcel(drone.ParcelInDelivery.Id);
-                new ParcelWindow(bl, parcel).ShowDialog();
+                new ParcelWindow(parcel).ShowDialog();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ShowException(ex), "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
 
             }
-        }
-
-
-        /// <summary>
-        /// hiding the x button of the window
-        /// </summary>
-        private const int GWL_STYLE = -16;
-        private const int WS_SYSMENU = 0x80000;
-        [DllImport("user32.dll", SetLastError = true)]
-        private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
-        [DllImport("user32.dll")]
-        private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
-
-        private void Loded(object sender, RoutedEventArgs e)
-        {
-            var hwnd = new WindowInteropHelper(this).Handle;
-            SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) & ~WS_SYSMENU);
         }
 
 

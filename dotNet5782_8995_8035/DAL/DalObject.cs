@@ -14,7 +14,7 @@ using System.Linq;
 
 namespace Dal
 {
-    internal class DalObject : DalApi.IDal
+    internal sealed class DalObject : DalApi.IDal
     {
 
         #region Singalton
@@ -30,29 +30,14 @@ namespace Dal
         /// <summary>
         /// dal field intended to keep the insstance of the bl that was created.
         /// </summary>
-        private static DalObject instance = null;
-
-        /// <summary>
-        /// an object intanded to lock the code of creating the new DAL so it does not happen twice.
-        /// </summary>
-        private static readonly object _lock = new object();
+        private static readonly DalApi.IDal instance = new DalObject();
 
         // <summary>
         /// the function the creates new instance of DAL only if it doesn't exists already.
         /// </summary>
         /// <returns></returns>
-        public static DalObject GetInstance()
+        public static DalApi.IDal GetInstance()
         {
-            if(instance == null)
-            {
-                lock (_lock)
-                {
-                    if (instance == null)
-                    {
-                        instance = new DalObject();
-                    }
-                }
-            }
             return instance;
         }
 

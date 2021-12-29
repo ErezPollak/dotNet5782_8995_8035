@@ -8,7 +8,6 @@
         Title="ParcelWindow"
         Height="450"
         Width="440"
-        Loaded="Loded"
         AllowsTransparency="True"
         WindowStyle="None"
         MouseDown="Drag"

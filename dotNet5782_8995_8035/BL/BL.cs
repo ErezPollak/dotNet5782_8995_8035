@@ -8,7 +8,7 @@ using System.Collections.ObjectModel;
 
 namespace BlApi
 {
-    internal class BL : IBL
+    internal sealed class BL : IBL
     {
         #region private fields
 
@@ -172,29 +172,14 @@ namespace BlApi
         /// <summary>
         /// bl field intended to keep the insstance of the bl that was created.
         /// </summary>
-        private static BL instance;
-
-        /// <summary>
-        /// an object intanded to lock the code of creating the new BL so it does not happen twice.
-        /// </summary>
-        private static readonly object _lock = new object();
+        private static readonly IBL instance = new BL();
 
         /// <summary>
         /// the function the creates new instance of bl only if it doesn't exists already.
         /// </summary>
         /// <returns></returns>
-        public static BL GetInstance()
+        public static IBL GetInstance()
         {
-            if(instance == null)
-            {
-                lock (_lock)
-                {
-                    if(instance == null)
-                    {
-                        instance = new BL();
-                    }
-                }
-            }
             return instance;
         }
 
@@ -241,15 +226,6 @@ namespace BlApi
 
             int parcelId = newDrone.ParcelInDelivery == null ? 0 : newDrone.ParcelInDelivery.Id;
             
-            //if (newDrone.ParcelInDelivery == null)
-            //{
-            //    parcelId = 0;
-            //}
-            //else
-            //{
-            //    parcelId = newDrone.ParcelInDelivery.Id;
-            //}
-
             if (newDrone.Location == null)
             {
                 IEnumerable<BaseStationForList> avalibaleBaseStations = GetBaseStations(b => b.FreeChargingSlots > 0);
@@ -258,7 +234,6 @@ namespace BlApi
                     throw new UnableToAddDroneException("No BaseStation Avalible");
                 
                 newDrone.Location = GetBaseStation(avalibaleBaseStations.ElementAt(Random.Next(avalibaleBaseStations.Count())).Id).Location;
-
             }
 
             DroneForList balDrone = new DroneForList()
@@ -462,6 +437,9 @@ namespace BlApi
 
             drones[droneIndex].ParcelId = parcels.First().Id;
 
+            //update paclel times.
+
+
             return true;
         }
 
@@ -490,7 +468,7 @@ namespace BlApi
 
             try
             {
-                return dal.PickingUpParcel(GetDrone(droneId).ParcelInDelivery.Id, droneId); //dal.DeliveringParcel(GetDrone(droneId).ParcelInDelivery.Id);
+                return dal.PickingUpParcel(GetDrone(droneId).ParcelInDelivery.Id, droneId);
             }
             catch (Exception e)
             {
@@ -782,29 +760,31 @@ namespace BlApi
             {
                 DO.Parcel dalParcel = dal.GetParcel(parcelId);
                 
-                CoustomerForParcel sender = new CoustomerForParcel()
-                {
-                    Id = dalParcel.SenderId,
-                    CustomerName = dal.GetCustomer(dalParcel.SenderId).Name
-                };
-
-                CoustomerForParcel reciver = new CoustomerForParcel()
-                {
-                    Id = dalParcel.TargetId,
-                    CustomerName = dal.GetCustomer(dalParcel.TargetId).Name
-                };
-
-                DroneForParcel drone = new DroneForParcel()
-                {
-                    Id = dalParcel.DroneId
-                };
-
                 return new BO.Parcel()
                 {
                     Id = dalParcel.Id,
-                    Sender = sender,
-                    Reciver = reciver,
-                    Drone = drone,
+
+                    Sender = (from cust in dal.GetCustomers(_ => true)
+                              where cust.Id == dalParcel.TargetId
+                              select new CoustomerForParcel
+                              {
+                                  Id = cust.Id,
+                                  CustomerName = cust.Name
+                              }).FirstOrDefault(),
+
+                    Reciver = (from cust in dal.GetCustomers(_ => true)
+                               where cust.Id == dalParcel.TargetId
+                               select new CoustomerForParcel
+                               {
+                                   Id = cust.Id,
+                                   CustomerName = cust.Name
+                               }).FirstOrDefault(),
+
+                    Drone = new DroneForParcel()
+                    {
+                        Id = dalParcel.DroneId
+                    },
+
                     Priority = (BO.Enums.Priorities) dalParcel.Priority,
                     Weight = (BO.Enums.WeightCategories) dalParcel.Weight,
                     AcceptedTime = dalParcel.AcceptedTime,

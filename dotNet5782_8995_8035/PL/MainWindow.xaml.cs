@@ -1,4 +1,4 @@
-﻿using BlApi;
+﻿
 using System.Windows;
 
 namespace PL
@@ -13,13 +13,9 @@ namespace PL
     {
         private AccssesAtholerazetion accssesAtholerazetion = AccssesAtholerazetion.GUEST;
 
-        private BlApi.IBL bl;
-
         public MainWindow()
         {
             InitializeComponent();
-
-            bl = BlApi.BlFactory.GetBl();
 
             LoginStack.DataContext = accssesAtholerazetion;
 
@@ -53,13 +49,13 @@ namespace PL
         {
             this.accssesAtholerazetion = AccssesAtholerazetion.GUEST;
             LoginStack.DataContext = accssesAtholerazetion;
-            new ListsViewWindow(bl, accssesAtholerazetion).ShowDialog();
+            new ListsViewWindow(accssesAtholerazetion).ShowDialog();
 
         }
 
         private void SignIn_CLick(object sender, RoutedEventArgs e)
         {
-            new SignUpWindow(bl).ShowDialog();
+            new SignUpWindow().ShowDialog();
         }
 
         private void ContactUs_Click(object sender, RoutedEventArgs e)
@@ -70,13 +66,13 @@ namespace PL
 
         private void Login_Click(object sender, RoutedEventArgs e)
         {
-            new ListsViewWindow(bl, accssesAtholerazetion).ShowDialog();
+            new ListsViewWindow(accssesAtholerazetion).ShowDialog();
             accssesAtholerazetion = AccssesAtholerazetion.GUEST;
             LoginStack.DataContext = accssesAtholerazetion;
             MistakenPasswordOrName.Visibility = Visibility.Collapsed;
 
 
-            //if ((UserName.Text == "Mordechay" && Password.Password == "8035")|| (UserName.Text == "Erez" && Password.Password == "8995"))
+            //if ((UserName.Text == "Mordechay" && Password.Password == "8035") || (UserName.Text == "Erez" && Password.Password == "8995"))
             //{
             //    new ListsViewWindow(bl, accssesAtholerazetion).ShowDialog();
             //    accssesAtholerazetion = AccssesAtholerazetion.GUEST;

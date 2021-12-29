@@ -2,20 +2,12 @@
 using BO;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace PL
 {
@@ -27,7 +19,7 @@ namespace PL
         private static readonly Random Random = new();
 
 
-        private readonly IBL bl;
+        private readonly IBL bl = BlFactory.GetBl();
         private readonly ListsViewWindow listsViewWindow;
         private BaseStation baseStation;
 
@@ -36,11 +28,10 @@ namespace PL
         /// </summary>
         /// <param name="bl"></param>
         /// <param name="listsViewWindow"></param>
-        public BaseStationWindow(BlApi.IBL bl, ListsViewWindow listsViewWindow)
+        public BaseStationWindow(ListsViewWindow listsViewWindow)
         {
             InitializeComponent();
 
-            this.bl = bl;
             this.listsViewWindow = listsViewWindow;
             baseStation = new(Location: new(), ChargingDrones: new List<BO.DroneInCharge>());
             AddingStack.DataContext = baseStation;
@@ -55,11 +46,10 @@ namespace PL
         /// <param name="bl"></param>
         /// <param name="listsViewWindow"></param>
         /// <param name="baseStation"></param>
-        public BaseStationWindow(BlApi.IBL bl, ListsViewWindow listsViewWindow, BaseStation baseStation)
+        public BaseStationWindow(ListsViewWindow listsViewWindow, BaseStation baseStation)
         {
             InitializeComponent();
 
-            this.bl = bl;
             this.listsViewWindow = listsViewWindow;
             this.baseStation = baseStation;
             OptionStack.DataContext = baseStation;
