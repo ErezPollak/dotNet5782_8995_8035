@@ -20,7 +20,7 @@ namespace DalApi
         public bool UpdateNameForADrone(int droneId, string model);
         public bool UpdateBaseStation(int basStationID, string name, int slots);
         public bool UpdateCustomer(int customerID, string name, string phone);
-        public bool UpdateDroneForAParcel(int parcelId, int droneId);
+        public bool AssignDroneToParcel(int parcelId, int droneId);
         public bool PickingUpParcel(int parcelId, int droneId);
         public bool DeliveringParcel(int parcelId);
         public bool ChargeDrone(int baseStationId, int droneId);

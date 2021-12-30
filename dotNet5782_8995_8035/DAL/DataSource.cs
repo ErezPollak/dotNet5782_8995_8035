@@ -105,7 +105,7 @@ namespace Dal
                 {
                     Id = i * 22 + 234242,
                     Name = GetRAndomName(),
-                    Phone = "05" + rnd.Next() % 10 + "-" + rnd.Next() % 1000000,
+                    Phone = "05" + rnd.Next() % 10 + "-" + rnd.Next() % 10000000,
 
                     Location = new Location
                     {
@@ -120,13 +120,6 @@ namespace Dal
 
             int[] dronesForParcels = DroneForParcel();
 
-            for (int i = 0; i < 10; i++)
-            {
-                Console.WriteLine(dronesForParcels[i]);
-            }
-
-            
-
             //randomal values for parcels.
             for (int i = 0; i < 10; i++)
             {
@@ -138,23 +131,16 @@ namespace Dal
                     Weight = (WeightCategories)(rnd.Next() % 3),
                     Priority = (Priorities)(rnd.Next() % 3),
                     DroneId = dronesForParcels[i],                                   //initileized to not have any drone, the drone number will be updated in the dalobject class.
-                    RequestedTime = PickingBiggerDate(DateTime.Now),  // initilesed to be the time of the initialization.
+                    DefinededTime = DateTime.Now,  // initilesed to be the time of the initialization.
+                    AssigndedTime = dronesForParcels[i] != 0 ? DateTime.Now : null,
                     PickedUpTime = null,                        //initilesed for now, will change in  Dal class, when order is updated to be picked up.
-                    AcceptedTime = null
+                    DeliveryTime = null
                 };
 
                 parcels.Add(parcel);
 
             }
 
-            //initilazing the "scaduald" date to be after the "reqested" date. by the function below.
-            for (int index = 0; index < parcels.Count; index++)
-            {
-                Parcel p = parcels[index];
-                p.DeliveryTime = PickingBiggerDate(p.RequestedTime);
-                parcels[index] = p;
-                ++index;
-            }
         }
 
         private static string GetRAndomName()
@@ -168,19 +154,6 @@ namespace Dal
 
         }
 
-        //the function recives a date, and randing another while making sure that the randomal date is after the given one.
-        private static DateTime PickingBiggerDate(DateTime? d)
-        {
-            DateTime newD;
-
-            do
-            {
-                newD = new DateTime(rnd.Next() % 4 + 2020, rnd.Next() % 5 + 1, rnd.Next() % 5 + 1, rnd.Next() % 24, rnd.Next() % 60, rnd.Next() % 60);
-            } while (newD < d);
-
-            return newD;
-
-        }
 
         /// <summary>
         /// initilze the number of parceles of every drone.
@@ -190,9 +163,9 @@ namespace Dal
         {
             int[] nums = new int[10];
             for (int i = 0; i < 10; i++)
-                nums[i] = -1;
+                nums[i] = 0;
 
-            for (int i = 0; i < 3; i++)
+            for (int i = 1; i < 4; i++)
                 nums[rnd.Next() % 10] = drones[i].Id;
 
             return nums;

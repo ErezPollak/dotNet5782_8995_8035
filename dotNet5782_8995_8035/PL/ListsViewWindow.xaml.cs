@@ -122,7 +122,7 @@ namespace PL
                     (d.Weight.ToString() == whight || whight == "Show All") &&
                     (d.Status.ToString() == status || status == "Show All"));
 
-            ListOfDronesView.DataContext = droneList;
+            ListOfDronesView.DataContext = this.droneList;
 
         }
 
@@ -148,13 +148,6 @@ namespace PL
 
         public void AddParcel(BO.Parcel parcel)
         {
-            //BO.Enums.ParcelStatus status = BO.Enums.ParcelStatus.DEFINED;
-
-            //if (parcel.Drone != null) status = BO.Enums.ParcelStatus.ASSIGNED;
-            //
-           // if (parcel.PickupTime != null) status = BO.Enums.ParcelStatus.PICKEDUP;
-
-            //if (parcel.DeliveringTime != null) status = BO.Enums.ParcelStatus.DELIVERED;
 
             BO.ParcelForList listParcel = new()
             {
@@ -182,7 +175,6 @@ namespace PL
             );
 
             ListOfParcelsView.DataContext = this.parcelList;
-
         }
 
         #endregion
@@ -226,20 +218,17 @@ namespace PL
 
         public void UpdateBaseStationList()
         {
-
             string openSlots = null;
 
             if (NumberOfSlotsSelector.SelectedItem != null)
                 openSlots = NumberOfSlotsSelector.SelectedItem.ToString();
 
             this.baseStatoinList = bl.GetBaseStations(b =>
-                ((b.FreeChargingSlots > 0) && (openSlots == "Has Open Charging Slots")) || (openSlots == "Show All")
-            );
+                ((b.FreeChargingSlots > 0) && (openSlots == "Has Open Charging Slots")) || (openSlots == "Show All") || openSlots == null);
 
             ListOfBaseStationsView.DataContext = this.baseStatoinList;
 
         }
-
 
         private void GroupBaseStationByFreeSlots_Click(object sender, RoutedEventArgs e)
         {
@@ -276,10 +265,6 @@ namespace PL
                 SentFromAndNotDeliverd = 0,
                 SentToAndDeliverd = 0,
                 SentToAnDNotDelivered = 0
-                //SentFromAndDeliverd = customer.FromCustomer.Count(p => bl.GetParcel(p.Id).DeliveringTime != null),
-                //SentFromAndNotDeliverd = customer.FromCustomer.Count(p => bl.GetParcel(p.Id).DeliveringTime == null),
-                //SentToAndDeliverd = customer.ToCustomer.Count(p => bl.GetParcel(p.Id).DeliveringTime != null),
-                //SentToAnDNotDelivered = customer.ToCustomer.Count(p => bl.GetParcel(p.Id).DeliveringTime == null),
             };
             this.costumerList.Add(listCustomer);
         }
@@ -288,7 +273,7 @@ namespace PL
         {
             this.costumerList = bl.GetCustomers(_ => true);
 
-            ListOfCustomersView.DataContext = this.CustomerList;
+            ListOfCustomersView.DataContext = this.costumerList;
         }
 
         #endregion
@@ -307,7 +292,6 @@ namespace PL
 
             //update the customer list
             UpdateCustomerList();
-
         }
 
 

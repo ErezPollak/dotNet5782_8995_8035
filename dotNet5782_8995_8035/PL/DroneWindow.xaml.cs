@@ -162,7 +162,7 @@ namespace PL
             try
             {
                 bl.UpdateNameForADrone(drone.Id, Model.Text);
-                listsViewWindow.UpdateLists();
+                listsViewWindow.UpdateDroneList();
                 UpdateModel.Visibility = Visibility.Collapsed;
                 OptionStack.DataContext = this.drone;
             }
@@ -173,7 +173,6 @@ namespace PL
             }
 
         }
-
 
         private void ChargeAndUnchargeButton_Click(object sender, RoutedEventArgs e)
         {
@@ -264,8 +263,6 @@ namespace PL
                         {
                             bl.AssignParcelToADrone(drone.Id);
 
-                            listsViewWindow.UpdateLists();
-
                             this.drone = bl.GetDrone(drone.Id);
 
                             OptionStack.DataContext = this.drone;
@@ -275,11 +272,12 @@ namespace PL
                             parcelState = PARCEL_STATE.PICKUP;
                             DeliveringOption.DataContext = parcelState;
 
+                            listsViewWindow.UpdateLists();
+
                         }
                         catch (Exception ex)
                         {
                             MessageBox.Show(ShowException(ex), "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
-
                         }
                     }
                     break;
@@ -289,16 +287,14 @@ namespace PL
                         {
                             bl.PickingUpParcelToDrone(drone.Id);
 
-                            listsViewWindow.UpdateLists();
-
                             this.drone = bl.GetDrone(drone.Id);
 
                             OptionStack.DataContext = this.drone;
 
                             parcelState = PARCEL_STATE.DELIVER;
                             DeliveringOption.DataContext = parcelState;
-                            listsViewWindow.UpdateParcelList();
 
+                            listsViewWindow.UpdateLists();
                         }
                         catch (Exception ex)
                         {

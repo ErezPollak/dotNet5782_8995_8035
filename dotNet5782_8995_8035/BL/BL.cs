@@ -59,24 +59,25 @@ namespace BlApi
                 {
                     Id = dalDrone.Id,
                     Model = dalDrone.Model,
-                    Weight = (BO.Enums.WeightCategories) dalDrone.MaxWeight,
-                    Status = (Enums.DroneStatuses) (Random.Next() % 2 * 2)
+                    Weight = (BO.Enums.WeightCategories)dalDrone.MaxWeight,
+                    Status = (Enums.DroneStatuses)(Random.Next() % 2 * 2)
                 });
             }
 
-            //going through all the parcels that have a drone, and was not delivered.
-            foreach (DO.Parcel parcel in dal.GetParcels(parcel =>
-                parcel.DroneId != -1 && parcel.AcceptedTime == null))
+            var parcelsforupdate = dal.GetParcels(parcel => parcel.DroneId != 0);
+
+            //going through all the parcels that have a drone, and was not assigned to it.
+            foreach (DO.Parcel parcel in parcelsforupdate)
             {
+
                 //caculate the distance of the delivery.
                 double deliveryDistance = 0;
                 //caculating the distance between the sender of the parcel, and the reciver. 
                 deliveryDistance += Distance(LocationTranslate(dal.GetCustomer(parcel.SenderId).Location),
-                    LocationTranslate(dal.GetCustomer(parcel.TargetId).Location));
+                                             LocationTranslate(dal.GetCustomer(parcel.TargetId).Location));
                 //caculating the distance between the reciver of the parcel, and the clothest station to the reciver. 
                 deliveryDistance += Distance(LocationTranslate(dal.GetCustomer(parcel.TargetId).Location),
-                    LocationTranslate(dal.GetBaseStation(dal.GetClosestStation(parcel.TargetId))
-                        .Location));
+                                             LocationTranslate(dal.GetBaseStation(dal.GetClosestStation(parcel.TargetId)).Location));
 
                 double minimumValue;
 
@@ -86,7 +87,6 @@ namespace BlApi
                 drones[index].Status = Enums.DroneStatuses.DELIVERY;
                 //updates the parcel number to be the delivering parcel.
                 drones[index].ParcelId = parcel.Id;
-                
 
                 //if the parcel wasnt picked up.
                 if (parcel.PickedUpTime == null)
@@ -97,13 +97,11 @@ namespace BlApi
 
                     // caculating the distance between the base station to the sender.
                     deliveryDistance +=
-                        Distance(
-                            LocationTranslate(dal.GetBaseStation(dal.GetClosestStation(parcel.SenderId))
-                                .Location), LocationTranslate(dal.GetCustomer(parcel.SenderId).Location));
+                        Distance(LocationTranslate(dal.GetBaseStation(dal.GetClosestStation(parcel.SenderId)).Location),
+                                 LocationTranslate(dal.GetCustomer(parcel.SenderId).Location));
 
                     // caculating the minimum precentage of batteary the drone needs in order to deliver the parcel and go to charge afterwards.
-                    minimumValue = deliveryDistance /
-                                   (int) (dal.ElectricityUse()[(int) GetDrone(parcel.DroneId).MaxWeight + 1]);
+                    minimumValue = deliveryDistance / (int)(dal.ElectricityUse()[(int)GetDrone(parcel.DroneId).MaxWeight + 1]);
                 }
                 else // if the parcel was picked up.
                 {
@@ -112,7 +110,7 @@ namespace BlApi
                         LocationTranslate(dal.GetCustomer(parcel.SenderId).Location);
 
                     // caculating the minimum precentage of batteary the drone needs in order to deliver the parcel and go to charge afterwards.
-                    minimumValue = deliveryDistance / (int) (dal.ElectricityUse()[(int) GetDrone(parcel.DroneId).MaxWeight + 1]);
+                    minimumValue = deliveryDistance / (int)(dal.ElectricityUse()[(int)GetDrone(parcel.DroneId).MaxWeight + 1]);
                 }
 
                 //if the precentage is ok, the value of the battry is being randomiseied between the minimum value to one handred.
@@ -142,13 +140,13 @@ namespace BlApi
                             LocationTranslate(dal.GetCustomer(parcels.ElementAt(index).TargetId).Location));
 
                     //caculating the battary consamption.
-                    double battayConcamption = deliveryDistance / dal.ElectricityUse()[(int) drone.Weight + 1];
+                    double battayConcamption = deliveryDistance / dal.ElectricityUse()[(int)drone.Weight + 1];
 
                     //the there is not enough battary, exception will be thrown.
                     //if (battayConcamption > 100) throw new BO.BL_ConstaractorException($"the drone needs {battayConcamption} battary in order to complete to delivery. ");
 
                     //seting the battry to be randomised between the minimum value to 100.
-                    drone.Battery = (int) (battayConcamption + Random.NextDouble() * (100 - battayConcamption));
+                    drone.Battery = (int)(battayConcamption + Random.NextDouble() * (100 - battayConcamption));
                 }
                 else if (drone.Status == Enums.DroneStatuses.MAINTENANCE)
                 {
@@ -225,14 +223,14 @@ namespace BlApi
             }
 
             int parcelId = newDrone.ParcelInDelivery == null ? 0 : newDrone.ParcelInDelivery.Id;
-            
+
             if (newDrone.Location == null)
             {
                 IEnumerable<BaseStationForList> avalibaleBaseStations = GetBaseStations(b => b.FreeChargingSlots > 0);
-                
+
                 if (avalibaleBaseStations.Count() == 0)
                     throw new UnableToAddDroneException("No BaseStation Avalible");
-                
+
                 newDrone.Location = GetBaseStation(avalibaleBaseStations.ElementAt(Random.Next(avalibaleBaseStations.Count())).Id).Location;
             }
 
@@ -253,7 +251,7 @@ namespace BlApi
             {
                 Id = newDrone.Id,
                 Model = newDrone.Model,
-                MaxWeight = (WeightCategories) newDrone.MaxWeight
+                MaxWeight = (WeightCategories)newDrone.MaxWeight
             };
 
             //since we checked in the list there is no chance to have the same number of drone in the dal list.   
@@ -301,12 +299,12 @@ namespace BlApi
                 Id = newParcel.Id,
                 SenderId = newParcel.Sender.Id,
                 TargetId = newParcel.Reciver.Id,
-                Weight = (WeightCategories) newParcel.Weight,
-                Priority = (Priorities) newParcel.Priority,
-                DroneId = -1,
-                RequestedTime = newParcel.RequestedTime,
+                Weight = (WeightCategories)newParcel.Weight,
+                Priority = (Priorities)newParcel.Priority,
+                DroneId = 0,
+                DefinededTime = newParcel.RequestedTime,
                 DeliveryTime = newParcel.DeliveringTime,
-                AcceptedTime = newParcel.AcceptedTime,
+                AssigndedTime = newParcel.AcceptedTime,
                 PickedUpTime = newParcel.PickupTime
             };
 
@@ -338,8 +336,8 @@ namespace BlApi
 
             int index = drones.FindIndex(d => d.Id == droneId);
 
-            if(index != -1)
-                 drones[index].Model = model;
+            if (index != -1)
+                drones[index].Model = model;
 
             try
             {
@@ -358,7 +356,7 @@ namespace BlApi
         /// <param name="name"></param>
         /// <param name="slots"></param>
         /// <returns> true if the updaue complited successfully </returns>
-        public bool UpdateBaseStation(int basStationId, string name, int slots) 
+        public bool UpdateBaseStation(int basStationId, string name, int slots)
         {
             try
             {
@@ -402,26 +400,26 @@ namespace BlApi
             //if the index is -1 it means that no such is id in the database so an exception will be thrown.
             if (droneIndex == -1)
                 throw new UnableToAssignParcelToTheDroneException(droneId, " drone is not in the database.",
-                    new BO.IdDontExistsException(droneId, "drone")); 
+                    new BO.IdDontExistsException(droneId, "drone"));
 
             //chacks if the drone is free, and if not exception will be thrown.
             if (drones[droneIndex].Status != Enums.DroneStatuses.FREE)
                 throw new UnableToAssignParcelToTheDroneException(droneId, " the drone is not free");
 
             //importing all the parcels and sorting them aaccording to their praiority.
-            IEnumerable<DO.Parcel> parcels = dal.GetParcels(p => 
-                ((int)p.Weight <= (int)drones[droneIndex].Weight) && 
-                (    
+            IEnumerable<DO.Parcel> parcels = dal.GetParcels(p =>
+                ((int)p.Weight <= (int)drones[droneIndex].Weight) &&
+                (
                    Distance(drones[droneIndex].Location, LocationTranslate(dal.GetCustomer(p.SenderId).Location)) +
-                   Distance(LocationTranslate(dal.GetCustomer(p.SenderId).Location), LocationTranslate(dal.GetCustomer(p.TargetId).Location))+
+                   Distance(LocationTranslate(dal.GetCustomer(p.SenderId).Location), LocationTranslate(dal.GetCustomer(p.TargetId).Location)) +
                    Distance(LocationTranslate(dal.GetCustomer(p.TargetId).Location), GetBaseStation(dal.GetClosestStation(p.TargetId)).Location)
                 )
-                <= drones[droneIndex].Battery * dal.ElectricityUse()[(int)drones[droneIndex].Weight + 1] && 
+                <= drones[droneIndex].Battery * dal.ElectricityUse()[(int)drones[droneIndex].Weight + 1] &&
 
-                 p.DeliveryTime == null)      
-                
+                 p.DeliveryTime == null)
+
                 .OrderByDescending(p => (int)p.Priority)
-                
+
                 .ThenBy(p => Distance(drones[droneIndex].Location, LocationTranslate(dal.GetCustomer(p.SenderId).Location)));
 
             //if no parcel left in the list after the removings it means that no parcel can be sent be thi drone, so exception will be thrown.
@@ -438,7 +436,7 @@ namespace BlApi
             drones[droneIndex].ParcelId = parcels.First().Id;
 
             //update paclel times.
-
+            dal.AssignDroneToParcel(parcels.First().Id, droneId);
 
             return true;
         }
@@ -498,7 +496,7 @@ namespace BlApi
 
             //battary update
             drones[index].Battery -=
-                deliveryDistance / dal.ElectricityUse()[(int) GetDrone(droneId).MaxWeight + 1];
+                deliveryDistance / dal.ElectricityUse()[(int)GetDrone(droneId).MaxWeight + 1];
 
             // location update
             drones[index].Location = GetLocationOfCustomer(droneId, Enums.CustomerEnum.TARGET);
@@ -510,9 +508,9 @@ namespace BlApi
 
             //parcel id update.
             drones[index].ParcelId = 0;
-                
+
             //update the parcel from the dal.
-            
+
             try
             {
                 //return dalObject.DeliveringParcel(GetDrone(droneId).ParcelInDelivery.Id);
@@ -557,7 +555,7 @@ namespace BlApi
 
             //geting the maximum distance the drone can make according to the level of battary multiplied by the number of kilometers the drone can do for one precent do battary. 
             double maxDistance = drones[droneIndex].Battery *
-                                 dal.ElectricityUse()[(int) drones[droneIndex].Weight + 1];
+                                 dal.ElectricityUse()[(int)drones[droneIndex].Weight + 1];
 
             //returns all the stations that the drone has enough fuel to get to, ordered by the closest base station.
             IEnumerable<DO.BaseStation> baseStations = dal.GetBaseStations(b =>
@@ -570,14 +568,14 @@ namespace BlApi
                 throw new UnAbleToSendDroneToChargeException(
                     " there is no station that matches the needs of this drone");
 
-           DO.BaseStation baseStation = baseStations.First();
+            DO.BaseStation baseStation = baseStations.First();
 
             /////drone updates//////
 
             //update the battary status.
             drones[droneIndex].Battery -=
                 Distance(LocationTranslate(baseStation.Location), GetDrone(droneId).Location) /
-                dal.ElectricityUse()[(int) drones[droneIndex].Weight + 1];
+                dal.ElectricityUse()[(int)drones[droneIndex].Weight + 1];
 
             //update the localtion of the drone to be the locatin of the base station.
             drones[droneIndex].Location = LocationTranslate(baseStation.Location);
@@ -598,7 +596,7 @@ namespace BlApi
         public bool UnChargeDrone(int droneId)
         {
             int droneIndex = drones.FindIndex(d => d.Id == droneId);
-            if (droneIndex == -1) 
+            if (droneIndex == -1)
                 throw new BO.IdDontExistsException(droneId, "drone");
 
             //chacks if the drone is free, and if not exception will be thrown.
@@ -745,7 +743,7 @@ namespace BlApi
                 Location = LocationTranslate(dalCustomer.Location),
                 FromCustomer = ParcelTOParcelByCustumerList(GetPacels(p => p.SenderName == dalCustomer.Name)).ToList(),
                 ToCustomer = ParcelTOParcelByCustumerList(GetPacels(p => p.ReceiverName == dalCustomer.Name)).ToList()
-               
+
             };
         }
 
@@ -759,7 +757,7 @@ namespace BlApi
             try
             {
                 DO.Parcel dalParcel = dal.GetParcel(parcelId);
-                
+
                 return new BO.Parcel()
                 {
                     Id = dalParcel.Id,
@@ -785,10 +783,10 @@ namespace BlApi
                         Id = dalParcel.DroneId
                     },
 
-                    Priority = (BO.Enums.Priorities) dalParcel.Priority,
-                    Weight = (BO.Enums.WeightCategories) dalParcel.Weight,
-                    AcceptedTime = dalParcel.AcceptedTime,
-                    RequestedTime = dalParcel.RequestedTime,
+                    Priority = (BO.Enums.Priorities)dalParcel.Priority,
+                    Weight = (BO.Enums.WeightCategories)dalParcel.Weight,
+                    AcceptedTime = dalParcel.AssigndedTime,
+                    RequestedTime = dalParcel.DefinededTime,
                     DeliveringTime = dalParcel.DeliveryTime,
                     PickupTime = dalParcel.PickedUpTime
                 };
@@ -807,7 +805,7 @@ namespace BlApi
         /// <returns></returns>
         public ObservableCollection<BaseStationForList> GetBaseStations(Predicate<BaseStationForList> f)
         {
-            return new ObservableCollection<BaseStationForList>( dal.GetBaseStations(_ => true)
+            return new ObservableCollection<BaseStationForList>(dal.GetBaseStations(_ => true)
                 .Select(db =>
                     new BaseStationForList()
                     {
@@ -839,7 +837,7 @@ namespace BlApi
                 ParcelId = d.ParcelId
             }));
 
-            return balDrones; 
+            return balDrones;
         }
 
         /// <summary>
@@ -879,17 +877,37 @@ namespace BlApi
         /// <returns></returns>
         public ObservableCollection<ParcelForList> GetPacels(Predicate<ParcelForList> f)
         {
-            return new ObservableCollection<ParcelForList>(dal.GetParcels(_ => true)
-                .Select(dalParcel =>
-                    new ParcelForList()
-                    {
-                        Id = dalParcel.Id,
-                        Priority = (BO.Enums.Priorities) dalParcel.Priority,
-                        SenderName = dal.GetCustomer(dalParcel.SenderId).Name,
-                        ReceiverName = dal.GetCustomer(dalParcel.TargetId).Name,
-                        Weight = (Enums.WeightCategories) dalParcel.Weight
-                    })
-                .Where(dp => f(dp)));
+            //return new ObservableCollection<ParcelForList>(dal.GetParcels(_ => true)
+            //    .Select(dalParcel =>
+            //        new ParcelForList()
+            //        {
+            //            Id = dalParcel.Id,
+            //            Priority = (BO.Enums.Priorities) dalParcel.Priority,
+            //            SenderName = dal.GetCustomer(dalParcel.SenderId).Name,
+            //            ReceiverName = dal.GetCustomer(dalParcel.TargetId).Name,
+            //            Weight = (Enums.WeightCategories) dalParcel.Weight,
+            //            Status = 
+            //        })
+            //    .Where(dp => f(dp)));
+
+
+            var parselsForList = from parcel in dal.GetParcels(_ => true)
+                                 select new ParcelForList()
+                                 {
+                                     Id = parcel.Id,
+                                     Priority = (BO.Enums.Priorities)parcel.Priority,
+                                     SenderName = dal.GetCustomer(parcel.SenderId).Name,
+                                     ReceiverName = dal.GetCustomer(parcel.TargetId).Name,
+                                     Weight = (Enums.WeightCategories)parcel.Weight,
+                                     Status = parcel.AssigndedTime == null ? Enums.ParcelStatus.DEFINED :
+                                              (parcel.PickedUpTime == null ? Enums.ParcelStatus.ASSIGNED :
+                                              (parcel.DeliveryTime == null ? Enums.ParcelStatus.PICKEDUP :
+                                              Enums.ParcelStatus.DELIVERED))
+                                 };
+
+            return new ObservableCollection<ParcelForList>(from parcel in parselsForList
+                                                           where f(parcel)
+                                                           select parcel);
         }
 
         #endregion
@@ -954,7 +972,7 @@ namespace BlApi
         /// <returns></returns>
         private static BO.Location LocationTranslate(DO.Location location)
         {
-            return new BO.Location() {Longitude = location.Longitude, Latitude = location.Latitude};
+            return new BO.Location() { Longitude = location.Longitude, Latitude = location.Latitude };
         }
 
         /// <summary>
@@ -964,7 +982,7 @@ namespace BlApi
         /// <returns></returns>
         private static DO.Location LocationTranslate(BO.Location location)
         {
-            return new DO.Location() {Longitude = location.Longitude, Latitude = location.Latitude};
+            return new DO.Location() { Longitude = location.Longitude, Latitude = location.Latitude };
         }
 
 

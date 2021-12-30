@@ -170,7 +170,7 @@ namespace Dal
         /// </summary>
         /// <param name="parcelId"></param>
         /// <param name="droneId"></param>
-        public bool UpdateDroneForAParcel(int parcelId, int droneId)
+        public bool AssignDroneToParcel(int parcelId, int droneId)
         {
             //keeps the index in witch the idNumber was found in order to update it without iterting over the list again.
             //checking if the numbers of parcel and drone that was provided exist in the database or not. if not an excption will be thrown.
@@ -188,12 +188,14 @@ namespace Dal
 
             //updating the number of the drone in the DroneId field of the parcel to have the updated droneId number.
             //according to the number that was found while looking for an exception.  
-            Parcel newParcel = DataSource.parcels[parcelIndex];
-            newParcel.DroneId = droneId;
-            DataSource.parcels[parcelIndex] = newParcel;
+            Parcel updatedParcel = DataSource.parcels[parcelIndex];
+            updatedParcel.AssigndedTime = DateTime.Now;
+            updatedParcel.DroneId = droneId;
+            DataSource.parcels[parcelIndex] = updatedParcel;
 
             return true;
         }
+
 
         ///  <summary>
         /// updating the time of pickup in the parcel, and changing the status of the drone to delivery.

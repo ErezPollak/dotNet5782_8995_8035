@@ -124,7 +124,7 @@ namespace DAL
             throw new NotImplementedException();
         }
 
-        public bool UpdateDroneForAParcel(int parcelId, int droneId)
+        public bool AssignDroneToParcel(int parcelId, int droneId)
         {
             throw new NotImplementedException();
         }
@@ -133,5 +133,6 @@ namespace DAL
         {
             throw new NotImplementedException();
         }
+
     }
 }

@@ -20,10 +20,12 @@ namespace DO
         public WeightCategories Weight { get; set; }
         public Priorities Priority { get; set; }
         public int DroneId { get; set; }
-        public DateTime? RequestedTime { get; set; }
-        public DateTime? DeliveryTime { get; set; }
+        public DateTime? DefinededTime { get; set; }
+        public DateTime? AssigndedTime { get; set; }
         public DateTime? PickedUpTime { get; set; }
-        public DateTime? AcceptedTime { get; set; }
+        public DateTime? DeliveryTime { get; set; }
+        
+       
 
         /// <summary>
         /// the function prints all the props of the struct.
@@ -35,8 +37,8 @@ namespace DO
 
             return $"Parcel: id: {Id} , senderld: {SenderId} , targetld : {TargetId} " +
                    $", weight: {Weight}, priority: {Priority},  droneld: {DroneId}, " +
-                   $"requested: {RequestedTime}, scheduled: {DeliveryTime},delivered: {AcceptedTime},  " +
-                   $"pickedUp: {PickedUpTime}\n";
+                   $"defined: {DefinededTime} , assigned: {AssigndedTime} ,  " +
+                   $"pickedUp: {PickedUpTime} , deliverd: {DeliveryTime} ,  \n";
         }
     }
 }
