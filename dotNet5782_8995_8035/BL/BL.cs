@@ -302,9 +302,9 @@ namespace BlApi
                 Weight = (WeightCategories)newParcel.Weight,
                 Priority = (Priorities)newParcel.Priority,
                 DroneId = 0,
-                DefinededTime = newParcel.RequestedTime,
+                DefinededTime = newParcel.DefinedTime,
                 DeliveryTime = newParcel.DeliveringTime,
-                AssigndedTime = newParcel.AcceptedTime,
+                AssigndedTime = newParcel.AssigedTime,
                 PickedUpTime = newParcel.PickupTime
             };
 
@@ -785,8 +785,8 @@ namespace BlApi
 
                     Priority = (BO.Enums.Priorities)dalParcel.Priority,
                     Weight = (BO.Enums.WeightCategories)dalParcel.Weight,
-                    AcceptedTime = dalParcel.AssigndedTime,
-                    RequestedTime = dalParcel.DefinededTime,
+                    AssigedTime = dalParcel.AssigndedTime,
+                    DefinedTime = dalParcel.DefinededTime,
                     DeliveringTime = dalParcel.DeliveryTime,
                     PickupTime = dalParcel.PickedUpTime
                 };

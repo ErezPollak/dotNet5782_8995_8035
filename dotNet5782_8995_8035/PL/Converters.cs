@@ -205,4 +205,24 @@ namespace PL
             throw new NotImplementedException();
         }
     }
+
+
+    class ParcelToProgressBarValvue : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            BO.Parcel parcel = (BO.Parcel)value;
+
+            int progress = parcel.AssigedTime == null ? 25 :
+                             (parcel.PickupTime == null ? 50 :
+                             (parcel.DeliveringTime == null ? 75 :
+                             100));
+            return progress;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

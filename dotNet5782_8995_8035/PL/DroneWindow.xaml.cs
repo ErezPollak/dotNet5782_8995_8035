@@ -222,8 +222,6 @@ namespace PL
 
         }
 
-
-
         private void DroneIdTextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
             DroneID.Foreground = Brushes.Black;
@@ -338,7 +336,7 @@ namespace PL
             try
             {
                 BO.Parcel parcel = bl.GetParcel(drone.ParcelInDelivery.Id);
-                new ParcelWindow(parcel).ShowDialog();
+                new ParcelWindow(listsViewWindow ,parcel).ShowDialog();
             }
             catch (Exception ex)
             {
@@ -346,7 +344,6 @@ namespace PL
 
             }
         }
-
 
     }
 }

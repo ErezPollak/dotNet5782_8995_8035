@@ -139,11 +139,27 @@ namespace PL
         private void AddParcel_Click(object sender, RoutedEventArgs e)
         {
             //Open Parcel for add
+
+            new ParcelWindow(this).ShowDialog();
         }
 
         private void ClickedParcelInList(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             //open parcel for operations
+            try
+            {
+                BO.Parcel parcel = bl.
+                    GetParcel(((BO.
+                    ParcelForList)ListOfParcelsView.
+                    SelectedItem).
+                    Id);
+                new ParcelWindow(this, parcel).ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+
+            }
         }
 
         public void AddParcel(BO.Parcel parcel)

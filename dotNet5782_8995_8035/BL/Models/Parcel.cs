@@ -11,8 +11,8 @@
             public Enums.WeightCategories Weight { get; set; }
             public Enums.Priorities Priority { get; set; }
             public DroneForParcel Drone { get; set; }
-            public DateTime? RequestedTime { get; set; } // time of request
-            public DateTime? AcceptedTime { get; set; } //
+            public DateTime? DefinedTime { get; set; } // time of request
+            public DateTime? AssigedTime { get; set; } //
             public DateTime? PickupTime { get; set; }
             public DateTime? DeliveringTime { get; set; }
 
@@ -25,8 +25,8 @@
                     $"Weight: {Weight} " +
                     $"Priority: {Priority} " +
                     $"Drone: {Drone} " +
-                    $"CreationTime: {RequestedTime} " +
-                    $"AssigningTime: {AcceptedTime} " +
+                    $"CreationTime: {DefinedTime} " +
+                    $"AssigningTime: {AssigedTime} " +
                     $"PickupTime: {PickupTime} " +
                     $"DeliveringTime: {DeliveringTime} " +
                     $"";

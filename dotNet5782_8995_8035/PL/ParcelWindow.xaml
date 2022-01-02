@@ -13,9 +13,55 @@
         MouseDown="Drag"
         Background="Transparent"
         >
+
+    <Window.Resources>
+        <local:ParcelToProgressBarValvue x:Key="ParcelToProgressBarValvue"/>
+    </Window.Resources>
+    
     <Border BorderBrush="Purple" BorderThickness="10" CornerRadius="40" Background="White">
         <Grid>
-            <StackPanel x:Name="Mainstack">
+            <StackPanel x:Name="AddingStack" Visibility="Collapsed">
+                <Grid>
+                    <Button Content="X" RenderTransformOrigin="-1.136,-0.1" Height="42" Width="49" Click="XButton" Background="#FFF90B0B" FontWeight="Bold" FontSize="20" Margin="352,10,19,-10"/>
+                </Grid>
+                <StackPanel Orientation="Horizontal" Height="50" Margin="5,0,0,0" Width="414" >
+                    <Label Content="Parcel Id: " Width="140" FontWeight="Bold" Height="40" FontSize="20"/>
+                    <TextBox x:Name="IdInput" Text="{Binding Id, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnExceptions=True}" TextWrapping="Wrap" Width="140" Height="40" FontWeight="Normal" FontSize="20"/>
+                </StackPanel>
+                <StackPanel Height="30"/>
+                <Label Content="Set Sender And Reciver"></Label>
+                <StackPanel x:Name="SenderOrReciver" Height="30" Orientation="Horizontal">
+                    <StackPanel Width="200" Orientation="Vertical" VerticalAlignment="Stretch">
+                        <StackPanel Orientation="Horizontal" Margin="3">
+                            <TextBlock Text="Sender Id:" HorizontalAlignment="Left" />
+                            <ComboBox Name="SenderSlector" Width="140" ItemsSource="{Binding}"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Width="200" Orientation="Vertical">
+                        <StackPanel Orientation="Horizontal" Margin="3">
+                            <TextBlock Text="Reciver Id:"  />
+                            <ComboBox Name="ReciverSelector" Width="140" ItemsSource="{Binding}"/>
+                        </StackPanel>
+                        
+                    </StackPanel>
+                </StackPanel>
+                <Label Content="Set Weight And Priority" Height="30"/>
+                <StackPanel x:Name="WeightAndPraiority" Height="100">
+                    <StackPanel Orientation="Horizontal" Margin="3">
+                        <TextBlock Text="Weight: "  />
+                        <ComboBox Name="WeightChoose" Width="150" ItemsSource="{Binding}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="3">
+                        <TextBlock Text="Praiority: "  />
+                        <ComboBox Name="PriorityChoose" Width="150" ItemsSource="{Binding}" />
+                    </StackPanel>
+                </StackPanel>
+                <Button Content="Add Percel" Width="200" Click="AddingParcel_Click"/>
+            </StackPanel>
+           
+            
+            
+            <StackPanel x:Name="OptionStack" Visibility="Collapsed">
                 <Grid>
                 <Button Content="X" RenderTransformOrigin="-1.136,-0.1" Height="42" Width="49" Click="XButton" Background="#FFF90B0B" FontWeight="Bold" FontSize="20" Margin="352,10,19,-10"/>
                 </Grid>
@@ -66,27 +112,27 @@
                 <StackPanel Orientation="Vertical" Height="70">
                     <StackPanel Orientation="Horizontal">
                         <StackPanel Orientation="Vertical" Margin="3">
-                            <TextBlock Text="Requested Time : "  />
-                            <TextBox  Text="{Binding RequestedTime, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}}"/>
+                            <TextBlock Text="Defined Time : "  />
+                            <TextBox  Text="{Binding DefinedTime, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}}" Width="115"/>
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Margin="3">
-                            <TextBlock Text="Accepted Time: "  />
-                            <TextBox  Text="{Binding AcceptedTime, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}}"/>
+                            <TextBlock Text="Assigned Time: "  />
+                            <TextBox  Text="{Binding AssigedTime, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}}" Width="115" />
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Margin="3">
                             <TextBlock Text="Pickup Time: "  />
-                            <TextBox  Text="{Binding PickupTime, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}}"/>
+                            <TextBox  Text="{Binding PickupTime, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}}" Width="115"/>
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Margin="3">
                             <TextBlock Text="Delivering Time:"  />
-                            <TextBox  Text="{Binding DeliveringTime, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}}"/>
+                            <TextBox  Text="{Binding DeliveringTime, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}}" Width="115"/>
                         </StackPanel>
                     </StackPanel>
-                    <ProgressBar Height="10" IsIndeterminate="True" Margin="3" HorizontalAlignment="Left" Width="345"/>
 
+                    <ProgressBar x:Name="ParcelProgressBar"  Height="15" Margin="3" HorizontalAlignment="Left" Width="450"/>
+                    <!--Value="{Binding Converter={StaticResource ParcelToProgressBarValvue}}"-->
                 </StackPanel>
                 <StackPanel  Orientation="Horizontal"/>
-
             </StackPanel>
 
         </Grid>
