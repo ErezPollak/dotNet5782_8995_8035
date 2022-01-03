@@ -170,7 +170,7 @@ namespace BlApi
         /// <summary>
         /// bl field intended to keep the insstance of the bl that was created.
         /// </summary>
-        private static readonly IBL instance = new BL();
+        private static readonly Lazy<IBL> instance = new Lazy<IBL>(() => new BL());
 
         /// <summary>
         /// the function the creates new instance of bl only if it doesn't exists already.
@@ -178,7 +178,7 @@ namespace BlApi
         /// <returns></returns>
         public static IBL GetInstance()
         {
-            return instance;
+            return instance.Value;
         }
 
         #endregion

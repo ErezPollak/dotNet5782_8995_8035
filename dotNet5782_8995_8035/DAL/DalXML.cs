@@ -9,6 +9,35 @@ namespace DAL
 {
     internal sealed class DalXML : DalApi.IDal
     {
+
+        //#region Singalton
+
+        ///// <summary>
+        ///// private constructor for the dal class, for the singalton.
+        ///// </summary>
+        //private DalXML()
+        //{
+        //    DataSource.Initialize();
+        //}
+
+        ///// <summary>
+        ///// dal field intended to keep the insstance of the bl that was created.
+        ///// </summary>
+        //private static readonly Lazy<DalApi.IDal> instance = new DalXML();
+
+        //// <summary>
+        ///// the function the creates new instance of DAL only if it doesn't exists already.
+        ///// </summary>
+        ///// <returns></returns>
+        //public static DalApi.IDal GetInstance()
+        //{
+        //    return instance;
+        //}
+
+        //#endregion
+
+
+
         public bool AddBaseStation(BaseStation baseStation)
         {
             throw new NotImplementedException();
