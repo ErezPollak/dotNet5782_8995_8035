@@ -21,8 +21,8 @@ namespace DalApi
         {
             if (dalType == "dalObject")
                 return Dal.DalObject.GetInstance();
-            else if (dalType == "dalXml") return null;
-            //return new Dal.DalXML;
+            else if (dalType == "dalXml")
+                return Dal.DalXML.GetInstance();
             else
                 throw new DO.NotSuchDataTypeException($"no such type as {dalType}.");
 

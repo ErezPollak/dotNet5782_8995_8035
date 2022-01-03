@@ -1,40 +1,41 @@
-﻿using DO;
+﻿
+using DO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL
+namespace Dal
 {
     internal sealed class DalXML : DalApi.IDal
     {
 
-        //#region Singalton
+        #region Singalton
 
-        ///// <summary>
-        ///// private constructor for the dal class, for the singalton.
-        ///// </summary>
-        //private DalXML()
-        //{
-        //    DataSource.Initialize();
-        //}
+        /// <summary>
+        /// private constructor for the dal class, for the singalton.
+        /// </summary>
+        private DalXML()
+        {
+            //DataSourceXML.Initialize();
+        }
 
-        ///// <summary>
-        ///// dal field intended to keep the insstance of the bl that was created.
-        ///// </summary>
-        //private static readonly Lazy<DalApi.IDal> instance = new DalXML();
+        /// <summary>
+        /// dal field intended to keep the insstance of the bl that was created.
+        /// </summary>
+        private static readonly Lazy<DalApi.IDal> instance = new Lazy<DalApi.IDal>(() => new DalXML());
 
-        //// <summary>
-        ///// the function the creates new instance of DAL only if it doesn't exists already.
-        ///// </summary>
-        ///// <returns></returns>
-        //public static DalApi.IDal GetInstance()
-        //{
-        //    return instance;
-        //}
+        // <summary>
+        /// the function the creates new instance of DAL only if it doesn't exists already.
+        /// </summary>
+        /// <returns></returns>
+        public static DalApi.IDal GetInstance()
+        {
+            return instance.Value;
+        }
 
-        //#endregion
+        #endregion
 
 
 
