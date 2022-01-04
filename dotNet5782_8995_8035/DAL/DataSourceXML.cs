@@ -17,16 +17,14 @@ namespace Dal
         internal static readonly List<Parcel> parcels = new();
 
 
-        internal static XElement DroneListRoot;
-        internal static string DronePath = @"C:\Users\morde\Source\Repos\ErezPollak\dotNet5782_8995_8035\dotNet5782_8995_8035\DAL\XML\Drones.xml";
-        internal static XElement BaseStationListRoot;
-        internal static string BaseStationPath = @"C:\Users\morde\Source\Repos\ErezPollak\dotNet5782_8995_8035\dotNet5782_8995_8035\DAL\XML\BaseStations.xml";
-        internal static XElement CustomerListRoot;
-        internal static string CustomerPath = @"C:\Users\morde\Source\Repos\ErezPollak\dotNet5782_8995_8035\dotNet5782_8995_8035\DAL\XML\Customers.xml";
-        internal static XElement ParcelListRoot;
-        internal static string ParcelPath = @"C:\Users\morde\Source\Repos\ErezPollak\dotNet5782_8995_8035\dotNet5782_8995_8035\DAL\XML\Parcels.xml";
-        internal static XElement DroneChargeListRoot;
-        internal static string DroneChargePath = @"\DroneChargesXml.xml";
+        private static string ConfigPath = @"..\xml\Config.xml";
+        private static string BaseStationsPath = @"BaseStations.xml";
+        private static string CustomersPath = @"Customers.xml";
+        private static string DronesPath = @"Drones.xml";
+        private static string ParcelsPath = @"Parcels.xml";
+        private static string DroneChargesPath = @"..\xml\DroneCharges.xml";
+
+
 
 
         //an data structure to contain all the charging of the drones.
@@ -62,14 +60,9 @@ namespace Dal
         internal static void Initialize()
         {
 
-            //initilize values of the config function.
-            Config.Free = rnd.NextDouble() * 100 + 50;
-            Config.Light = Config.Free - rnd.NextDouble() * 30;
-            Config.Middel = Config.Light - rnd.NextDouble() * 30;
-            Config.Heavy = Config.Middel - rnd.NextDouble() * 30;
-            Config.ChargingSpeed = rnd.NextDouble() * 10;
-
-            BaseStationListRoot = XElement.Load(BaseStationPath);
+            XElement droneChargesRoot = XElement.Load(DroneChargesPath);
+            droneChargesRoot.RemoveAll();
+            droneChargesRoot.Save(DroneChargesPath);
 
             //randomal values for base stations.
             for (int i = 0; i < 5; i++)
@@ -87,21 +80,10 @@ namespace Dal
                 };
                 //adding the base station to the list.
                 baseStations.Add(baseStation);
-                BaseStationListRoot.Add(new XElement("baseStation",
-                    new XElement("Id", baseStation.Id),
-                    new XElement("Name", baseStation.Name),
-                    new XElement("Location",
-                        new XElement("Latitude", baseStation.Location.Latitude),
-                        new XElement("Longitude", baseStation.Location.Longitude)
-                    ),
-                    new XElement("ChargeSlots", baseStation.ChargeSlots)
-                     )
-               );
-
-                BaseStationListRoot.Save(BaseStationPath);
+                
             }
 
-            DroneListRoot = XElement.Load(DronePath);
+            XMLTools.SaveListToXMLSerializer<BaseStation>(baseStations , BaseStationsPath);
             
             //randomal values for drones.
             for (int i = 0; i < 20; i++)
@@ -115,15 +97,16 @@ namespace Dal
                 };
                 drones.Add(drone);
 
-                DroneListRoot.Add(new XElement("drone",
-                    new XElement("Id", drone.Id),
-                    new XElement("Model", drone.Model),
-                    new XElement("MaxWeight", drone.MaxWeight)
-                    ));
-                DroneListRoot.Save(DronePath);
+                //DroneListRoot.Add(new XElement("drone",
+                //    new XElement("Id", drone.Id),
+                //    new XElement("Model", drone.Model),
+                //    new XElement("MaxWeight", drone.MaxWeight)
+                //    ));
+                //DroneListRoot.Save(DronePath);
             }
 
-            CustomerListRoot = XElement.Load(CustomerPath);
+            XMLTools.SaveListToXMLSerializer<Drone>(drones, DronesPath);
+
 
             //randomal values for customers.
             for (int i = 0; i < 10; i++)
@@ -142,20 +125,20 @@ namespace Dal
                 };
                 customers.Add(customer);
 
-                CustomerListRoot.Add(new XElement("Customer",
-                    new XElement("Id", customer.Id),
-                    new XElement("Name", customer.Name),
-                    new XElement("Location",
-                        new XElement("Latitude", customer.Location.Latitude),
-                        new XElement("Longitude", customer.Location.Longitude)
-                    )
-                    ));
-                CustomerListRoot.Save(CustomerPath); 
+                //CustomerListRoot.Add(new XElement("Customer",
+                //    new XElement("Id", customer.Id),
+                //    new XElement("Name", customer.Name),
+                //    new XElement("Location",
+                //        new XElement("Latitude", customer.Location.Latitude),
+                //        new XElement("Longitude", customer.Location.Longitude)
+                //    )
+                //    ));
+                //CustomerListRoot.Save(CustomerPath); 
             }
 
-            int[] dronesForParcels = DroneForParcel();
+            XMLTools.SaveListToXMLSerializer<Customer>(customers, CustomersPath);
 
-            ParcelListRoot = XElement.Load(ParcelPath);
+            int[] dronesForParcels = DroneForParcel();
 
             //randomal values for parcels.
             for (int i = 0; i < 10; i++)
@@ -175,22 +158,22 @@ namespace Dal
                 };
                 parcels.Add(parcel);
 
-                ParcelListRoot.Add(new XElement("Parcel",
-                    new XElement("Id", parcel.Id),
-                    new XElement("SenderId", parcel.SenderId),
-                    new XElement("TargetId", parcel.TargetId),
-                    new XElement("Weight", parcel.Weight),
-                    new XElement("DroneId", parcel.DroneId),
-                    new XElement("DefinededTime", parcel.DefinededTime),
-                    new XElement("AssigndedTime", parcel.AssigndedTime),
-                    new XElement("PickedUpTime", parcel.PickedUpTime),
-                    new XElement("DeliveryTime", parcel.DeliveryTime))
-                );
-                ParcelListRoot.Save(ParcelPath);
+                //ParcelListRoot.Add(new XElement("Parcel",
+                //    new XElement("Id", parcel.Id),
+                //    new XElement("SenderId", parcel.SenderId),
+                //    new XElement("TargetId", parcel.TargetId),
+                //    new XElement("Weight", parcel.Weight),
+                //    new XElement("DroneId", parcel.DroneId),
+                //    new XElement("DefinededTime", parcel.DefinededTime),
+                //    new XElement("AssigndedTime", parcel.AssigndedTime),
+                //    new XElement("PickedUpTime", parcel.PickedUpTime),
+                //    new XElement("DeliveryTime", parcel.DeliveryTime))
+                //);
+                //ParcelListRoot.Save(ParcelPath);
 
             }
 
-
+            XMLTools.SaveListToXMLSerializer<Parcel>(parcels, ParcelsPath);
 
 
 

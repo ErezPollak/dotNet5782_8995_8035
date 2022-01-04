@@ -4,63 +4,45 @@
     <Id>12345</Id>
     <Name>0</Name>
     <Location>
-      <Longitude>35.23128225813627</Longitude>
-      <Latitude>31.8746820616001</Latitude>
+      <Longitude>35.24664833419969</Longitude>
+      <Latitude>31.86146943530093</Latitude>
     </Location>
-    <ChargeSlots>0</ChargeSlots>
+    <ChargeSlots>10</ChargeSlots>
   </BaseStation>
   <BaseStation>
     <Id>12357</Id>
     <Name>1</Name>
     <Location>
-      <Longitude>35.224977701592614</Longitude>
-      <Latitude>31.858063152274003</Latitude>
+      <Longitude>35.215325815878245</Longitude>
+      <Latitude>31.837351533154713</Latitude>
     </Location>
-    <ChargeSlots>0</ChargeSlots>
+    <ChargeSlots>10</ChargeSlots>
   </BaseStation>
   <BaseStation>
     <Id>12369</Id>
     <Name>2</Name>
     <Location>
-      <Longitude>35.245887346378645</Longitude>
-      <Latitude>31.809523985934476</Latitude>
+      <Longitude>35.20367381432384</Longitude>
+      <Latitude>31.86129027043139</Latitude>
     </Location>
-    <ChargeSlots>0</ChargeSlots>
+    <ChargeSlots>7</ChargeSlots>
   </BaseStation>
   <BaseStation>
     <Id>12381</Id>
     <Name>3</Name>
     <Location>
-      <Longitude>35.209328973944984</Longitude>
-      <Latitude>31.76417879845474</Latitude>
+      <Longitude>35.25285620493332</Longitude>
+      <Latitude>31.813312829483227</Latitude>
     </Location>
-    <ChargeSlots>0</ChargeSlots>
+    <ChargeSlots>10</ChargeSlots>
   </BaseStation>
   <BaseStation>
     <Id>12393</Id>
     <Name>4</Name>
     <Location>
-      <Longitude>35.24058554970502</Longitude>
-      <Latitude>31.87587165473181</Latitude>
+      <Longitude>35.200525984215226</Longitude>
+      <Latitude>31.829949960011405</Latitude>
     </Location>
-    <ChargeSlots>0</ChargeSlots>
-  </BaseStation>
-  <BaseStation>
-    <Id>324</Id>
-    <Name>234</Name>
-    <Location>
-      <Longitude>234</Longitude>
-      <Latitude>2340</Latitude>
-    </Location>
-    <ChargeSlots>2288</ChargeSlots>
-  </BaseStation>
-  <BaseStation>
-    <Id>3423</Id>
-    <Name>234</Name>
-    <Location>
-      <Longitude>23534540</Longitude>
-      <Latitude>2345</Latitude>
-    </Location>
-    <ChargeSlots>0</ChargeSlots>
+    <ChargeSlots>10</ChargeSlots>
   </BaseStation>
 </ArrayOfBaseStation>
