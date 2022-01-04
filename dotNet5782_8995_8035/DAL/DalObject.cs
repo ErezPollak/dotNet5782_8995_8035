@@ -196,7 +196,6 @@ namespace Dal
             return true;
         }
 
-
         ///  <summary>
         /// updating the time of pickup in the parcel, and changing the status of the drone to delivery.
         ///  </summary>
@@ -234,8 +233,6 @@ namespace Dal
         /// <param name="parcelId"></param>
         public bool DeliveringParcel(int parcelId)
         {
-            //keeps the index in witch the idNumber was found in order to update it without iterting over the list again.
-
             //checking if the number of parcel that was provided exist in the database or not. if not an excption will be thrown.
             int parcelIndex = DataSource.parcels.FindIndex(p => p.Id == parcelId);
             if (parcelIndex == -1)
@@ -251,6 +248,8 @@ namespace Dal
 
             return true;
         }
+
+
 
         /// <summary>
         /// creating a droneCharge and chrging the drone.
@@ -469,15 +468,15 @@ namespace Dal
             return closestStation;
         }
 
-        /// <summary>
-        /// to delete....
-        /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
-        public int GetBaseStationId(int index)
-        {
-            return DataSource.baseStations[index].Id;
-        }
+        ///// <summary>
+        ///// to delete....
+        ///// </summary>
+        ///// <param name="index"></param>
+        ///// <returns></returns>
+        //public int GetBaseStationId(int index)
+        //{
+        //    return DataSource.baseStations[index].Id;
+        //}
 
         public int GetSerialNumber()
         {

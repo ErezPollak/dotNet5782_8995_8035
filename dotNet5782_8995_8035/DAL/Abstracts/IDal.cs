@@ -50,7 +50,7 @@ namespace DalApi
         #region operational functions
         public double[] ElectricityUse();
         public int GetClosestStation(int id);
-        public int GetBaseStationId(int index);
+        //public int GetBaseStationId(int index);
         public int GetSerialNumber();
 
         #endregion

@@ -1,83 +1,92 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Customers>
+<?xml version="1.0"?>
+<ArrayOfCustomer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Customer>
     <Id>234242</Id>
     <Name>adrian acosta</Name>
     <Location>
-      <Latitude>31.77528750228786</Latitude>
       <Longitude>35.239808919243906</Longitude>
+      <Latitude>31.77528750228786</Latitude>
     </Location>
   </Customer>
   <Customer>
     <Id>234264</Id>
     <Name>adele adams</Name>
     <Location>
-      <Latitude>31.755346159045406</Latitude>
       <Longitude>35.15910462445911</Longitude>
+      <Latitude>31.755346159045406</Latitude>
     </Location>
   </Customer>
   <Customer>
     <Id>234286</Id>
     <Name>adolph adkins</Name>
     <Location>
-      <Latitude>31.75556634858503</Latitude>
       <Longitude>35.24298427635562</Longitude>
+      <Latitude>31.75556634858503</Latitude>
     </Location>
   </Customer>
   <Customer>
     <Id>234308</Id>
     <Name>adele aguilar</Name>
     <Location>
-      <Latitude>31.806572140953726</Latitude>
       <Longitude>35.1561783675531</Longitude>
+      <Latitude>31.806572140953726</Latitude>
     </Location>
   </Customer>
   <Customer>
     <Id>234330</Id>
     <Name>aaron aguilar</Name>
     <Location>
-      <Latitude>31.758081473696755</Latitude>
       <Longitude>35.15782987504933</Longitude>
+      <Latitude>31.758081473696755</Latitude>
     </Location>
   </Customer>
   <Customer>
     <Id>234352</Id>
     <Name>adrian acosta</Name>
     <Location>
-      <Latitude>31.868919210598925</Latitude>
       <Longitude>35.17712325377484</Longitude>
+      <Latitude>31.868919210598925</Latitude>
     </Location>
   </Customer>
   <Customer>
     <Id>234374</Id>
     <Name>adolph adkins</Name>
     <Location>
-      <Latitude>31.870060696787853</Latitude>
       <Longitude>35.19959610609876</Longitude>
+      <Latitude>31.870060696787853</Latitude>
     </Location>
   </Customer>
   <Customer>
     <Id>234396</Id>
     <Name>adolph adams</Name>
     <Location>
-      <Latitude>31.829704820509004</Latitude>
       <Longitude>35.16162352988943</Longitude>
+      <Latitude>31.829704820509004</Latitude>
     </Location>
   </Customer>
   <Customer>
     <Id>234418</Id>
     <Name>abraham abbott</Name>
     <Location>
-      <Latitude>31.813723199472065</Latitude>
       <Longitude>35.253635738053184</Longitude>
+      <Latitude>31.813723199472065</Latitude>
     </Location>
   </Customer>
   <Customer>
     <Id>234440</Id>
     <Name>abby acosta</Name>
     <Location>
-      <Latitude>31.769903850143216</Latitude>
       <Longitude>35.191698197640086</Longitude>
+      <Latitude>31.769903850143216</Latitude>
     </Location>
   </Customer>
-</Customers>
+  <Customer>
+    <Id>2420</Id>
+    <Name>23423</Name>
+    <Phone>23</Phone>
+    <Location>
+      <Longitude>234</Longitude>
+      <Latitude>235</Latitude>
+    </Location>
+  </Customer>
+</ArrayOfCustomer>
