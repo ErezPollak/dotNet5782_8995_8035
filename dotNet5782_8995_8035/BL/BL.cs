@@ -161,8 +161,11 @@ namespace BlApi
                     // updating the battary to be a random value from 0 to 20.
                     drone.Battery = Random.Next() % 20;
 
-                    //sending the drone to charge.
-                    dal.ChargeDrone(avalibleBaseStations.ElementAt(stationIndex).Id, drone.Id);
+                    if (dal.GetChargeDrones(_ => true).Count(c => c.DroneId == drone.Id) == 0)
+                    {
+                        //sending the drone to charge.
+                        dal.ChargeDrone(avalibleBaseStations.ElementAt(stationIndex).Id, drone.Id);
+                    }
                 }
             }
         } //end BL ctor

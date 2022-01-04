@@ -34,7 +34,7 @@
       <Longitude>35.209328973944984</Longitude>
       <Latitude>31.76417879845474</Latitude>
     </Location>
-    <ChargeSlots>1</ChargeSlots>
+    <ChargeSlots>0</ChargeSlots>
   </BaseStation>
   <BaseStation>
     <Id>12393</Id>
@@ -52,7 +52,7 @@
       <Longitude>234</Longitude>
       <Latitude>2340</Latitude>
     </Location>
-    <ChargeSlots>2319</ChargeSlots>
+    <ChargeSlots>2288</ChargeSlots>
   </BaseStation>
   <BaseStation>
     <Id>3423</Id>
