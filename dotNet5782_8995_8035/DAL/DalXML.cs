@@ -14,6 +14,7 @@ namespace Dal
     internal sealed class DalXML : DalApi.IDal
     {
 
+
         #region Singalton
 
         /// <summary>
