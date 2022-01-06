@@ -1,5 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Config>
+	<dl>DalObject</dl>
+	<dl-packages>
+		<DalObject namespace="Dal" class="DalObject">DalObject</DalObject>
+		<DalXML namespace="Dal" class="DalXML">DalXML</DalXML>
+		<oracle namespace="Dal_O" class="DalDbOracle">DalOracle</oracle>
+	</dl-packages>
+
 	<Free>130.234</Free>
 	<Light>120.789</Light>
 	<Middel>110.353</Middel>

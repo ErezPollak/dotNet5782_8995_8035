@@ -28,16 +28,23 @@ namespace Dal
         /// <summary>
         /// dal field intended to keep the insstance of the bl that was created.
         /// </summary>
-        private static readonly Lazy<DalApi.IDal> instance = new Lazy<DalApi.IDal>(() => new DalXML());
+        private static readonly Lazy<DalXML> instance = new Lazy<DalXML>(() => new DalXML());
+
+        public static DalXML Instance {
+            get
+            {
+                return instance.Value;
+            }
+        }
 
         // <summary>
         /// the function the creates new instance of DAL only if it doesn't exists already.
         /// </summary>
         /// <returns></returns>
-        public static DalApi.IDal GetInstance()
-        {
-            return instance.Value;
-        }
+        //public static DalApi.IDal GetInstance()
+        //{
+        //    return instance.Value;
+        //}
 
         #endregion
 
@@ -85,18 +92,18 @@ namespace Dal
 
         public bool UpdateBaseStation(int baseStationID, string name, int slots)
         {
-            List<BaseStation> baseStations = XMLTools.LoadListFromXMLSerializer<BaseStation>(BaseStationsPath);
+            //List<BaseStation> baseStations = XMLTools.LoadListFromXMLSerializer<BaseStation>(BaseStationsPath);
 
-            int index = baseStations.FindIndex(b => b.Id == baseStationID);
+            //int index = baseStations.FindIndex(b => b.Id == baseStationID);
 
-            if (index == -1) throw new IdDontExistsException(baseStationID, "baseStation");
+            //if (index == -1) throw new IdDontExistsException(baseStationID, "baseStation");
 
-            BaseStation baseStation = DataSource.baseStations[index];
-            baseStation.Name = name;
-            baseStation.ChargeSlots = slots;
-            DataSource.baseStations[index] = baseStation;
+            //BaseStation baseStation = DataSource.baseStations[index];
+            //baseStation.Name = name;
+            //baseStation.ChargeSlots = slots;
+            //DataSource.baseStations[index] = baseStation;
 
-            XMLTools.SaveListToXMLSerializer<BaseStation>(baseStations, BaseStationsPath);
+            //XMLTools.SaveListToXMLSerializer<BaseStation>(baseStations, BaseStationsPath);
 
             return true;
         }

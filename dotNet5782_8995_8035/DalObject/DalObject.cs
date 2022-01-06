@@ -30,16 +30,24 @@ namespace Dal
         /// <summary>
         /// dal field intended to keep the insstance of the bl that was created.
         /// </summary>
-        private static readonly Lazy<DalApi.IDal> instance = new Lazy<DalApi.IDal>(() => new DalObject());
-        
+        private static readonly Lazy<DalObject> instance = new Lazy<DalObject>(() => new DalObject());
+
+        public static DalObject Instance {
+            get
+            {
+                return instance.Value;
+            }
+        }
+
+
         // <summary>
         /// the function the creates new instance of DAL only if it doesn't exists already.
         /// </summary>
         /// <returns></returns>
-        public static DalApi.IDal GetInstance()
-        {
-            return instance.Value;
-        }
+        //public static DalApi.IDal GetInstance()
+        //{
+        //    return instance.Value;
+        //}
 
         #endregion
 

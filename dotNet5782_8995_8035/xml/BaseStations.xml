@@ -16,7 +16,7 @@
       <Longitude>35.215325815878245</Longitude>
       <Latitude>31.837351533154713</Latitude>
     </Location>
-    <ChargeSlots>10</ChargeSlots>
+    <ChargeSlots>8</ChargeSlots>
   </BaseStation>
   <BaseStation>
     <Id>12369</Id>
@@ -43,6 +43,6 @@
       <Longitude>35.200525984215226</Longitude>
       <Latitude>31.829949960011405</Latitude>
     </Location>
-    <ChargeSlots>10</ChargeSlots>
+    <ChargeSlots>9</ChargeSlots>
   </BaseStation>
 </ArrayOfBaseStation>

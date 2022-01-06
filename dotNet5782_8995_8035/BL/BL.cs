@@ -12,7 +12,7 @@ namespace BlApi
     {
         #region private fields
 
-        private readonly DalApi.IDal dal = DalApi.DalFactory.GetDal("dalXml");
+        private readonly DalApi.IDal dal = DalApi.DalFactory.GetDal();
 
         // for the electricity use of a free drone
         private double Free { get; }
