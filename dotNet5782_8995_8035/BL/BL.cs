@@ -64,8 +64,8 @@ namespace BlApi
                 });
             }
 
-            //takes all the parcels that are assigned to a drone.
-            var parcelsForUpdate = dal.GetParcels(parcel => parcel.DroneId != 0);
+            //takes all the parcels that are assigned to a drone and was not delivered.
+            var parcelsForUpdate = dal.GetParcels(parcel => parcel.DroneId != 0 && parcel.DeliveryTime == null);
 
             //going through all the parcels that have a drone, and was not assigned to it.
             foreach (DO.Parcel parcel in parcelsForUpdate)

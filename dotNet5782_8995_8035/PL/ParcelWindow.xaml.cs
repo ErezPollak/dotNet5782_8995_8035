@@ -31,6 +31,9 @@ namespace PL
 
         public ParcelWindow(ListsViewWindow listsViewWindow, BO.Parcel parcel)
         {
+            this.parcel = parcel;
+            this.listsViewWindow = listsViewWindow;
+
             InitializeComponent();
             ParcelProgressBar.DataContext = parcel;
             OptionStack.Visibility = Visibility.Visible;
@@ -111,5 +114,10 @@ namespace PL
             return ShowException(e.InnerException, s + e.Message + "\n");
         }
 
+        private void OpenDrone_Click(object sender, RoutedEventArgs e)
+        {
+            DroneWindow droneWindow = new DroneWindow(listsViewWindow, bl.GetDrone(this.parcel.Drone.Id));
+            droneWindow.ShowDialog();
+        }
     }
 }

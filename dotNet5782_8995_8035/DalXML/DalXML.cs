@@ -37,15 +37,6 @@ namespace Dal
             }
         }
 
-        // <summary>
-        /// the function the creates new instance of DAL only if it doesn't exists already.
-        /// </summary>
-        /// <returns></returns>
-        //public static DalApi.IDal GetInstance()
-        //{
-        //    return instance.Value;
-        //}
-
         #endregion
 
 
@@ -61,6 +52,10 @@ namespace Dal
         public bool AddBaseStation(BaseStation baseStation)
         {
             List<BaseStation> list = XMLTools.LoadListFromXMLSerializer<BaseStation>(BaseStationsPath);
+
+            if (list.Any(b => b.Id == baseStation.Id))
+                throw new IdAlreadyExistsException(baseStation.Id, "baseSattion");
+
             list.Add(baseStation);
             XMLTools.SaveListToXMLSerializer<BaseStation>(list, BaseStationsPath);
             return true;
@@ -77,6 +72,10 @@ namespace Dal
         public bool AddDrone(Drone drone)
         {
             List<Drone> list = XMLTools.LoadListFromXMLSerializer<Drone>(DronesPath);
+
+            if (list.Exists(d => d.Id == drone.Id)) 
+                throw new IdAlreadyExistsException(drone.Id, "drone");
+
             list.Add(drone);
             XMLTools.SaveListToXMLSerializer<Drone>(list, DronesPath);
             return true;
@@ -92,18 +91,18 @@ namespace Dal
 
         public bool UpdateBaseStation(int baseStationID, string name, int slots)
         {
-            //List<BaseStation> baseStations = XMLTools.LoadListFromXMLSerializer<BaseStation>(BaseStationsPath);
+            List<BaseStation> baseStations = XMLTools.LoadListFromXMLSerializer<BaseStation>(BaseStationsPath);
 
-            //int index = baseStations.FindIndex(b => b.Id == baseStationID);
+            int index = baseStations.FindIndex(b => b.Id == baseStationID);
 
-            //if (index == -1) throw new IdDontExistsException(baseStationID, "baseStation");
+            if (index == -1) throw new IdDontExistsException(baseStationID, "baseStation");
 
-            //BaseStation baseStation = DataSource.baseStations[index];
-            //baseStation.Name = name;
-            //baseStation.ChargeSlots = slots;
-            //DataSource.baseStations[index] = baseStation;
+            BaseStation baseStation = baseStations[index];
+            baseStation.Name = name;
+            baseStation.ChargeSlots = slots;
+            baseStations[index] = baseStation;
 
-            //XMLTools.SaveListToXMLSerializer<BaseStation>(baseStations, BaseStationsPath);
+            XMLTools.SaveListToXMLSerializer<BaseStation>(baseStations, BaseStationsPath);
 
             return true;
         }
@@ -142,7 +141,6 @@ namespace Dal
 
             return true;
         }
-
 
         public bool ChargeDrone(int baseStationId, int droneId)
         {
@@ -309,6 +307,7 @@ namespace Dal
             //updating the time of delivered field to be now.
             //according to the number that was found while looking for an exception.  
             Parcel newParcel = parcels[parcelIndex];
+            newParcel.DroneId = 0;
             newParcel.DeliveryTime = DateTime.Now;
             parcels[parcelIndex] = newParcel;
 

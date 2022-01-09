@@ -16,8 +16,6 @@ namespace Dal
         internal static readonly List<Customer> customers = new();
         internal static readonly List<Parcel> parcels = new();
 
-
-        private static string ConfigPath = @"..\xml\Config.xml";
         private static string BaseStationsPath = @"BaseStations.xml";
         private static string CustomersPath = @"Customers.xml";
         private static string DronesPath = @"Drones.xml";
@@ -25,28 +23,7 @@ namespace Dal
         private static string DroneChargesPath = @"..\xml\DroneCharges.xml";
 
 
-
-
-        //an data structure to contain all the charging of the drones.
-        //internal static List<DroneCharge> droneCharges = new();
-
-
         private static readonly Random rnd = new();
-
-        /// <summary>
-        /// the function contains the information about the electricity use 
-        /// </summary>
-        internal class Config
-        {
-            internal static double Free; // for the electricity use of a free drone
-            internal static double Light; // for the electricity use of a drone that carrys a light wight.
-            internal static double Middel; // for the electricity use of a drone that carrys a middle wight.
-            internal static double Heavy; // for the electricity use of a drone that carrys a heavy wight.
-
-            internal static double ChargingSpeed;//for the speed of the charge. precentage for hour.
-
-            internal static int SerialNumber = 1000;
-        }
 
         /// <summary>
         ///the fundction that initilaze the data bases with randomal values.
@@ -60,9 +37,12 @@ namespace Dal
         internal static void Initialize()
         {
 
+            //restiing all tehh charges databesa to point zero.
+
             XElement droneChargesRoot = XElement.Load(DroneChargesPath);
             droneChargesRoot.RemoveAll();
             droneChargesRoot.Save(DroneChargesPath);
+
 
             //randomal values for base stations.
             for (int i = 0; i < 5; i++)
@@ -82,7 +62,6 @@ namespace Dal
                 baseStations.Add(baseStation);
                 
             }
-
             XMLTools.SaveListToXMLSerializer<BaseStation>(baseStations , BaseStationsPath);
             
             //randomal values for drones.
@@ -97,12 +76,6 @@ namespace Dal
                 };
                 drones.Add(drone);
 
-                //DroneListRoot.Add(new XElement("drone",
-                //    new XElement("Id", drone.Id),
-                //    new XElement("Model", drone.Model),
-                //    new XElement("MaxWeight", drone.MaxWeight)
-                //    ));
-                //DroneListRoot.Save(DronePath);
             }
 
             XMLTools.SaveListToXMLSerializer<Drone>(drones, DronesPath);
@@ -124,18 +97,7 @@ namespace Dal
                     },
                 };
                 customers.Add(customer);
-
-                //CustomerListRoot.Add(new XElement("Customer",
-                //    new XElement("Id", customer.Id),
-                //    new XElement("Name", customer.Name),
-                //    new XElement("Location",
-                //        new XElement("Latitude", customer.Location.Latitude),
-                //        new XElement("Longitude", customer.Location.Longitude)
-                //    )
-                //    ));
-                //CustomerListRoot.Save(CustomerPath); 
             }
-
             XMLTools.SaveListToXMLSerializer<Customer>(customers, CustomersPath);
 
             int[] dronesForParcels = DroneForParcel();
@@ -157,26 +119,8 @@ namespace Dal
                     DeliveryTime = null
                 };
                 parcels.Add(parcel);
-
-                //ParcelListRoot.Add(new XElement("Parcel",
-                //    new XElement("Id", parcel.Id),
-                //    new XElement("SenderId", parcel.SenderId),
-                //    new XElement("TargetId", parcel.TargetId),
-                //    new XElement("Weight", parcel.Weight),
-                //    new XElement("DroneId", parcel.DroneId),
-                //    new XElement("DefinededTime", parcel.DefinededTime),
-                //    new XElement("AssigndedTime", parcel.AssigndedTime),
-                //    new XElement("PickedUpTime", parcel.PickedUpTime),
-                //    new XElement("DeliveryTime", parcel.DeliveryTime))
-                //);
-                //ParcelListRoot.Save(ParcelPath);
-
             }
-
             XMLTools.SaveListToXMLSerializer<Parcel>(parcels, ParcelsPath);
-
-
-
 
         }
 
@@ -186,9 +130,7 @@ namespace Dal
             string[] firstNames = new string[] { "aaron", "abdul", "abe", "abel", "abraham", "adam", "adan", "adolfo", "adolph", "adrian", "abby", "abigail", "adele", "adrian" };
             string[] lastNames = new string[] { "abbott", "acosta", "adams", "adkins", "aguilar" };
 
-
             return firstNames[rnd.Next(firstNames.Length)] + " " + lastNames[rnd.Next(lastNames.Length)];
-
         }
 
 
@@ -207,8 +149,6 @@ namespace Dal
 
             return nums;
         }
-
-
 
         private static double RandLongtude()
         {

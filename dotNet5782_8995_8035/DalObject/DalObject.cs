@@ -251,6 +251,7 @@ namespace Dal
             //updating the time of delivered field to be now.
             //according to the number that was found while looking for an exception.  
             Parcel newParcel = DataSource.parcels[parcelIndex];
+            newParcel.DroneId = 0;
             newParcel.DeliveryTime = DateTime.Now;
             DataSource.parcels[parcelIndex] = newParcel;
 
