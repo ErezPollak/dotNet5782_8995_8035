@@ -63,7 +63,7 @@
            
             
             
-            <StackPanel x:Name="OptionStack" Visibility="Visible">
+            <StackPanel x:Name="OptionStack" Visibility="Collapsed">
                 <Grid>
                 <Button Content="X" RenderTransformOrigin="-1.136,-0.1" Height="42" Width="49" Click="XButton" Background="#FFF90B0B" FontWeight="Bold" FontSize="20" Margin="457,11,24,-11"/>
                 </Grid>

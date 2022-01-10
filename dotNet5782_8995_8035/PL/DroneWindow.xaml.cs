@@ -19,12 +19,17 @@ namespace PL
     /// </summary>
     public partial class DroneWindow : Window
     {
+
+        public static bool idAutomatic = false;
+
+        private bool isAutomatic;
+
         private Random r;
         private IBL bl = BlFactory.GetBl();
         private Drone drone;
         private ListsViewWindow listsViewWindow;
 
-        private PARCEL_STATE parcelState;
+        private PARCEL_STATE parcelState = PARCEL_STATE.ASSIGN;
 
 
         private bool IsAuto = false;
@@ -61,15 +66,17 @@ namespace PL
             r = new Random();
 
             InitializeComponent();
+
             OptionStack.Visibility = Visibility.Visible;
             this.listsViewWindow = listOfDronesViewWindow;
             this.drone = drone;
-
+            DeliveryPanel.DataContext = parcelState;
             OptionStack.DataContext = this.drone;
 
             DroneID.Text = drone.Id + "";
             DroneID.IsEnabled = false;
 
+            
 
 
             if (drone.Status != BO.Enums.DroneStatuses.MAINTENANCE)
@@ -87,7 +94,7 @@ namespace PL
             {
                 //assign need to be turns on
                 parcelState = PARCEL_STATE.ASSIGN;
-                ProgresDelivery.DataContext = parcelState;
+                //ProgresDelivery.DataContext = parcelState;
             }
 
             if (drone.ParcelInDelivery != null)
@@ -96,16 +103,19 @@ namespace PL
                 if (this.bl.GetParcel(bl.GetDrone(drone.Id).ParcelInDelivery.Id).PickupTime != null)
                 {
                     parcelState = PARCEL_STATE.DELIVER;
-                    ProgresDelivery.DataContext = parcelState;
+                    //ProgresDelivery.DataContext = parcelState;
                 }
                 else
                 {
                     //pickup needs to be turned on
                     parcelState = PARCEL_STATE.PICKUP;
-                    ProgresDelivery.DataContext = parcelState;
+                    //ProgresDelivery.DataContext = parcelState;
                 }
             }
-            DeliveringOption.DataContext = parcelState;
+
+            
+            DeliveryPanel.DataContext = parcelState;
+            
             RecommandingCharge((int)drone.Battery);
         }
 
@@ -271,10 +281,8 @@ namespace PL
 
                             OptionStack.DataContext = this.drone;
 
-                            ProgresDelivery.Value = 66;
-
                             parcelState = PARCEL_STATE.PICKUP;
-                            DeliveringOption.DataContext = parcelState;
+                            DeliveryPanel.DataContext = parcelState;
 
                             listsViewWindow.UpdateLists();
 
@@ -296,7 +304,7 @@ namespace PL
                             OptionStack.DataContext = this.drone;
 
                             parcelState = PARCEL_STATE.DELIVER;
-                            DeliveringOption.DataContext = parcelState;
+                            DeliveryPanel.DataContext = parcelState;
 
                             listsViewWindow.UpdateLists();
                         }
@@ -319,9 +327,8 @@ namespace PL
 
                             OptionStack.DataContext = this.drone;
 
-                            //DeliveringOption.Content = "Assign Parcel To Drone";
                             parcelState = PARCEL_STATE.ASSIGN;
-                            DeliveringOption.DataContext = parcelState;
+                            DeliveryPanel.DataContext = parcelState;
                             listsViewWindow.UpdateParcelList();
 
                         }
@@ -357,6 +364,11 @@ namespace PL
         {
             if (worker == null)
             {
+
+                OptionStack.Visibility = Visibility.Hidden;
+                AutomaticStack.Visibility = Visibility.Visible;
+
+
                 worker = new BackgroundWorker();
                 worker.DoWork += Worker_DoWork;
                 worker.ProgressChanged += Worker_ProgressChanged;
@@ -371,6 +383,9 @@ namespace PL
             {
                 if (worker.WorkerSupportsCancellation == true)
                 {
+                    OptionStack.Visibility = Visibility.Visible;
+                    AutomaticStack.Visibility = Visibility.Hidden;
+
                     // Cancel the asynchronous operation.
                     worker.CancelAsync();
                     worker = null;
@@ -388,10 +403,12 @@ namespace PL
         private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             listsViewWindow.UpdateLists();
-            OptionStack.DataContext = this.drone = bl.GetDrone(drone.Id);
+            AutomaticStack.DataContext = this.drone = bl.GetDrone(drone.Id);
         }
 
         private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        { }
+        {
+            OptionStack.DataContext = this.drone = bl.GetDrone(drone.Id);
+        }
     }
 }

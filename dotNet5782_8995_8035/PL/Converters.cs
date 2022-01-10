@@ -26,6 +26,9 @@ namespace PL
 
     #region DroneConverters
 
+    /// <summary>
+    /// converter for the ChargeAndUnchargeButton TEXT in the battry pannel
+    /// </summary>
     class StateToChargeState : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -47,7 +50,9 @@ namespace PL
         }
     }
 
-
+    /// <summary>
+    /// converter for the ChargeAndUnchargeButton VISABILITY in the battry pannel
+    /// </summary>
     class DroneBattryToChargeVisability : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -66,6 +71,9 @@ namespace PL
         }
     }
 
+    /// <summary>
+    /// for the open parcel button in the parcel panel
+    /// </summary>
     class DroneDeliveryToVisability : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -87,17 +95,22 @@ namespace PL
         }
     }
 
-    
-    class DroneIdToVisability : IValueConverter
+    /// <summary>
+    /// for the auto button
+    /// </summary>
+    class DroneFreeToVisability : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            int v = (int)value;
-
-            if (v != 0)
+            BO.Enums.DroneStatuses isInDlivery = (BO.Enums.DroneStatuses)value;
+            if (isInDlivery == BO.Enums.DroneStatuses.FREE)
+            {
                 return Visibility.Visible;
+            }
             else
+            {
                 return Visibility.Collapsed;
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -106,42 +119,29 @@ namespace PL
         }
     }
 
-    class DroneStatusToProgressBarValvue : IValueConverter
+    class DroneParcelStatusToProgressBarValue : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            PARCEL_STATE parcelState = (PARCEL_STATE)value;
-
-            int progress = parcelState == PARCEL_STATE.ASSIGN ? 33 :
-                (parcelState == PARCEL_STATE.PICKUP ? 66 :
-                (parcelState == PARCEL_STATE.DELIVER ? 100 :
-                             100));
-            return progress;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-
-
-    #endregion
-
-    #region ParcelConverter
-    class ParcelNumberToParcelState : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            int parcelNumber = (int)value;
-            if (parcelNumber == 0)
+            if (value != null)
             {
-                return "no parcel is assigned";
+                PARCEL_STATE parcelState = (PARCEL_STATE)value;
+
+                switch (parcelState)
+                {
+                    case PARCEL_STATE.ASSIGN:
+                        return 33;
+                    case PARCEL_STATE.PICKUP:
+                        return 66;
+                    case PARCEL_STATE.DELIVER:
+                        return 100;
+                    default:
+                        return 0;
+                }
             }
             else
             {
-                return parcelNumber + "";
+                return 0;
             }
         }
 
@@ -151,8 +151,9 @@ namespace PL
         }
     }
 
-    
-
+    /// <summary>
+    /// text of the delivery option button.
+    /// </summary>
     class ParcelStausToDeliveringOptionText : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -184,6 +185,52 @@ namespace PL
         }
     }
 
+
+    #endregion
+
+    #region ParcelConverter
+
+    /// <summary>
+    /// for the open parcel visability in the parcel panel.
+    /// </summary>
+    class DroneIdToVisability : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            int v = (int)value;
+
+            if (v != 0)
+                return Visibility.Visible;
+            else
+                return Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    class ParcelNumberToParcelState : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            int parcelNumber = (int)value;
+            if (parcelNumber == 0)
+            {
+                return "no parcel is assigned";
+            }
+            else
+            {
+                return parcelNumber + "";
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 
     class ParcelToProgressBarValvue : IValueConverter
     {
@@ -285,5 +332,5 @@ namespace PL
 
 
     #endregion
-   
+
 }

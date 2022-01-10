@@ -2,102 +2,102 @@
 <ArrayOfDrone xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Drone>
     <Id>254254</Id>
-    <Model>GM44936</Model>
-    <MaxWeight>HEAVY</MaxWeight>
+    <Model>DZ84219</Model>
+    <MaxWeight>LIGHT</MaxWeight>
   </Drone>
   <Drone>
     <Id>254288</Id>
-    <Model>WV80576</Model>
-    <MaxWeight>LIGHT</MaxWeight>
+    <Model>VQ14454</Model>
+    <MaxWeight>HEAVY</MaxWeight>
   </Drone>
   <Drone>
     <Id>254322</Id>
-    <Model>GR27550</Model>
-    <MaxWeight>LIGHT</MaxWeight>
+    <Model>SH58280</Model>
+    <MaxWeight>MIDIUM</MaxWeight>
   </Drone>
   <Drone>
     <Id>254356</Id>
-    <Model>ZU7849</Model>
+    <Model>HH26377</Model>
     <MaxWeight>LIGHT</MaxWeight>
   </Drone>
   <Drone>
     <Id>254390</Id>
-    <Model>WK65417</Model>
-    <MaxWeight>LIGHT</MaxWeight>
+    <Model>XK85979</Model>
+    <MaxWeight>HEAVY</MaxWeight>
   </Drone>
   <Drone>
     <Id>254424</Id>
-    <Model>XJ36217</Model>
+    <Model>NV55030</Model>
     <MaxWeight>LIGHT</MaxWeight>
   </Drone>
   <Drone>
     <Id>254458</Id>
-    <Model>HB16030</Model>
+    <Model>QX45980</Model>
     <MaxWeight>HEAVY</MaxWeight>
   </Drone>
   <Drone>
     <Id>254492</Id>
-    <Model>RS36048</Model>
-    <MaxWeight>MIDIUM</MaxWeight>
+    <Model>SA88574</Model>
+    <MaxWeight>HEAVY</MaxWeight>
   </Drone>
   <Drone>
     <Id>254526</Id>
-    <Model>LK93050</Model>
-    <MaxWeight>LIGHT</MaxWeight>
+    <Model>UR93625</Model>
+    <MaxWeight>HEAVY</MaxWeight>
   </Drone>
   <Drone>
     <Id>254560</Id>
-    <Model>DS23405</Model>
-    <MaxWeight>MIDIUM</MaxWeight>
+    <Model>LS5547</Model>
+    <MaxWeight>LIGHT</MaxWeight>
   </Drone>
   <Drone>
     <Id>254594</Id>
-    <Model>PJ89301</Model>
-    <MaxWeight>MIDIUM</MaxWeight>
+    <Model>GA27454</Model>
+    <MaxWeight>HEAVY</MaxWeight>
   </Drone>
   <Drone>
     <Id>254628</Id>
-    <Model>CH3378</Model>
-    <MaxWeight>LIGHT</MaxWeight>
+    <Model>XX34767</Model>
+    <MaxWeight>MIDIUM</MaxWeight>
   </Drone>
   <Drone>
     <Id>254662</Id>
-    <Model>WJ67015</Model>
-    <MaxWeight>LIGHT</MaxWeight>
+    <Model>KL30785</Model>
+    <MaxWeight>HEAVY</MaxWeight>
   </Drone>
   <Drone>
     <Id>254696</Id>
-    <Model>BZ26484</Model>
-    <MaxWeight>LIGHT</MaxWeight>
+    <Model>SX14144</Model>
+    <MaxWeight>MIDIUM</MaxWeight>
   </Drone>
   <Drone>
     <Id>254730</Id>
-    <Model>PE87110</Model>
-    <MaxWeight>LIGHT</MaxWeight>
+    <Model>YR30724</Model>
+    <MaxWeight>HEAVY</MaxWeight>
   </Drone>
   <Drone>
     <Id>254764</Id>
-    <Model>RD14459</Model>
+    <Model>HB10869</Model>
     <MaxWeight>MIDIUM</MaxWeight>
   </Drone>
   <Drone>
     <Id>254798</Id>
-    <Model>GY78771</Model>
-    <MaxWeight>LIGHT</MaxWeight>
+    <Model>LV59061</Model>
+    <MaxWeight>MIDIUM</MaxWeight>
   </Drone>
   <Drone>
     <Id>254832</Id>
-    <Model>DL36482</Model>
-    <MaxWeight>HEAVY</MaxWeight>
+    <Model>MD39428</Model>
+    <MaxWeight>MIDIUM</MaxWeight>
   </Drone>
   <Drone>
     <Id>254866</Id>
-    <Model>LS62084</Model>
+    <Model>RM41964</Model>
     <MaxWeight>HEAVY</MaxWeight>
   </Drone>
   <Drone>
     <Id>254900</Id>
-    <Model>JC13659</Model>
-    <MaxWeight>MIDIUM</MaxWeight>
+    <Model>HN76706</Model>
+    <MaxWeight>LIGHT</MaxWeight>
   </Drone>
 </ArrayOfDrone>
