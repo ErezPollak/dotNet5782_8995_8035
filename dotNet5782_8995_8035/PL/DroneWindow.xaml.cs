@@ -87,7 +87,7 @@ namespace PL
             {
                 //assign need to be turns on
                 parcelState = PARCEL_STATE.ASSIGN;
-
+                ProgresDelivery.DataContext = parcelState;
             }
 
             if (drone.ParcelInDelivery != null)
@@ -96,12 +96,13 @@ namespace PL
                 if (this.bl.GetParcel(bl.GetDrone(drone.Id).ParcelInDelivery.Id).PickupTime != null)
                 {
                     parcelState = PARCEL_STATE.DELIVER;
-
+                    ProgresDelivery.DataContext = parcelState;
                 }
                 else
                 {
                     //pickup needs to be turned on
                     parcelState = PARCEL_STATE.PICKUP;
+                    ProgresDelivery.DataContext = parcelState;
                 }
             }
             DeliveringOption.DataContext = parcelState;

@@ -5,6 +5,9 @@ using System.Windows.Data;
 
 namespace PL
 {
+
+    #region General
+
     class DoubleToInt : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -18,6 +21,10 @@ namespace PL
             throw new NotImplementedException();
         }
     }
+
+    #endregion
+
+    #region DroneConverters
 
     class StateToChargeState : IValueConverter
     {
@@ -40,19 +47,17 @@ namespace PL
         }
     }
 
-    class ParcelNumberToParcelState : IValueConverter
+
+    class DroneBattryToChargeVisability : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            int parcelNumber = (int)value;
-            if (parcelNumber == 0)
-            {
-                return "no parcel in assigned";
-            }
+            BO.Drone drone = (BO.Drone)value;
+
+            if (drone != null && (drone.Battery == 100 || drone.Status == BO.Enums.DroneStatuses.DELIVERY))
+                return Visibility.Collapsed;
             else
-            {
-                return parcelNumber + "";
-            }
+                return Visibility.Visible;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -61,7 +66,7 @@ namespace PL
         }
     }
 
-    class StatusToParcelVisability : IValueConverter
+    class DroneDeliveryToVisability : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -82,6 +87,71 @@ namespace PL
         }
     }
 
+    
+    class DroneIdToVisability : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            int v = (int)value;
+
+            if (v != 0)
+                return Visibility.Visible;
+            else
+                return Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    class DroneStatusToProgressBarValvue : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            PARCEL_STATE parcelState = (PARCEL_STATE)value;
+
+            int progress = parcelState == PARCEL_STATE.ASSIGN ? 33 :
+                (parcelState == PARCEL_STATE.PICKUP ? 66 :
+                (parcelState == PARCEL_STATE.DELIVER ? 100 :
+                             100));
+            return progress;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+
+
+    #endregion
+
+    #region ParcelConverter
+    class ParcelNumberToParcelState : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            int parcelNumber = (int)value;
+            if (parcelNumber == 0)
+            {
+                return "no parcel is assigned";
+            }
+            else
+            {
+                return parcelNumber + "";
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    
 
     class ParcelStausToDeliveringOptionText : IValueConverter
     {
@@ -115,16 +185,17 @@ namespace PL
     }
 
 
-    class DroneBattryToChargeVisability : IValueConverter
+    class ParcelToProgressBarValvue : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            BO.Drone drone = (BO.Drone)value;
+            BO.Parcel parcel = (BO.Parcel)value;
 
-            if (drone != null && (drone.Battery == 100 || drone.Status == BO.Enums.DroneStatuses.DELIVERY))
-                return Visibility.Collapsed;
-            else
-                return Visibility.Visible;
+            int progress = parcel.AssigedTime == null ? 25 :
+                             (parcel.PickupTime == null ? 50 :
+                             (parcel.DeliveringTime == null ? 75 :
+                             100));
+            return progress;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -132,6 +203,12 @@ namespace PL
             throw new NotImplementedException();
         }
     }
+
+
+
+    #endregion
+
+    #region AccssesAtholerasationToVisability
 
     class AccssesAtholerasationToVisability : IValueConverter
     {
@@ -207,41 +284,6 @@ namespace PL
     }
 
 
-    class ParcelToProgressBarValvue : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            BO.Parcel parcel = (BO.Parcel)value;
-
-            int progress = parcel.AssigedTime == null ? 25 :
-                             (parcel.PickupTime == null ? 50 :
-                             (parcel.DeliveringTime == null ? 75 :
-                             100));
-            return progress;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    class DroneIdToVisability : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            int v = (int)value;
-
-            if (v != 0)
-                return Visibility.Visible;
-            else
-                return Visibility.Collapsed; 
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
+    #endregion
+   
 }
