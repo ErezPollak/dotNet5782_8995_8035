@@ -45,14 +45,11 @@
                 </StackPanel>
 
                 <Button x:Name="SignUpButton" Margin="3" Content="Sign Up" Width="180" Click="SignUpButton_Click" />
-                <StackPanel x:Name="iconsStack" Orientation="Horizontal" Height="150">
-                    <materialDesign:PackIcon Kind="Google"/>
-                    <materialDesign:PackIcon Kind="Facebook" />
-                    <materialDesign:PackIcon Kind="Apple" />
-                    <materialDesign:PackIcon Kind="Android" />
-                    <materialDesign:PackIcon Kind="Whatsapp" />
-
-
+                <StackPanel x:Name="iconsStack" Orientation="Horizontal" Height="138" HorizontalAlignment="Center" Width="301" >
+                    <Image  Source="\images\apple.png" Height="114" Width="50" Margin="10"/>
+                    <Image  Source="\images\microsoft.png" Height="114" Width="50" Margin="10"/>
+                    <Image  Source="\images\google.png" Height="114" Width="50" Margin="10"/>
+                    <Image  Source="\images\facebook.png" Height="114" Width="50" Margin="10"/>
                 </StackPanel>
             </StackPanel>
         </Grid>

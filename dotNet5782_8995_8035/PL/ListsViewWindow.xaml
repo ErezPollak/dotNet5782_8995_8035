@@ -28,6 +28,7 @@
                 <Button Content="X"  Height="39" Width="52" Click="XButton" Background="#FFF90B0B" FontWeight="Bold" FontSize="20" Margin="1134,10,19,10" RenderTransformOrigin="-0.362,0.628"/>
             </Grid>
             <TabControl
+            SelectedIndex="2"
             Style="{StaticResource MaterialDesignNavigatilRailTabControl}"
             TabStripPlacement="Top"
         >
@@ -194,7 +195,7 @@
 
                 </TabItem>
 
-                <TabItem Name="CustomerList" Width="100">
+                <TabItem Name="CustomerList" Width="200">
                     <TabItem.Header>
                         <StackPanel
                     Height="auto"

@@ -22,7 +22,7 @@ namespace Dal
         /// </summary>
         private DalXML()
         {
-            DataSourceXML.Initialize();
+            //DataSourceXML.Initialize();
         }
 
         /// <summary>

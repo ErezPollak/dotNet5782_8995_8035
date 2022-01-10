@@ -9,7 +9,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         Height="600"
-        Width="440"
+        Width="450"
         Title="{Binding}"
         AllowsTransparency="True"
         WindowStyle="None"
@@ -53,7 +53,7 @@
 
             </StackPanel>
 
-            <StackPanel x:Name="OptionStack" Margin="5" Visibility="Collapsed" HorizontalAlignment="Stretch">
+            <StackPanel x:Name="OptionStack" Margin="5" Visibility="Visible" HorizontalAlignment="Stretch">
                 <StackPanel Height="50"/>
                 <StackPanel Height="50" Margin="3" Orientation="Horizontal">
                     <Label Content="Drone ID" Width="108" />
@@ -90,7 +90,7 @@
                 <StackPanel Height="50" Margin="3"  Orientation="Horizontal">
                     <Label x:Name="ParcelText" Content="parcelId" RenderTransformOrigin="0.22,-0.281" Width="108" />
                     <TextBox x:Name="ParcelLabel" Text="{Binding ParcelInDelivery.Id,Converter={StaticResource ParcelNumberToState} , Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnExceptions=True}"  IsReadOnly="True" Width="180" />
-                    <Button Content="Open" Margin="5,5,5,5" Height="25" Width="80" Click="Open_Prcel_Click" Visibility="{Binding Status , Converter={StaticResource StatusToParcelVisability}}" RenderTransformOrigin="0.5,0.5" />
+                    <Button x:Name="OpenParcel" Content="Open" Margin="5,5,5,5" Height="25" Width="80" Click="Open_Prcel_Click" Visibility="{Binding Status , Converter={StaticResource StatusToParcelVisability}}" RenderTransformOrigin="0.5,0.5" />
                     <materialDesign:PackIcon Kind="PackageVariant" Height="30" Width="36" Visibility="{Binding Status , Converter={StaticResource StatusToParcelVisability}}" RenderTransformOrigin="1.25,0.569" />
                 </StackPanel>
                 <StackPanel Height="50" Margin="3" Orientation="Horizontal">
@@ -105,7 +105,9 @@
 
                 <ProgressBar x:Name="ProgresDelivery" Value="33" Height="10" />
 
-                <Button x:Name="Auto" Click="Auto_Click"/>
+                <StackPanel Height="20"/>
+
+                <Button x:Name="Auto" Content="Auto" Click="Auto_Click" Width="203"/>
 
 
             </StackPanel>
