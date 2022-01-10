@@ -26,8 +26,12 @@ namespace PL
 
         private void Send_Click(object sender, RoutedEventArgs e)
         {
+            Comment.Text = "Your Message was Resived succssesfully In The System \n Thank you for your cooperation";
+            Comment.IsReadOnly = true;
+
+            System.Threading.Thread.Sleep(3000);
+
             Close();
-            MessageBox.Show("Your Message was Resived succssesfully In The System \n Thank you for your cooperation");
         }
 
         private void XButton(object sender, RoutedEventArgs e)

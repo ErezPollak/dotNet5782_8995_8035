@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Windows;
 
 namespace PL
@@ -66,7 +67,20 @@ namespace PL
 
         private void Login_Click(object sender, RoutedEventArgs e)
         {
-            new ListsViewWindow(accssesAtholerazetion).ShowDialog();
+            if (accssesAtholerazetion == AccssesAtholerazetion.CUSTOMER)
+            {
+                try
+                {
+                    new ListsViewWindow(accssesAtholerazetion, int.Parse(UserName.Text)).ShowDialog();
+                }
+                catch(Exception ex)
+                {
+                    UserName.Clear();
+                    Password.Clear();
+                }
+            }
+            else
+                new ListsViewWindow(accssesAtholerazetion).ShowDialog();
             accssesAtholerazetion = AccssesAtholerazetion.GUEST;
             LoginStack.DataContext = accssesAtholerazetion;
             MistakenPasswordOrName.Visibility = Visibility.Collapsed;

@@ -21,15 +21,20 @@
             <StackPanel x:Name="ContactStack" Margin="10,-10,0,-7">
                 <StackPanel Height="70">
                 </StackPanel>
-                <TextBox TextWrapping="Wrap" Width="293" Height="126"
-                     materialDesign:HintAssist.Hint="Please, tell us abut what are you think"  
+                <TextBox x:Name="Comment" TextWrapping="Wrap" Width="293" Height="126"
+                     materialDesign:HintAssist.Hint="Please, tell us what you think  ..."  
                      Style="{StaticResource MaterialDesignFilledTextBox}"
                      FontSize="14" TextChanged="TextBox_TextChanged" RenderTransformOrigin="0.796,0.744"
                      />
                 <StackPanel Height="20"/>
 
                 <Button Content="Send" Width="170" Click="Send_Click"/>
-
+                <StackPanel x:Name="iconsStack" Orientation="Horizontal" Height="85" HorizontalAlignment="Center" Width="285" >
+                    <Image  Source="\images\gmail.png" Height="114" Width="50" Margin="10"/>
+                    <Image  Source="\images\whatsapp.png" Height="114" Width="50" Margin="10"/>
+                    <Image  Source="\images\telegram.png" Height="114" Width="50" Margin="10"/>
+                    <Image  Source="\images\phone.png" Height="114" Width="50" Margin="10"/>
+                </StackPanel>
             </StackPanel>
         </Grid>
     </Border>

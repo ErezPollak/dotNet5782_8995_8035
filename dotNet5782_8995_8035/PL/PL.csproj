@@ -15,7 +15,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="gif\03_HASSLE-FREE-delivery.gif" />
+    <None Remove="gif\17431-package-delivery.gif" />
+    <None Remove="gif\3f3d3ae5efc0673fc33ef8dd145c049a.gif" />
+    <None Remove="gif\dd3899043b8f39dd7cbb301db09a19b3.gif" />
+    <None Remove="gif\df4cced1864491068565a9ef_rw_1200.gif" />
+    <None Remove="gif\dron.jpeg" />
+    <None Remove="gif\drone-dribbb.gif" />
+    <None Remove="gif\image_processing20210908-11614-rdikkq.gif" />
     <None Remove="images\8.jpg" />
+    <None Remove="images\apple.png" />
+    <None Remove="images\facebook.png" />
+    <None Remove="images\gmail.png" />
+    <None Remove="images\google.png" />
+    <None Remove="images\microsoft.png" />
+    <None Remove="images\phone.png" />
+    <None Remove="images\telegram.png" />
+    <None Remove="images\whatsapp.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,7 +43,23 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="gif\03_HASSLE-FREE-delivery.gif" />
+    <Resource Include="gif\17431-package-delivery.gif" />
+    <Resource Include="gif\3f3d3ae5efc0673fc33ef8dd145c049a.gif" />
+    <Resource Include="gif\dd3899043b8f39dd7cbb301db09a19b3.gif" />
+    <Resource Include="gif\df4cced1864491068565a9ef_rw_1200.gif" />
+    <Resource Include="gif\dron.jpeg" />
+    <Resource Include="gif\drone-dribbb.gif" />
+    <Resource Include="gif\image_processing20210908-11614-rdikkq.gif" />
     <Resource Include="images\8.jpg" />
+    <Resource Include="images\apple.png" />
+    <Resource Include="images\facebook.png" />
+    <Resource Include="images\gmail.png" />
+    <Resource Include="images\google.png" />
+    <Resource Include="images\microsoft.png" />
+    <Resource Include="images\phone.png" />
+    <Resource Include="images\telegram.png" />
+    <Resource Include="images\whatsapp.png" />
   </ItemGroup>
 
 </Project>

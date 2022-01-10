@@ -22,7 +22,7 @@ namespace PL
 
         private AccssesAtholerazetion accssesAtholerazetion;
 
-        public ListsViewWindow(AccssesAtholerazetion accssesAtholerazetion)
+        public ListsViewWindow(AccssesAtholerazetion accssesAtholerazetion, int customerId = 0)
         {
 
             this.accssesAtholerazetion = accssesAtholerazetion;
@@ -31,37 +31,50 @@ namespace PL
 
             MainTabsStack.DataContext = accssesAtholerazetion;
 
-            this.droneList =  bl.GetDrones(_ => true);
-            this.parcelList = bl.GetPacels(_ => true);
-            this.baseStatoinList = bl.GetBaseStations(_ => true);
-            this.costumerList = bl.GetCustomers(_ => true);
+            if (customerId == 0)
+            {
+                this.droneList = bl.GetDrones(_ => true);
+                this.parcelList = bl.GetPacels(_ => true);
+                this.baseStatoinList = bl.GetBaseStations(_ => true);
+                this.costumerList = bl.GetCustomers(_ => true);
 
-            ListOfDronesView.DataContext = droneList;
-            ListOfParcelsView.DataContext = parcelList;
-            ListOfBaseStationsView.DataContext = baseStatoinList;
-            ListOfCustomersView.DataContext = costumerList;
+                ListOfDronesView.DataContext = droneList;
+                ListOfParcelsView.DataContext = parcelList;
+                ListOfBaseStationsView.DataContext = baseStatoinList;
+                ListOfCustomersView.DataContext = costumerList;
 
-            //making list of values for the status selector.
-            List<string> statusesSelector = Enum.GetNames(typeof(BO.Enums.DroneStatuses)).Cast<string>().ToList();
-            statusesSelector.Add("Show All");
-            DroneStatusSelector.DataContext = statusesSelector;
+                //making list of values for the status selector.
+                List<string> statusesSelector = Enum.GetNames(typeof(BO.Enums.DroneStatuses)).Cast<string>().ToList();
+                statusesSelector.Add("Show All");
+                DroneStatusSelector.DataContext = statusesSelector;
 
-            //making the list for the whight selector.
-            List<string> whightSelectorlist = Enum.GetNames(typeof(BO.Enums.WeightCategories)).Cast<string>().ToList();
-            whightSelectorlist.Add("Show All");
-            DroneWeightSelecter.DataContext = whightSelectorlist;
+                //making the list for the whight selector.
+                List<string> whightSelectorlist = Enum.GetNames(typeof(BO.Enums.WeightCategories)).Cast<string>().ToList();
+                whightSelectorlist.Add("Show All");
+                DroneWeightSelecter.DataContext = whightSelectorlist;
 
-            //making list for the number of slots selector
-            List<string> selectingOptions = new();
-            selectingOptions.Add("Show All");
-            selectingOptions.Add("Has Open Charging Slots");
-            NumberOfSlotsSelector.DataContext = selectingOptions;
+                //making list for the number of slots selector
+                List<string> selectingOptions = new();
+                selectingOptions.Add("Show All");
+                selectingOptions.Add("Has Open Charging Slots");
+                NumberOfSlotsSelector.DataContext = selectingOptions;
 
-            //make lst for the parcel status selector
-            List<string> parcelStatusSelector = Enum.GetNames(typeof(BO.Enums.ParcelStatus)).Cast<string>().ToList();
-            parcelStatusSelector.Add("Show All");
-            ParcelStatusSelector.DataContext = parcelStatusSelector;
+                //make lst for the parcel status selector
+                List<string> parcelStatusSelector = Enum.GetNames(typeof(BO.Enums.ParcelStatus)).Cast<string>().ToList();
+                parcelStatusSelector.Add("Show All");
+                ParcelStatusSelector.DataContext = parcelStatusSelector;
+            }
+            else
+            {
+                if (bl.GetCustomers(c => c.Id == customerId).FirstOrDefault() == null)
+                    throw new BO.IdDontExistsException(customerId, "customer");
 
+                this.parcelList = bl.GetPacels(p => bl.GetParcel(p.Id).Sender.Id == customerId || bl.GetParcel(p.Id).Reciver.Id == customerId) ;
+                this.costumerList = bl.GetCustomers(c => this.parcelList.Any(p => p.SenderName == c.Name) || this.parcelList.Any(p => p.ReceiverName == c.Name));
+
+                ListOfParcelsView.DataContext = parcelList;
+                ListOfCustomersView.DataContext = costumerList;
+            }
         }
 
         #region DroneList
