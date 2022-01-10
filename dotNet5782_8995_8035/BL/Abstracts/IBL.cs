@@ -1,6 +1,8 @@
-﻿using System;
+﻿using BO;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace BlApi
 {
@@ -46,6 +48,10 @@ namespace BlApi
 
         public int GetNextSerialNumberForParcel();
 
+        #endregion
+
+        #region Aoutomatic
+        public void AutomaticOperation(BackgroundWorker worker, int DroneId, int length);
         #endregion
     }
 }

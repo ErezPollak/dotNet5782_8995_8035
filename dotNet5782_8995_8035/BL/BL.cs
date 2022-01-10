@@ -5,6 +5,7 @@ using BO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace BlApi
 {
@@ -1011,6 +1012,82 @@ namespace BlApi
             });
         }
 
+
+        #endregion
+
+        #region Automatic
+
+        public void AutomaticOperation(BackgroundWorker worker, int droneId, int chargingLength)
+        {
+            while (worker.CancellationPending != true)
+            {
+                try
+                {
+                    SendToDelivery(worker, droneId);
+                }
+                catch (BO.UnableToAssignParcelToTheDroneException e)
+                {
+                    if (!(GetDrone(droneId).Battery == 100))
+                    {
+                        AutomaticCharging(worker, droneId, chargingLength);
+                    }
+                    else
+                    { 
+                        //no more parcels for the drone to deliver.
+                        //every 10 secs it is serching for a new parcel.
+                        System.Threading.Thread.Sleep(10000);
+                    }
+                }
+            }
+        }
+
+        private void SendToDelivery(BackgroundWorker worker, int droneId)
+        {
+            System.Threading.Thread.Sleep(1000);
+            AssignParcelToADrone(droneId);
+            worker.ReportProgress(0);
+            System.Threading.Thread.Sleep(1000);
+            PickingUpParcelToDrone(droneId);
+            worker.ReportProgress(0);
+            System.Threading.Thread.Sleep(1000);
+            DeliveringParcelFromADrone(droneId);
+            worker.ReportProgress(0);
+        }
+
+
+        private void AutomaticCharging(BackgroundWorker worker, int droneId, int chargingLength)
+        {
+            ChargeDrone(droneId);
+
+            int index = this.drones.FindIndex(d => d.Id == droneId);
+
+            for (int i = 1; i <= chargingLength; i++)
+            {
+                // Perform a time consuming operation and report progress.
+                System.Threading.Thread.Sleep(50);
+                if (updateBattary(index))
+                    worker.ReportProgress(0);
+                else
+                    break;
+
+            }
+            UnChargeDrone(droneId);
+        }
+
+        private bool updateBattary(int droneIndex)
+        {
+
+            if (drones[droneIndex].Battery < 100)
+            {
+                ++drones[droneIndex].Battery;
+                return true;
+            }
+            else
+            {
+                drones[droneIndex].Battery = 100;
+                return false;
+            }
+        }
 
         #endregion
 

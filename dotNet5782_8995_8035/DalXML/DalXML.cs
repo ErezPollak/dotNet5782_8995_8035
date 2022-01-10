@@ -22,7 +22,7 @@ namespace Dal
         /// </summary>
         private DalXML()
         {
-            //DataSourceXML.Initialize();
+            DataSourceXML.Initialize();
         }
 
         /// <summary>
@@ -39,14 +39,12 @@ namespace Dal
 
         #endregion
 
-
         private string ConfigPath = @"..\xml\Config.xml";
         private string BaseStationsPath = @"BaseStations.xml";
         private string CustomersPath = @"Customers.xml";
         private string DronesPath = @"Drones.xml";
         private string ParcelsPath = @"Parcels.xml";
         private string DroneChargesPath = @"..\xml\DroneCharges.xml";
-
 
 
         public bool AddBaseStation(BaseStation baseStation)

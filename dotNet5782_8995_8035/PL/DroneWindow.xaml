@@ -105,6 +105,8 @@
 
                 <ProgressBar x:Name="ProgresDelivery" Value="33" Height="10" />
 
+                <Button x:Name="Auto" Click="Auto_Click"/>
+
 
             </StackPanel>
         </Grid>

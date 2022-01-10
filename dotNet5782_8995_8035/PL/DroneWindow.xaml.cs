@@ -5,6 +5,9 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Windows.Controls;
 
 namespace PL
 {
@@ -23,6 +26,8 @@ namespace PL
 
         private PARCEL_STATE parcelState;
 
+
+        private bool IsAuto = false;
         /// <summary>
         /// ctor for adding a drone.
         /// </summary>
@@ -336,7 +341,7 @@ namespace PL
             try
             {
                 BO.Parcel parcel = bl.GetParcel(drone.ParcelInDelivery.Id);
-                new ParcelWindow(listsViewWindow ,parcel).ShowDialog();
+                new ParcelWindow(listsViewWindow, parcel).ShowDialog();
             }
             catch (Exception ex)
             {
@@ -345,5 +350,47 @@ namespace PL
             }
         }
 
+        private BackgroundWorker worker;
+
+        private void Auto_Click(object sender, RoutedEventArgs e)
+        {
+            if (worker == null)
+            {
+                worker = new BackgroundWorker();
+                worker.DoWork += Worker_DoWork;
+                worker.ProgressChanged += Worker_ProgressChanged;
+                worker.RunWorkerCompleted += Worker_RunWorkerCompleted;
+
+                worker.WorkerReportsProgress = true;
+                worker.WorkerSupportsCancellation = true;
+
+                worker.RunWorkerAsync(100);
+            }
+            else
+            {
+                if (worker.WorkerSupportsCancellation == true)
+                {
+                    // Cancel the asynchronous operation.
+                    worker.CancelAsync();
+                    worker = null;
+                }
+            }
+        }
+
+        private void Worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            int length = (int)e.Argument;
+
+            bl.AutomaticOperation(worker, drone.Id , length);
+        }
+
+        private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            listsViewWindow.UpdateLists();
+            OptionStack.DataContext = this.drone = bl.GetDrone(drone.Id);
+        }
+
+        private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        { }
     }
 }
