@@ -13,16 +13,30 @@ namespace PL
     /// </summary>
     public partial class ListsViewWindow : Window
     {
-        
+        /// <summary>
+        /// bl for the bl operations.
+        /// </summary>
         private BlApi.IBL bl = BlFactory.GetBl();
+
+        /// <summary>
+        /// lists like reqested for teh bous.
+        /// </summary>
         private ObservableCollection<BO.DroneForList> droneList;
         private ObservableCollection<BO.ParcelForList> parcelList;
         private ObservableCollection<BO.BaseStationForList> baseStatoinList;
         private ObservableCollection<BO.CustomerForList> costumerList;
 
-        private AccssesAtholerazetion accssesAtholerazetion;
+        /// <summary>
+        /// atholerazetion for teh binding of the window.
+        /// </summary>
+        private ACCESS_ATHOLERAZATION accssesAtholerazetion;
 
-        public ListsViewWindow(AccssesAtholerazetion accssesAtholerazetion, int customerId = 0)
+        /// <summary>
+        /// ctor.
+        /// </summary>
+        /// <param name="accssesAtholerazetion"></param>
+        /// <param name="customerId"></param>
+        internal ListsViewWindow(ACCESS_ATHOLERAZATION accssesAtholerazetion, int customerId = 0)
         {
 
             this.accssesAtholerazetion = accssesAtholerazetion;
@@ -33,11 +47,13 @@ namespace PL
 
             if (customerId == 0)
             {
-                this.droneList = bl.GetDrones(_ => true);
-                this.parcelList = bl.GetPacels(_ => true);
-                this.baseStatoinList = bl.GetBaseStations(_ => true);
-                this.costumerList = bl.GetCustomers(_ => true);
+                //initilizing the lists.
+                this.droneList = bl.GetDrones();
+                this.parcelList = bl.GetPacels();
+                this.baseStatoinList = bl.GetBaseStations();
+                this.costumerList = bl.GetCustomers();
 
+                //initilizing the data context
                 ListOfDronesView.DataContext = droneList;
                 ListOfParcelsView.DataContext = parcelList;
                 ListOfBaseStationsView.DataContext = baseStatoinList;
@@ -66,11 +82,14 @@ namespace PL
             }
             else
             {
-                if (bl.GetCustomers(c => c.Id == customerId).FirstOrDefault() == null)
+                //for costomer mode, initilizing the data that is reqiered for the sepecific customer.
+                if (bl.GetCustomer(customerId) == null)
                     throw new BO.IdDontExistsException(customerId, "customer");
 
-                this.parcelList = bl.GetPacels(p => bl.GetParcel(p.Id).Sender.Id == customerId || bl.GetParcel(p.Id).Reciver.Id == customerId) ;
-                this.costumerList = bl.GetCustomers(c => this.parcelList.Any(p => p.SenderName == c.Name) || this.parcelList.Any(p => p.ReceiverName == c.Name));
+                //the list of parcels that the customer is a reciver or a sender.
+                this.parcelList = bl.GetPacelsThatIncludeTheCustomer(customerId);
+                //all the other customers from the parcels that the customer is a pat of.
+                this.costumerList = bl.GetCustomersThatIncludeTheCustomer(parcelList);
 
                 ListOfParcelsView.DataContext = parcelList;
                 ListOfCustomersView.DataContext = costumerList;
@@ -79,32 +98,53 @@ namespace PL
 
         #region DroneList
 
+        /// <summary>
+        /// updating the drone list if the selector chose a status. 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void StatusChoose(object sender, SelectionChangedEventArgs e)
         {
             UpdateDroneList();
         }
 
+        /// <summary>
+        /// updating the drone list if the selector chose a weight. 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void WeightChoose(object sender, SelectionChangedEventArgs e)
         {
             UpdateDroneList();
         }
 
+        /// <summary>
+        /// opening the window of adding a drone with the reqierd parameters.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AddDrone_Click(object sender, RoutedEventArgs e)
         {
             DroneWindow addDroneWindow = new DroneWindow(this);
             addDroneWindow.ShowDialog();
         }
 
+        /// <summary>
+        /// opening the window of updating a drone with the reqierd parameters.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ClickedDroneInList(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            //if ((BO.DroneForList)sender != null)
-            //{
             DroneWindow droneWindow = new DroneWindow(this, bl.GetDrone(((BO.DroneForList)ListOfDronesView.SelectedItem).Id));
             droneWindow.ShowDialog();
-            //}
         }
 
-        public void AddDrone(BO.Drone drone)
+        /// <summary>
+        /// afunction that updating the list with the add function of observable collection.
+        /// </summary>
+        /// <param name="drone"></param>
+        internal void AddDrone(BO.Drone drone)
         {
             BO.DroneForList listDrone = new BO.DroneForList()
             {
@@ -120,7 +160,10 @@ namespace PL
             this.droneList.Add(listDrone);
         }
 
-        public void UpdateDroneList() {
+        /// <summary>
+        /// updating the list according to the selectors.
+        /// </summary>
+        internal void UpdateDroneList() {
 
             string whight = null;
             string status = null;
@@ -131,9 +174,7 @@ namespace PL
             if (DroneStatusSelector.SelectedItem != null)
                 status = DroneStatusSelector.SelectedItem.ToString();
 
-            this.droneList = bl.GetDrones(d =>
-                    (d.Weight.ToString() == whight || whight == "Show All") &&
-                    (d.Status.ToString() == status || status == "Show All"));
+            this.droneList = bl.GetDronesForSelectors(whight, status);
 
             ListOfDronesView.DataContext = this.droneList;
 
@@ -143,12 +184,21 @@ namespace PL
 
 
         #region ParcelList
-
+        /// <summary>
+        /// updating the parcel list if the selector chose a status. 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ParcelStatusChoose(object sender, SelectionChangedEventArgs e)
         {
             UpdateParcelList();
         }
 
+        /// <summary>
+        /// opening the window of adding a parcel with the reqierd parameters.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AddParcel_Click(object sender, RoutedEventArgs e)
         {
             //Open Parcel for add
@@ -156,6 +206,11 @@ namespace PL
             new ParcelWindow(this).ShowDialog();
         }
 
+        /// <summary>
+        /// opening the window of updating a parcel with the reqierd parameters.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ClickedParcelInList(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             //open parcel for operations
@@ -175,7 +230,39 @@ namespace PL
             }
         }
 
-        public void AddParcel(BO.Parcel parcel)
+        /// <summary>
+        /// grouping the sendetr name
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void GroupBySender_Click(object sender, RoutedEventArgs e)
+        {
+            var group = from parcel in this.parcelList as IEnumerable<BO.ParcelForList>
+                        group parcel by parcel.SenderName;
+
+            this.parcelList = GroupToObservable(group);
+            ListOfParcelsView.DataContext = this.parcelList;
+        }
+
+        /// <summary>
+        /// grouping the reciver name
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void GroupByReciver_Click(object sender, RoutedEventArgs e)
+        {
+            var group = from parcel in this.parcelList as IEnumerable<BO.ParcelForList>
+                        group parcel by parcel.ReceiverName;
+
+            this.parcelList = GroupToObservable(group);
+            ListOfParcelsView.DataContext = this.parcelList;
+        }
+
+        /// <summary>
+        /// afunction that updating the list with the add function of observable collection.
+        /// </summary>
+        /// <param name="drone"></param>
+        internal void AddParcel(BO.Parcel parcel)
         {
 
             BO.ParcelForList listParcel = new()
@@ -192,16 +279,17 @@ namespace PL
             this.parcelList.Add(listParcel);
         }
 
-        public void UpdateParcelList()
+        /// <summary>
+        /// updating the list according to the selectors.
+        /// </summary>
+        internal void UpdateParcelList()
         {
             string parcelStaus = null;
 
             if (ParcelStatusSelector.SelectedItem != null)
                 parcelStaus = ParcelStatusSelector.SelectedItem.ToString();
 
-            this.parcelList = bl.GetPacels(b =>
-                (b.Status.ToString() == parcelStaus || parcelStaus == "Show All")
-            );
+            this.parcelList = bl.GetPacelsForSalector(parcelStaus);
 
             ListOfParcelsView.DataContext = this.parcelList;
         }
@@ -210,56 +298,75 @@ namespace PL
 
 
         #region BaseStation
-
-        private void BaseStationGuopingSelected(object sender, SelectionChangedEventArgs e)
+        /// <summary>
+        /// grouping the basestations according to the selected grouping.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BaseStationSlotsNumberSelected(object sender, SelectionChangedEventArgs e)
         {
             UpdateBaseStationList();
         }
 
+        /// <summary>
+        /// opening the window of adding a basestation with the reqierd parameters.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AddBaseStationButton_Click(object sender, RoutedEventArgs e)
         {
             new BaseStationWindow(this).ShowDialog();
         }
 
+        /// <summary>
+        /// opening the window of updating a basestation with the reqierd parameters.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ClickedBaseStationInList(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             if(ListOfBaseStationsView.SelectedItem != null)
                 new BaseStationWindow(this, bl.GetBaseStation(((BO.BaseStationForList)ListOfBaseStationsView.SelectedItem).Id)).ShowDialog();
         }
 
-        public void AddBaseStation(BO.BaseStation baseStation)
+        /// <summary>
+        /// a function that updating the list with the add function of observable collection.
+        /// </summary>
+        /// <param name="drone"></param>
+        internal void AddBaseStation(BO.BaseStation baseStation)
         {
-            //int numberOfDrones = baseStation.ChargingDrones.Count();
-
             BO.BaseStationForList listBaseStation = new()
             {
                 Id = baseStation.Id,
                 Name = baseStation.Name,
                 FreeChargingSlots = baseStation.ChargeSlots,
                 TakenCharingSlots = 0
-
-                //FreeChargingSlots = baseStation.ChargeSlots - numberOfDrones,
-                //TakenCharingSlots = numberOfDrones
             };
 
             this.baseStatoinList.Add(listBaseStation);
         }
 
-        public void UpdateBaseStationList()
+        /// <summary>
+        /// updating the list according to the selectors.
+        /// </summary>
+        internal void UpdateBaseStationList()
         {
             string openSlots = null;
 
             if (NumberOfSlotsSelector.SelectedItem != null)
                 openSlots = NumberOfSlotsSelector.SelectedItem.ToString();
 
-            this.baseStatoinList = bl.GetBaseStations(b =>
-                ((b.FreeChargingSlots > 0) && (openSlots == "Has Open Charging Slots")) || (openSlots == "Show All") || openSlots == null);
-
+            this.baseStatoinList = bl.GetBaseStationsForSelector(openSlots);
             ListOfBaseStationsView.DataContext = this.baseStatoinList;
 
         }
 
-        private void GroupBaseStationByFreeSlots_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// grouping the base stations by the selected grouping.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        internal void GroupBaseStationByFreeSlots_Click(object sender, RoutedEventArgs e)
         {
             var group = from baseStation in this.baseStatoinList as IEnumerable<BO.BaseStationForList>
                         group baseStation by baseStation.FreeChargingSlots;
@@ -273,17 +380,31 @@ namespace PL
 
         #region CustomerList
 
+        /// <summary>
+        /// opening the window of adding a customer with the reqierd parameters.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AddCustomer_Click(object sender, RoutedEventArgs e)
         {
             new CustomerWindow(this).ShowDialog();
         }
 
+        /// <summary>
+        /// opening the window of updating a customer with the reqierd parameters.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ClickedCustomerInList(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            new CustomerWindow(bl, this, bl.GetCustomer(((BO.CustomerForList)ListOfCustomersView.SelectedItem).Id)).ShowDialog();
+            new CustomerWindow(this, bl.GetCustomer(((BO.CustomerForList)ListOfCustomersView.SelectedItem).Id)).ShowDialog();
         }
 
-        public void AddCustomer(BO.Customer customer)
+        /// <summary>
+        /// a function that updating the list with the add function of observable collection.
+        /// </summary>
+        /// <param name="drone"></param>
+        internal void AddCustomer(BO.Customer customer)
         {
             BO.CustomerForList listCustomer = new()
             {
@@ -298,17 +419,22 @@ namespace PL
             this.costumerList.Add(listCustomer);
         }
 
-        public void UpdateCustomerList()
+        /// <summary>
+        /// updating the list according to the selectors.
+        /// </summary>
+        internal void UpdateCustomerList()
         {
-            this.costumerList = bl.GetCustomers(_ => true);
+            this.costumerList = bl.GetCustomers();
 
             ListOfCustomersView.DataContext = this.costumerList;
         }
 
         #endregion
 
-
-        public void UpdateLists()
+        /// <summary>
+        /// updates all the lists
+        /// </summary>
+        internal void UpdateLists()
         {
             //update drone list
             UpdateDroneList();
@@ -323,13 +449,21 @@ namespace PL
             UpdateCustomerList();
         }
 
-
-
+        /// <summary>
+        /// close the window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void XButton(object sender, RoutedEventArgs e)
         {
             Close();
         }
 
+        /// <summary>
+        /// draging the window.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Drag(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
@@ -337,26 +471,6 @@ namespace PL
                 DragMove();
             }
         }
-
-        private void GroupBySender_Click(object sender, RoutedEventArgs e)
-        {
-            var group = from parcel in this.parcelList as IEnumerable<BO.ParcelForList>
-                        group parcel by parcel.SenderName;
-
-            this.parcelList = GroupToObservable(group);
-            ListOfParcelsView.DataContext = this.parcelList;
-        }
-
-
-        private void GroupByReciver_Click(object sender, RoutedEventArgs e)
-        {
-            var group = from parcel in this.parcelList as IEnumerable<BO.ParcelForList>
-                        group parcel by parcel.ReceiverName;
-
-            this.parcelList = GroupToObservable(group);
-            ListOfParcelsView.DataContext = this.parcelList;
-        }
-
 
 
         /// <summary>
@@ -366,7 +480,7 @@ namespace PL
         /// <typeparam name="K"></typeparam>
         /// <param name="group"></param>
         /// <returns></returns>
-        ObservableCollection<T> GroupToObservable<T, K>(IEnumerable<IGrouping<K, T>> group)
+        private ObservableCollection<T> GroupToObservable<T, K>(IEnumerable<IGrouping<K, T>> group)
         {
             ObservableCollection<T> collection = new();
             foreach (var numberGroup in group)

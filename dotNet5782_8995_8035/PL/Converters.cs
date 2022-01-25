@@ -261,9 +261,9 @@ namespace PL
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            AccssesAtholerazetion atholerazetion = (AccssesAtholerazetion)value;
+            ACCESS_ATHOLERAZATION atholerazetion = (ACCESS_ATHOLERAZATION)value;
 
-            if (atholerazetion == AccssesAtholerazetion.GUEST)
+            if (atholerazetion == ACCESS_ATHOLERAZATION.GUEST)
                 return Visibility.Collapsed;
             else
                 return Visibility.Visible;
@@ -279,9 +279,9 @@ namespace PL
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            AccssesAtholerazetion accsses = (AccssesAtholerazetion)value;
+            ACCESS_ATHOLERAZATION accsses = (ACCESS_ATHOLERAZATION)value;
 
-            if ((int)accsses < (int)AccssesAtholerazetion.MANAGER)
+            if ((int)accsses < (int)ACCESS_ATHOLERAZATION.MANAGER)
                 return Visibility.Collapsed;
             else
                 return Visibility.Visible;
@@ -297,9 +297,9 @@ namespace PL
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            AccssesAtholerazetion accsses = (AccssesAtholerazetion)value;
+            ACCESS_ATHOLERAZATION accsses = (ACCESS_ATHOLERAZATION)value;
 
-            if ((int)accsses < (int)AccssesAtholerazetion.EMPLOYEE)
+            if ((int)accsses < (int)ACCESS_ATHOLERAZATION.EMPLOYEE)
                 return Visibility.Collapsed;
             else
                 return Visibility.Visible;
@@ -316,9 +316,9 @@ namespace PL
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            AccssesAtholerazetion accsses = (AccssesAtholerazetion)value;
+            ACCESS_ATHOLERAZATION accsses = (ACCESS_ATHOLERAZATION)value;
 
-            if ((int)accsses < (int)AccssesAtholerazetion.CUSTOMER)
+            if ((int)accsses < (int)ACCESS_ATHOLERAZATION.CUSTOMER)
                 return Visibility.Collapsed;
             else
                 return Visibility.Visible;

@@ -13,6 +13,15 @@ namespace Dal
 {
     internal sealed class DalXML : DalApi.IDal
     {
+        /// <summary>
+        /// properties that include thew pathes for teh XML files.
+        /// </summary>
+        private string ConfigPath = @"..\xml\Config.xml";
+        private string BaseStationsPath = @"BaseStations.xml";
+        private string CustomersPath = @"Customers.xml";
+        private string DronesPath = @"Drones.xml";
+        private string ParcelsPath = @"Parcels.xml";
+        private string DroneChargesPath = @"..\xml\DroneCharges.xml";
 
 
         #region Singalton
@@ -22,7 +31,7 @@ namespace Dal
         /// </summary>
         private DalXML()
         {
-            //DataSourceXML.Initialize();
+           //DataSourceXML.Initialize();
         }
 
         /// <summary>
@@ -30,6 +39,9 @@ namespace Dal
         /// </summary>
         private static readonly Lazy<DalXML> instance = new Lazy<DalXML>(() => new DalXML());
 
+        /// <summary>
+        /// property as an instance of for the get function.
+        /// </summary>
         public static DalXML Instance {
             get
             {
@@ -38,62 +50,90 @@ namespace Dal
         }
 
         #endregion
+        
+        # region add options
 
-        private string ConfigPath = @"..\xml\Config.xml";
-        private string BaseStationsPath = @"BaseStations.xml";
-        private string CustomersPath = @"Customers.xml";
-        private string DronesPath = @"Drones.xml";
-        private string ParcelsPath = @"Parcels.xml";
-        private string DroneChargesPath = @"..\xml\DroneCharges.xml";
-
-
+        /// <summary>
+        /// the function creates new base station acording to given specs, and adding it to the array. 
+        /// while updating the config class.
+        /// </summary>
+        /// <param name="baseStation">to add baseStation</param>
         public bool AddBaseStation(BaseStation baseStation)
         {
             List<BaseStation> list = XMLTools.LoadListFromXMLSerializer<BaseStation>(BaseStationsPath);
-
+            //checking that the number is not already in the list, in witch case exeption will be thrown.
             if (list.Any(b => b.Id == baseStation.Id))
                 throw new IdAlreadyExistsException(baseStation.Id, "baseSattion");
-
             list.Add(baseStation);
             XMLTools.SaveListToXMLSerializer<BaseStation>(list, BaseStationsPath);
             return true;
         }
 
+        /// <summary>
+        /// the function gets a new customer and adding it to the list, if the id alraedy exists an excption will be thrown.
+        /// </summary>
+        /// <param name="customer"></param>
         public bool AddCustumer(Customer customer)
         {
             List<Customer> list = XMLTools.LoadListFromXMLSerializer<Customer>(CustomersPath);
+            //checking that the number is not already in the list, in witch case exeption will be thrown.
+            if (list.Any(c => c.Id == customer.Id))
+                throw new IdAlreadyExistsException(customer.Id, "customer");
             list.Add(customer);
             XMLTools.SaveListToXMLSerializer<Customer>(list, CustomersPath);
             return true;
         }
 
+        /// <summary>
+        /// the function creates new drone acording to given specs, and adding it to the array. 
+        /// while updating the config class.
+        /// </summary>
+        /// <param name="drone"></param>
         public bool AddDrone(Drone drone)
         {
             List<Drone> list = XMLTools.LoadListFromXMLSerializer<Drone>(DronesPath);
-
+            //checking that the number is not already in the list, in witch case exeption will be thrown.
             if (list.Exists(d => d.Id == drone.Id)) 
                 throw new IdAlreadyExistsException(drone.Id, "drone");
-
             list.Add(drone);
             XMLTools.SaveListToXMLSerializer<Drone>(list, DronesPath);
             return true;
         }
 
+        /// <summary>
+        ///  /// the function gets a new patcel and adding it to the list, if the id alraedy exists an excption will be thrown.
+        /// </summary>
+        /// <param name="parcel"></param>
         public bool AddParcel(Parcel parcel)
         {
             List<Parcel> list = XMLTools.LoadListFromXMLSerializer<Parcel>(ParcelsPath);
+            //checking that the number is not already in the list, in witch case exeption will be thrown.
+            if (list.Any(p => p.Id == parcel.Id))
+                throw new IdAlreadyExistsException(parcel.Id, "parcel");
             list.Add(parcel);
             XMLTools.SaveListToXMLSerializer<Parcel>(list, ParcelsPath);
             return true;
         }
 
+        #endregion
+
+        #region update options
+
+        /// <summary>
+        /// updates the properties of the station
+        /// </summary>
+        /// <param name="baseStationID"></param>
+        /// <param name="name"></param>
+        /// <param name="slots"></param>
+        /// <returns></returns>
         public bool UpdateBaseStation(int baseStationID, string name, int slots)
         {
             List<BaseStation> baseStations = XMLTools.LoadListFromXMLSerializer<BaseStation>(BaseStationsPath);
 
             int index = baseStations.FindIndex(b => b.Id == baseStationID);
 
-            if (index == -1) throw new IdDontExistsException(baseStationID, "baseStation");
+            if (index == -1)
+                throw new IdDontExistsException(baseStationID, "baseStation");
 
             BaseStation baseStation = baseStations[index];
             baseStation.Name = name;
@@ -105,13 +145,21 @@ namespace Dal
             return true;
         }
 
+        /// <summary>
+        /// update the properties of the customer
+        /// </summary>
+        /// <param name="customerID"></param>
+        /// <param name="name"></param>
+        /// <param name="phone"></param>
+        /// <returns></returns>
         public bool UpdateCustomer(int customerID, string name, string phone)
         {
             List<Customer> customers = XMLTools.LoadListFromXMLSerializer<Customer>(CustomersPath);
 
             int index = customers.FindIndex(d => d.Id == customerID);
 
-            if (index == -1) throw new IdDontExistsException();
+            if (index == -1)
+                throw new IdDontExistsException(customerID , "customer");
 
             Customer customer = customers[index];
             customer.Name = name;
@@ -123,13 +171,20 @@ namespace Dal
             return true;
         }
 
-        public bool UpdateNameForADrone(int droneId, string model)
+        /// <summary>
+        /// update the name of the drone.
+        /// </summary>
+        /// <param name="droneId"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public bool UpdateModelForADrone(int droneId, string model)
         {
             List<Drone> drones = XMLTools.LoadListFromXMLSerializer<Drone>(DronesPath);
 
             int index = drones.FindIndex(d => d.Id == droneId);
 
-            if (index == -1) throw new IdDontExistsException(droneId, "drone");
+            if (index == -1)
+                throw new IdDontExistsException(droneId, "drone");
 
             Drone drone = drones[index];
             drone.Model = model;
@@ -140,6 +195,11 @@ namespace Dal
             return true;
         }
 
+        /// <summary>
+        /// creating a droneCharge and chrging the drone.
+        /// </summary>
+        /// <param name="baseStationId"></param>
+        /// <param name="droneId"></param>
         public bool ChargeDrone(int baseStationId, int droneId)
         {
 
@@ -152,7 +212,7 @@ namespace Dal
                 throw new IdDontExistsException(baseStationId, "base station");
 
 
-            if (drones.All(d => d.Id != droneId))
+            if (!drones.Any(d => d.Id != droneId))
                 throw new IdDontExistsException(droneId, "drone");
 
 
@@ -160,6 +220,8 @@ namespace Dal
             BaseStation newBaseStation = baseStations[baseStationIndex];
             --newBaseStation.ChargeSlots;
             baseStations[baseStationIndex] = newBaseStation;
+
+            XMLTools.SaveListToXMLSerializer<BaseStation>(baseStations, BaseStationsPath);
 
             //creating the charge drone ans adding it to the list of charges.
             DroneCharge droneCharge = new DroneCharge() { DroneId = droneId, StationId = baseStationId, EntryIntoCharge = DateTime.Now.AddHours(-1) };
@@ -170,11 +232,13 @@ namespace Dal
                 new XElement("EntryIntoCharge", droneCharge.EntryIntoCharge)));
             droneChargesRoot.Save(DroneChargesPath);
 
-            XMLTools.SaveListToXMLSerializer<BaseStation>(baseStations, BaseStationsPath);
-
             return true;
         }
 
+        /// <summary>
+        ///deleting the droneCharge from the list. 
+        /// </summary>
+        /// <param name="droneId"></param>
         public double UnChargeDrone(int droneId)
         {
             //deserilazing the reqaierde Lists fron the XML.
@@ -183,6 +247,8 @@ namespace Dal
 
             //poolint the root of chargeDrones
             XElement droneChargesRoot = XElement.Load(DroneChargesPath);
+
+
 
             if (!drones.Exists(d => d.Id == droneId))
             {
@@ -210,7 +276,6 @@ namespace Dal
             //caculate the time that the drone was in charge.
 
             TimeSpan ts = DateTime.Now.Subtract(DateTime.Parse(DroneChargeToRemove.Element("EntryIntoCharge").Value));
-            //TimeSpan ts = DateTime.Now.Subtract(XmlConvert.ToDateTime(DroneChargeToRemove.Element("").Value));
 
             double mintesInCharge = ts.Hours * 60 + ts.Minutes + (double)ts.Seconds / 60;
 
@@ -227,6 +292,11 @@ namespace Dal
             return mintesInCharge;
         }
 
+        /// <summary>
+        ///the function is givig the parcel the number of the drone.
+        /// </summary>
+        /// <param name="parcelId"></param>
+        /// <param name="droneId"></param>
         public bool AssignDroneToParcel(int parcelId, int droneId)
         {
             List<Parcel> parcels = XMLTools.LoadListFromXMLSerializer<Parcel>(ParcelsPath);
@@ -259,6 +329,11 @@ namespace Dal
             return true;
         }
 
+        ///  <summary>
+        /// updating the time of pickup in the parcel, and changing the status of the drone to delivery.
+        ///  </summary>
+        ///  <param name="parcelId"></param>
+        ///  <param name="droneId"></param>
         public bool PickingUpParcel(int parcelId, int droneId)
         {
 
@@ -291,6 +366,10 @@ namespace Dal
             return true;
         }
 
+        /// <summary>
+        ///updating the time of delivering in the parcel, and changing the status of the drone to free.
+        /// </summary>
+        /// <param name="parcelId"></param>
         public bool DeliveringParcel(int parcelId)
         {
             List<Parcel> parcels = XMLTools.LoadListFromXMLSerializer<Parcel>(ParcelsPath);
@@ -315,6 +394,14 @@ namespace Dal
         }
 
 
+        #endregion
+
+        #region get lists option
+
+        /// <summary>
+        /// returns the array of the base stations.
+        /// </summary>
+        /// <param name="f"></param>
         public IEnumerable<BaseStation> GetBaseStations(Predicate<BaseStation> f)
         {
             List<BaseStation> baseStations = XMLTools.LoadListFromXMLSerializer<BaseStation>(BaseStationsPath);
@@ -333,24 +420,45 @@ namespace Dal
                     }).Where(c => f(c));
         }
 
+        /// <summary>
+        /// returns the array of the base customers.
+        /// </summary>
+        /// <param name="f"></param>
         public IEnumerable<Customer> GetCustomers(Predicate<Customer> f)
         {
             List<Customer> customers = XMLTools.LoadListFromXMLSerializer<Customer>(CustomersPath);
             return customers.Where(c => f(c));
         }
 
+        /// <summary>
+        /// returns the array of the base drones.
+        /// </summary>
+        /// <param name="f"></param>
         public IEnumerable<Drone> GetDrones(Predicate<Drone> f)
         {
             List<Drone> drones = XMLTools.LoadListFromXMLSerializer<Drone>(DronesPath);
             return drones.Where(c => f(c));
         }
 
+        /// <summary>
+        /// returns the array of the parcheses
+        /// </summary>
+        /// <param name="f"></param>
         public IEnumerable<Parcel> GetParcels(Predicate<Parcel> f)
         {
             List<Parcel> parcels = XMLTools.LoadListFromXMLSerializer<Parcel>(ParcelsPath);
             return parcels.Where(c => f(c));
         }
 
+        #endregion
+
+        #region show oobject options
+
+        /// <summary>
+        /// the function recives an ID number of a customer and returns the relevent customer.
+        /// </summary>
+        /// <param name="customerId"></param>
+        /// <returns></returns>
         public Customer GetCustomer(int customerId)
         {
             List<Customer> customers = XMLTools.LoadListFromXMLSerializer<Customer>(CustomersPath);
@@ -362,6 +470,11 @@ namespace Dal
             return customers[custumerIndex];
         }
 
+        /// <summary>
+        /// the function recives an ID number of a drone and returns the relevent drone.
+        /// </summary>
+        /// <param name="droneId"></param>
+        /// <returns></returns>
         public Drone GetDrone(int droneId)
         {
             List<Drone> drones = XMLTools.LoadListFromXMLSerializer<Drone>(DronesPath);
@@ -373,6 +486,11 @@ namespace Dal
             return drones[custumerIndex];
         }
 
+        /// <summary>
+        /// the function recives an ID number of a parcel and returns the relevent parcel.
+        /// </summary>
+        /// <param name="parcelId"></param>
+        /// <returns></returns>
         public Parcel GetParcel(int parcelId)
         {
             List<Parcel> parcels = XMLTools.LoadListFromXMLSerializer<Parcel>(ParcelsPath);
@@ -384,6 +502,11 @@ namespace Dal
             return parcels[custumerIndex];
         }
 
+        /// <summary>
+        /// the function recives an ID number of  a base station and returns the relevent station.
+        /// </summary>
+        /// <param name="baseStationId"></param>
+        /// <returns></returns>
         public BaseStation GetBaseStation(int baseStationId)
         {
             List<BaseStation> baseStations = XMLTools.LoadListFromXMLSerializer<BaseStation>(BaseStationsPath);
@@ -395,13 +518,28 @@ namespace Dal
             return baseStations[custumerIndex];
         }
 
+        #endregion;
 
+        #region operational functions
 
+        /// <summary>
+        /// the function retruns the new serial number of the pareel.
+        /// </summary>
+        /// <returns></returns>
         public int GetSerialNumber()
         {
-            throw new NotImplementedException();
+            List<Parcel> list = XMLTools.LoadListFromXMLSerializer<Parcel>(ParcelsPath);
+
+            int SerialNumber = list.Max(p => p.Id);
+
+            return SerialNumber + 20;
         }
 
+        /// <summary>
+        ///  the function gets an id of drone or a customer and returns the station that is closst to this drone or customer.
+        /// </summary>
+        /// <param name="customerId"></param>
+        /// <returns></returns>
         public int GetClosestStation(int customerId)
         {
             IEnumerable<BaseStation> baseStations = GetBaseStations(_ => true);
@@ -415,6 +553,10 @@ namespace Dal
             return clothestBaseStation.Id;
         }
 
+        /// <summary>
+        /// returns an array with the information of charging drones.
+        /// </summary>
+        /// <returns></returns>
         public double[] ElectricityUse()
         {
             XElement configElements = XElement.Load(ConfigPath);
@@ -454,23 +596,8 @@ namespace Dal
 
             return d;
 
-
-
-            //var baseRad = Math.PI * l1.Latitude / 180;
-            //var targetRad = Math.PI * l2.Latitude / 180;
-            //var theta = l1.Longitude - l2.Longitude;
-            //var thetaRad = Math.PI * theta / 180;
-
-            //double dist =
-            //    Math.Sin(baseRad) * Math.Sin(targetRad) + Math.Cos(baseRad) *
-            //    Math.Cos(targetRad) * Math.Cos(thetaRad);
-            //dist = Math.Acos(dist);
-
-            //dist = dist * 180 / Math.PI;
-            //dist = dist * 9 * 1.1515; // the size in not the original size of earth.
-
-            //return dist;
         }
 
+        #endregion
     }
 }

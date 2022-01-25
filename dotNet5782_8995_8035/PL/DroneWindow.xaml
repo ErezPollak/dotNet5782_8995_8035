@@ -86,7 +86,7 @@
                 </StackPanel>
                 <StackPanel Height="50" Margin="3" Orientation="Horizontal">
                     <Label x:Name="BatteryText" Content="Battery" RenderTransformOrigin="0.22,-0.281" Width="108"  />
-                    <TextBox x:Name="BatteryLabel" Text="{Binding Battery, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnExceptions=True}" IsReadOnly="True" Width="180" />
+                    <TextBox x:Name="BatteryLabel" Text="{Binding Battery, Converter={StaticResource DoubleToIntConverter},  Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnExceptions=True}" IsReadOnly="True" Width="180" />
                     <Button x:Name="ChargeAndUnchargeButton" Content="{Binding Status, Converter={StaticResource stateToCharge}}" Visibility="{Binding Converter={StaticResource DroneBattryToChargeVisability}}" Margin="5,5,5,5" Width="80" Height="25" Click="ChargeAndUnchargeButton_Click"/>
                     <materialDesign:PackIcon Kind="BatteryCharging30" Visibility="{Binding Converter={StaticResource DroneBattryToChargeVisability}}" RenderTransformOrigin="0.557,1.734" Height="36" Width="26" />
                 </StackPanel>
@@ -154,7 +154,7 @@
                 </StackPanel>
                 <StackPanel Height="50" Margin="3" Orientation="Horizontal">
                     <Label x:Name="AutomaticBatteryText" Content="Battery" RenderTransformOrigin="0.22,-0.281" Width="108"  />
-                    <TextBox x:Name="AutomaticBatteryLabel" Text="{Binding Battery, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnExceptions=True}" IsReadOnly="True" Width="180" />
+                    <TextBox x:Name="AutomaticBatteryLabel" Text="{Binding Battery, Converter={StaticResource DoubleToIntConverter}, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnExceptions=True}" IsReadOnly="True" Width="180" />
                 </StackPanel>
                 <StackPanel Height="50" Margin="3" Orientation="Horizontal">
                     <Label x:Name="AutomaticStatusText" Content="Status"  Width="108" />
@@ -172,11 +172,6 @@
                     </StackPanel>
                 </StackPanel>
 
-                <StackPanel x:Name="AutomaticDeliveryPanel">
-
-                    <ProgressBar x:Name="AutomaticDeliveryProgress" Value="{Binding ElementName=DeliveryPanel, Path=DataContext, Converter={StaticResource droneParcelStatusToProgressBarValue}}" Height="10" />
-
-                </StackPanel>
                 <StackPanel Height="20"/>
 
                 <Button x:Name="AutomaticAuto" Content="Manual" Visibility="Visible" Click="Auto_Click" Width="203"/>

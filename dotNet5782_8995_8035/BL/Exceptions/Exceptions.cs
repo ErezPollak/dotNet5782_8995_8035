@@ -241,5 +241,25 @@ namespace BO
     }
 
 
+    [Serializable]
+    internal class IdZeroException : Exception
+    {
+        public IdZeroException()
+        {
+        }
+
+        public IdZeroException(string message) : base(message)
+        {
+        }
+
+        public IdZeroException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
+        protected IdZeroException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
+    }
+
 
 }

@@ -31,7 +31,10 @@ namespace Dal
         /// dal field intended to keep the insstance of the bl that was created.
         /// </summary>
         private static readonly Lazy<DalObject> instance = new Lazy<DalObject>(() => new DalObject());
-
+        
+        /// <summary>
+        /// nedded for the return by  get function the instaance property.
+        /// </summary>
         public static DalObject Instance {
             get
             {
@@ -110,8 +113,8 @@ namespace Dal
         public bool AddParcel(Parcel parcel)
         {
             //checking that the number is not already in the list, in witch case exeption will be thrown.
-            if (DataSource.parcels.Any(p => p.Id == parcel.Id)) throw new IdAlreadyExistsException(parcel.Id, "parcel");
-
+            if (DataSource.parcels.Any(p => p.Id == parcel.Id)) 
+                throw new IdAlreadyExistsException(parcel.Id, "parcel");
             //adding the base station to the list after no matching serial numbers was fuond.
             DataSource.parcels.Add(parcel);
 
@@ -122,8 +125,13 @@ namespace Dal
 
         #region update options
 
-
-        public bool UpdateNameForADrone(int droneId, string model)
+        /// <summary>
+        /// update the name of the drone.
+        /// </summary>
+        /// <param name="droneId"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public bool UpdateModelForADrone(int droneId, string model)
         {
             int index = DataSource.drones.FindIndex(d => d.Id == droneId);
 
@@ -138,6 +146,13 @@ namespace Dal
             return true;
         }
 
+        /// <summary>
+        /// updates the properties of the station
+        /// </summary>
+        /// <param name="baseStationID"></param>
+        /// <param name="name"></param>
+        /// <param name="slots"></param>
+        /// <returns></returns>
         public bool UpdateBaseStation(int baseStationId, string name, int slots)
 
         {
@@ -156,6 +171,13 @@ namespace Dal
             return true;
         }
 
+        /// <summary>
+        /// update the properties of the customer
+        /// </summary>
+        /// <param name="customerID"></param>
+        /// <param name="name"></param>
+        /// <param name="phone"></param>
+        /// <returns></returns>
         public bool UpdateCustomer(int customerId, string name, string phone)
         {
             int index = DataSource.customers.FindIndex(d => d.Id == customerId);
@@ -257,8 +279,6 @@ namespace Dal
 
             return true;
         }
-
-
 
         /// <summary>
         /// creating a droneCharge and chrging the drone.

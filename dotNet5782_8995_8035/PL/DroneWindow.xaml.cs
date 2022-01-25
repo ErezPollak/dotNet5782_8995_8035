@@ -19,11 +19,6 @@ namespace PL
     /// </summary>
     public partial class DroneWindow : Window
     {
-
-        public static bool idAutomatic = false;
-
-        private bool isAutomatic;
-
         private Random r;
         private IBL bl = BlFactory.GetBl();
         private Drone drone;
@@ -76,20 +71,6 @@ namespace PL
             DroneID.Text = drone.Id + "";
             DroneID.IsEnabled = false;
 
-            
-
-
-            if (drone.Status != BO.Enums.DroneStatuses.MAINTENANCE)
-            {
-            }
-            else
-            {
-                if (drone.Battery < 20)
-                {
-                    BatteryLabel.Foreground = Brushes.Orange;
-                }
-            }
-
             if (drone.Status != BO.Enums.DroneStatuses.DELIVERY)
             {
                 //assign need to be turns on
@@ -103,38 +84,67 @@ namespace PL
                 if (this.bl.GetParcel(bl.GetDrone(drone.Id).ParcelInDelivery.Id).PickupTime != null)
                 {
                     parcelState = PARCEL_STATE.DELIVER;
-                    //ProgresDelivery.DataContext = parcelState;
                 }
                 else
                 {
                     //pickup needs to be turned on
                     parcelState = PARCEL_STATE.PICKUP;
-                    //ProgresDelivery.DataContext = parcelState;
                 }
             }
 
-            
             DeliveryPanel.DataContext = parcelState;
             
-            RecommandingCharge((int)drone.Battery);
         }
 
+        #region Operational functions
+       
+        /// <summary>
+        /// coeses the window, so we wont have to use the regular close button..
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void XButton(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        /// <summary>
+        /// draging the window by holding it.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Drag(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
+            {
+                DragMove();
+            }
+        }
+
+        #endregion
+
+        #region Adding functions
+        /// <summary>
+        /// button that adds the drone to the databese aster inserting the reqired properties to the textboxs.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AddDroneButton(object sender, RoutedEventArgs e)
         {
             try
             {
-                drone.Status = BO.Enums.DroneStatuses.FREE;
-                drone.ParcelInDelivery = null;
+                drone.Status = BO.Enums.DroneStatuses.MAINTENANCE;
                 drone.Battery = r.Next() % 20;
+                drone.ParcelInDelivery = null;
                 drone.Location = null;
 
                 if (bl.AddDrone(drone))
                 {
                     MessageBox.Show("drone added seccussfully");
 
-                    //listsViewWindow.UpdateDroneList();
+                    listsViewWindow.UpdateDroneList();
 
-                    listsViewWindow.AddDrone(drone);
+                    //listsViewWindow.AddDrone(drone);
 
                     Close();
                 }
@@ -151,20 +161,15 @@ namespace PL
 
             }
         }
+        #endregion
 
-        private void XButton(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
+        #region update functions
 
-        private void Drag(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
-            {
-                DragMove();
-            }
-        }
-
+        /// <summary>
+        /// showing the button that updates the model of the drone.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ModelUpdatedChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
             if (UpdateModel != null && drone != null)
@@ -173,6 +178,11 @@ namespace PL
             }
         }
 
+        /// <summary>
+        /// updates the model of the drone.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void UpdateModel_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -190,6 +200,12 @@ namespace PL
 
         }
 
+        /// <summary>
+        /// the button the sends the drone to charge if it is not already in charge.
+        /// and realese it from charge if it is in charge.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ChargeAndUnchargeButton_Click(object sender, RoutedEventArgs e)
         {
             if (this.drone.Status == BO.Enums.DroneStatuses.MAINTENANCE)
@@ -201,8 +217,6 @@ namespace PL
                     listsViewWindow.UpdateLists();
                     //after updating was seccussful we can update the drone we got from the user to be the new drone.
                     drone = bl.GetDrone(drone.Id);
-
-                    RecommandingCharge((int)drone.Battery);
 
                     OptionStack.DataContext = this.drone;
 
@@ -224,9 +238,6 @@ namespace PL
                     drone = bl.GetDrone(drone.Id);
 
                     OptionStack.DataContext = this.drone;
-
-                    RecommandingCharge(100);
-
                 }
                 catch (Exception ex)
                 {
@@ -238,35 +249,21 @@ namespace PL
 
         }
 
+        /// <summary>
+        /// return the color of the text to be black after it was made red after wrong input.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DroneIdTextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
             DroneID.Foreground = Brushes.Black;
         }
 
-        private string ShowException(Exception e)
-        {
-            return ShowException(e, "");
-        }
-
-        private string ShowException(Exception e, string s)
-        {
-            if (e == null) return s;
-
-            return ShowException(e.InnerException, s + e.Message + "\n");
-        }
-
-        private void RecommandingCharge(int battryLevel)
-        {
-            if (battryLevel < 20)
-            {
-                BatteryLabel.Foreground = Brushes.Orange;
-            }
-            else
-            {
-                BatteryLabel.Foreground = Brushes.Black;
-            }
-        }
-
+        /// <summary>
+        /// geting the parcel to next step of its delivery. 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DeliveringOption_Click(object sender, RoutedEventArgs e)
         {
             switch (parcelState)
@@ -344,6 +341,11 @@ namespace PL
             }
         }
 
+        /// <summary>
+        /// show the parcel window of the drone. the button apears only when the drone is carring a parcel.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Open_Prcel_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -358,25 +360,40 @@ namespace PL
             }
         }
 
+        #endregion
+
+        #region Automatic
+
+        /// <summary>
+        /// a property that suppose to invoke the automatic operation of the drone.
+        /// </summary>
         private BackgroundWorker worker;
 
+        /// <summary>
+        /// the function of the drone, by starting the worker.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Auto_Click(object sender, RoutedEventArgs e)
         {
             if (worker == null)
             {
-
+                //changing the visability of the pannel stack.
                 OptionStack.Visibility = Visibility.Hidden;
                 AutomaticStack.Visibility = Visibility.Visible;
 
-
                 worker = new BackgroundWorker();
+
+                //adding the functions to the events of the worker.
                 worker.DoWork += Worker_DoWork;
                 worker.ProgressChanged += Worker_ProgressChanged;
                 worker.RunWorkerCompleted += Worker_RunWorkerCompleted;
 
+                //initilizing teh flags of the worker
                 worker.WorkerReportsProgress = true;
                 worker.WorkerSupportsCancellation = true;
 
+                //starting the worker, with the parameter that represents the speds of charging the battery..
                 worker.RunWorkerAsync(100);
             }
             else
@@ -393,22 +410,69 @@ namespace PL
             }
         }
 
+        /// <summary>
+        /// calls the function in the bl that do the automatic work.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
+            //the argumen that is sent by the async.
             int length = (int)e.Argument;
 
             bl.AutomaticOperation(worker, drone.Id , length);
         }
 
+        /// <summary>
+        /// do the update of the presentation level every time that it requaired by the bl function.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
+
+            //updat the list
             listsViewWindow.UpdateLists();
+            //update the data context of the stack
             AutomaticStack.DataContext = this.drone = bl.GetDrone(drone.Id);
+
         }
 
+        /// <summary>
+        /// once the mnual butoon was pressded the pannel going back to be the regualar updating pannel with the same drone.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             OptionStack.DataContext = this.drone = bl.GetDrone(drone.Id);
         }
+
+        #endregion
+
+        #region Exceptions
+        /// <summary>
+        /// show al the inner exceptions.
+        /// </summary>
+        /// <param name="e"></param>
+        /// <returns></returns>
+        private string ShowException(Exception e)
+        {
+            return ShowException(e, "");
+        }
+
+        /// <summary>
+        /// the actuale mathed to invoke.
+        /// </summary>
+        /// <param name="e"></param>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        private string ShowException(Exception e, string s)
+        {
+            if (e == null) return s;
+            return ShowException(e.InnerException, s + e.Message + "\n");
+        }
+
+        #endregion
     }
 }

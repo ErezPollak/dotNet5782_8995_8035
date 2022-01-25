@@ -37,10 +37,20 @@ namespace BlApi
         public BO.Customer GetCustomer(int customerId);
         public BO.Parcel GetParcel(int parcelId);
 
-        public ObservableCollection<BO.BaseStationForList> GetBaseStations(Predicate<BO.BaseStationForList> f);
-        public ObservableCollection<BO.DroneForList> GetDrones(Predicate<BO.DroneForList> f);
-        public ObservableCollection<BO.CustomerForList> GetCustomers(Predicate<BO.CustomerForList> f);
-        public ObservableCollection<BO.ParcelForList> GetPacels(Predicate<BO.ParcelForList> f);
+
+        #region Public Calls for Lists Functions
+
+        public ObservableCollection<BaseStationForList> GetBaseStations();
+        public ObservableCollection<DroneForList> GetDrones();
+        public ObservableCollection<CustomerForList> GetCustomers();
+        public ObservableCollection<ParcelForList> GetPacels();
+        public ObservableCollection<ParcelForList> GetPacelsThatIncludeTheCustomer(int customerId);
+        public ObservableCollection<CustomerForList> GetCustomersThatIncludeTheCustomer(ObservableCollection<BO.ParcelForList> parcelList);
+        public ObservableCollection<DroneForList> GetDronesForSelectors(string whight, string status);
+        public ObservableCollection<ParcelForList> GetPacelsForSalector(string parcelStaus);
+        public ObservableCollection<BaseStationForList> GetBaseStationsForSelector(string openSlots);
+
+        #endregion
 
         #endregion
 

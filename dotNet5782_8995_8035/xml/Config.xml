@@ -11,5 +11,6 @@
 	<Light>120.789</Light>
 	<Middel>110.353</Middel>
 	<Heavy>90.1445</Heavy>
-	<ChargingSpeed>2.654</ChargingSpeed>
+	<ChargingSpeed>0.3</ChargingSpeed>
+
 </Config>

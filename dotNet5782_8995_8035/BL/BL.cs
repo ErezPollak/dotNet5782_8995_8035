@@ -30,9 +30,14 @@ namespace BlApi
         //for the speed of the charge. precentage for hour.
         private double ChargingSpeed { get; }
 
-
+        /// <summary>
+        /// the list of the drones that are being held by the BL.
+        /// </summary>
         private readonly List<DroneForList> drones = new();
 
+        /// <summary>
+        /// random values
+        /// </summary>
         private static readonly Random Random = new();
 
         #endregion
@@ -53,6 +58,8 @@ namespace BlApi
             Heavy = electricityUse[3];
             ChargingSpeed = electricityUse[4];
 
+            var droneCharges = dal.GetChargeDrones(_ => true);
+
             //translates all the drones from the data level to 
             foreach (DO.Drone dalDrone in dal.GetDrones(_ => true))
             {
@@ -61,7 +68,7 @@ namespace BlApi
                     Id = dalDrone.Id,
                     Model = dalDrone.Model,
                     Weight = (BO.Enums.WeightCategories)dalDrone.MaxWeight,
-                    Status = (Enums.DroneStatuses)(Random.Next() % 2 * 2)
+                    Status = droneCharges.Any(dc => dc.DroneId == dalDrone.Id) ? Enums.DroneStatuses.MAINTENANCE : Enums.DroneStatuses.FREE
                 });
             }
 
@@ -145,9 +152,6 @@ namespace BlApi
                     //caculating the battary consamption.
                     double battayConcamption = deliveryDistance / dal.ElectricityUse()[(int)drone.Weight + 1];
 
-                    //the there is not enough battary, exception will be thrown.
-                    //if (battayConcamption > 100) throw new BO.BL_ConstaractorException($"the drone needs {battayConcamption} battary in order to complete to delivery. ");
-
                     //seting the battry to be randomised between the minimum value to 100.
                     drone.Battery = (int)(battayConcamption + Random.NextDouble() * (100 - battayConcamption));
                 }
@@ -164,7 +168,7 @@ namespace BlApi
                     // updating the battary to be a random value from 0 to 20.
                     drone.Battery = Random.Next() % 20;
 
-                    if (dal.GetChargeDrones(_ => true).Count(c => c.DroneId == drone.Id) == 0)
+                    if (!dal.GetChargeDrones(_ => true).Any(dc => dc.DroneId == drone.Id))
                     {
                         //sending the drone to charge.
                         dal.ChargeDrone(avalibleBaseStations.ElementAt(stationIndex).Id, drone.Id);
@@ -198,6 +202,9 @@ namespace BlApi
         /// <returns>true if the adding eas successful</returns>
         public bool AddBaseStation(BO.BaseStation newBaseStation)
         {
+            if (newBaseStation.Id == 0)
+                throw new IdZeroException("ID cannot be zero");
+
             DO.BaseStation baseStation = new DO.BaseStation()
             {
                 Id = newBaseStation.Id,
@@ -223,23 +230,28 @@ namespace BlApi
         /// <returns>true if the adding eas successful</returns>
         public bool AddDrone(BO.Drone newDrone)
         {
+
+            if (newDrone.Id == 0)
+                throw new IdZeroException("ID cannot be zero");
+
+            //check if the drone exists int he dronne list in the bl.
             if (drones.Exists(d => d.Id == newDrone.Id))
             {
                 throw new BO.IdAlreadyExistsException(newDrone.Id, "droen");
             }
 
-            int parcelId = newDrone.ParcelInDelivery == null ? 0 : newDrone.ParcelInDelivery.Id;
+            //assinging the drone to a randomal avalible station
 
-            if (newDrone.Location == null)
-            {
-                IEnumerable<BaseStationForList> avalibaleBaseStations = GetBaseStations(b => b.FreeChargingSlots > 0);
+            //gets all the avalible stations(stations with free slots).
+            IEnumerable<BaseStationForList> avalibaleBaseStations = GetBaseStations(b => b.FreeChargingSlots > 0);
+            if (avalibaleBaseStations.Count() == 0)
+                throw new UnableToAddDroneException("No BaseStation Avalible");
+            //rands one of the stations and puts the drone in there.
+            int randomalStationIndex = Random.Next(avalibaleBaseStations.Count());
+            newDrone.Location = GetBaseStation(avalibaleBaseStations.ElementAt(randomalStationIndex).Id).Location;
+           
 
-                if (avalibaleBaseStations.Count() == 0)
-                    throw new UnableToAddDroneException("No BaseStation Avalible");
-
-                newDrone.Location = GetBaseStation(avalibaleBaseStations.ElementAt(Random.Next(avalibaleBaseStations.Count())).Id).Location;
-            }
-
+            //adding the drone to the database of drones in the bl.
             DroneForList balDrone = new DroneForList()
             {
                 Id = newDrone.Id,
@@ -248,11 +260,12 @@ namespace BlApi
                 Battery = newDrone.Battery,
                 Location = newDrone.Location,
                 Status = newDrone.Status,
-                ParcelId = parcelId
+                ParcelId = 0 // because every new drone is being added without a parcel.
             };
+            this.drones.Add(balDrone);
 
-            drones.Add(balDrone);
 
+            //calling the dal function of adding drone.
             DO.Drone dalDrone = new DO.Drone()
             {
                 Id = newDrone.Id,
@@ -260,10 +273,10 @@ namespace BlApi
                 MaxWeight = (WeightCategories)newDrone.MaxWeight
             };
 
-            //since we checked in the list there is no chance to have the same number of drone in the dal list.   
+            //no need for try, since we checked in the list there is no chance to have the same number of drone in the dal list.   
             bool b = dal.AddDrone(dalDrone);
 
-            ChargeDrone(newDrone.Id);
+            dal.ChargeDrone(avalibaleBaseStations.ElementAt(randomalStationIndex).Id, newDrone.Id);
 
             return b;
         }
@@ -275,6 +288,9 @@ namespace BlApi
         /// <returns>true if the adding eas successful</returns>
         public bool AddCustumer(BO.Customer newCustomer)
         {
+            if (newCustomer.Id == 0)
+                throw new IdZeroException("ID cannot be zero");
+
             DO.Customer customer = new DO.Customer()
             {
                 Id = newCustomer.Id,
@@ -300,6 +316,10 @@ namespace BlApi
         /// <returns>true if the adding eas successful</returns>
         public bool AddParcel(BO.Parcel newParcel)
         {
+
+            if (newParcel.Id == 0)
+                throw new IdZeroException("ID cannot be zero");
+
             DO.Parcel dalParcel = new DO.Parcel()
             {
                 Id = newParcel.Id,
@@ -347,7 +367,7 @@ namespace BlApi
 
             try
             {
-                return dal.UpdateNameForADrone(droneId, model);
+                return dal.UpdateModelForADrone(droneId, model);
             }
             catch (Exception e)
             {
@@ -654,7 +674,7 @@ namespace BlApi
                 Name = dalBaseStation.Name,
                 ChargeSlots = dalBaseStation.ChargeSlots,
                 Location = LocationTranslate(dalBaseStation.Location),
-                ChargingDrones = charges.ToList()
+                ChargingDrones = charges
             };
         }
 
@@ -747,8 +767,8 @@ namespace BlApi
                 Name = dalCustomer.Name,
                 Phone = dalCustomer.Phone,
                 Location = LocationTranslate(dalCustomer.Location),
-                FromCustomer = ParcelTOParcelByCustumerList(GetPacels(p => p.SenderName == dalCustomer.Name)).ToList(),
-                ToCustomer = ParcelTOParcelByCustumerList(GetPacels(p => p.ReceiverName == dalCustomer.Name)).ToList()
+                FromCustomer = ParcelToParcelByCustumerList(GetPacels(p => p.SenderName == dalCustomer.Name)).ToList(),
+                ToCustomer = ParcelToParcelByCustumerList(GetPacels(p => p.ReceiverName == dalCustomer.Name)).ToList()
 
             };
         }
@@ -809,7 +829,7 @@ namespace BlApi
         /// </summary>
         /// <param name="f"></param>
         /// <returns></returns>
-        public ObservableCollection<BaseStationForList> GetBaseStations(Predicate<BaseStationForList> f)
+        private ObservableCollection<BaseStationForList> GetBaseStations(Predicate<BaseStationForList> f)
         {
             return new ObservableCollection<BaseStationForList>(dal.GetBaseStations(_ => true)
                 .Select(db =>
@@ -828,7 +848,7 @@ namespace BlApi
         /// </summary>
         /// <param name="f"></param>
         /// <returns></returns>
-        public ObservableCollection<DroneForList> GetDrones(Predicate<DroneForList> f)
+        private ObservableCollection<DroneForList> GetDrones(Predicate<DroneForList> f)
         {
             ObservableCollection<DroneForList> balDrones = new ObservableCollection<DroneForList>();
 
@@ -851,7 +871,7 @@ namespace BlApi
         /// </summary>
         /// <param name="f"></param>
         /// <returns></returns>
-        public ObservableCollection<CustomerForList> GetCustomers(Predicate<CustomerForList> f)
+        private ObservableCollection<CustomerForList> GetCustomers(Predicate<CustomerForList> f)
         {
             return new ObservableCollection<CustomerForList>(dal.GetCustomers(_ => true)
                 .Select(c =>
@@ -881,7 +901,7 @@ namespace BlApi
         /// </summary>
         /// <param name="f"></param>
         /// <returns></returns>
-        public ObservableCollection<ParcelForList> GetPacels(Predicate<ParcelForList> f)
+        private ObservableCollection<ParcelForList> GetPacels(Predicate<ParcelForList> f)
         {
             //return new ObservableCollection<ParcelForList>(dal.GetParcels(_ => true)
             //    .Select(dalParcel =>
@@ -916,12 +936,128 @@ namespace BlApi
                                                            select parcel);
         }
 
+
+        #endregion
+
+        #region Public Calls for Lists Functions
+
+        /// <summary>
+        /// returns the list of base stations.
+        /// </summary>
+        /// <param name="f"></param>
+        /// <returns></returns>
+        public ObservableCollection<BaseStationForList> GetBaseStations()
+        {
+            return GetBaseStations(_ => true);
+        }
+
+        /// <summary>
+        ///  returns the list of drones.
+        /// </summary>
+        /// <param name="f"></param>
+        /// <returns></returns>
+        public ObservableCollection<DroneForList> GetDrones()
+        {
+            return GetDrones(_ => true);
+        }
+
+        /// <summary>
+        ///  returns the list of customers.
+        /// </summary>
+        /// <param name="f"></param>
+        /// <returns></returns>
+        public ObservableCollection<CustomerForList> GetCustomers()
+        {
+            return GetCustomers(_ => true);
+        }
+
+        /// <summary>
+        ///  returns the list of parcels.
+        /// </summary>
+        /// <param name="f"></param>
+        /// <returns></returns>
+        public ObservableCollection<ParcelForList> GetPacels()
+        {
+            return GetPacels(_ => true);
+        }
+
+        /// <summary>
+        /// returns the list of parcels that involve some customer as a sender or a rceiver.
+        /// </summary>
+        /// <param name="customerId"></param>
+        /// <returns></returns>
+        public ObservableCollection<ParcelForList> GetPacelsThatIncludeTheCustomer(int customerId)
+        {
+            return GetPacels(p => GetParcel(p.Id).Sender.Id == customerId || GetParcel(p.Id).Reciver.Id == customerId);
+        }
+
+        /// <summary>
+        /// returns the list of customers that included in some customer.
+        /// </summary>
+        /// <param name="parcelList"></param>
+        /// <returns></returns>
+        public ObservableCollection<CustomerForList> GetCustomersThatIncludeTheCustomer(ObservableCollection<BO.ParcelForList> parcelList)
+        {
+            return GetCustomers(c => parcelList.Any(p => p.SenderName == c.Name) || parcelList.Any(p => p.ReceiverName == c.Name));
+        }
+        
+        /// <summary>
+        /// get drones for thwe selectors.
+        /// </summary>
+        /// <param name="whight"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        public ObservableCollection<DroneForList> GetDronesForSelectors(string whight, string status)
+        {
+            return GetDrones(d =>
+                    (d.Weight.ToString() == whight || whight == "Show All") &&
+                    (d.Status.ToString() == status || status == "Show All"));
+        }
+        
+        /// <summary>
+        /// get parcels according to the selectors.
+        /// </summary>
+        /// <param name="parcelStaus"></param>
+        /// <returns></returns>
+        public ObservableCollection<ParcelForList> GetPacelsForSalector(string parcelStaus)
+        {
+            return GetPacels(b =>
+                b.Status.ToString() == parcelStaus || parcelStaus == "Show All"
+            );
+        }
+        
+        /// <summary>
+        /// get the base stations according to the selectors.
+        /// </summary>
+        /// <param name="openSlots"></param>
+        /// <returns></returns>
+        public ObservableCollection<BaseStationForList> GetBaseStationsForSelector(string openSlots)
+        {
+            return GetBaseStations(b =>
+                ((b.FreeChargingSlots > 0) && (openSlots == "Has Open Charging Slots")) || (openSlots == "Show All") || openSlots == null);
+
+        }
+
+
+        #endregion
+
+        #region getserial numbers
+
+        /// <summary>
+        /// geting all the ditails from the class config to the BL.
+        /// </summary>
+        /// <returns></returns>
+        public int GetNextSerialNumberForParcel()
+        {
+            return dal.GetSerialNumber();
+        }
+
         #endregion
 
         #region operation functions
 
         /// <summary>
-        /// function that gets
+        /// function that gets two locations and returns the destance between them.
         /// </summary>
         /// <param name="l1"></param>
         /// <param name="l2"></param>
@@ -965,11 +1101,15 @@ namespace BlApi
             //return dist;
         }
 
+        /// <summary>
+        /// function that converts radiens to degries for the distance caculation.
+        /// </summary>
+        /// <param name="angle"></param>
+        /// <returns></returns>
         private double ConvertToRadians(double angle)
         {
             return (Math.PI / 180) * angle;
         }
-
 
         /// <summary>
         /// the function gets idal locatin and transforms it into bal location by coping the values.
@@ -991,17 +1131,12 @@ namespace BlApi
             return new DO.Location() { Longitude = location.Longitude, Latitude = location.Latitude };
         }
 
-
         /// <summary>
-        /// geting all the ditails from the class config to the BL.
+        /// simple converts the parcel to parcel for list.
         /// </summary>
+        /// <param name="parcels"></param>
         /// <returns></returns>
-        public int GetNextSerialNumberForParcel()
-        {
-            return dal.GetSerialNumber();
-        }
-
-        public IEnumerable<ParcelByCustomer> ParcelTOParcelByCustumerList(IEnumerable<BO.ParcelForList> parcels)
+        private IEnumerable<ParcelByCustomer> ParcelToParcelByCustumerList(IEnumerable<BO.ParcelForList> parcels)
         {
             return parcels.Select(p => new ParcelByCustomer()
             {
@@ -1017,22 +1152,32 @@ namespace BlApi
 
         #region Automatic
 
+        /// <summary>
+        /// the functionthat is being added to the Do_Work event.
+        /// </summary>
+        /// <param name="worker"></param>
+        /// <param name="droneId"></param>
+        /// <param name="chargingLength"></param>
         public void AutomaticOperation(BackgroundWorker worker, int droneId, int chargingLength)
         {
+            //as long as the flag of canceling is turned off.
             while (worker.CancellationPending != true)
             {
                 try
                 {
+                    //sends ther drone to delivery.
                     SendToDelivery(worker, droneId);
                 }
+                // if there is no parrcel to assign or the battary is too low.
                 catch (BO.UnableToAssignParcelToTheDroneException e)
                 {
+                    //sends the drone to charge.
                     if (!(GetDrone(droneId).Battery == 100))
                     {
                         AutomaticCharging(worker, droneId, chargingLength);
                     }
                     else
-                    { 
+                    {
                         //no more parcels for the drone to deliver.
                         //every 10 secs it is serching for a new parcel.
                         System.Threading.Thread.Sleep(10000);
@@ -1041,8 +1186,14 @@ namespace BlApi
             }
         }
 
+        /// <summary>
+        /// the function that sends the drone to delivery.
+        /// </summary>
+        /// <param name="worker"></param>
+        /// <param name="droneId"></param>
         private void SendToDelivery(BackgroundWorker worker, int droneId)
         {
+            //assign the parcel to the drone then picking it up then delivering it the reciver.
             System.Threading.Thread.Sleep(1000);
             AssignParcelToADrone(droneId);
             worker.ReportProgress(0);
@@ -1054,7 +1205,12 @@ namespace BlApi
             worker.ReportProgress(0);
         }
 
-
+        /// <summary>
+        /// the function that recharge the drone and shows the progress of the charging.
+        /// </summary>
+        /// <param name="worker"></param>
+        /// <param name="droneId"></param>
+        /// <param name="chargingLength"></param>
         private void AutomaticCharging(BackgroundWorker worker, int droneId, int chargingLength)
         {
             ChargeDrone(droneId);
@@ -1069,11 +1225,15 @@ namespace BlApi
                     worker.ReportProgress(0);
                 else
                     break;
-
             }
             UnChargeDrone(droneId);
         }
 
+        /// <summary>
+        /// updates the battary by adding ine to it every time.
+        /// </summary>
+        /// <param name="droneIndex"></param>
+        /// <returns></returns>
         private bool updateBattary(int droneIndex)
         {
 

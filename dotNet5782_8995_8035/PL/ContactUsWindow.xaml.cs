@@ -19,37 +19,49 @@ namespace PL
     /// </summary>
     public partial class ContactUsWindow : Window
     {
+        /// <summary>
+        /// ctor, opens the window.
+        /// </summary>
         public ContactUsWindow()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// sending the message.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Send_Click(object sender, RoutedEventArgs e)
         {
-            Comment.Text = "Your Message was Resived succssesfully In The System \n Thank you for your cooperation";
-            Comment.IsReadOnly = true;
+            MessageBox.Show("Your Message was Resived succssesfully In The System \n Thank you for your cooperation");
 
             System.Threading.Thread.Sleep(3000);
 
             Close();
         }
 
+        /// <summary>
+        /// closing the window.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void XButton(object sender, RoutedEventArgs e)
         {
             Close();
         }
 
+        /// <summary>
+        /// draging the window.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Drag(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
             {
                 DragMove();
             }
-        }
-
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
         }
     }
 }

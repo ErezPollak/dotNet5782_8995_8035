@@ -17,7 +17,7 @@ namespace DalApi
 
         #region update options
 
-        public bool UpdateNameForADrone(int droneId, string model);
+        public bool UpdateModelForADrone(int droneId, string model);
         public bool UpdateBaseStation(int basStationID, string name, int slots);
         public bool UpdateCustomer(int customerID, string name, string phone);
         public bool AssignDroneToParcel(int parcelId, int droneId);

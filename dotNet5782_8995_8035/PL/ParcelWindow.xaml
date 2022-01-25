@@ -28,7 +28,7 @@
                 </Grid>
                 <StackPanel Orientation="Horizontal" Height="50" Margin="5,0,0,0" Width="414" >
                     <Label Content="Parcel Id: " Width="140" FontWeight="Bold" Height="40" FontSize="20"/>
-                    <TextBox x:Name="IdInput" Text="{Binding Id, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnExceptions=True}" TextWrapping="Wrap" Width="140" Height="40" FontWeight="Normal" FontSize="20"/>
+                    <TextBlock x:Name="IdInput" Text="{Binding Mode=OneWay, NotifyOnValidationError=True, ValidatesOnExceptions=True}" TextWrapping="Wrap" Width="140" Height="40" FontWeight="Normal" FontSize="20"/>
                 </StackPanel>
                 <StackPanel Height="30"/>
                 <Label Content="Set Sender And Reciver"></Label>
@@ -74,7 +74,7 @@
                 <StackPanel Height="30"/>
 
                 <StackPanel Height="60" Orientation="Horizontal" HorizontalAlignment="Center">
-                    <StackPanel Width="250" Orientation="Vertical" VerticalAlignment="Stretch">
+                    <StackPanel x:Name="senderStac" Width="250" Orientation="Vertical" VerticalAlignment="Stretch">
                         <StackPanel Orientation="Horizontal" Margin="3" >
                             <TextBlock Text="Sender Name:" FontSize="20"/>
                             <TextBlock  Text="{Binding Sender.CustomerName, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnExceptions=True}"/>

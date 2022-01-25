@@ -10,7 +10,6 @@
         mc:Ignorable="d"
         Height="600"
         Width="440"
-        Loaded="Loded"
         Title="{Binding}"
         AllowsTransparency="True"
         WindowStyle="None"
@@ -50,7 +49,7 @@
 
                 </StackPanel>
 
-                <Button x:Name="AddingButton" Margin="3" Content="Add New BaseStation" Width="180" Click="OnClickAddBaseStationButton" />
+                <Button x:Name="AddingButton" Margin="3" Content="Add New BaseStation" Width="180" Click="onAddBaseStatioClick" />
 
             </StackPanel>
 
@@ -84,7 +83,7 @@
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header = "ID" DisplayMemberBinding="{Binding Path = Id}" />
-                                <GridViewColumn Header = "Battery" DisplayMemberBinding="{Binding Path = Battery , Converter={StaticResource converters}}" />
+                                <GridViewColumn Header = "Battery" DisplayMemberBinding="{Binding Path = Battery , Converter={StaticResource DoubleToIntConverter}}" />
                             </GridView>
                         </ListView.View>
                     </ListView>

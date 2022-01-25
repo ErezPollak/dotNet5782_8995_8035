@@ -57,11 +57,21 @@ namespace PL
             listViewOfBaseStatin_ChargingDrones.DataContext = baseStation.ChargingDrones;
         }
 
+        /// <summary>
+        /// closing the window.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void XButton(object sender, RoutedEventArgs e)
         {
             Close();
         }
 
+        /// <summary>
+        /// draging the window.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Drag(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
@@ -70,7 +80,12 @@ namespace PL
             }
         }
 
-        private void OnClickAddBaseStationButton(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// add base station buton click.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void onAddBaseStatioClick(object sender, RoutedEventArgs e)
         {
 
             try
@@ -80,7 +95,7 @@ namespace PL
                     listsViewWindow.AddBaseStation(baseStation);
 
                     MessageBox.Show("baseStation added seccussfully");
-                    //listsViewWindow.UpdateBaseStationList();// TODO: fix nullptr exception
+                    listsViewWindow.UpdateBaseStationList();
                     Close();
                 }
 
@@ -92,6 +107,11 @@ namespace PL
             }
         }
 
+        /// <summary>
+        /// updates the name of teh base station.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnClickUpdateBaseStationButton(object sender, RoutedEventArgs e)
         {
 
@@ -100,7 +120,7 @@ namespace PL
                 if (bl.UpdateBaseStation(baseStation.Id, baseStation.Name, baseStation.ChargeSlots))
                 {
                     MessageBox.Show("baseStation updated seccussfully");
-                    //listsViewWindow.UpdateLists();// TODO: fix nullptr exception
+                    listsViewWindow.UpdateLists();// TODO: fix nullptr exception
                     Close();
                 }
 
@@ -111,37 +131,26 @@ namespace PL
             }
         }
 
+        /// <summary>
+        /// allows only number to go into the id textbox.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             e.Handled = new Regex("[^0-9]+").IsMatch(e.Text);
         }
-
+        
+        /// <summary>
+        /// allows to type only float number into the lication.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FloatNumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             e.Handled = new Regex("[^0-9.]+").IsMatch(e.Text);
         }
-
-
-
-
-
-        /// <summary>
-        /// hiding the x button of the window
-        /// </summary>
-        private const int GWL_STYLE = -16;
-        private const int WS_SYSMENU = 0x80000;
-
-        [DllImport("user32.dll", SetLastError = true)]
-        private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
-        [DllImport("user32.dll")]
-        private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
-
-        private void Loded(object sender, RoutedEventArgs e)
-        {
-            var hwnd = new WindowInteropHelper(this).Handle;
-            SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) & ~WS_SYSMENU);
-        }
-
+        
 
     }
 }
