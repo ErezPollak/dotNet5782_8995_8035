@@ -1,63 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <DroneCharges>
   <DroneCharge>
-    <DroneId>254390</DroneId>
-    <StationId>12369</StationId>
-    <EntryIntoCharge>2022-01-25T17:22:42.2147756+02:00</EntryIntoCharge>
-  </DroneCharge>
-  <DroneCharge>
-    <DroneId>254492</DroneId>
-    <StationId>12393</StationId>
-    <EntryIntoCharge>2022-01-25T17:22:42.2340419+02:00</EntryIntoCharge>
-  </DroneCharge>
-  <DroneCharge>
-    <DroneId>254526</DroneId>
-    <StationId>12393</StationId>
-    <EntryIntoCharge>2022-01-25T17:22:42.235699+02:00</EntryIntoCharge>
-  </DroneCharge>
-  <DroneCharge>
-    <DroneId>254560</DroneId>
-    <StationId>12357</StationId>
-    <EntryIntoCharge>2022-01-25T17:22:42.2375653+02:00</EntryIntoCharge>
-  </DroneCharge>
-  <DroneCharge>
-    <DroneId>254628</DroneId>
-    <StationId>12357</StationId>
-    <EntryIntoCharge>2022-01-25T17:22:42.2407038+02:00</EntryIntoCharge>
-  </DroneCharge>
-  <DroneCharge>
-    <DroneId>254662</DroneId>
-    <StationId>12357</StationId>
-    <EntryIntoCharge>2022-01-25T17:22:42.2422186+02:00</EntryIntoCharge>
-  </DroneCharge>
-  <DroneCharge>
-    <DroneId>254730</DroneId>
-    <StationId>12369</StationId>
-    <EntryIntoCharge>2022-01-25T17:22:42.2449758+02:00</EntryIntoCharge>
-  </DroneCharge>
-  <DroneCharge>
-    <DroneId>254900</DroneId>
-    <StationId>12369</StationId>
-    <EntryIntoCharge>2022-01-25T17:22:42.2513611+02:00</EntryIntoCharge>
-  </DroneCharge>
-  <DroneCharge>
-    <DroneId>254254</DroneId>
+    <DroneId>254764</DroneId>
     <StationId>12345</StationId>
-    <EntryIntoCharge>2022-01-25T17:24:30.5241568+02:00</EntryIntoCharge>
+    <EntryIntoCharge>2022-01-25T19:23:19.5778938+02:00</EntryIntoCharge>
   </DroneCharge>
   <DroneCharge>
-    <DroneId>254696</DroneId>
-    <StationId>12381</StationId>
-    <EntryIntoCharge>2022-01-25T17:24:30.5385547+02:00</EntryIntoCharge>
-  </DroneCharge>
-  <DroneCharge>
-    <DroneId>254798</DroneId>
-    <StationId>12381</StationId>
-    <EntryIntoCharge>2022-01-25T17:24:30.5424078+02:00</EntryIntoCharge>
-  </DroneCharge>
-  <DroneCharge>
-    <DroneId>254866</DroneId>
-    <StationId>12345</StationId>
-    <EntryIntoCharge>2022-01-25T17:24:30.5456763+02:00</EntryIntoCharge>
+    <DroneId>254832</DroneId>
+    <StationId>12369</StationId>
+    <EntryIntoCharge>2022-01-25T19:24:06.0968543+02:00</EntryIntoCharge>
   </DroneCharge>
 </DroneCharges>
