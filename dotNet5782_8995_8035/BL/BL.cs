@@ -11,6 +11,7 @@ namespace BlApi
 {
     internal sealed class BL : IBL
     {
+
         #region private fields
 
         private readonly DalApi.IDal dal = DalApi.DalFactory.GetDal();
@@ -61,16 +62,14 @@ namespace BlApi
             var droneCharges = dal.GetChargeDrones(_ => true);
 
             //translates all the drones from the data level to 
-            foreach (DO.Drone dalDrone in dal.GetDrones(_ => true))
-            {
-                drones.Add(new DroneForList()
-                {
-                    Id = dalDrone.Id,
-                    Model = dalDrone.Model,
-                    Weight = (BO.Enums.WeightCategories)dalDrone.MaxWeight,
-                    Status = droneCharges.Any(dc => dc.DroneId == dalDrone.Id) ? Enums.DroneStatuses.MAINTENANCE : Enums.DroneStatuses.FREE
-                });
-            }
+            this.drones = (from dalDrone in dal.GetDrones(_ => true)
+                           select new DroneForList()
+                           {
+                               Id = dalDrone.Id,
+                               Model = dalDrone.Model,
+                               Weight = (BO.Enums.WeightCategories)dalDrone.MaxWeight,
+                               Status = droneCharges.Any(dc => dc.DroneId == dalDrone.Id) ? Enums.DroneStatuses.MAINTENANCE : Enums.DroneStatuses.FREE
+                           }).ToList();
 
             //takes all the parcels that are assigned to a drone and was not delivered.
             var parcelsForUpdate = dal.GetParcels(parcel => parcel.DroneId != 0 && parcel.DeliveryTime == null);
@@ -78,7 +77,6 @@ namespace BlApi
             //going through all the parcels that have a drone, and was not assigned to it.
             foreach (DO.Parcel parcel in parcelsForUpdate)
             {
-
                 //caculate the distance of the delivery.
                 double deliveryDistance = 0;
                 //caculating the distance between the sender of the parcel, and the reciver. 
