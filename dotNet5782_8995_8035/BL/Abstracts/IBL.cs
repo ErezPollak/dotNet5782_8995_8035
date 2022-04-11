@@ -1,19 +1,17 @@
-﻿using BO;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using BL.Models;
 
-namespace BlApi
+namespace BL.Abstracts
 {
-    public interface IBL
+    public interface IBl
     {
         #region adding option 
 
-        public bool AddBaseStation(BO.BaseStation baesStation);
-        public bool AddDrone(BO.Drone newDrone);
-        public bool AddCustumer(BO.Customer customer);
-        public bool AddParcel(BO.Parcel newPparcel);
+        public bool AddBaseStation(BaseStation newBaseStation);
+        public bool AddDrone(Drone newDrone);
+        public bool AddCustomer(Customer customer);
+        public bool AddParcel(Parcel newParcel);
 
         #endregion
 
@@ -32,10 +30,10 @@ namespace BlApi
 
         #region show options 
 
-        public BO.BaseStation GetBaseStation(int baseStationId);
-        public BO.Drone GetDrone(int droneId);
-        public BO.Customer GetCustomer(int customerId);
-        public BO.Parcel GetParcel(int parcelId);
+        public BaseStation GetBaseStation(int baseStationId);
+        public Drone GetDrone(int droneId);
+        public Customer GetCustomer(int customerId);
+        public Parcel GetParcel(int parcelId);
 
 
         #region Public Calls for Lists Functions
@@ -43,12 +41,12 @@ namespace BlApi
         public ObservableCollection<BaseStationForList> GetBaseStations();
         public ObservableCollection<DroneForList> GetDrones();
         public ObservableCollection<CustomerForList> GetCustomers();
-        public ObservableCollection<ParcelForList> GetPacels();
-        public ObservableCollection<ParcelForList> GetPacelsThatIncludeTheCustomer(int customerId);
-        public ObservableCollection<CustomerForList> GetCustomersThatIncludeTheCustomer(ObservableCollection<BO.ParcelForList> parcelList);
-        public ObservableCollection<DroneForList> GetDronesForSelectors(string whight, string status);
-        public ObservableCollection<ParcelForList> GetPacelsForSalector(string parcelStaus);
-        public ObservableCollection<BaseStationForList> GetBaseStationsForSelector(string openSlots);
+        public ObservableCollection<ParcelForList> GetParcels();
+        public ObservableCollection<ParcelForList> GetParcelsThatIncludeTheCustomer(int customerId);
+        public ObservableCollection<CustomerForList> GetCustomersThatIncludeTheCustomer(ObservableCollection<ParcelForList> parcelList);
+        public ObservableCollection<DroneForList> GetDronesForSelectors(string weight, string status);
+        public ObservableCollection<ParcelForList> GetParcelsForSelector(string parcelStatus = "DEFINED");
+        public ObservableCollection<BaseStationForList> GetBaseStationsForSelector(string openSlots = "Has Open Charging Slots");
 
         #endregion
 
@@ -61,7 +59,8 @@ namespace BlApi
         #endregion
 
         #region Aoutomatic
-        public void AutomaticOperation(BackgroundWorker worker, int DroneId, int length);
+        public void AutomaticOperation(BackgroundWorker worker, int droneId, int length);
+        
         #endregion
     }
 }

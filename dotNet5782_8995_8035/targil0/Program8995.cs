@@ -2,14 +2,14 @@
 
 namespace ConsoleApp1
 {
-    partial class Program
+    static partial class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
 
-            for (int i = 1; i < 10; i++)
+            for (var i = 1; i < 10; i++)
             {
-                for (int j = 1; j < 10; j++)
+                for (var j = 1; j < 10; j++)
                 {
                     Console.Write("{0 , -3}", i * j);
                 }
@@ -18,8 +18,8 @@ namespace ConsoleApp1
 
             Console.WriteLine();
 
-            Random r = new Random();
-            for (int i = 0; i < 100; i++)
+            var r = new Random();
+            for (var i = 0; i < 100; i++)
             {
                 Console.Write($"{(int)(r.Next() % 8) + 8,-10} ");
             }
@@ -30,11 +30,8 @@ namespace ConsoleApp1
 
         private static string Welcome8995()
         {
-            string s;
-
             Console.WriteLine("Enter your name: ");
-            s = Console.ReadLine();
-            //Console.WriteLine($"{} welcome to my first console application" , s);
+            var s = Console.ReadLine();
             return s;
         }
     }

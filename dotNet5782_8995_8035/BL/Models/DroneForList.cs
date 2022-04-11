@@ -1,11 +1,11 @@
 ﻿
-    namespace BO
+    namespace BL.Models
     {
         public class DroneForList
         {
-            public int Id { get; set; }
+            public int Id { get; init; }
             public string Model { get; set; }
-            public Enums.WeightCategories Weight { get; set; }
+            public Enums.WeightCategories Weight { get; init; }
             public double Battery { get; set; }
             public Enums.DroneStatuses Status { get; set; }
             public Location Location { get; set; }

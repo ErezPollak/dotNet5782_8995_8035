@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <Config>
 	<dl>DalXML</dl>
 	<dl-packages>
@@ -7,10 +7,10 @@
 		<oracle namespace="Dal_O" class="DalDbOracle">DalOracle</oracle>
 	</dl-packages>
 
-	<Free>130.234</Free>
-	<Light>120.789</Light>
-	<Middel>110.353</Middel>
-	<Heavy>90.1445</Heavy>
-	<ChargingSpeed>0.3</ChargingSpeed>
+	<Free>2.444</Free>
+	<Light>2.259</Light>
+	<Middle>2.204</Middle>
+	<Heavy>1.789</Heavy>
+	<ChargingSpeed>2.466</ChargingSpeed>
 
 </Config>

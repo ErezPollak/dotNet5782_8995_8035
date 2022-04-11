@@ -49,7 +49,7 @@
 
                 </StackPanel>
 
-                <Button x:Name="AddingButton" Margin="3" Content="Add New BaseStation" Width="180" Click="onAddBaseStatioClick" />
+                <Button x:Name="AddingButton" Margin="3" Content="Add New BaseStation" Width="180" Click="OnAddBaseStationClick" />
 
             </StackPanel>
 

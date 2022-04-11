@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace BO
+namespace BL.Exceptions
 {
 
     [Serializable]
     public class IdAlreadyExistsException : Exception
     {
 
-        public IdAlreadyExistsException(int idNumber, string type) : base($"BL_Exception:  the id {idNumber} alredy exists in the database of {type}.")
+        public IdAlreadyExistsException(int idNumber, string type) : base($"BL_Exception:  the id {idNumber} already exists in the database of {type}.")
         {
         }
 
@@ -62,21 +62,21 @@ namespace BO
     /// describes all the exceptions that happen in the bl ctor.
     /// </summary>
     [Serializable]
-    public class BL_ConstaractorException : Exception
+    public class BlConstructorException : Exception
     {
-        //public BL_ConstaractorException()
+        //public BL_ConstructorException()
         //{
         //}
 
-        public BL_ConstaractorException(string message) : base(" BL_ConstaractorException: " + message)
+        public BlConstructorException(string message) : base(" BL_ConstructorException: " + message)
         {
         }
 
-        public BL_ConstaractorException(string message, Exception innerException) : base(message, innerException)
+        public BlConstructorException(string message, Exception innerException) : base(message, innerException)
         {
         }
 
-        //protected BL_ConstaractorException(SerializationInfo info, StreamingContext context) : base(info, context)
+        //protected BL_ConstructorException(SerializationInfo info, StreamingContext context) : base(info, context)
         //{
         //}
     }
@@ -108,7 +108,7 @@ namespace BO
     }
 
     /// <summary>
-    /// exaption for the function of  delivering parccel that is carried by a drone.
+    /// exception for the function of  delivering parcel that is carried by a drone.
     /// </summary>
     [Serializable]
     public class UnableToDeliverParcelFromTheDroneException : Exception
@@ -117,7 +117,7 @@ namespace BO
         {
         }
 
-        public UnableToDeliverParcelFromTheDroneException(int droneId, string message) : base($"unable to deliver aparcel from the  drone {droneId} due to: " + message)
+        public UnableToDeliverParcelFromTheDroneException(int droneId, string message) : base($"unable to deliver parcel from the  drone {droneId} due to: " + message)
         {
         }
 
@@ -131,7 +131,7 @@ namespace BO
     }
 
     /// <summary>
-    /// exception that descrine the reasons why a drone cannot be charged.
+    /// exception that describe the reasons why a drone cannot be charged.
     /// </summary>
     [Serializable]
     internal class UnAbleToSendDroneToChargeException : Exception

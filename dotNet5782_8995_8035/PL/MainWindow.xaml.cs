@@ -5,17 +5,17 @@ using System.Windows;
 namespace PL
 {
 
-    internal enum ACCESS_ATHOLERAZATION {GUEST, CUSTOMER, EMPLOYEE, MANAGER}
+    internal enum ACCESS_AUTHORIZATION {GUEST, CUSTOMER, EMPLOYEE, MANAGER}
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         /// <summary>
-        /// the atholezetion that goes to the lists windiw. the defult is guest.
+        /// the authorize that goes to the lists window. the default is guest.
         /// </summary>
-        private ACCESS_ATHOLERAZATION accssesAtholerazetion = ACCESS_ATHOLERAZATION.GUEST;
+        private ACCESS_AUTHORIZATION accessesAuthorizer = ACCESS_AUTHORIZATION.GUEST;
 
         /// <summary>
         /// ctor for the window.
@@ -24,57 +24,54 @@ namespace PL
         {
             InitializeComponent();
 
-            LoginStack.DataContext = accssesAtholerazetion;
+            LoginStack.DataContext = accessesAuthorizer;
         }
 
         /// <summary>
-        /// open the login stack with manager atholerazetion.
+        /// open the login stack with manager authorizer.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Manager_Click(object sender, RoutedEventArgs e)
         {
-            this.accssesAtholerazetion = ACCESS_ATHOLERAZATION.MANAGER;
-            LoginStack.DataContext = accssesAtholerazetion;
-            //LoginStack.Visibility = Visibility.Visible;
+            accessesAuthorizer = ACCESS_AUTHORIZATION.MANAGER;
+            LoginStack.DataContext = accessesAuthorizer;
         }
 
         /// <summary>
-        /// open the login stack with Employee atholerazetion.
+        /// open the login stack with Employee authorize.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Employee_Click(object sender, RoutedEventArgs e)
         {
-            this.accssesAtholerazetion = ACCESS_ATHOLERAZATION.EMPLOYEE;
-            LoginStack.DataContext = accssesAtholerazetion;
-            //LoginStack.Visibility = Visibility.Visible;
+            accessesAuthorizer = ACCESS_AUTHORIZATION.EMPLOYEE;
+            LoginStack.DataContext = accessesAuthorizer;
 
         }
 
         /// <summary>
-        /// open the login stack with Customer atholerazetion.
+        /// open the login stack with Customer authorizer.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Customer_Click(object sender, RoutedEventArgs e)
         {
-            this.accssesAtholerazetion = ACCESS_ATHOLERAZATION.CUSTOMER;
-            LoginStack.DataContext = accssesAtholerazetion;
-            //LoginStack.Visibility = Visibility.Visible;
+            accessesAuthorizer = ACCESS_AUTHORIZATION.CUSTOMER;
+            LoginStack.DataContext = accessesAuthorizer;
 
         }
 
         /// <summary>
-        /// open the login stack with Guest atholerazetion.
+        /// open the login stack with Guest authorizer.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Guest_Click(object sender, RoutedEventArgs e)
         {
-            this.accssesAtholerazetion = ACCESS_ATHOLERAZATION.GUEST;
-            LoginStack.DataContext = accssesAtholerazetion;
-            new ListsViewWindow(accssesAtholerazetion).ShowDialog();
+            accessesAuthorizer = ACCESS_AUTHORIZATION.GUEST;
+            LoginStack.DataContext = accessesAuthorizer;
+            new ListsViewWindow(accessesAuthorizer).ShowDialog();
 
         }
 
@@ -100,19 +97,19 @@ namespace PL
         }
 
         /// <summary>
-        /// opening the lists eindow eith the cirrect atholerazetion.
+        /// opening the lists window with the correct authorizer.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Login_Click(object sender, RoutedEventArgs e)
         {
-            if (accssesAtholerazetion == ACCESS_ATHOLERAZATION.CUSTOMER)
+            if (accessesAuthorizer == ACCESS_AUTHORIZATION.CUSTOMER)
             {
                 try
                 {
-                    new ListsViewWindow(accssesAtholerazetion, int.Parse(UserName.Text)).ShowDialog();
+                    new ListsViewWindow(accessesAuthorizer, int.Parse(UserName.Text)).ShowDialog();
                 }
-                catch(Exception ex)
+                catch(Exception)
                 {
 
                     MessageBox.Show("no customer as " + UserName.Text + " in the database");
@@ -121,17 +118,17 @@ namespace PL
                 }
             }
             else
-                new ListsViewWindow(accssesAtholerazetion).ShowDialog();
-            accssesAtholerazetion = ACCESS_ATHOLERAZATION.GUEST;
-            LoginStack.DataContext = accssesAtholerazetion;
+                new ListsViewWindow(accessesAuthorizer).ShowDialog();
+            accessesAuthorizer = ACCESS_AUTHORIZATION.GUEST;
+            LoginStack.DataContext = accessesAuthorizer;
             MistakenPasswordOrName.Visibility = Visibility.Collapsed;
 
 
-            //if ((UserName.Text == "Mordechay" && Password.Password == "8035") || (UserName.Text == "Erez" && Password.Password == "8995"))
+            //if (UserName.Text == "Erez" && Password.Password == "8995")
             //{
-            //    new ListsViewWindow(bl, accssesAtholerazetion).ShowDialog();
-            //    accssesAtholerazetion = AccssesAtholerazetion.GUEST;
-            //    LoginStack.DataContext = accssesAtholerazetion;
+            //    new ListsViewWindow(accessesAuthorizer).ShowDialog();
+            //    accessesAuthorizer = ACCESS_AUTHORIZATION.GUEST;
+            //    LoginStack.DataContext = accessesAuthorizer;
             //    MistakenPasswordOrName.Visibility = Visibility.Collapsed;
             //}
             //else
@@ -154,7 +151,7 @@ namespace PL
         }
 
         /// <summary>
-        /// draging the window.
+        /// dragging the window.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

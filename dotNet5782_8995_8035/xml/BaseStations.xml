@@ -4,17 +4,17 @@
     <Id>12345</Id>
     <Name>0</Name>
     <Location>
-      <Longitude>35.20499248809824</Longitude>
-      <Latitude>31.875674523689877</Latitude>
+      <Longitude>35.24988046650706</Longitude>
+      <Latitude>31.86711344857386</Latitude>
     </Location>
-    <ChargeSlots>9</ChargeSlots>
+    <ChargeSlots>10</ChargeSlots>
   </BaseStation>
   <BaseStation>
     <Id>12357</Id>
     <Name>1</Name>
     <Location>
-      <Longitude>35.18718530310422</Longitude>
-      <Latitude>31.82260217338941</Latitude>
+      <Longitude>35.16876038807386</Longitude>
+      <Latitude>31.850240325303865</Latitude>
     </Location>
     <ChargeSlots>10</ChargeSlots>
   </BaseStation>
@@ -22,17 +22,17 @@
     <Id>12369</Id>
     <Name>2</Name>
     <Location>
-      <Longitude>35.236281379380365</Longitude>
-      <Latitude>31.74753674621754</Latitude>
+      <Longitude>35.20610361898919</Longitude>
+      <Latitude>31.846720839267178</Latitude>
     </Location>
-    <ChargeSlots>10</ChargeSlots>
+    <ChargeSlots>11</ChargeSlots>
   </BaseStation>
   <BaseStation>
     <Id>12381</Id>
     <Name>3</Name>
     <Location>
-      <Longitude>35.20954162931162</Longitude>
-      <Latitude>31.81713284280676</Latitude>
+      <Longitude>35.217725841593165</Longitude>
+      <Latitude>31.765924324107605</Latitude>
     </Location>
     <ChargeSlots>11</ChargeSlots>
   </BaseStation>
@@ -40,8 +40,8 @@
     <Id>12393</Id>
     <Name>4</Name>
     <Location>
-      <Longitude>35.22789078134489</Longitude>
-      <Latitude>31.856052064256975</Latitude>
+      <Longitude>35.16370516144941</Longitude>
+      <Latitude>31.74644194335899</Latitude>
     </Location>
     <ChargeSlots>12</ChargeSlots>
   </BaseStation>

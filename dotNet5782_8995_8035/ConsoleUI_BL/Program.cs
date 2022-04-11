@@ -1,22 +1,26 @@
-﻿using BlApi;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BL;
+using BL.Abstracts;
+using BL.Exceptions;
+using BL.Models;
+using static System.Int32;
 
 namespace ConsoleUI_BL
 {
-    class Program
+    internal static class Program
     {
 
-        private static Random r = new Random(); // a static value for 
+        private static readonly Random R = new Random(); // a static value for 
 
         public static void Main(string[] args)
         {
             Console.WriteLine("Welcome to the ConsoleUI_BL program.\n");
 
-            BlApi.IBL bl = new BL();
+            var bl = BlFactory.GetBl();
 
-            int choice = InputChoice();
+            var choice = InputChoice();
 
             while (choice != 5)
             {
@@ -26,14 +30,13 @@ namespace ConsoleUI_BL
                     //case 1: adding options
                     case 1:
                     {
-                        Console.WriteLine("Adding Options: \n\n Enter your choice: \n\n" +
-                                          "for adding a base station to the list: 1. \n" +
-                                          "for adding a drone to the list: 2. \n" +
-                                          "for adding a customer to the list: 3.\n" +
-                                          "for adding a perches to the list: 4.\n");
+                        Console.WriteLine("Adding Options: \n Enter your choice: \n\n" +
+                                          "for adding a base station to the list: . . .  1. \n" +
+                                          "for adding a drone to the list:  . . . . . .  2. \n" +
+                                          "for adding a customer to the list: . . . . .  3.\n" +
+                                          "for adding a perches to the list:  . . . . .  4.\n");
 
-                        int addingChoice;
-                        int.TryParse(Console.ReadLine(), out addingChoice);
+                        TryParse(Console.ReadLine(), out var addingChoice);
 
                         switch (addingChoice)
                         {
@@ -44,58 +47,54 @@ namespace ConsoleUI_BL
                                 Console.WriteLine("1 : adding a base station: \n");
 
                                 Console.Write("Enter the number of the station: ");
-                                int number;
-                                int.TryParse(Console.ReadLine(), out number);
+                                TryParse(Console.ReadLine(), out var number);
 
                                 Console.Write("enter the name of the station: ");
-                                string name = Console.ReadLine();
+                                var name = Console.ReadLine();
 
-                                Console.Write("enter the longtude: ");
-                                double longtude;
-                                double.TryParse(Console.ReadLine(), out longtude);
+                                Console.Write("enter the longitude: ");
+                                double.TryParse(Console.ReadLine(), out var longitude);
 
-                                Console.Write("enter the lattitude: ");
-                                double lattitude;
-                                double.TryParse(Console.ReadLine(), out lattitude);
+                                Console.Write("enter the latitude: ");
+                                double.TryParse(Console.ReadLine(), out var latitude);
 
                                 Console.Write("enter the number of charge slots: ");
-                                int chargeslots;
-                                int.TryParse(Console.ReadLine(), out chargeslots);
+                                TryParse(Console.ReadLine(), out var chargeSlots);
 
                                 try
                                 {
-                                    if (longtude > 90 || longtude < -90)
+                                    if (longitude is > 90 or < -90)
                                     {
-                                        throw new IBAL.BO.WrongInoutException("longtude has to be between -90 to 90");
+                                        throw new WrongInoutException("longitude has to be between -90 to 90");
                                     }
 
-                                    if (lattitude > 180 || lattitude < -180)
+                                    if (latitude is > 180 or < -180)
                                     {
-                                        throw new IBAL.BO.WrongInoutException("latitude has to be between -180 to 180");
+                                        throw new WrongInoutException("latitude has to be between -180 to 180");
                                     }
 
-                                    if (chargeslots <= 0)
+                                    if (chargeSlots <= 0)
                                     {
-                                        throw new IBAL.BO.WrongInoutException(
-                                            "number of charging gslots has to be biger then zero.");
+                                        throw new WrongInoutException(
+                                            "number of charging slots has to be bigger then zero.");
                                     }
 
-                                    IBAL.BO.BaseStation baseStation = new IBAL.BO.BaseStation()
+                                    var baseStation = new BaseStation()
                                     {
                                         Id = number,
                                         Name = name,
-                                        ChargingDrones = new List<IBAL.BO.DroneInCharge>(),
-                                        ChargeSlots = chargeslots,
-                                        Location = new IBAL.BO.Location()
+                                        ChargingDrones = new List<DroneInCharge>(),
+                                        ChargeSlots = chargeSlots,
+                                        Location = new Location()
                                         {
-                                            Longitude = longtude,
-                                            Latitude = lattitude
+                                            Longitude = longitude,
+                                            Latitude = latitude
                                         }
                                     };
 
                                     if (bl.AddBaseStation(baseStation))
                                     {
-                                        Console.WriteLine($"\nbasestation {name} successfully added to the list.");
+                                        Console.WriteLine($"\nbaseStation {name} successfully added to the list.");
                                     }
                                 }
                                 catch (Exception e)
@@ -114,36 +113,33 @@ namespace ConsoleUI_BL
                                 //case 2: adding a drone
 
                                 Console.Write("Enter the serial number of the drone: ");
-                                int number;
-                                int.TryParse(Console.ReadLine(), out number);
+                                TryParse(Console.ReadLine(), out var number);
 
                                 Console.Write("enter the model of the drone: ");
-                                string name = Console.ReadLine();
+                                var name = Console.ReadLine();
 
                                 Console.Write("enter the max weight of the drone: ");
-                                IBAL.BO.Enums.WeightCategories maxWeight;
-                                Enum.TryParse(Console.ReadLine(), out maxWeight);
+                                Enum.TryParse(Console.ReadLine(), out Enums.WeightCategories maxWeight);
 
                                 Console.WriteLine(
                                     "enter the number if the station to put the drone for initial charge: ");
-                                int stationNumber;
-                                int.TryParse(Console.ReadLine(), out stationNumber);
+                                TryParse(Console.ReadLine(), out var stationNumber);
 
                                 try
                                 {
-                                    IBAL.BO.DroneForList drone = new IBAL.BO.DroneForList()
+                                    var drone = new DroneForList()
                                     {
                                         Id = number,
-                                        Battery = r.Next() % 20 + 20,
+                                        Battery = R.Next() % 20 + 20,
                                         Model = name,
-                                        Status = IBAL.BO.Enums.DroneStatuses.FREE,
+                                        Status = Enums.DroneStatuses.FREE,
                                         ParcelId = -1,
                                         Weight = maxWeight,
                                         Location = bl.GetBaseStation(stationNumber).Location
                                     };
 
 
-                                    if (bl.AddDrone(new IBAL.BO.Drone()
+                                    if (bl.AddDrone(new Drone()
                                     {
                                         Id = drone.Id,
                                         Battery = drone.Battery,
@@ -172,49 +168,46 @@ namespace ConsoleUI_BL
                                 //case 3: adding a customer
 
                                 Console.Write("Enter the number of the customer: ");
-                                int number;
-                                int.TryParse(Console.ReadLine(), out number);
+                                TryParse(Console.ReadLine(), out var number);
 
                                 Console.Write("enter the name of the customer: ");
-                                string name = Console.ReadLine();
+                                var name = Console.ReadLine();
 
                                 Console.Write("enter the phone: ");
-                                string phone = Console.ReadLine();
+                                var phone = Console.ReadLine();
 
-                                Console.Write("enter the longtude: ");
-                                double longtude;
-                                double.TryParse(Console.ReadLine(), out longtude);
+                                Console.Write("enter the longitude: ");
+                                double.TryParse(Console.ReadLine(), out var longitude);
 
-                                Console.Write("enter the lattitude: ");
-                                double lattitude;
-                                double.TryParse(Console.ReadLine(), out lattitude);
+                                Console.Write("enter the latitude: ");
+                                double.TryParse(Console.ReadLine(), out var latitude);
 
                                 try
                                 {
-                                    if (longtude > 90 || longtude < -90)
+                                    if (longitude is > 90 or < -90)
                                     {
-                                        throw new IBAL.BO.WrongInoutException("longtude has to be between -90 to 90");
+                                        throw new WrongInoutException("longitude has to be between -90 to 90");
                                     }
 
-                                    if (lattitude > 180 || lattitude < -180)
+                                    if (latitude is > 180 or < -180)
                                     {
-                                        throw new IBAL.BO.WrongInoutException("latitude has to be between -180 to 180");
+                                        throw new WrongInoutException("latitude has to be between -180 to 180");
                                     }
 
-                                    IBAL.BO.Customer customer = new IBAL.BO.Customer()
+                                    var customer = new Customer()
                                     {
                                         Id = number,
                                         Name = name,
                                         Phone = phone,
-                                        Location = new IBAL.BO.Location()
+                                        Location = new Location()
                                         {
-                                            Longitude = longtude,
-                                            Latitude = lattitude
+                                            Longitude = longitude,
+                                            Latitude = latitude
                                         }
                                     };
 
 
-                                    if (bl.AddCustumer(customer))
+                                    if (bl.AddCustomer(customer))
                                     {
                                         Console.WriteLine($"\ncustomer {name} successfully added to the list.");
                                     }
@@ -235,33 +228,29 @@ namespace ConsoleUI_BL
                                 //case 4: adding a parcel
 
                                 Console.WriteLine("enter the sender ID: ");
-                                int senderId;
-                                int.TryParse(Console.ReadLine(), out senderId);
+                                TryParse(Console.ReadLine(), out var senderId);
 
                                 Console.WriteLine("enter the target ID: ");
-                                int targetId;
-                                int.TryParse(Console.ReadLine(), out targetId);
+                                TryParse(Console.ReadLine(), out var targetId);
 
                                 Console.WriteLine("enter the weight of the parcel: ");
-                                IBAL.BO.Enums.WeightCategories weight;
-                                Enum.TryParse(Console.ReadLine(), out weight);
+                                Enum.TryParse(Console.ReadLine(), out Enums.WeightCategories weight);
 
-                                Console.WriteLine("enter the praiority of the parcel: ");
-                                IBAL.BO.Enums.Priorities priority;
-                                Enum.TryParse(Console.ReadLine(), out priority);
+                                Console.WriteLine("enter the priority of the parcel: ");
+                                Enum.TryParse(Console.ReadLine(), out Enums.Priorities priority);
 
 
                                 try
                                 {
-                                    IBAL.BO.Parcel parcel = new IBAL.BO.Parcel()
+                                    var parcel = new Parcel()
                                     {
                                         Id = bl.GetNextSerialNumberForParcel(),
-                                        Sender = new IBAL.BO.CoustomerForParcel()
+                                        Sender = new CoustomerForParcel()
                                         {
                                             Id = bl.GetCustomer(senderId).Id,
                                             CustomerName = bl.GetCustomer(senderId).Name
                                         },
-                                        Reciver = new IBAL.BO.CoustomerForParcel()
+                                        Receiver = new CoustomerForParcel()
                                         {
                                             Id = bl.GetCustomer(targetId).Id,
                                             CustomerName = bl.GetCustomer(targetId).Name
@@ -269,9 +258,9 @@ namespace ConsoleUI_BL
                                         Priority = priority,
                                         Drone = null,
                                         Weight = weight,
-                                        RequestedTime = DateTime.Now,
+                                        DefinedTime = DateTime.Now,
                                         PickupTime = new DateTime(),
-                                        AcceptedTime = new DateTime(),
+                                        AssignedTime = new DateTime(),
                                         DeliveringTime = DateTime.Now.AddDays(10)
                                     };
 
@@ -304,17 +293,16 @@ namespace ConsoleUI_BL
                     case 2:
                     {
                         Console.WriteLine("\n" +
-                                          "updationg option:\n\n" + "enter your choice: \n\n" +
-                                          "for updating model of a drone: 1. \n" +
-                                          "for updating ditails of a base station: 2. \n" +
-                                          "for updating ditails of customer: 3.\n" +
-                                          "for snding a drone to a base station: 4.\n" +
-                                          "for releasing a drone from a base station: 5.\n" +
-                                          "to assign a parcel to a drone: 6.\n" +
-                                          "to deliver a parcel from a drone: 7.\n");
+                                          "updating option:\n\n" + "enter your choice: \n\n" +
+                                          "for updating model of a drone: . . . . . . . . . .  1. \n" +
+                                          "for updating details of a base station:  . . . . .  2. \n" +
+                                          "for updating details of customer:  . . . . . . . .  3.\n" +
+                                          "for sending a drone to a base station:  . . . . . .  4.\n" +
+                                          "for releasing a drone from a base station: . . . .  5.\n" +
+                                          "to assign a parcel to a drone: . . . . . . . . . .  6.\n" +
+                                          "to deliver a parcel from a drone:  . . . . . . . .  7.\n");
 
-                        int updatingChoice;
-                        int.TryParse(Console.ReadLine(), out updatingChoice);
+                        TryParse(Console.ReadLine(), out var updatingChoice);
                         Console.WriteLine();
 
                         switch (updatingChoice)
@@ -323,11 +311,10 @@ namespace ConsoleUI_BL
                             {
                                 // case 1: assigning drone for a parcel
                                 Console.WriteLine("enter the number of the drone: ");
-                                int droneId;
-                                int.TryParse(Console.ReadLine(), out droneId);
+                                TryParse(Console.ReadLine(), out var droneId);
 
                                 Console.WriteLine("enter the new model of the drone: ");
-                                string model = Console.ReadLine();
+                                var model = Console.ReadLine();
 
                                 try
                                 {
@@ -347,22 +334,20 @@ namespace ConsoleUI_BL
                             {
                                 // case 2: updating the picking up time of the parcel to be now
                                 Console.WriteLine("enter the number of the base station: ");
-                                int basStationID;
-                                int.TryParse(Console.ReadLine(), out basStationID);
+                                TryParse(Console.ReadLine(), out var basStationId);
 
                                 Console.WriteLine("enter the new name of the base station: ");
-                                string name = Console.ReadLine();
+                                var name = Console.ReadLine();
 
                                 Console.WriteLine("enter the new number of the slots: ");
-                                int slots;
-                                int.TryParse(Console.ReadLine(), out slots);
+                                TryParse(Console.ReadLine(), out var slots);
 
                                 try
                                 {
-                                    if (bl.UpdateBaseStation(basStationID, name, slots))
+                                    if (bl.UpdateBaseStation(basStationId, name, slots))
                                     {
                                         Console.WriteLine(
-                                            $"\ndetails of the basStation {basStationID} updated successfully.");
+                                            $"\ndetails of the basStation {basStationId} updated successfully.");
                                     }
                                 }
                                 catch (Exception e)
@@ -376,21 +361,20 @@ namespace ConsoleUI_BL
                                 // case 3: updating the delivering time of the parcel to be now
 
                                 Console.WriteLine("enter the number of the customer: ");
-                                int customerID;
-                                int.TryParse(Console.ReadLine(), out customerID);
+                                TryParse(Console.ReadLine(), out var customerId);
 
                                 Console.WriteLine("enter the new nameof the customer: ");
-                                string name = Console.ReadLine();
+                                var name = Console.ReadLine();
 
                                 Console.WriteLine("enter the new phone of the customer: ");
-                                string phone = Console.ReadLine();
+                                var phone = Console.ReadLine();
 
                                 try
                                 {
-                                    if (bl.UpdateCustomer(customerID, name, phone))
+                                    if (bl.UpdateCustomer(customerId, name, phone))
                                     {
                                         Console.WriteLine(
-                                            $"\nthe name of the customer {customerID} update successfully.");
+                                            $"\nthe name of the customer {customerId} update successfully.");
                                     }
                                 }
                                 catch (Exception e)
@@ -403,8 +387,7 @@ namespace ConsoleUI_BL
                             {
                                 //case 4: updating the charge of a drone
                                 Console.WriteLine("enter the number of the drone: ");
-                                int droneId;
-                                int.TryParse(Console.ReadLine(), out droneId);
+                                TryParse(Console.ReadLine(), out var droneId);
 
                                 try
                                 {
@@ -421,18 +404,13 @@ namespace ConsoleUI_BL
                                 break;
                             case 5:
                             {
-                                //relicing a drone from charging
+                                //reliving a drone from charging
                                 Console.WriteLine("enter the number of the drone: ");
-                                int droneId;
-                                int.TryParse(Console.ReadLine(), out droneId);
-
-                                Console.WriteLine("enter number of minutes that  the drone was charged: ");
-                                int minutes;
-                                int.TryParse(Console.ReadLine(), out minutes);
+                                TryParse(Console.ReadLine(), out var droneId);
 
                                 try
                                 {
-                                    if (bl.UnChargeDrone(droneId, minutes))
+                                    if (bl.UnChargeDrone(droneId))
                                     {
                                         Console.WriteLine(
                                             $"\nthe drone {droneId} released from charging successfully.");
@@ -448,15 +426,14 @@ namespace ConsoleUI_BL
                             {
                                 //case 6: assigning a parcel to a drone.
                                 Console.WriteLine("enter the number of the drone: ");
-                                int droneId;
-                                int.TryParse(Console.ReadLine(), out droneId);
+                                TryParse(Console.ReadLine(), out var droneId);
 
                                 try
                                 {
                                     if (bl.AssignParcelToADrone(droneId))
                                     {
                                         Console.WriteLine(
-                                            $"\nthe drone {droneId} assign to the persel {bl.GetDrone(droneId).ParcelInDelivery.Id} successfully.");
+                                            $"\nthe drone {droneId} assign to the parcel {bl.GetDrone(droneId).ParcelInDelivery.Id} successfully.");
                                     }
                                 }
                                 catch (Exception e)
@@ -469,15 +446,14 @@ namespace ConsoleUI_BL
                             {
                                 //case 7: delivering a parcel from a drone.
                                 Console.WriteLine("enter the number of the drone: ");
-                                int droneID;
-                                int.TryParse(Console.ReadLine(), out droneID);
+                                TryParse(Console.ReadLine(), out var droneId);
 
                                 try
                                 {
-                                    if (bl.DeliveringParcelFromADrone(droneID))
+                                    if (bl.DeliveringParcelFromADrone(droneId))
                                     {
                                         Console.WriteLine(
-                                            $"\nthe parcel {bl.GetDrone(droneID).ParcelInDelivery.Id} delivered successfully.");
+                                            $"\nthe parcel {bl.GetDrone(droneId).ParcelInDelivery.Id} delivered successfully.");
                                     }
                                 }
                                 catch (Exception e)
@@ -491,17 +467,16 @@ namespace ConsoleUI_BL
                         break;
                     //end of case 2 in the main switch
 
-                    //case 3: shoing a cetain object.
+                    //case 3: showing a certain object.
                     case 3:
                     {
                         Console.WriteLine("enter your choice: \n" +
-                                          "to show a base station: 1. \n" +
-                                          "to show a drone: 2. \n" +
-                                          "to show a custumer: 3.\n" +
-                                          "to show a parcel: 4.\n\n");
+                                          "to show a base station: . . 1. \n" +
+                                          "to show a drone:  . . . . . 2. \n" +
+                                          "to show a customer: . . . . 3.\n" +
+                                          "to show a parcel: . . . . . 4.\n\n");
 
-                        int showChoice;
-                        int.TryParse(Console.ReadLine(), out showChoice);
+                        TryParse(Console.ReadLine(), out var showChoice);
 
                         switch (showChoice)
                         {
@@ -509,12 +484,11 @@ namespace ConsoleUI_BL
                             {
                                 //to show a base station
                                 Console.WriteLine("enter the number of the base station: ");
-                                int baseID;
-                                int.TryParse(Console.ReadLine(), out baseID);
+                                TryParse(Console.ReadLine(), out var baseId);
 
                                 try
                                 {
-                                    Console.WriteLine(bl.GetBaseStation(baseID));
+                                    Console.WriteLine(bl.GetBaseStation(baseId));
                                 }
                                 catch (Exception e)
                                 {
@@ -526,12 +500,11 @@ namespace ConsoleUI_BL
                             {
                                 // to show a drone
                                 Console.WriteLine("enter the number of the drone: ");
-                                int droneID;
-                                int.TryParse(Console.ReadLine(), out droneID);
+                                TryParse(Console.ReadLine(), out var droneId);
 
                                 try
                                 {
-                                    Console.WriteLine(bl.GetDrone(droneID));
+                                    Console.WriteLine(bl.GetDrone(droneId));
                                 }
                                 catch (Exception e)
                                 {
@@ -543,12 +516,11 @@ namespace ConsoleUI_BL
                             {
                                 //to show a customer
                                 Console.WriteLine("enter the number of the customer: ");
-                                int customerID;
-                                int.TryParse(Console.ReadLine(), out customerID);
+                                TryParse(Console.ReadLine(), out var customerId);
 
                                 try
                                 {
-                                    Console.WriteLine(bl.GetCustomer(customerID));
+                                    Console.WriteLine(bl.GetCustomer(customerId));
                                 }
                                 catch (Exception e)
                                 {
@@ -560,12 +532,11 @@ namespace ConsoleUI_BL
                             {
                                 //to show a parcel
                                 Console.WriteLine("enter the number of the parcel: ");
-                                int parcelID;
-                                int.TryParse(Console.ReadLine(), out parcelID);
+                                TryParse(Console.ReadLine(), out var parcelId);
 
                                 try
                                 {
-                                    Console.WriteLine(bl.GetParcel(parcelID));
+                                    Console.WriteLine(bl.GetParcel(parcelId));
                                 }
                                 catch (Exception e)
                                 {
@@ -583,58 +554,57 @@ namespace ConsoleUI_BL
                     case 4:
                     {
                         Console.WriteLine("enter your choice: \n" +
-                                          "to show the list of the base stations: 1. \n" +
-                                          "to show the list of the drones: 2. \n" +
-                                          "to show the list of the custumers: 3.\n" +
-                                          "to show the list of the parcels: 4.\n" +
-                                          "to show the list of the parcels that dont have a drone: 5.\n" +
-                                          "to show the list of the base stations with available chrging slots: 6\n\n");
+                                          "to show the list of the base stations: . . . . . . . . . . . . . . . . .  1. \n" +
+                                          "to show the list of the drones:  . . . . . . . . . . . . . . . . . . . .  2. \n" +
+                                          "to show the list of the customers: . . . . . . . . . . . . . . . . . . .  3.\n" +
+                                          "to show the list of the parcels: . . . . . . . . . . . . . . . . . . . .  4.\n" +
+                                          "to show the list of the parcels that dont have a drone:  . . . . . . . .  5.\n" +
+                                          "to show the list of the base stations with available charging slots:  . .  6\n\n");
 
-                        int showChoice;
-                        int.TryParse(Console.ReadLine(), out showChoice);
+                        TryParse(Console.ReadLine(), out var showChoice);
 
                         switch (showChoice)
                         {
                             case 1:
                             {
                                 //showing the list of base stations
-                                bl.GetBaseStations(_ => true).ToList().ForEach(Console.WriteLine);
+                                bl.GetBaseStations().ToList().ForEach(Console.WriteLine);
                                 Console.WriteLine();
                             }
                                 break;
                             case 2:
                             {
                                 //showing the list of the drones
-                                bl.GetDrones(_ => true).ToList().ForEach(Console.WriteLine);
+                                bl.GetDrones().ToList().ForEach(Console.WriteLine);
                                 Console.WriteLine();
                             }
                                 break;
                             case 3:
                             {
                                 // showing the list of the customers
-                                bl.GetCustomers(_ => true).ToList().ForEach(Console.WriteLine);
+                                bl.GetCustomers().ToList().ForEach(Console.WriteLine);
                                 Console.WriteLine();
                             }
                                 break;
                             case 4:
                             {
                                 //showing the list of the parcels
-                                bl.GetPacels(_ => true).ToList().ForEach(Console.WriteLine);
+                                bl.GetParcels().ToList().ForEach(Console.WriteLine);
                                 Console.WriteLine();
                             }
                                 break;
                             case 5:
                             {
-                                //shoing the list of the parcels that dont have a drine.
-                                bl.GetPacels(p => bl.GetParcel(p.Id).Drone.Id == -1).ToList()
+                                //showing the list of the parcels that dont have a drone.
+                                bl.GetParcelsForSelector().ToList()
                                     .ForEach(Console.WriteLine);
                                 Console.WriteLine();
                             }
                                 break;
                             case 6:
                             {
-                                //shoing the base stations that have free charging slots
-                                bl.GetBaseStations(b => b.FreeChargingSlots > 0).ToList().ForEach(Console.WriteLine);
+                                //showing the base stations that have free charging slots
+                                bl.GetBaseStationsForSelector().ToList().ForEach(Console.WriteLine);
                                 Console.WriteLine();
                             }
                                 break;
@@ -655,13 +625,13 @@ namespace ConsoleUI_BL
         private static int InputChoice()
         {
             Console.WriteLine("\nEnter your choice: \n\n" +
-                              "for adding options: 1. \n" +
-                              "for updating options: 2. \n" +
-                              "for showing created object options: 3.\n" +
-                              "for showing a list of objects: 4.\n" +
+                              "for adding options: . . . . . . . . . . . .  1. \n" +
+                              "for updating options: . . . . . . . . . . .  2. \n" +
+                              "for showing created object options: . . . .  3.\n" +
+                              "for showing a list of objects:  . . . . . .  4.\n" +
                               "for exit: 5.\n");
 
-            int.TryParse(Console.ReadLine(), out int choice);
+            TryParse(Console.ReadLine(), out var choice);
 
             return choice;
         }

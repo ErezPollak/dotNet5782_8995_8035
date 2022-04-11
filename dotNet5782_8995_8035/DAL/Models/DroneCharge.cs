@@ -1,34 +1,31 @@
 ﻿//course: Mini Project in Windows Systems
-//lecturere: Eliezer Grintsborger
+//lecturer: Eliezer Grintsborger
 //from the students: Erez Polak 322768995
-//                   Mordehay Cohen 206958035
 
 
 //the program contains a struct class that represents a connection between a drone and a base station.
-//the program contains the properties and a tostring function.
+//the program contains the properties and a toString function.
 
 
 using System;
 
 namespace DO
 {
-    public struct DroneCharge
+    public readonly struct DroneCharge
     {
-        public int DroneId { get; set; }
+        public int DroneId { get; init; }
 
-        public int StationId { get; set; }
+        public int StationId { get; init; }
 
-        public DateTime? EntryIntoCharge{ get; set; }
+        public DateTime? EntryIntoCharge{ get; init; }
         
         /// <summary>
-        /// the function prints all the props of the struct.
+        /// the function returns the current place of the item's properties.
         /// </summary>
         /// <returns></returns>
         public override string ToString()
         {
-            //the function returns the current place of the item's properties.///
-
-            return $"DroneCharge: droneld: {DroneId} , stationled {StationId}\n";
+            return $"DroneCharge: droneId: {DroneId} , stationId {StationId}\n";
         }
     }
 }

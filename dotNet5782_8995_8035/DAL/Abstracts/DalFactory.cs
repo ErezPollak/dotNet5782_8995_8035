@@ -1,16 +1,12 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DalApi
 {
     /// <summary>
     /// Factory Design
-    /// get an istance of an object from a class that implements the IDal interface
+    /// get an instance of an object from a class that implements the IDal interface
     /// </summary>
     public static class DalFactory
     {
@@ -20,7 +16,7 @@ namespace DalApi
         /// <returns>instance of an object from class implementing Idal interface </returns>
         public static IDal GetDal()
         {
-            string dalType = DalConfig.DalName;
+            var dalType = DalConfig.DalName;
             DalConfig.DalPackage dalPackage;
 
             try
@@ -31,9 +27,9 @@ namespace DalApi
             {
                 throw new DalConfigException($"Wrong Dal type: {dalType}", ex);
             }
-            string dalPackageName = dalPackage.Name;
-            string dalNameSpace = dalPackage.NameSpace;
-            string dalClass = dalPackage.ClassName;
+            var dalPackageName = dalPackage.Name;
+            var dalNameSpace = dalPackage.NameSpace;
+            var dalClass = dalPackage.ClassName;
 
             try // Load into CLR the dal implementation assembly according to dll file name (taken above)
             {
@@ -64,9 +60,8 @@ namespace DalApi
             // Get the value of the property Instance 
             try
             {
-                IDal dal = type.GetProperty("Instance", BindingFlags.Public | BindingFlags.Static).GetValue(null) as IDal;
                 // If the instance property is not initialized (i.e. it does not hold a real instance reference)...
-                if (dal == null)
+                if (type.GetProperty("Instance", BindingFlags.Public | BindingFlags.Static)?.GetValue(null) is not IDal dal)
                     throw new DalConfigException($"Class {dalNameSpace}.{dalClass} instance is not initialized");
                 // now it looks like we have appropriate dal implementation instance :-)
                 return dal;

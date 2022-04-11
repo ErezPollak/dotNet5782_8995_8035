@@ -1,49 +1,43 @@
-﻿using BlApi;
-using BO;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Interop;
 using System.Windows.Media;
+using BL.Abstracts;
+using BL.Exceptions;
+using BL.Models;
 
 namespace PL
 {
     /// <summary>
     /// Interaction logic for CustomerWindow.xaml
     /// </summary>
-    public partial class CustomerWindow : Window
+    public partial class CustomerWindow
     {
-        private static readonly Random Random = new();
-
-        private readonly IBL bl =  BlFactory.GetBl();
+        private readonly IBl bl =  BlFactory.GetBl();
         private readonly ListsViewWindow listsViewWindow;
-        private Customer customer;
+        private readonly Customer customer;
 
         /// <summary>
         /// ctor for add customer
         /// </summary>
-        /// <param name="bl"></param>
         /// <param name="listsViewWindow"></param>
         public CustomerWindow(ListsViewWindow listsViewWindow)
         {
             InitializeComponent();
 
             this.listsViewWindow = listsViewWindow;
-            customer = new(Location: new Location(), FromCustomer: new List<BO.ParcelByCustomer>(),ToCustomer: new List<BO.ParcelByCustomer>());
+            customer = new Customer(Location: new Location(), FromCustomer: new List<ParcelByCustomer>(),ToCustomer: new List<ParcelByCustomer>());
             AddingStack.DataContext = customer;
 
-            //shows the pannel that controls the adding of an new customer.
+            //shows the panel that controls the adding of an new customer.
             AddingStack.Visibility = Visibility.Visible;
         }
 
         /// <summary>
         /// ctor for Update customer
         /// </summary>
-        /// <param name="bl"></param>
         /// <param name="listsViewWindow"></param>
         /// <param name="customer"></param>
         public CustomerWindow(ListsViewWindow listsViewWindow, Customer customer)
@@ -54,7 +48,7 @@ namespace PL
             this.customer = customer;
             OptionStack.DataContext = customer;
 
-            //shows the pannel that controls the updateing of an existing customer.
+            //shows the panel that controls the updating of an existing customer.
             OptionStack.Visibility = Visibility.Visible;
 
             //takes from the customer the lists of the parcels that are being sent from or to him.
@@ -76,13 +70,13 @@ namespace PL
         }
 
         /// <summary>
-        /// draging the window.
+        /// dragging the window.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Drag(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void Drag(object sender, MouseButtonEventArgs e)
         {
-            if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
+            if (e.LeftButton == MouseButtonState.Pressed)
             {
                 DragMove();
             }
@@ -92,7 +86,7 @@ namespace PL
 
         #region Adding functions
         /// <summary>
-        /// add base station buton click.
+        /// add base station button click.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -101,18 +95,18 @@ namespace PL
 
             try
             {
-                if (bl.AddCustumer(customer))
+                if (bl.AddCustomer(customer))
                 {
 
                     listsViewWindow.AddCustomer(customer);
 
-                    MessageBox.Show("customer added seccussfully");
+                    MessageBox.Show("customer added successfully");
                     listsViewWindow.UpdateBaseStationList();
                     Close();
                 }
 
             }
-            catch (Exception ex) when (ex is BO.IdAlreadyExistsException or FormatException)
+            catch (Exception ex) when (ex is IdAlreadyExistsException or FormatException)
             {
                 customerID.Foreground = Brushes.Red;
                 MessageBox.Show(ex.Message);
@@ -121,7 +115,7 @@ namespace PL
 
 
         /// <summary>
-        /// allows only number to go into the id textbox.
+        /// allows only number to go into the id textBox.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -131,7 +125,7 @@ namespace PL
         }
 
         /// <summary>
-        /// allows to type only float number into the lication.
+        /// allows to type only float number into the location.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -155,13 +149,13 @@ namespace PL
             {
                 if (bl.UpdateCustomer(customer.Id, customer.Name, customer.Phone))
                 {
-                    MessageBox.Show("customer updated seccussfully");
+                    MessageBox.Show("customer updated successfully");
                     listsViewWindow.UpdateBaseStationList(); 
                     Close();
                 }
 
             }
-            catch (Exception ex) when (ex is BO.IdAlreadyExistsException or FormatException)
+            catch (Exception ex) when (ex is IdAlreadyExistsException or FormatException)
             {
                 MessageBox.Show(ex.Message);
             }

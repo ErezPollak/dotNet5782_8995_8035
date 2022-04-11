@@ -1,13 +1,11 @@
-﻿using BO;
-using BlApi;
-using System;
-using System.Runtime.InteropServices;
+﻿using System;
 using System.Windows;
-using System.Windows.Interop;
 using System.Windows.Media;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Windows.Controls;
+using BL;
+using BL.Abstracts;
+using BL.Exceptions;
+using BL.Models;
 
 namespace PL
 {
@@ -17,53 +15,47 @@ namespace PL
     /// <summary>
     /// Interaction logic for DroneWindow.xaml
     /// </summary>
-    public partial class DroneWindow : Window
+    public partial class DroneWindow
     {
-        private Random r;
-        private IBL bl = BlFactory.GetBl();
+        private readonly Random r;
+        private readonly IBl bl = BlFactory.GetBl();
         private Drone drone;
-        private ListsViewWindow listsViewWindow;
-
+        private readonly ListsViewWindow listsViewWindow;
         private PARCEL_STATE parcelState = PARCEL_STATE.ASSIGN;
 
-
-        private bool IsAuto = false;
         /// <summary>
         /// ctor for adding a drone.
         /// </summary>
-        /// <param name="bl"></param>
         /// <param name="listsViewWindow"></param>
         public DroneWindow(ListsViewWindow listsViewWindow)
         {
-            drone = new();
+            drone = new Drone();
             r = new Random();
             InitializeComponent();
+            
             AddingStack.Visibility = Visibility.Visible;
 
             this.listsViewWindow = listsViewWindow;
-
-            //Weight.ItemsSource = Enum.GetValues<BO.Enums.WeightCategories>();
-
+            
             AddingStack.DataContext = drone;
 
-            WeightInput.DataContext = Enum.GetValues<BO.Enums.WeightCategories>();
+            WeightInput.DataContext = Enum.GetValues<Enums.WeightCategories>();
 
         }
 
         /// <summary>
         /// ctor for showing and updating a drone. 
         /// </summary>
-        /// <param name="bl"></param>
         /// <param name="listOfDronesViewWindow"></param>
         /// <param name="drone"></param>
-        public DroneWindow(ListsViewWindow listOfDronesViewWindow, BO.Drone drone)
+        public DroneWindow(ListsViewWindow listOfDronesViewWindow, Drone drone)
         {
             r = new Random();
 
             InitializeComponent();
 
             OptionStack.Visibility = Visibility.Visible;
-            this.listsViewWindow = listOfDronesViewWindow;
+            listsViewWindow = listOfDronesViewWindow;
             this.drone = drone;
             DeliveryPanel.DataContext = parcelState;
             OptionStack.DataContext = this.drone;
@@ -71,25 +63,15 @@ namespace PL
             DroneID.Text = drone.Id + "";
             DroneID.IsEnabled = false;
 
-            if (drone.Status != BO.Enums.DroneStatuses.DELIVERY)
+            if (drone.Status != Enums.DroneStatuses.DELIVERY)
             {
                 //assign need to be turns on
                 parcelState = PARCEL_STATE.ASSIGN;
-                //ProgresDelivery.DataContext = parcelState;
             }
 
             if (drone.ParcelInDelivery != null)
             {
-
-                if (this.bl.GetParcel(bl.GetDrone(drone.Id).ParcelInDelivery.Id).PickupTime != null)
-                {
-                    parcelState = PARCEL_STATE.DELIVER;
-                }
-                else
-                {
-                    //pickup needs to be turned on
-                    parcelState = PARCEL_STATE.PICKUP;
-                }
+                parcelState = bl.GetParcel(bl.GetDrone(drone.Id).ParcelInDelivery.Id).PickupTime != null ? PARCEL_STATE.DELIVER : PARCEL_STATE.PICKUP;
             }
 
             DeliveryPanel.DataContext = parcelState;
@@ -99,7 +81,7 @@ namespace PL
         #region Operational functions
        
         /// <summary>
-        /// coeses the window, so we wont have to use the regular close button..
+        /// closes the window, so we wont have to use the regular close button..
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -109,7 +91,7 @@ namespace PL
         }
 
         /// <summary>
-        /// draging the window by holding it.
+        /// dragging the window by holding it.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -125,7 +107,7 @@ namespace PL
 
         #region Adding functions
         /// <summary>
-        /// button that adds the drone to the databese aster inserting the reqired properties to the textboxs.
+        /// button that adds the drone to the dataBase aster inserting the required properties to the textBox.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -133,26 +115,23 @@ namespace PL
         {
             try
             {
-                drone.Status = BO.Enums.DroneStatuses.MAINTENANCE;
+                drone.Status = Enums.DroneStatuses.MAINTENANCE;
                 drone.Battery = r.Next() % 20;
                 drone.ParcelInDelivery = null;
                 drone.Location = null;
 
-                if (bl.AddDrone(drone))
-                {
-                    MessageBox.Show("drone added seccussfully");
+                if (!bl.AddDrone(drone)) return;
+                
+                MessageBox.Show("drone added successfully");
 
-                    listsViewWindow.UpdateDroneList();
+                listsViewWindow.UpdateDroneList();
 
-                    //listsViewWindow.AddDrone(drone);
-
-                    Close();
-                }
+                Close();
 
             }
             catch (Exception ex)
             {
-                if (ex is BO.IdAlreadyExistsException || ex is FormatException)
+                if (ex is IdAlreadyExistsException or FormatException)
                 {
                     DroneID.Foreground = Brushes.Red;
                 }
@@ -190,7 +169,7 @@ namespace PL
                 bl.UpdateNameForADrone(drone.Id, Model.Text);
                 listsViewWindow.UpdateDroneList();
                 UpdateModel.Visibility = Visibility.Collapsed;
-                OptionStack.DataContext = this.drone;
+                OptionStack.DataContext = drone;
             }
             catch (Exception ex)
             {
@@ -202,23 +181,23 @@ namespace PL
 
         /// <summary>
         /// the button the sends the drone to charge if it is not already in charge.
-        /// and realese it from charge if it is in charge.
+        /// and release it from charge if it is in charge.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ChargeAndUnchargeButton_Click(object sender, RoutedEventArgs e)
+        private void ChargeAndUnchargedButton_Click(object sender, RoutedEventArgs e)
         {
-            if (this.drone.Status == BO.Enums.DroneStatuses.MAINTENANCE)
+            if (drone.Status == Enums.DroneStatuses.MAINTENANCE)
             {
                 try
                 {
                     bl.UnChargeDrone(drone.Id);
 
                     listsViewWindow.UpdateLists();
-                    //after updating was seccussful we can update the drone we got from the user to be the new drone.
+                    //after updating was successful we can update the drone we got from the user to be the new drone.
                     drone = bl.GetDrone(drone.Id);
 
-                    OptionStack.DataContext = this.drone;
+                    OptionStack.DataContext = drone;
 
                 }
                 catch (Exception ex)
@@ -237,7 +216,7 @@ namespace PL
 
                     drone = bl.GetDrone(drone.Id);
 
-                    OptionStack.DataContext = this.drone;
+                    OptionStack.DataContext = drone;
                 }
                 catch (Exception ex)
                 {
@@ -260,7 +239,7 @@ namespace PL
         }
 
         /// <summary>
-        /// geting the parcel to next step of its delivery. 
+        /// getting the parcel to next step of its delivery. 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -274,9 +253,9 @@ namespace PL
                         {
                             bl.AssignParcelToADrone(drone.Id);
 
-                            this.drone = bl.GetDrone(drone.Id);
+                            drone = bl.GetDrone(drone.Id);
 
-                            OptionStack.DataContext = this.drone;
+                            OptionStack.DataContext = drone;
 
                             parcelState = PARCEL_STATE.PICKUP;
                             DeliveryPanel.DataContext = parcelState;
@@ -296,9 +275,9 @@ namespace PL
                         {
                             bl.PickingUpParcelToDrone(drone.Id);
 
-                            this.drone = bl.GetDrone(drone.Id);
+                            drone = bl.GetDrone(drone.Id);
 
-                            OptionStack.DataContext = this.drone;
+                            OptionStack.DataContext = drone;
 
                             parcelState = PARCEL_STATE.DELIVER;
                             DeliveryPanel.DataContext = parcelState;
@@ -320,9 +299,9 @@ namespace PL
 
                             listsViewWindow.UpdateLists();
 
-                            this.drone = bl.GetDrone(drone.Id);
+                            drone = bl.GetDrone(drone.Id);
 
-                            OptionStack.DataContext = this.drone;
+                            OptionStack.DataContext = drone;
 
                             parcelState = PARCEL_STATE.ASSIGN;
                             DeliveryPanel.DataContext = parcelState;
@@ -336,21 +315,20 @@ namespace PL
                         }
                     }
                     break;
-                default:
-                    break;
+                
             }
         }
 
         /// <summary>
-        /// show the parcel window of the drone. the button apears only when the drone is carring a parcel.
+        /// show the parcel window of the drone. the button appears only when the drone is carrying a parcel.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Open_Prcel_Click(object sender, RoutedEventArgs e)
+        private void Open_Parcel_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                BO.Parcel parcel = bl.GetParcel(drone.ParcelInDelivery.Id);
+                var parcel = bl.GetParcel(drone.ParcelInDelivery.Id);
                 new ParcelWindow(listsViewWindow, parcel).ShowDialog();
             }
             catch (Exception ex)
@@ -378,7 +356,7 @@ namespace PL
         {
             if (worker == null)
             {
-                //changing the visability of the pannel stack.
+                //changing the visibility of the panel stack.
                 OptionStack.Visibility = Visibility.Hidden;
                 AutomaticStack.Visibility = Visibility.Visible;
 
@@ -389,24 +367,23 @@ namespace PL
                 worker.ProgressChanged += Worker_ProgressChanged;
                 worker.RunWorkerCompleted += Worker_RunWorkerCompleted;
 
-                //initilizing teh flags of the worker
+                //initializing teh flags of the worker
                 worker.WorkerReportsProgress = true;
                 worker.WorkerSupportsCancellation = true;
 
-                //starting the worker, with the parameter that represents the speds of charging the battery..
+                //starting the worker, with the parameter that represents the speeds of charging the battery..
                 worker.RunWorkerAsync(100);
             }
             else
             {
-                if (worker.WorkerSupportsCancellation == true)
-                {
-                    OptionStack.Visibility = Visibility.Visible;
-                    AutomaticStack.Visibility = Visibility.Hidden;
+                if (worker.WorkerSupportsCancellation != true) return;
+                
+                OptionStack.Visibility = Visibility.Visible;
+                AutomaticStack.Visibility = Visibility.Hidden;
 
-                    // Cancel the asynchronous operation.
-                    worker.CancelAsync();
-                    worker = null;
-                }
+                // Cancel the asynchronous operation.
+                worker.CancelAsync();
+                worker = null;
             }
         }
 
@@ -417,60 +394,50 @@ namespace PL
         /// <param name="e"></param>
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            //the argumen that is sent by the async.
-            int length = (int)e.Argument;
+            //the argument that is sent by the async.
+            var length = (int)e.Argument;
 
             bl.AutomaticOperation(worker, drone.Id , length);
         }
 
         /// <summary>
-        /// do the update of the presentation level every time that it requaired by the bl function.
+        /// do the update of the presentation level every time that it required by the bl function.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
 
-            //updat the list
+            //update the list
             listsViewWindow.UpdateLists();
             //update the data context of the stack
-            AutomaticStack.DataContext = this.drone = bl.GetDrone(drone.Id);
+            AutomaticStack.DataContext = drone = bl.GetDrone(drone.Id);
 
         }
 
         /// <summary>
-        /// once the mnual butoon was pressded the pannel going back to be the regualar updating pannel with the same drone.
+        /// once the manual button was presided the panel going back to be the regular updating panel with the same drone.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            OptionStack.DataContext = this.drone = bl.GetDrone(drone.Id);
+            OptionStack.DataContext = drone = bl.GetDrone(drone.Id);
         }
 
         #endregion
 
         #region Exceptions
-        /// <summary>
-        /// show al the inner exceptions.
-        /// </summary>
-        /// <param name="e"></param>
-        /// <returns></returns>
-        private string ShowException(Exception e)
-        {
-            return ShowException(e, "");
-        }
 
         /// <summary>
-        /// the actuale mathed to invoke.
+        /// the actual method to invoke.
         /// </summary>
         /// <param name="e"></param>
         /// <param name="s"></param>
         /// <returns></returns>
-        private string ShowException(Exception e, string s)
+        private string ShowException(Exception e, string s = "")
         {
-            if (e == null) return s;
-            return ShowException(e.InnerException, s + e.Message + "\n");
+            return e == null ? s : ShowException(e.InnerException, s + e.Message + "\n");
         }
 
         #endregion

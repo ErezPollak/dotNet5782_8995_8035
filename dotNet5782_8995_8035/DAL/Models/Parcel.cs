@@ -1,11 +1,10 @@
 ﻿//course: Mini Project in Windows Systems
-//lecturere: Eliezer Grintsborger
+//lecturer: Eliezer Grintsborger
 //from the students: Erez Polak 322768995
-//                   Mordehay Cohen 206958035
 
 
 //the program contains a struct class that represents a parcel.
-//the program contains the properties and a tostring function.
+//the program contains the properties and a toString function.
 
 
 using System;
@@ -14,14 +13,14 @@ namespace DO
 {
     public struct Parcel
     {
-        public int Id { get; set; }
-        public int SenderId { get; set; }
-        public int TargetId { get; set; }
-        public WeightCategories Weight { get; set; }
-        public Priorities Priority { get; set; }
+        public int Id { get; init; }
+        public int SenderId { get; init; }
+        public int TargetId { get; init; }
+        public WeightCategories Weight { get; init; }
+        public Priorities Priority { get; init; }
         public int DroneId { get; set; }
-        public DateTime? DefinededTime { get; set; }
-        public DateTime? AssigndedTime { get; set; }
+        public DateTime? DefinedTime { get; init; }
+        public DateTime? AssignedTime { get; set; }
         public DateTime? PickedUpTime { get; set; }
         public DateTime? DeliveryTime { get; set; }
         
@@ -35,10 +34,10 @@ namespace DO
         {
             //the function returns the current place of the item's properties.///
 
-            return $"Parcel: id: {Id} , senderld: {SenderId} , targetld : {TargetId} " +
-                   $", weight: {Weight}, priority: {Priority},  droneld: {DroneId}, " +
-                   $"defined: {DefinededTime} , assigned: {AssigndedTime} ,  " +
-                   $"pickedUp: {PickedUpTime} , deliverd: {DeliveryTime} ,  \n";
+            return $"Parcel: id: {Id} , senderId: {SenderId} , targetId : {TargetId} " +
+                   $", weight: {Weight}, priority: {Priority},  droneId: {DroneId}, " +
+                   $"defined: {DefinedTime} , assigned: {AssignedTime} ,  " +
+                   $"pickedUp: {PickedUpTime} , delivered: {DeliveryTime} ,  \n";
         }
     }
 }

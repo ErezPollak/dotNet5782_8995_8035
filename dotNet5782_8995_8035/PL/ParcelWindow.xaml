@@ -31,7 +31,7 @@
                     <TextBlock x:Name="IdInput" Text="{Binding Mode=OneWay, NotifyOnValidationError=True, ValidatesOnExceptions=True}" TextWrapping="Wrap" Width="140" Height="40" FontWeight="Normal" FontSize="20"/>
                 </StackPanel>
                 <StackPanel Height="30"/>
-                <Label Content="Set Sender And Reciver"></Label>
+                <Label Content="Set Sender And Receiver"></Label>
                 <StackPanel x:Name="SenderOrReciver" Height="30" Orientation="Horizontal">
                     <StackPanel Width="200" Orientation="Vertical" VerticalAlignment="Stretch">
                         <StackPanel Orientation="Horizontal" Margin="3">
@@ -41,7 +41,7 @@
                     </StackPanel>
                     <StackPanel Width="200" Orientation="Vertical">
                         <StackPanel Orientation="Horizontal" Margin="3">
-                            <TextBlock Text="Reciver Id:"  />
+                            <TextBlock Text="Receiver Id:"  />
                             <ComboBox Name="ReciverSelector" Width="140" ItemsSource="{Binding}"/>
                         </StackPanel>
                         
@@ -86,11 +86,11 @@
                     </StackPanel>
                     <StackPanel Width="250" Orientation="Vertical">
                         <StackPanel Orientation="Horizontal" Margin="3" Width="246">
-                            <TextBlock Text="Reciver Name:" FontSize="20" Width="125"/>
+                            <TextBlock Text="Receiver Name:" FontSize="20" Width="125"/>
                             <TextBlock  Text="{Binding Reciver.CustomerName, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnExceptions=True}"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="3">
-                            <TextBlock Text="Reciver Id:" FontSize="20"  />
+                            <TextBlock Text="Receiver Id:" FontSize="20"  />
                             <TextBox  Text="{Binding Reciver.Id, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnExceptions=True}"/>
                         </StackPanel>
                     </StackPanel>

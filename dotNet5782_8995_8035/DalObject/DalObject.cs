@@ -1,26 +1,28 @@
 ﻿//course: Mini Project in Windows Systems
-//lecturere: Eliezer Grintsborger
-//from the students: Erez Polak 322768995
-//                   Mordehay Cohen 206958035
+//lecturer: Eliezer Grintsborger
+//from the student: Erez Polak 322768995
 
 
 //the program is a public class for the namespace "DalObjects", that contains all the basic functions that can be done with the data structures.
 
 
-using DO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DalApi;
+using DalFacade.Models;
+using DO;
+
 
 namespace Dal
 {
-    internal sealed class DalObject : DalApi.IDal
+    internal sealed class DalObject : IDal
     {
 
         #region Singalton
 
         /// <summary>
-        /// private constructor for the dal class, for the singalton.
+        /// private constructor for the dal class, for the singleton.
         /// </summary>
         private DalObject()
         {
@@ -28,95 +30,81 @@ namespace Dal
         }
 
         /// <summary>
-        /// dal field intended to keep the insstance of the bl that was created.
+        /// dal field intended to keep the instance of the bl that was created.
         /// </summary>
-        private static readonly Lazy<DalObject> instance = new Lazy<DalObject>(() => new DalObject());
+        // ReSharper disable once InconsistentNaming
+        private static readonly Lazy<DalObject> instance = new (() => new DalObject());
         
         /// <summary>
-        /// nedded for the return by  get function the instaance property.
+        /// needed for the return by  get function the instance property.
         /// </summary>
-        public static DalObject Instance {
-            get
-            {
-                return instance.Value;
-            }
-        }
-
-
-        // <summary>
-        /// the function the creates new instance of DAL only if it doesn't exists already.
-        /// </summary>
-        /// <returns></returns>
-        //public static DalApi.IDal GetInstance()
-        //{
-        //    return instance.Value;
-        //}
+        public static DalObject Instance => instance.Value;
 
         #endregion
 
         # region add options
 
         /// <summary>
-        /// the function creates new base station acording to given specs, and adding it to the array. 
+        /// the function creates new base station according to given specs, and adding it to the array. 
         /// while updating the config class.
         /// </summary>
         /// <param name="baseStation">to add baseStation</param>
         public bool AddBaseStation(BaseStation baseStation)
         {
-            //checking that the number is not already in the list, in witch case exeption will be thrown.
-            if (DataSource.baseStations.Any(b => b.Id == baseStation.Id))
-                throw new IdAlreadyExistsException(baseStation.Id, "baseSattion");
+            //checking that the number is not already in the list, in witch case exception will be thrown.
+            if (DataSource.BaseStations.Any(b => b.Id == baseStation.Id))
+                throw new IdAlreadyExistsException(baseStation.Id, "baseStation");
 
-            //adding the base station to the list after no matching serial numbers was fuond.
-            DataSource.baseStations.Add(baseStation);
+            //adding the base station to the list after no matching serial numbers was found.
+            DataSource.BaseStations.Add(baseStation);
 
             return true;
         }
 
         /// <summary>
-        /// the function creates new drone acording to given specs, and adding it to the array. 
+        /// the function creates new drone according to given specs, and adding it to the array. 
         /// while updating the config class.
         /// </summary>
         /// <param name="drone"></param>
         public bool AddDrone(Drone drone)
         {
-            //checking that the number is not already in the list, in witch case exeption will be thrown.
-            if (DataSource.drones.Exists(d => d.Id == drone.Id)) throw new IdAlreadyExistsException(drone.Id, "drone");
+            //checking that the number is not already in the list, in witch case exception will be thrown.
+            if (DataSource.Drones.Exists(d => d.Id == drone.Id)) throw new IdAlreadyExistsException(drone.Id, "drone");
 
-            //adding the base station to the list after no matching serial numbers was fuond.
-            DataSource.drones.Add(drone);
+            //adding the base station to the list after no matching serial numbers was found.
+            DataSource.Drones.Add(drone);
 
             return true;
         }
 
         /// <summary>
-        /// the function gets a new customer and adding it to the list, if the id alraedy exists an excption will be thrown.
+        /// the function gets a new customer and adding it to the list, if the id already exists an exception will be thrown.
         /// </summary>
         /// <param name="customer"></param>
-        public bool AddCustumer(Customer customer)
+        public bool AddCustomer(Customer customer)
         {
-            //checking that the number is not already in the list, in witch case exeption will be thrown.
+            //checking that the number is not already in the list, in witch case Exception will be thrown.
 
-            if (DataSource.customers.Any(c => c.Id == customer.Id))
+            if (DataSource.Customers.Any(c => c.Id == customer.Id))
                 throw new IdAlreadyExistsException(customer.Id, "customer");
 
-            //adding the base station to the list after no matching serial numbers was fuond.
-            DataSource.customers.Add(customer);
+            //adding the base station to the list after no matching serial numbers was found.
+            DataSource.Customers.Add(customer);
 
             return true;
         }
 
         /// <summary>
-        ///  /// the function gets a new patcel and adding it to the list, if the id alraedy exists an excption will be thrown.
+        ///  /// the function gets a new parcel and adding it to the list, if the id already exists an exception will be thrown.
         /// </summary>
         /// <param name="parcel"></param>
         public bool AddParcel(Parcel parcel)
         {
-            //checking that the number is not already in the list, in witch case exeption will be thrown.
-            if (DataSource.parcels.Any(p => p.Id == parcel.Id)) 
+            //checking that the number is not already in the list, in witch case exception will be thrown.
+            if (DataSource.Parcels.Any(p => p.Id == parcel.Id)) 
                 throw new IdAlreadyExistsException(parcel.Id, "parcel");
-            //adding the base station to the list after no matching serial numbers was fuond.
-            DataSource.parcels.Add(parcel);
+            //adding the base station to the list after no matching serial numbers was found.
+            DataSource.Parcels.Add(parcel);
 
             return true;
         }
@@ -133,15 +121,15 @@ namespace Dal
         /// <returns></returns>
         public bool UpdateModelForADrone(int droneId, string model)
         {
-            int index = DataSource.drones.FindIndex(d => d.Id == droneId);
+            var index = DataSource.Drones.FindIndex(d => d.Id == droneId);
 
             if (index == -1) throw new IdDontExistsException(droneId, "drone");
 
-            Drone drone = DataSource.drones[index];
+            var drone = DataSource.Drones[index];
 
             drone.Model = model;
 
-            DataSource.drones[index] = drone;
+            DataSource.Drones[index] = drone;
 
             return true;
         }
@@ -149,24 +137,24 @@ namespace Dal
         /// <summary>
         /// updates the properties of the station
         /// </summary>
-        /// <param name="baseStationID"></param>
+        /// <param name="baseStationId"></param>
         /// <param name="name"></param>
         /// <param name="slots"></param>
         /// <returns></returns>
         public bool UpdateBaseStation(int baseStationId, string name, int slots)
 
         {
-            int index = DataSource.baseStations.FindIndex(b => b.Id == baseStationId);
+            var index = DataSource.BaseStations.FindIndex(b => b.Id == baseStationId);
 
             if (index == -1) throw new IdDontExistsException(baseStationId, "baseStation");
 
-            BaseStation baseStation = DataSource.baseStations[index];
+            var baseStation = DataSource.BaseStations[index];
 
             baseStation.Name = name;
 
             baseStation.ChargeSlots = slots;
 
-            DataSource.baseStations[index] = baseStation;
+            DataSource.BaseStations[index] = baseStation;
 
             return true;
         }
@@ -174,54 +162,54 @@ namespace Dal
         /// <summary>
         /// update the properties of the customer
         /// </summary>
-        /// <param name="customerID"></param>
+        /// <param name="customerId"></param>
         /// <param name="name"></param>
         /// <param name="phone"></param>
         /// <returns></returns>
         public bool UpdateCustomer(int customerId, string name, string phone)
         {
-            int index = DataSource.customers.FindIndex(d => d.Id == customerId);
+            var index = DataSource.Customers.FindIndex(d => d.Id == customerId);
 
             if (index == -1) throw new IdDontExistsException();
 
-            Customer customer = DataSource.customers[index];
+            var customer = DataSource.Customers[index];
 
             customer.Name = name;
 
             customer.Phone = phone;
 
-            DataSource.customers[index] = customer;
+            DataSource.Customers[index] = customer;
 
             return true;
         }
 
         /// <summary>
-        ///the function is givig the parcel the number of the drone.
+        ///the function is giving the parcel the number of the drone.
         /// </summary>
         /// <param name="parcelId"></param>
         /// <param name="droneId"></param>
         public bool AssignDroneToParcel(int parcelId, int droneId)
         {
-            //keeps the index in witch the idNumber was found in order to update it without iterting over the list again.
-            //checking if the numbers of parcel and drone that was provided exist in the database or not. if not an excption will be thrown.
+            //keeps the index in witch the idNumber was found in order to update it without iterating over the list again.
+            //checking if the numbers of parcel and drone that was provided exist in the database or not. if not an exception will be thrown.
 
-            int parcelIndex = DataSource.parcels.FindIndex(p => parcelId == p.Id);
+            var parcelIndex = DataSource.Parcels.FindIndex(p => parcelId == p.Id);
             if (parcelIndex == -1) //not found parcel in the list
             {
                 throw new IdDontExistsException(parcelId, "parcel");
             }
 
-            if (!DataSource.drones.Exists(d => droneId == d.Id)) //check if the drone is exists in data sorse.
+            if (!DataSource.Drones.Exists(d => droneId == d.Id)) //check if the drone is exists in data source.
             {
                 throw new IdDontExistsException(droneId, "drone");
             }
 
             //updating the number of the drone in the DroneId field of the parcel to have the updated droneId number.
             //according to the number that was found while looking for an exception.  
-            Parcel updatedParcel = DataSource.parcels[parcelIndex];
-            updatedParcel.AssigndedTime = DateTime.Now;
+            var updatedParcel = DataSource.Parcels[parcelIndex];
+            updatedParcel.AssignedTime = DateTime.Now;
             updatedParcel.DroneId = droneId;
-            DataSource.parcels[parcelIndex] = updatedParcel;
+            DataSource.Parcels[parcelIndex] = updatedParcel;
 
             return true;
         }
@@ -233,26 +221,26 @@ namespace Dal
         ///  <param name="droneId"></param>
         public bool PickingUpParcel(int parcelId, int droneId)
         {
-            //keeps the index in witch the idNumber was found in order to update it without iterting over the list again.
+            //keeps the index in witch the idNumber was found in order to update it without iterating over the list again.
 
-            //checking if the number of parcel that was provided exist in the database or not. if not an excption will be thrown.
-            int parcelIndex = DataSource.parcels.FindIndex(p => p.Id == parcelId);
+            //checking if the number of parcel that was provided exist in the database or not. if not an exception will be thrown.
+            var parcelIndex = DataSource.Parcels.FindIndex(p => p.Id == parcelId);
             if (parcelIndex == -1)
             {
                 throw new IdDontExistsException(parcelId, "parcel");
             }
 
-            if (!DataSource.drones.Exists(d => d.Id == droneId)) //check if the dron in the list
+            if (!DataSource.Drones.Exists(d => d.Id == droneId)) //check if the drone in the list
             {
                 throw new IdDontExistsException(droneId, "drone");
             }
 
             //updating the time of pickedUp field to be now.
             //according to the number that was found while looking for an exception.  
-            Parcel newParcel = DataSource.parcels[parcelIndex];
+            var newParcel = DataSource.Parcels[parcelIndex];
             newParcel.PickedUpTime = DateTime.Now;
             newParcel.DroneId = droneId;
-            DataSource.parcels[parcelIndex] = newParcel;
+            DataSource.Parcels[parcelIndex] = newParcel;
 
             return true;
         }
@@ -263,8 +251,8 @@ namespace Dal
         /// <param name="parcelId"></param>
         public bool DeliveringParcel(int parcelId)
         {
-            //checking if the number of parcel that was provided exist in the database or not. if not an excption will be thrown.
-            int parcelIndex = DataSource.parcels.FindIndex(p => p.Id == parcelId);
+            //checking if the number of parcel that was provided exist in the database or not. if not an exception will be thrown.
+            var parcelIndex = DataSource.Parcels.FindIndex(p => p.Id == parcelId);
             if (parcelIndex == -1)
             {
                 throw new IdDontExistsException(parcelId, "parcel");
@@ -272,39 +260,39 @@ namespace Dal
 
             //updating the time of delivered field to be now.
             //according to the number that was found while looking for an exception.  
-            Parcel newParcel = DataSource.parcels[parcelIndex];
+            var newParcel = DataSource.Parcels[parcelIndex];
             newParcel.DroneId = 0;
             newParcel.DeliveryTime = DateTime.Now;
-            DataSource.parcels[parcelIndex] = newParcel;
+            DataSource.Parcels[parcelIndex] = newParcel;
 
             return true;
         }
 
         /// <summary>
-        /// creating a droneCharge and chrging the drone.
+        /// creating a droneCharge and charging the drone.
         /// </summary>
         /// <param name="baseStationId"></param>
         /// <param name="droneId"></param>
         public bool ChargeDrone(int baseStationId, int droneId)
         {
-            //keeps the index in witch the idNumber was found in order to update it without iterting over the list again.
-            int baseStationIndex = DataSource.baseStations.FindIndex(b => b.Id == baseStationId);
+            //keeps the index in witch the idNumber was found in order to update it without iterating over the list again.
+            var baseStationIndex = DataSource.BaseStations.FindIndex(b => b.Id == baseStationId);
             if (baseStationIndex == -1)
                 throw new IdDontExistsException(baseStationId, "base station");
 
 
-            if (DataSource.drones.All(d => d.Id != droneId))
+            if (DataSource.Drones.All(d => d.Id != droneId))
                 throw new IdDontExistsException(droneId, "drone");
 
 
             //update the number of the free charge slots at the base station to be one less.
-            BaseStation newBaseStation = DataSource.baseStations[baseStationIndex];
+            var newBaseStation = DataSource.BaseStations[baseStationIndex];
             --newBaseStation.ChargeSlots;
-            DataSource.baseStations[baseStationIndex] = newBaseStation;
+            DataSource.BaseStations[baseStationIndex] = newBaseStation;
 
             //creating the charge drone ans adding it to the list of charges.
-            DroneCharge droneCharge = new DroneCharge() { DroneId = droneId, StationId = baseStationId, EntryIntoCharge = DateTime.Now.AddHours(-1) };
-            DataSource.droneCharges.Add(droneCharge);
+            var droneCharge = new DroneCharge() { DroneId = droneId, StationId = baseStationId, EntryIntoCharge = DateTime.Now.AddHours(-1) };
+            DataSource.DroneCharges.Add(droneCharge);
 
             return true;
         }
@@ -315,38 +303,41 @@ namespace Dal
         /// <param name="droneId"></param>
         public double UnChargeDrone(int droneId)
         {
-            if (!DataSource.drones.Exists(d => d.Id == droneId))
+            if (!DataSource.Drones.Exists(d => d.Id == droneId))
             {
                 throw new IdDontExistsException(droneId, "drone");
             }
 
-            //check if the name of the drone exist in the charges list. of not an excption will be thrown.
-            int chargeIndex = DataSource.droneCharges.FindIndex(cd => cd.DroneId == droneId);
+            //check if the name of the drone exist in the charges list. of not an exception will be thrown.
+            var chargeIndex = DataSource.DroneCharges.FindIndex(cd => cd.DroneId == droneId);
             if (chargeIndex == -1)
             {
                 throw new IdDontExistsException(droneId, "chargeDrone");
             }
 
             //updates the number of free charging slots int he base station.
-            //finds the index of the station and update when finds, no need for excption search, because the station exists for sure.
-            int baseStationsIndex =
-                DataSource.baseStations.FindIndex(b => b.Id == DataSource.droneCharges[chargeIndex].StationId);
+            //finds the index of the station and update when finds, no need for exception search, because the station exists for sure.
+            var baseStationsIndex =
+                DataSource.BaseStations.FindIndex(b => b.Id == DataSource.DroneCharges[chargeIndex].StationId);
             if (baseStationsIndex == -1)
             {
-                throw new IdDontExistsException(DataSource.droneCharges[chargeIndex].StationId, "baseStations");
+                throw new IdDontExistsException(DataSource.DroneCharges[chargeIndex].StationId, "baseStations");
             }
 
-            TimeSpan ts = DateTime.Now.Subtract((DateTime)DataSource.droneCharges[chargeIndex].EntryIntoCharge);
-            double mintesInCharge = ts.Hours * 60 + ts.Minutes + (double)ts.Seconds / 60;
+            var entryIntoCharge = DataSource.DroneCharges[chargeIndex].EntryIntoCharge;
+            if (entryIntoCharge == null) return 0;
+            var ts = DateTime.Now.Subtract((DateTime)entryIntoCharge);
+            var minutesInCharge = ts.Hours * 60 + ts.Minutes + (double)ts.Seconds / 60;
 
-            BaseStation newBaseStation = DataSource.baseStations[baseStationsIndex];
+            var newBaseStation = DataSource.BaseStations[baseStationsIndex];
             newBaseStation.ChargeSlots++;
-            DataSource.baseStations[baseStationsIndex] = newBaseStation;
+            DataSource.BaseStations[baseStationsIndex] = newBaseStation;
 
-            //removing the cahrge from the list.
-            DataSource.droneCharges.Remove(DataSource.droneCharges[chargeIndex]);
+            //removing the charge from the list.
+            DataSource.DroneCharges.Remove(DataSource.DroneCharges[chargeIndex]);
 
-            return mintesInCharge;
+            return minutesInCharge;
+
         }
 
         #endregion
@@ -354,59 +345,59 @@ namespace Dal
         #region show oobject options
 
         /// <summary>
-        /// the function recives an ID number of  a base station and returns the relevent station.
+        /// the function receives an ID number of  a base station and returns the relevant station.
         /// </summary>
         /// <param name="baseStationId"></param>
         /// <returns></returns>
         public BaseStation GetBaseStation(int baseStationId)
         {
-            int baseStationIndex = DataSource.baseStations.FindIndex(b => b.Id == baseStationId);
+            var baseStationIndex = DataSource.BaseStations.FindIndex(b => b.Id == baseStationId);
 
             if (baseStationIndex == -1) throw new IdDontExistsException(baseStationId, "base station");
 
-            return DataSource.baseStations[baseStationIndex];
+            return DataSource.BaseStations[baseStationIndex];
         }
 
         /// <summary>
-        /// the function recives an ID number of a drone and returns the relevent drone.
+        /// the function receives an ID number of a drone and returns the relevant drone.
         /// </summary>
         /// <param name="droneId"></param>
         /// <returns></returns>
         public Drone GetDrone(int droneId)
         {
-            int droneIndex = DataSource.drones.FindIndex(d => d.Id == droneId);
+            var droneIndex = DataSource.Drones.FindIndex(d => d.Id == droneId);
 
             if (droneIndex == -1) throw new IdDontExistsException(droneId, "drone");
 
-            return DataSource.drones[droneIndex];
+            return DataSource.Drones[droneIndex];
         }
 
         /// <summary>
-        /// the function recives an ID number of a customer and returns the relevent customer.
+        /// the function receives an ID number of a customer and returns the relevant customer.
         /// </summary>
         /// <param name="customerId"></param>
         /// <returns></returns>
         public Customer GetCustomer(int customerId)
         {
-            int customerIndex = DataSource.customers.FindIndex(c => c.Id == customerId);
+            var customerIndex = DataSource.Customers.FindIndex(c => c.Id == customerId);
 
             if (customerIndex == -1) throw new IdDontExistsException(customerId, "customer");
 
-            return DataSource.customers[customerIndex];
+            return DataSource.Customers[customerIndex];
         }
 
         /// <summary>
-        /// the function recives an ID number of a parcel and returns the relevent parcel.
+        /// the function receives an ID number of a parcel and returns the relevant parcel.
         /// </summary>
         /// <param name="parcelId"></param>
         /// <returns></returns>
         public Parcel GetParcel(int parcelId)
         {
-            int parcelIndex = DataSource.parcels.FindIndex(p => p.Id == parcelId);
+            var parcelIndex = DataSource.Parcels.FindIndex(p => p.Id == parcelId);
 
             if (parcelIndex == -1) throw new IdDontExistsException(parcelId, "parcel");
 
-            return DataSource.parcels[parcelIndex];
+            return DataSource.Parcels[parcelIndex];
         }
 
         #endregion
@@ -419,7 +410,7 @@ namespace Dal
         /// <param name="f"></param>
         public IEnumerable<BaseStation> GetBaseStations(Predicate<BaseStation> f)
         {
-            return DataSource.baseStations.Where(b => f(b)); //its like what you done just shorter.
+            return DataSource.BaseStations.Where(b => f(b)); //its like what you done just shorter.
         }
 
         /// <summary>
@@ -428,7 +419,7 @@ namespace Dal
         /// <param name="f"></param>
         public IEnumerable<Drone> GetDrones(Predicate<Drone> f)
         {
-            return DataSource.drones.Where(d => f(d));
+            return DataSource.Drones.Where(d => f(d));
         }
 
         /// <summary>
@@ -437,21 +428,21 @@ namespace Dal
         /// <param name="f"></param>
         public IEnumerable<Customer> GetCustomers(Predicate<Customer> f)
         {
-            return DataSource.customers.Where(c => f(c));
+            return DataSource.Customers.Where(c => f(c));
         }
 
         /// <summary>
-        /// returns the array of the parcheses
+        /// returns the array of the purchases
         /// </summary>
         /// <param name="f"></param>
         public IEnumerable<Parcel> GetParcels(Predicate<Parcel> f)
         {
-            return DataSource.parcels.Where(p => f(p));
+            return DataSource.Parcels.Where(p => f(p));
         }
 
         public IEnumerable<DroneCharge> GetChargeDrones(Predicate<DroneCharge> f)
         {
-            return DataSource.droneCharges.Where(dc => f(dc));
+            return DataSource.DroneCharges.Where(dc => f(dc));
         }
 
         #endregion
@@ -466,46 +457,34 @@ namespace Dal
         {
             double[] chargingInformation =
             {
-                DataSource.Config.Free, DataSource.Config.Light, DataSource.Config.Middel, DataSource.Config.Heavy,
+                DataSource.Config.Free, DataSource.Config.Light, DataSource.Config.Middle, DataSource.Config.Heavy,
                 DataSource.Config.ChargingSpeed
             };
             return chargingInformation;
         }
 
         /// <summary>
-        ///  the function gets an id of drone or a customer and returns the station that is closst to this drone or customer.
+        ///  the function gets an id of drone or a customer and returns the station that is closest to this drone or customer.
         /// </summary>
         /// <param name="customerId"></param>
         /// <returns></returns>
         public int GetClosestStation(int customerId)
         {
-            int closestStation = 0;
-            double distanseSqered = 0, minDistanceSqered = 1000000;
+            var closestStation = 0;
+            double minDistanceSquared = 1000000;
 
-            Customer customer = GetCustomers(c => c.Id == customerId).First();
-            foreach (BaseStation baseStation in DataSource.baseStations)
+            var customer = GetCustomers(c => c.Id == customerId).First();
+            foreach (var baseStation in DataSource.BaseStations)
             {
-                distanseSqered = Math.Pow(baseStation.Location.Latitude - customer.Location.Latitude, 2) +
-                                 Math.Pow(baseStation.Location.Longitude - customer.Location.Longitude, 2);
-                if (distanseSqered < minDistanceSqered)
-                {
-                    minDistanceSqered = distanseSqered;
-                    closestStation = baseStation.Id;
-                }
+                var distanceSquared = Math.Pow(baseStation.Location.Latitude - customer.Location.Latitude, 2) +
+                                     Math.Pow(baseStation.Location.Longitude - customer.Location.Longitude, 2);
+                if (!(distanceSquared < minDistanceSquared)) continue;
+                minDistanceSquared = distanceSquared;
+                closestStation = baseStation.Id;
             }
 
             return closestStation;
         }
-
-        ///// <summary>
-        ///// to delete....
-        ///// </summary>
-        ///// <param name="index"></param>
-        ///// <returns></returns>
-        //public int GetBaseStationId(int index)
-        //{
-        //    return DataSource.baseStations[index].Id;
-        //}
 
         public int GetSerialNumber()
         {

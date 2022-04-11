@@ -1,21 +1,21 @@
 ﻿//course: Mini Project in Windows Systems
-//lecturere: Eliezer Grintsborger
+//lecturer: Eliezer Grintsborger
 //from the students: Erez Polak 322768995
-//                   Mordehay Cohen 206958035
 
 
 
 //the program contains a struct that represents a customer.
-//the program contains the properties and a tostring function.
+//the program contains the properties and a toString function.
 
-    namespace DO
+
+namespace DO
     {
         public struct Customer
         {
-            public int Id { get; set; }
+            public int Id { get; init; }
             public string Name { get; set; }
             public string Phone { get; set; }
-            public Location Location{ get; set; }
+            public Location Location{ get; init; }
 
             /// <summary>
             /// the function prints all the props of the struct.

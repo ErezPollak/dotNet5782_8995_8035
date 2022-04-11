@@ -1,58 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace Dal
 {
-    class XMLTools
+    internal static class XmlTools
     {
-        static string dir = @"..\xml\";
-        static XMLTools()
+        private const string Dir = @"..\xml\";
+
+        static XmlTools()
         {
-            if (!Directory.Exists(dir))
-                Directory.CreateDirectory(dir);
+            if (!Directory.Exists(Dir))
+                Directory.CreateDirectory(Dir);
         }
 
 
         #region SaveLoadWithXMLSerializer
-        public static void SaveListToXMLSerializer<T>(List<T> list, string filePath)
+        public static void SaveListToXmlSerializer<T>(List<T> list, string filePath)
         {
             try
             {
-                FileStream file = new FileStream(dir + filePath, FileMode.Create);//dir + 
-                XmlSerializer x = new XmlSerializer(list.GetType());
+                var file = new FileStream(Dir + filePath, FileMode.Create);//dir + 
+                var x = new XmlSerializer(list.GetType());
                 x.Serialize(file, list);
                 file.Close();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //throw new DO.XMLFileLoadCreateException(filePath, $"fail to create xml file: {filePath}", ex);
             }
         }
-        public static List<T> LoadListFromXMLSerializer<T>(string filePath)
+        public static List<T> LoadListFromXmlSerializer<T>(string filePath)
         {
-            try
-            {
-                if (File.Exists(dir + filePath))//dir + 
-                {
-                    List<T> list;
-                    XmlSerializer x = new XmlSerializer(typeof(List<T>));
-                    FileStream file = new FileStream(dir + filePath, FileMode.Open);//dir + 
-                    list = (List<T>)x.Deserialize(file);
-                    file.Close();
-                    return list;
-                }
-                else
-                    return new List<T>();
-            }
-            catch (Exception ex)
-            {
-                throw ex; // DO.XMLFileLoadCreateException(filePath, $"fail to load xml file: {filePath}", ex);
-            }
+            if (!File.Exists(Dir + filePath)) return new List<T>();
+            var x = new XmlSerializer(typeof(List<T>));
+            var file = new FileStream(Dir + filePath, FileMode.Open);//dir + 
+            var list = (List<T>)x.Deserialize(file);
+            file.Close();
+            return list;
+
         }
         #endregion
     }

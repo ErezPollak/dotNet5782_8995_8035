@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace IBAL
+namespace BL.Exceptions
 {
     namespace BO
     {

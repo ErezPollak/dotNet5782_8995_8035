@@ -1,5 +1,5 @@
 ﻿
-    namespace BO
+    namespace BL.Models
     {
         public record ParcelInDelivery
         (

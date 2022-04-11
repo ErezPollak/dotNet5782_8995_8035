@@ -14,7 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\DalObject\DalObject.csproj" />
     <ProjectReference Include="..\DalXML\DalXML.csproj" />
-    <ProjectReference Include="..\DAL\DalFacade.csproj" />
+    <ProjectReference Include="..\DAL\DAL.csproj" />
   </ItemGroup>
 
 </Project>

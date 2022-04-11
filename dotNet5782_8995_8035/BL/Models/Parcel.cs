@@ -1,19 +1,18 @@
 ﻿using System;
 
-
-    namespace BO
+namespace BL.Models
     {
         public class Parcel
         {
-            public int Id { get; set; }
-            public CoustomerForParcel Sender { get; set; }
-            public CoustomerForParcel Reciver { get; set; }
-            public Enums.WeightCategories Weight { get; set; }
-            public Enums.Priorities Priority { get; set; }
-            public DroneForParcel Drone { get; set; }
+            public int Id { get; init; }
+            public CoustomerForParcel Sender { get; init; }
+            public CoustomerForParcel Receiver { get; init; }
+            public Enums.WeightCategories Weight { get; init; }
+            public Enums.Priorities Priority { get; init; }
+            public DroneForParcel Drone { get; init; }
             public DateTime? DefinedTime { get; set; } // time of request
-            public DateTime? AssigedTime { get; set; } //
-            public DateTime? PickupTime { get; set; }
+            public DateTime? AssignedTime { get; init; } //
+            public DateTime? PickupTime { get; init; }
             public DateTime? DeliveringTime { get; set; }
 
 
@@ -21,12 +20,12 @@
             {
                 return $"Id: {Id} " +
                     $"Sender: {Sender} " +
-                    $"Reciver: {Reciver} " +
+                    $"Receiver: {Receiver} " +
                     $"Weight: {Weight} " +
                     $"Priority: {Priority} " +
                     $"Drone: {Drone} " +
                     $"CreationTime: {DefinedTime} " +
-                    $"AssigningTime: {AssigedTime} " +
+                    $"AssigningTime: {AssignedTime} " +
                     $"PickupTime: {PickupTime} " +
                     $"DeliveringTime: {DeliveringTime} " +
                     $"";

@@ -3,120 +3,120 @@
   <Parcel>
     <Id>232345</Id>
     <SenderId>234242</SenderId>
-    <TargetId>234330</TargetId>
-    <Weight>MIDIUM</Weight>
-    <Priority>REGULAR</Priority>
+    <TargetId>234286</TargetId>
+    <Weight>MEDIUM</Weight>
+    <Priority>FAST</Priority>
     <DroneId>0</DroneId>
-    <DefinededTime>2022-01-25T20:22:46.3731311+02:00</DefinededTime>
-    <AssigndedTime xsi:nil="true" />
-    <PickedUpTime xsi:nil="true" />
-    <DeliveryTime xsi:nil="true" />
+    <DefinedTime>2022-04-11T19:43:59.6197714+03:00</DefinedTime>
+    <AssignedTime>2022-04-11T19:52:18.2447313+03:00</AssignedTime>
+    <PickedUpTime>2022-04-11T19:52:19.0092292+03:00</PickedUpTime>
+    <DeliveryTime>2022-04-11T19:52:19.5552718+03:00</DeliveryTime>
   </Parcel>
   <Parcel>
     <Id>232377</Id>
-    <SenderId>234330</SenderId>
-    <TargetId>234308</TargetId>
-    <Weight>HEAVY</Weight>
+    <SenderId>234440</SenderId>
+    <TargetId>234330</TargetId>
+    <Weight>MEDIUM</Weight>
     <Priority>REGULAR</Priority>
-    <DroneId>254356</DroneId>
-    <DefinededTime>2022-01-25T20:22:46.3736865+02:00</DefinededTime>
-    <AssigndedTime>2022-01-25T20:22:46.3736883+02:00</AssigndedTime>
-    <PickedUpTime xsi:nil="true" />
-    <DeliveryTime xsi:nil="true" />
+    <DroneId>0</DroneId>
+    <DefinedTime>2022-04-11T19:43:59.6207444+03:00</DefinedTime>
+    <AssignedTime>2022-04-11T21:42:13.9190634+03:00</AssignedTime>
+    <PickedUpTime>2022-04-11T21:42:14.4748004+03:00</PickedUpTime>
+    <DeliveryTime>2022-04-11T21:42:15.0679067+03:00</DeliveryTime>
   </Parcel>
   <Parcel>
     <Id>232409</Id>
-    <SenderId>234286</SenderId>
-    <TargetId>234330</TargetId>
+    <SenderId>234352</SenderId>
+    <TargetId>234242</TargetId>
     <Weight>HEAVY</Weight>
     <Priority>REGULAR</Priority>
     <DroneId>0</DroneId>
-    <DefinededTime>2022-01-25T20:22:46.3736888+02:00</DefinededTime>
-    <AssigndedTime xsi:nil="true" />
+    <DefinedTime>2022-04-11T19:43:59.6207487+03:00</DefinedTime>
+    <AssignedTime xsi:nil="true" />
     <PickedUpTime xsi:nil="true" />
     <DeliveryTime xsi:nil="true" />
   </Parcel>
   <Parcel>
     <Id>232441</Id>
-    <SenderId>234264</SenderId>
-    <TargetId>234286</TargetId>
+    <SenderId>234352</SenderId>
+    <TargetId>234396</TargetId>
     <Weight>HEAVY</Weight>
-    <Priority>REGULAR</Priority>
+    <Priority>FAST</Priority>
     <DroneId>0</DroneId>
-    <DefinededTime>2022-01-25T20:22:46.3736893+02:00</DefinededTime>
-    <AssigndedTime xsi:nil="true" />
-    <PickedUpTime xsi:nil="true" />
-    <DeliveryTime xsi:nil="true" />
+    <DefinedTime>2022-04-11T19:43:59.6207493+03:00</DefinedTime>
+    <AssignedTime>2022-04-11T21:42:06.9685121+03:00</AssignedTime>
+    <PickedUpTime>2022-04-11T21:42:07.7306661+03:00</PickedUpTime>
+    <DeliveryTime>2022-04-11T21:42:08.368164+03:00</DeliveryTime>
   </Parcel>
   <Parcel>
     <Id>232473</Id>
-    <SenderId>234330</SenderId>
-    <TargetId>234374</TargetId>
-    <Weight>LIGHT</Weight>
+    <SenderId>234308</SenderId>
+    <TargetId>234242</TargetId>
+    <Weight>MEDIUM</Weight>
     <Priority>REGULAR</Priority>
     <DroneId>0</DroneId>
-    <DefinededTime>2022-01-25T20:22:46.3736897+02:00</DefinededTime>
-    <AssigndedTime xsi:nil="true" />
+    <DefinedTime>2022-04-11T19:43:59.6207497+03:00</DefinedTime>
+    <AssignedTime xsi:nil="true" />
     <PickedUpTime xsi:nil="true" />
     <DeliveryTime xsi:nil="true" />
   </Parcel>
   <Parcel>
     <Id>232505</Id>
     <SenderId>234396</SenderId>
-    <TargetId>234440</TargetId>
-    <Weight>LIGHT</Weight>
-    <Priority>EMERGENCY</Priority>
-    <DroneId>254288</DroneId>
-    <DefinededTime>2022-01-25T20:22:46.3736905+02:00</DefinededTime>
-    <AssigndedTime>2022-01-25T20:22:46.3736907+02:00</AssigndedTime>
-    <PickedUpTime xsi:nil="true" />
-    <DeliveryTime xsi:nil="true" />
+    <TargetId>234242</TargetId>
+    <Weight>HEAVY</Weight>
+    <Priority>REGULAR</Priority>
+    <DroneId>0</DroneId>
+    <DefinedTime>2022-04-11T19:43:59.6207513+03:00</DefinedTime>
+    <AssignedTime>2022-04-11T21:42:08.9425814+03:00</AssignedTime>
+    <PickedUpTime>2022-04-11T21:42:09.6176346+03:00</PickedUpTime>
+    <DeliveryTime>2022-04-11T21:42:10.3029095+03:00</DeliveryTime>
   </Parcel>
   <Parcel>
     <Id>232537</Id>
-    <SenderId>234286</SenderId>
-    <TargetId>234264</TargetId>
+    <SenderId>234440</SenderId>
+    <TargetId>234242</TargetId>
     <Weight>HEAVY</Weight>
-    <Priority>EMERGENCY</Priority>
-    <DroneId>254322</DroneId>
-    <DefinededTime>2022-01-25T20:22:46.3736911+02:00</DefinededTime>
-    <AssigndedTime>2022-01-25T20:22:46.3736914+02:00</AssigndedTime>
+    <Priority>REGULAR</Priority>
+    <DroneId>0</DroneId>
+    <DefinedTime>2022-04-11T19:43:59.6207517+03:00</DefinedTime>
+    <AssignedTime xsi:nil="true" />
     <PickedUpTime xsi:nil="true" />
     <DeliveryTime xsi:nil="true" />
   </Parcel>
   <Parcel>
     <Id>232569</Id>
-    <SenderId>234418</SenderId>
-    <TargetId>234374</TargetId>
-    <Weight>MIDIUM</Weight>
-    <Priority>FAST</Priority>
+    <SenderId>234330</SenderId>
+    <TargetId>234242</TargetId>
+    <Weight>HEAVY</Weight>
+    <Priority>EMERGENCY</Priority>
     <DroneId>0</DroneId>
-    <DefinededTime>2022-01-25T20:22:46.3736917+02:00</DefinededTime>
-    <AssigndedTime xsi:nil="true" />
-    <PickedUpTime xsi:nil="true" />
-    <DeliveryTime xsi:nil="true" />
+    <DefinedTime>2022-04-11T19:43:59.6207521+03:00</DefinedTime>
+    <AssignedTime>2022-04-11T19:52:11.6866549+03:00</AssignedTime>
+    <PickedUpTime>2022-04-11T19:52:12.5763267+03:00</PickedUpTime>
+    <DeliveryTime>2022-04-11T19:52:13.2485101+03:00</DeliveryTime>
   </Parcel>
   <Parcel>
     <Id>232601</Id>
-    <SenderId>234352</SenderId>
-    <TargetId>234286</TargetId>
+    <SenderId>234286</SenderId>
+    <TargetId>234330</TargetId>
     <Weight>LIGHT</Weight>
-    <Priority>REGULAR</Priority>
+    <Priority>FAST</Priority>
     <DroneId>0</DroneId>
-    <DefinededTime>2022-01-25T20:22:46.3736922+02:00</DefinededTime>
-    <AssigndedTime xsi:nil="true" />
-    <PickedUpTime xsi:nil="true" />
-    <DeliveryTime xsi:nil="true" />
+    <DefinedTime>2022-04-11T19:43:59.6207528+03:00</DefinedTime>
+    <AssignedTime>2022-04-11T19:52:32.6113252+03:00</AssignedTime>
+    <PickedUpTime>2022-04-11T19:52:33.5599396+03:00</PickedUpTime>
+    <DeliveryTime>2022-04-11T19:52:34.4171143+03:00</DeliveryTime>
   </Parcel>
   <Parcel>
     <Id>232633</Id>
-    <SenderId>234440</SenderId>
-    <TargetId>234440</TargetId>
-    <Weight>HEAVY</Weight>
-    <Priority>FAST</Priority>
+    <SenderId>234396</SenderId>
+    <TargetId>234374</TargetId>
+    <Weight>LIGHT</Weight>
+    <Priority>REGULAR</Priority>
     <DroneId>0</DroneId>
-    <DefinededTime>2022-01-25T20:22:46.3736927+02:00</DefinededTime>
-    <AssigndedTime xsi:nil="true" />
+    <DefinedTime>2022-04-11T19:43:59.6207556+03:00</DefinedTime>
+    <AssignedTime xsi:nil="true" />
     <PickedUpTime xsi:nil="true" />
     <DeliveryTime xsi:nil="true" />
   </Parcel>

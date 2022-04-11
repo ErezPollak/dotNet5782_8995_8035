@@ -2,6 +2,8 @@
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
+using BL;
+using BL.Models;
 
 namespace PL
 {
@@ -33,8 +35,8 @@ namespace PL
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            BO.Enums.DroneStatuses isInCharge = (BO.Enums.DroneStatuses)value;
-            if (isInCharge == BO.Enums.DroneStatuses.MAINTENANCE)
+            Enums.DroneStatuses isInCharge = (Enums.DroneStatuses)value;
+            if (isInCharge == Enums.DroneStatuses.MAINTENANCE)
             {
                 return "Uncharge";
             }
@@ -57,9 +59,9 @@ namespace PL
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            BO.Drone drone = (BO.Drone)value;
+            Drone drone = (Drone)value;
 
-            if (drone != null && (drone.Battery == 100 || drone.Status == BO.Enums.DroneStatuses.DELIVERY))
+            if (drone != null && (drone.Battery == 100 || drone.Status == Enums.DroneStatuses.DELIVERY))
                 return Visibility.Collapsed;
             else
                 return Visibility.Visible;
@@ -78,8 +80,8 @@ namespace PL
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            BO.Enums.DroneStatuses isInDlivery = (BO.Enums.DroneStatuses)value;
-            if (isInDlivery == BO.Enums.DroneStatuses.DELIVERY)
+            Enums.DroneStatuses isInDlivery = (Enums.DroneStatuses)value;
+            if (isInDlivery == Enums.DroneStatuses.DELIVERY)
             {
                 return Visibility.Visible;
             }
@@ -102,8 +104,8 @@ namespace PL
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            BO.Enums.DroneStatuses isInDlivery = (BO.Enums.DroneStatuses)value;
-            if (isInDlivery == BO.Enums.DroneStatuses.FREE)
+            Enums.DroneStatuses isInDlivery = (Enums.DroneStatuses)value;
+            if (isInDlivery == Enums.DroneStatuses.FREE)
             {
                 return Visibility.Visible;
             }
@@ -236,9 +238,9 @@ namespace PL
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            BO.Parcel parcel = (BO.Parcel)value;
+            Parcel parcel = (Parcel)value;
 
-            int progress = parcel.AssigedTime == null ? 25 :
+            int progress = parcel.AssignedTime == null ? 25 :
                              (parcel.PickupTime == null ? 50 :
                              (parcel.DeliveringTime == null ? 75 :
                              100));
@@ -261,9 +263,9 @@ namespace PL
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            ACCESS_ATHOLERAZATION atholerazetion = (ACCESS_ATHOLERAZATION)value;
+            ACCESS_AUTHORIZATION atholerazetion = (ACCESS_AUTHORIZATION)value;
 
-            if (atholerazetion == ACCESS_ATHOLERAZATION.GUEST)
+            if (atholerazetion == ACCESS_AUTHORIZATION.GUEST)
                 return Visibility.Collapsed;
             else
                 return Visibility.Visible;
@@ -279,9 +281,9 @@ namespace PL
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            ACCESS_ATHOLERAZATION accsses = (ACCESS_ATHOLERAZATION)value;
+            ACCESS_AUTHORIZATION accsses = (ACCESS_AUTHORIZATION)value;
 
-            if ((int)accsses < (int)ACCESS_ATHOLERAZATION.MANAGER)
+            if ((int)accsses < (int)ACCESS_AUTHORIZATION.MANAGER)
                 return Visibility.Collapsed;
             else
                 return Visibility.Visible;
@@ -297,9 +299,9 @@ namespace PL
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            ACCESS_ATHOLERAZATION accsses = (ACCESS_ATHOLERAZATION)value;
+            ACCESS_AUTHORIZATION accsses = (ACCESS_AUTHORIZATION)value;
 
-            if ((int)accsses < (int)ACCESS_ATHOLERAZATION.EMPLOYEE)
+            if ((int)accsses < (int)ACCESS_AUTHORIZATION.EMPLOYEE)
                 return Visibility.Collapsed;
             else
                 return Visibility.Visible;
@@ -316,9 +318,9 @@ namespace PL
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            ACCESS_ATHOLERAZATION accsses = (ACCESS_ATHOLERAZATION)value;
+            ACCESS_AUTHORIZATION accsses = (ACCESS_AUTHORIZATION)value;
 
-            if ((int)accsses < (int)ACCESS_ATHOLERAZATION.CUSTOMER)
+            if ((int)accsses < (int)ACCESS_AUTHORIZATION.CUSTOMER)
                 return Visibility.Collapsed;
             else
                 return Visibility.Visible;

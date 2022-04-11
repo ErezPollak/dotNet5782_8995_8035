@@ -1,23 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BlApi
+﻿namespace BL.Abstracts
 {
     /// <summary>
-    /// the creator of the Bl acccoding to the singulary
+    /// the creator of the Bl according to the singleton
     /// </summary>
-    public class BlFactory
+    public static class BlFactory
     {
         /// <summary>
-        /// the function retuens an instance of bl.
+        /// the function returns an instance of bl.
         /// </summary>
         /// <returns></returns>
-        public static IBL GetBl()
+        public static IBl GetBl()
         {
-            return BL.GetInstance();
+            return Bl.GetInstance();
         }
     }
 }

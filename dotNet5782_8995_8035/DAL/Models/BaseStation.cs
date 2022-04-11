@@ -1,21 +1,22 @@
 ﻿//course: Mini Project in Windows Systems
-//lecturere: Eliezer Grintsborger
+//lecturer: Eliezer Grintsborger
 //from the students: Erez Polak 322768995
-//                   Mordehay Cohen 206958035
 
 
 
 //the program contains a struct that represents a base station.
-//the program contains the properties and a tostring function.
+//the program contains the properties and a toString function.
 
-    namespace DO
+using DO;
+
+namespace DalFacade.Models
     {
         public struct BaseStation
         {
            
-            public int Id { get; set; }
+            public int Id { get; init; }
             public string Name { get; set; }
-            public Location Location { get; set; }
+            public Location Location { get; init; }
             public int ChargeSlots { get; set; }
 
             /// <summary>
@@ -31,7 +32,7 @@
                    $" ID: {Id}, " +
                    $"Name: {Name}, " +
                    $"longitude: {Location}" +
-                   $"chargeslotes: {ChargeSlots}\n";
+                   $"chargeSlots: {ChargeSlots}\n";
             }
 
         }

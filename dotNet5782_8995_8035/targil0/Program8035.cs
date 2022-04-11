@@ -2,7 +2,7 @@
 
 namespace ConsoleApp1
 {
-    partial class Program
+    internal static partial class Program
     {
         static partial void Welcome8035()
         {

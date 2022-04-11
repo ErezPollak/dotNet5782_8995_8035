@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace DO
 {
     /// <summary>
-    /// the Exception that accours when the user tries to add an Item with serial number that already exists in the database.
+    /// the Exception that occurs when the user tries to add an Item with serial number that already exists in the database.
     /// </summary>
     [Serializable]
     public class IdAlreadyExistsException : Exception
@@ -27,8 +27,8 @@ namespace DO
         {
         }
 
-        //Special constractor for the needs of the excption
-        public IdAlreadyExistsException(int idNumber, string type) : base($"DAL_Exception: the id {idNumber} alreay exists in the database of {type}.")
+        //Special constructor for the needs of the exception
+        public IdAlreadyExistsException(int idNumber, string type) : base($"DAL_Exception: the id {idNumber} already exists in the database of {type}.")
         {
         }
 
@@ -37,7 +37,7 @@ namespace DO
 
 
     /// <summary>
-    /// the Exception that accours when the user tries to update an Item with serial number that does not exist in the database.
+    /// the Exception that occurs when the user tries to update an Item with serial number that does not exist in the database.
     /// </summary>
     [Serializable]
     public class IdDontExistsException : Exception
@@ -60,7 +60,7 @@ namespace DO
         {
         }
 
-        //Special constractor for the needs of the excption
+        //Special constructor for the needs of the exception
         public IdDontExistsException(int idNumber, string type) : base($"DAL_Exception: the id {idNumber} don't exists in the database of {type}.")
         {
         }

@@ -1,163 +1,163 @@
-﻿using DO;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
-using System.Xml.Serialization;
+using DalFacade.Models;
+using DO;
 
 namespace Dal
 {
-    internal class DataSourceXML
+    /// <summary>
+    /// initializing all the files of the xml, activated only when needed.
+    /// </summary>
+    public static class DataSourceXml
     {
-        internal static readonly List<Drone> drones = new();
-        internal static readonly List<BaseStation> baseStations = new();
-        internal static readonly List<Customer> customers = new();
-        internal static readonly List<Parcel> parcels = new();
+        private static readonly List<Drone> Drones = new();
+        private static readonly List<BaseStation> BaseStations = new();
+        private static readonly List<Customer> Customers = new();
+        private static readonly List<Parcel> Parcels = new();
 
-        private static string BaseStationsPath = @"BaseStations.xml";
-        private static string CustomersPath = @"Customers.xml";
-        private static string DronesPath = @"Drones.xml";
-        private static string ParcelsPath = @"Parcels.xml";
-        private static string DroneChargesPath = @"..\xml\DroneCharges.xml";
+        private const string BaseStationsPath = @"BaseStations.xml";
+        private const string CustomersPath = @"Customers.xml";
+        private const string DronesPath = @"Drones.xml";
+        private const string ParcelsPath = @"Parcels.xml";
+        private const string DroneChargesPath = @"..\xml\DroneCharges.xml";
 
 
-        private static readonly Random rnd = new();
+        private static readonly Random Rnd = new();
 
         /// <summary>
-        ///the fundction that initilaze the data bases with randomal values.
+        ///the function that initialize the data bases with random values.
         ///the initialize will add to the lists the The following objects:
         ///2 base stations.
         ///5 drones.
         ///10 customers.
         ///10 parcels.
-        ///the objects will be initlised with randomal values.
+        ///the objects will be initialized with random values.
         /// </summary>
         internal static void Initialize()
         {
 
-            //restiing all tehh charges databesa to point zero.
+            //resting all the charges database to point zero.
 
-            XElement droneChargesRoot = XElement.Load(DroneChargesPath);
+            var droneChargesRoot = XElement.Load(DroneChargesPath);
             droneChargesRoot.RemoveAll();
             droneChargesRoot.Save(DroneChargesPath);
 
 
-            //randomal values for base stations.
-            for (int i = 0; i < 5; i++)
+            //random values for base stations.
+            for (var i = 0; i < 5; i++)
             {
-                BaseStation baseStation = new BaseStation()
+                var baseStation = new BaseStation()
                 {
                     Id = i * 12 + 12345,
                     Name = i.ToString(),
                     Location = new Location
                     {
                         Latitude = RandLatitude(),
-                        Longitude = RandLongtude()
+                        Longitude = RandLongitude()
                     },
-                    ChargeSlots = (int)(i / 2) + 10
+                    ChargeSlots = (i / 2) + 10
                 };
                 //adding the base station to the list.
-                baseStations.Add(baseStation);
+                BaseStations.Add(baseStation);
                 
             }
-            XMLTools.SaveListToXMLSerializer<BaseStation>(baseStations , BaseStationsPath);
+            XmlTools.SaveListToXmlSerializer(BaseStations , BaseStationsPath);
             
-            //randomal values for drones.
-            for (int i = 0; i < 20; i++)
+            //random values for drones.
+            for (var i = 0; i < 20; i++)
             {
-                Drone drone = new Drone()
+                var drone = new Drone()
                 {
                     Id = i * 34 + 254254,
-                    Model = (char)(rnd.Next() % 26 + 65) + "" + (char)(rnd.Next() % 26 + 65) + rnd.Next() % 100000,
-                    MaxWeight = (WeightCategories)(rnd.Next() % 3),
+                    Model = (char)(Rnd.Next() % 26 + 65) + "" + (char)(Rnd.Next() % 26 + 65) + Rnd.Next() % 100000,
+                    MaxWeight = (WeightCategories)(Rnd.Next() % 3),
 
                 };
-                drones.Add(drone);
+                Drones.Add(drone);
 
             }
 
-            XMLTools.SaveListToXMLSerializer<Drone>(drones, DronesPath);
+            XmlTools.SaveListToXmlSerializer(Drones, DronesPath);
 
 
-            //randomal values for customers.
-            for (int i = 0; i < 10; i++)
+            //random values for customers.
+            for (var i = 0; i < 10; i++)
             {
-                Customer customer = new Customer()
+                var customer = new Customer()
                 {
                     Id = i * 22 + 234242,
-                    Name = GetRAndomName(),
-                    Phone = "05" + rnd.Next() % 10 + "-" + rnd.Next() % 10000000,
+                    Name = GetRandomName(),
+                    Phone = "05" + Rnd.Next() % 10 + "-" + Rnd.Next() % 10000000,
 
                     Location = new Location
                     {
                         Latitude = RandLatitude(),
-                        Longitude = RandLongtude()
+                        Longitude = RandLongitude()
                     },
                 };
-                customers.Add(customer);
+                Customers.Add(customer);
             }
-            XMLTools.SaveListToXMLSerializer<Customer>(customers, CustomersPath);
+            XmlTools.SaveListToXmlSerializer(Customers, CustomersPath);
 
-            int[] dronesForParcels = DroneForParcel();
+            var dronesForParcels = DroneForParcel();
 
-            //randomal values for parcels.
-            for (int i = 0; i < 10; i++)
+            //random values for parcels.
+            for (var i = 0; i < 10; i++)
             {
-                Parcel parcel = new Parcel()
+                var parcel = new Parcel()
                 {
                     Id = i * 32 + 232345,
-                    SenderId = customers[rnd.Next() % customers.Count].Id, // random values from the avalible customers.
-                    TargetId = customers[rnd.Next() % customers.Count].Id, // random values from the avalible customers.
-                    Weight = (WeightCategories)(rnd.Next() % 3),
-                    Priority = (Priorities)(rnd.Next() % 3),
-                    DroneId = dronesForParcels[i],                                   //initileized to not have any drone, the drone number will be updated in the dalobject class.
-                    DefinededTime = DateTime.Now,  // initilesed to be the time of the initialization.
-                    AssigndedTime = dronesForParcels[i] != 0 ? DateTime.Now : null,
-                    PickedUpTime = null,                        //initilesed for now, will change in  Dal class, when order is updated to be picked up.
+                    SenderId = Customers[Rnd.Next() % Customers.Count].Id, // random values from the available customers.
+                    TargetId = Customers[Rnd.Next() % Customers.Count].Id, // random values from the available customers.
+                    Weight = (WeightCategories)(Rnd.Next() % 3),
+                    Priority = (Priorities)(Rnd.Next() % 3),
+                    DroneId = dronesForParcels[i],                                   //initialized to not have any drone, the drone number will be updated in the dalObject class.
+                    DefinedTime = DateTime.Now,  // initialized to be the time of the initialization.
+                    AssignedTime = dronesForParcels[i] != 0 ? DateTime.Now : null,
+                    PickedUpTime = null,                        //initialized for now, will change in  Dal class, when order is updated to be picked up.
                     DeliveryTime = null
                 };
-                parcels.Add(parcel);
+                Parcels.Add(parcel);
             }
-            XMLTools.SaveListToXMLSerializer<Parcel>(parcels, ParcelsPath);
+            XmlTools.SaveListToXmlSerializer(Parcels, ParcelsPath);
 
         }
 
-        private static string GetRAndomName()
+        private static string GetRandomName()
         {
 
-            string[] firstNames = new string[] { "aaron", "abdul", "abe", "abel", "abraham", "adam", "adan", "adolfo", "adolph", "adrian", "abby", "abigail", "adele", "adrian" };
-            string[] lastNames = new string[] { "abbott", "acosta", "adams", "adkins", "aguilar" };
+            var firstNames = new [] { "aaron", "abdul", "abe", "abel", "abraham", "adam", "adan", "adolfo", "adolph", "adrian", "abby", "abigail", "adele", "adrian" };
+            var lastNames = new [] { "abbott", "acosta", "adams", "adkins", "aguilar" };
 
-            return firstNames[rnd.Next(firstNames.Length)] + " " + lastNames[rnd.Next(lastNames.Length)];
+            return firstNames[Rnd.Next(firstNames.Length)] + " " + lastNames[Rnd.Next(lastNames.Length)];
         }
 
 
         /// <summary>
-        /// initilze the number of parceles of every drone.
+        /// initialize the number of parcels of every drone.
         /// </summary>
         /// <returns></returns>
         private static int[] DroneForParcel()
         {
-            int[] nums = new int[10];
-            for (int i = 0; i < 10; i++)
+            var nums = new int[10];
+            for (var i = 0; i < 10; i++)
                 nums[i] = 0;
 
-            for (int i = 1; i < 4; i++)
-                nums[rnd.Next() % 10] = drones[i].Id;
+            for (var i = 1; i < 4; i++)
+                nums[Rnd.Next() % 10] = Drones[i].Id;
 
             return nums;
         }
 
-        private static double RandLongtude()
+        private static double RandLongitude()
         {
-            return rnd.NextDouble() * (35.254321 - 35.153024) + 35.153024;
+            return Rnd.NextDouble() * (35.254321 - 35.153024) + 35.153024;
         }
 
         private static double RandLatitude()
         {
-            return rnd.NextDouble() * (31.878338 - 31.745826) + 31.745826;
+            return Rnd.NextDouble() * (31.878338 - 31.745826) + 31.745826;
         }
 
     }

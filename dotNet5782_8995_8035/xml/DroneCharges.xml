@@ -1,13 +1,2 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<DroneCharges>
-  <DroneCharge>
-    <DroneId>254764</DroneId>
-    <StationId>12345</StationId>
-    <EntryIntoCharge>2022-01-25T19:23:19.5778938+02:00</EntryIntoCharge>
-  </DroneCharge>
-  <DroneCharge>
-    <DroneId>254832</DroneId>
-    <StationId>12369</StationId>
-    <EntryIntoCharge>2022-01-25T19:24:06.0968543+02:00</EntryIntoCharge>
-  </DroneCharge>
-</DroneCharges>
+<DroneCharges />
